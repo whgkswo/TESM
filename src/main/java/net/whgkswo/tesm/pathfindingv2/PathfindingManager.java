@@ -35,19 +35,17 @@ public class PathfindingManager {
         // 길찾기 시작
         entityList.forEach(entity -> {
             BlockPos startPos = entity.getBlockPos().down(1);
-            Pathfinder pathfinder = new Pathfinder(world, startPos, endPos);
+            Pathfinder pathfinder = new Pathfinder(world, entity, startPos, endPos);
 
             EntityManager.summonEntity(world, EntityType.ARMOR_STAND, startPos);
             EntityManager.summonEntity(world, EntityType.ALLAY, endPos);
 
             // 초기 8방향 탐색
-            SearchResult result = new SearchResult(false);
-            /*int[][] directions = new int[][]{{1,0},{1,1},{0,1},{-1,1},{-1,0},{-1,-1},{0,-1},{1,-1}};*/
+            SearchResult result = new SearchResult(false, null);
 
             int i = 1;
             while(!result.hasFoundDestination() && i <= 8){
-                /*result = pathfinder.search(startPos, new Direction(directions[i][0], directions[i][1]));*/
-                result = pathfinder.search(startPos, Directions.getDirectionByNumber(i).getDirection());
+                result = pathfinder.search(startPos, Direction.getDirectionByNumber(i));
                 i++;
             }
         });
