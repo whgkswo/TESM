@@ -5,6 +5,9 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.whgkswo.tesm.entitymanaging.EntityManager;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class LinearSearcher {
     private int cursorX;    private int cursorY;    private int cursorZ;
     private Direction direction;
@@ -14,7 +17,7 @@ public class LinearSearcher {
         this.direction = direction;
         this.refPos = refPos;    this.endPos = endPos;
     }
-    public SearchResult linearSearch(ServerWorld world, int maxReapetCount){
+    public SearchResult linearSearch(ServerWorld world, ArrayList<JumpPoint> openList, HashMap<BlockPos,SearchResult> closedList, int maxReapetCount){
         cursorX = refPos.getX();
         cursorY = refPos.getY();
         cursorZ = refPos.getZ();
@@ -30,9 +33,9 @@ public class LinearSearcher {
                 BlockPos nextPos = moveOneBlock(world, prevPos, direction);
                 cursorX = nextPos.getX();   cursorY = nextPos.getY();   cursorZ = nextPos.getZ();
             }
-
-            // 목적지에 도착했으면 길찾기 종료
+            // 이동한 좌표 업데이트
             BlockPos nextPos = new BlockPos(cursorX, cursorY, cursorZ);
+            // 목적지에 도착했으면 길찾기 종료
             if(nextPos.equals(endPos)){
                 return new SearchResult(true, null);
             }
@@ -47,11 +50,17 @@ public class LinearSearcher {
                     leftBlocked = true;
                 }
                 if(JumpPointTester.jumpPointTest(rightTestResult, finalTestRight)){
-                    rightBlocked = false;
+                    rightBlocked = true;
                 }
+                // 점프 포인트 생성 기본 조건을 만족했을 때
                 if(leftBlocked || rightBlocked){
-                    JumpPoint jumpPoint = new JumpPoint(nextPos, endPos,0,leftBlocked,rightBlocked);
-                    return new SearchResult(false, jumpPoint);
+                    // OL, CL 어디에도 해당되지 않는 좌표라면 점프 포인트 생성
+                    if(!openList.contains(nextPos) && !closedList.containsKey(nextPos)){
+                        JumpPoint jumpPoint = new JumpPoint(nextPos, direction,endPos,0,leftBlocked,rightBlocked);
+                        // 갑옷 거치대 소환
+                        EntityManager.summonEntity(world, EntityType.ARMOR_STAND, nextPos);
+                        return new SearchResult(false, jumpPoint);
+                    }
                 }
             }
             // 이동한 위치에 벌 소환
@@ -60,12 +69,14 @@ public class LinearSearcher {
             if(direction.isDiagonal()){
                 SearchResult result;
                 LinearSearcher xSearcher = new LinearSearcher(nextPos, endPos, Direction.getDirectionByComponent(direction.getX(), 0));
-                result = xSearcher.linearSearch(world, maxReapetCount-i-1);
+                // x방향 탐색
+                result = xSearcher.linearSearch(world,openList,closedList,maxReapetCount-i-1);
                 if(result.hasFoundDestination()){
                     return result;
-                }else{
+                }else{ // 목적지를 찾지 못했다면
                     LinearSearcher zSearcher = new LinearSearcher(nextPos, endPos, Direction.getDirectionByComponent(0, direction.getZ()));
-                    result = zSearcher.linearSearch(world, maxReapetCount-i-1);
+                    // z방향 탐색
+                    result = zSearcher.linearSearch(world,openList,closedList,maxReapetCount-i-1);
                     if(result.hasFoundDestination()){
                         return result;
                     }

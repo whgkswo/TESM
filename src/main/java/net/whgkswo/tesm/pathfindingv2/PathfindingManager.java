@@ -36,18 +36,26 @@ public class PathfindingManager {
         entityList.forEach(entity -> {
             BlockPos startPos = entity.getBlockPos().down(1);
             Pathfinder pathfinder = new Pathfinder(world, entity, startPos, endPos);
-
+            // 시작점, 끝점 표시
             EntityManager.summonEntity(world, EntityType.ARMOR_STAND, startPos);
             EntityManager.summonEntity(world, EntityType.ALLAY, endPos);
-
-            // 초기 8방향 탐색
+            // 시작점을 오픈리스트에 추가
+            pathfinder.getOpenList().add(new JumpPoint(startPos, null, endPos, -1, false, false));
+            // 탐색 - 탐색 결과 초기화
             SearchResult result = new SearchResult(false, null);
-
-            int i = 1;
-            while(!result.hasFoundDestination() && i <= 8){
-                result = pathfinder.search(startPos, Direction.getDirectionByNumber(i));
-                i++;
+            // 다음 점프 포인트 선정 (F값이 최소인 걸로)
+            int nextIndex = OpenListManager.getMinFIndex(pathfinder.getOpenList());
+            JumpPoint nextJumpPoint = pathfinder.getOpenList().get(nextIndex);
+            // 다음 방향을 선정하고 탐색 시작
+            for(Direction direction : DirectionSetter.setSearchDirections(startPos, nextJumpPoint)){
+                result = pathfinder.search(nextJumpPoint.getBlockPos(), direction);
+                if(result.hasFoundDestination()){
+                    break;
+                }
             }
+            // 해당 좌표를 클로즈 리스트에 추가한 후 오픈 리스트에서 제거
+            pathfinder.getClosedList().put(nextJumpPoint.getBlockPos(), result);
+            pathfinder.getOpenList().remove(nextIndex);
         });
     }
 }
