@@ -19,10 +19,9 @@ public class EntityManager {
         world.spawnEntity(entity);
         return entity;
     }
-    public static void killEntity(ServerWorld world, EntityType entityType){
+    public static void killEntities(ServerWorld world, EntityType entityType){
         List<Entity> entityList = world.getEntitiesByType(entityType,
                 new Box(-10000, -64, -10000, 10000, 1024, 10000), entity -> true);
-
         entityList.forEach(Entity::kill);
     }
 }

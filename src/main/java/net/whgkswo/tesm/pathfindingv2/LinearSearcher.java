@@ -21,6 +21,8 @@ public class LinearSearcher {
         cursorX = refPos.getX();
         cursorY = refPos.getY();
         cursorZ = refPos.getZ();
+        // 시작 지점에 닭 소환
+        EntityManager.summonEntity(world,EntityType.CHICKEN, refPos);
         // 루프 돌며 일직선으로 진행
         for(int i = 0; i< maxReapetCount; i++){
             BlockPos prevPos;
@@ -54,17 +56,23 @@ public class LinearSearcher {
                 }
                 // 점프 포인트 생성 기본 조건을 만족했을 때
                 if(leftBlocked || rightBlocked){
+                    boolean duplicateCoordinate = false;
+                    for(int j = 0; j< openList.size(); j++){
+                        if(openList.get(j).getBlockPos().equals(nextPos)){
+                            duplicateCoordinate = true;
+                            break;
+                        }
+                    }
                     // OL, CL 어디에도 해당되지 않는 좌표라면 점프 포인트 생성
-                    if(!openList.contains(nextPos) && !closedList.containsKey(nextPos)){
-                        JumpPoint jumpPoint = new JumpPoint(nextPos, direction,endPos,0,leftBlocked,rightBlocked);
-                        // 갑옷 거치대 소환
-                        EntityManager.summonEntity(world, EntityType.ARMOR_STAND, nextPos);
+                    if(!duplicateCoordinate && !closedList.containsKey(nextPos)){
+                        JumpPoint jumpPoint = createAndRegisterJumpPoint(nextPos,direction,endPos,leftBlocked,rightBlocked,openList,world);
+                        // 결과 리턴
                         return new SearchResult(false, jumpPoint);
                     }
                 }
             }
             // 이동한 위치에 벌 소환
-            EntityManager.summonEntity(world, EntityType.BEE, nextPos);
+            /*EntityManager.summonEntity(world, EntityType.BEE, nextPos);*/
             // 대각선 방향일 때 양옆으로 추가 탐색
             if(direction.isDiagonal()){
                 SearchResult result;
@@ -83,8 +91,22 @@ public class LinearSearcher {
                 }
             }
         }
-        // 정상적으로 탐색을 마쳤으면 결과 리턴
+        // 정상적으로 탐색을 마쳤으면
+        // 점프 포인트 추가
+        BlockPos resultPos = new BlockPos(cursorX,cursorY,cursorZ);
+        createAndRegisterJumpPoint(resultPos, direction, endPos, false,false,openList,world);
+        // 결과 반환
         return new SearchResult(false, null);
+    }
+    public static JumpPoint createAndRegisterJumpPoint(BlockPos refPos, Direction direction, BlockPos endPos, boolean leftBlocked, boolean rightBlocked,
+                                                       ArrayList<JumpPoint> openList, ServerWorld world){
+        // 점프 포인트 생성
+        JumpPoint jumpPoint = new JumpPoint(refPos, direction,endPos,0,leftBlocked,rightBlocked);
+        // 갑옷 거치대 소환
+        /*EntityManager.summonEntity(world, EntityType.ARMOR_STAND, refPos);*/
+        // 오픈 리스트에 점프 포인트 추가
+        openList.add(jumpPoint);
+        return jumpPoint;
     }
     public static BlockPos moveOneBlock(ServerWorld world, BlockPos refPos, Direction direction){
         // 탐색 방향으로 한 칸 가기

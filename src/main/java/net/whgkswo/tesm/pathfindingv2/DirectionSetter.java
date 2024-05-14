@@ -7,7 +7,6 @@ import java.util.Arrays;
 
 public class DirectionSetter {
     public static ArrayList<Direction> setSearchDirections(BlockPos startPos, JumpPoint nextJumpPoint){
-
         // 첫 탐색인 경우
         if(nextJumpPoint.getBlockPos().equals(startPos)){
             return new ArrayList<>(Arrays.asList(Direction.EAST, Direction.SOUTHEAST, Direction.SOUTH,

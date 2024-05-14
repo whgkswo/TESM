@@ -19,6 +19,8 @@ import net.whgkswo.tesm.generaltasks.OnServerTicks;
 import net.whgkswo.tesm.items.TestItem;
 import net.whgkswo.tesm.networking.ModMessages;
 import net.whgkswo.tesm.pathfinding.PathFinder;
+import net.whgkswo.tesm.pathfindingv2.Pathfinder;
+import net.whgkswo.tesm.pathfindingv2.PathfindingManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -78,6 +80,8 @@ public class TESMMod implements ModInitializer {
 		InitializeTasks.initializeTasks();
 		OnServerTicks.onServerTick();
 		PathFinder.onServerTicks();
+		/*PathfindingManager pathfindingManager = new PathfindingManager();
+		pathfindingManager.onServerTicks();*/
 
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 클라이언트 통신 패킷 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 		ModMessages.registerC2SPackets();
