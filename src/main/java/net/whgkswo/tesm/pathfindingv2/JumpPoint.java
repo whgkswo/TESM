@@ -6,6 +6,7 @@ public class JumpPoint {
     private BlockPos blockPos;
     private Direction prevDirection;
     private int fValue;
+    private int hValue;
     private boolean leftBlocked;
 
     public int getFValue() {
@@ -30,10 +31,15 @@ public class JumpPoint {
         return blockPos;
     }
 
-    public JumpPoint(BlockPos blockPos, Direction prevDirection,BlockPos destPos, int hValue, boolean leftBlocked, boolean rightBlocked){
-        this.blockPos = blockPos;
+    public int getHValue() {
+        return hValue;
+    }
+
+    public JumpPoint(BlockPos blockPos, Direction prevDirection, BlockPos destPos, int hValue, boolean leftBlocked, boolean rightBlocked){
+        this.blockPos = new BlockPos(blockPos.getX(), blockPos.getY(), blockPos.getZ());
         this.prevDirection = prevDirection;
-        int gValue = 10 * BlockPosManager.getRoughDistance(blockPos, destPos);
+        this.hValue = hValue;
+        int gValue = (int)(10*BlockPosManager.getRoughDistance(blockPos, destPos));
         this.fValue = hValue + gValue;
         this.leftBlocked = leftBlocked;
         this.rightBlocked = rightBlocked;

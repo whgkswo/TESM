@@ -35,12 +35,11 @@ public class Pathfinder {
         return closedList;
     }
 
-    public SearchResult search(BlockPos refPos, Direction direction){
+    public SearchResult search(BlockPos refPos, Direction direction, int hValue){
         LinearSearcher searcher = new LinearSearcher(refPos, endPos, direction);
         // 일직선 탐색 실행
-        SearchResult result = searcher.linearSearch(world,openList,closedList,MAX_SEARCH_RADIUS);
-        // 탐색한 좌표를 클로즈리스트에 넣기
-        closedList.put(refPos, result);
+        SearchResult result = searcher.linearSearch(world,openList,closedList,MAX_SEARCH_RADIUS,hValue,0);
+
         return result;
     }
 }
