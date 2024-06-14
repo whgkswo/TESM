@@ -44,18 +44,26 @@ public enum Direction {
         return directionZ;
     }
     public Direction getLeftDirection(){
-        if(directionX != 0){
-            return Direction.getDirectionByComponent(directionZ, -directionX);
-        }else{
-            return Direction.getDirectionByComponent(directionZ, directionX);
-        }
-    }
-    public Direction getRightDirection(){
-        if(directionX != 0){
+        if(directionX == 0){
             return getDirectionByComponent(directionZ, directionX);
         }else{
             return getDirectionByComponent(directionZ, -directionX);
         }
+    }
+    public Direction getRightDirection(){
+        if(directionX == 0){
+            return getDirectionByComponent(-directionZ, directionX);
+        }else{
+            return getDirectionByComponent(directionZ, directionX);
+        }
+    }
+    public Direction getLeftDiagDirection(){
+        Direction leftDirection = getLeftDirection();
+        return getDirectionByComponent(directionX + leftDirection.getX(), directionZ + leftDirection.getZ());
+    }
+    public Direction getRightDiagDirection(){
+        Direction rightDirection = getRightDirection();
+        return getDirectionByComponent(directionX + rightDirection.getX(), directionZ + rightDirection.getZ());
     }
     public boolean isDiagonal(){
         return Math.abs(directionX) == Math.abs(directionZ);

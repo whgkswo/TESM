@@ -3,24 +3,24 @@ package net.whgkswo.tesm.pathfindingv2;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 
-public class TriangleTest {
+public class TriangleTestResult {
     private boolean adjacentTestResult;
     private boolean oppositeTestResult;
 
-    public boolean adjacentTestPassed() {
+    public boolean getAdjacentTestResult() {
         return adjacentTestResult;
     }
 
-    public boolean oppositeTestPassed() {
+    public boolean getOppositeTestResult() {
         return oppositeTestResult;
     }
 
-    public boolean hypotenuseTestPassed() {
+    public boolean getHypotenuseTestResult() {
         return hypotenuseTestResult;
     }
 
     private boolean hypotenuseTestResult;
-    public TriangleTest(ServerWorld world, BlockPos refPos, Direction direction, TestDirection testDirection){
+    public TriangleTestResult(ServerWorld world, BlockPos refPos, Direction direction, TestDirection testDirection){
         triangleTest(world, refPos, direction, testDirection);
     }
     public void triangleTest(ServerWorld world, BlockPos refPos, Direction refDirection, TestDirection testDirection){

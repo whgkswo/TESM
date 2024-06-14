@@ -3,6 +3,7 @@ package net.whgkswo.tesm.pathfindingv2;
 import net.minecraft.util.math.BlockPos;
 
 public class JumpPoint {
+    private BlockPos refPos;
     private BlockPos blockPos;
     private Direction prevDirection;
     private int fValue;
@@ -35,8 +36,13 @@ public class JumpPoint {
         return hValue;
     }
 
-    public JumpPoint(BlockPos blockPos, Direction prevDirection, BlockPos destPos, int hValue, boolean leftBlocked, boolean rightBlocked){
-        this.blockPos = new BlockPos(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+    public BlockPos getRefPos() {
+        return refPos;
+    }
+
+    public JumpPoint(BlockPos refPos, BlockPos blockPos, Direction prevDirection, BlockPos destPos, int hValue, boolean leftBlocked, boolean rightBlocked){
+        this.refPos = BlockPosManager.getCopyPos(refPos);
+        this.blockPos = BlockPosManager.getCopyPos(blockPos);
         this.prevDirection = prevDirection;
         this.hValue = hValue;
         int gValue = (int)(10*BlockPosManager.getRoughDistance(blockPos, destPos));

@@ -17,19 +17,21 @@ public class LinearSearcher {
         this.direction = direction;
         this.refPos = refPos;    this.endPos = endPos;
     }
-    public SearchResult linearSearch(ServerWorld world, ArrayList<JumpPoint> openList, HashMap<BlockPos,SearchResult> closedList,
+    // TODO: 휴리스틱이 오작동하는듯. trailedDistance에 i반복 횟수만큼 더해 주는 로직 점검할 것
+    public SearchResult linearSearch(ServerWorld world, BlockPos largeRefPos, ArrayList<JumpPoint> openList, HashMap<BlockPos,SearchResult> closedList,
                                      int maxReapetCount, int trailedDistance, int diagonalCount){
         cursorX = refPos.getX();
         cursorY = refPos.getY();
         cursorZ = refPos.getZ();
-        // 시작 지점에 닭 소환
-        EntityManager.summonEntity(world,EntityType.CHICKEN, refPos);
+        // 소탐색 시작 지점에 닭 소환
+        /*EntityManager.summonEntity(world,EntityType.CHICKEN, refPos);*/
         // 루프 돌며 일직선으로 진행
+        boolean metObstacle = false;
         for(int i = 1; i<= maxReapetCount; i++){
             BlockPos prevPos;
             // 다음 칸에 장애물과 낭떠러지가 있으면
             if(!BlockStateTester.isReachable(world, new BlockPos(cursorX, cursorY, cursorZ), direction)){
-                break;
+                return new SearchResult(false, null);
             }else{ // 장애물과 낭떠러지가 없으면
                 prevPos = new BlockPos(cursorX, cursorY, cursorZ);
                 // 탐색 방향으로 한 칸 가기
@@ -47,8 +49,8 @@ public class LinearSearcher {
             }
             // 직선 탐색일 때만 점프 포인트 조건 검사
             if(!direction.isDiagonal()){
-                TriangleTest leftTestResult = new TriangleTest(world, prevPos, direction, TestDirection.LEFT);
-                TriangleTest rightTestResult = new TriangleTest(world, prevPos, direction, TestDirection.RIGHT);
+                TriangleTestResult leftTestResult = new TriangleTestResult(world, prevPos, direction, TestDirection.LEFT);
+                TriangleTestResult rightTestResult = new TriangleTestResult(world, prevPos, direction, TestDirection.RIGHT);
                 boolean finalTestLeft = BlockStateTester.isReachable(world, nextPos, direction.getLeftDirection());
                 boolean finalTestRight = BlockStateTester.isReachable(world, nextPos, direction.getRightDirection());
                 boolean leftBlocked = false;    boolean rightBlocked = false;
@@ -61,11 +63,11 @@ public class LinearSearcher {
                 // 점프 포인트 생성 기본 조건을 만족했을 때
                 if(leftBlocked || rightBlocked){
                     // 점프 포인트 생성
-                    trailedDistance += diagonalCount*10 + i*10;
+                    int nextTrailedDistance = trailedDistance + diagonalCount*10 + i*10;
                         /*world.getPlayers().forEach(player -> {
                             player.sendMessage(Text.literal("점프 포인트 생성 (" + nextPos.getX() + ", " + nextPos.getY() + ", " + nextPos.getZ() + ")"));
                         });*/
-                    JumpPoint jumpPoint = createAndRegisterJumpPoint(nextPos,direction, trailedDistance, endPos,leftBlocked,rightBlocked,openList,closedList,world);
+                    JumpPoint jumpPoint = createAndRegisterJumpPoint(largeRefPos,nextPos, direction, nextTrailedDistance, endPos,leftBlocked,rightBlocked,openList,closedList,world);
                     // 결과 리턴
                     return new SearchResult(false, jumpPoint);
                 }
@@ -73,30 +75,31 @@ public class LinearSearcher {
             // 이동한 위치에 벌 소환
             /*EntityManager.summonEntity(world, EntityType.BEE, nextPos);*/
             // 대각선 방향일 때 양옆으로 추가 탐색
-            if(direction.isDiagonal() && maxReapetCount-i-1 > 0){
+            int branchLength = maxReapetCount-i;
+            if(direction.isDiagonal() && maxReapetCount-i > 0){
                 SearchResult result;
                 LinearSearcher xSearcher = new LinearSearcher(nextPos, endPos, Direction.getDirectionByComponent(direction.getX(), 0));
                 // x방향 탐색
-                result = xSearcher.linearSearch(world,openList,closedList,maxReapetCount-i-1,trailedDistance,i);
+                result = xSearcher.linearSearch(world,largeRefPos,openList,closedList,branchLength,trailedDistance,i);
                 if(result.hasFoundDestination()){
                     return result;
                 }else{ // 목적지를 찾지 못했다면
                     LinearSearcher zSearcher = new LinearSearcher(nextPos, endPos, Direction.getDirectionByComponent(0, direction.getZ()));
                     // z방향 탐색
-                    result = zSearcher.linearSearch(world,openList,closedList,maxReapetCount-i-1,trailedDistance,i);
+                    result = zSearcher.linearSearch(world,largeRefPos,openList,closedList,branchLength,trailedDistance,i);
                     if(result.hasFoundDestination()){
                         return result;
                     }
                 }
             }
         }
-        // 정상적으로 탐색을 마쳤으면
-        // 점프 포인트 추가
+        // 정상적으로 탐색을 마쳤으면 점프 포인트 추가
         BlockPos resultPos = new BlockPos(cursorX,cursorY,cursorZ);
         /*world.getPlayers().forEach(player -> {
             player.sendMessage(Text.literal("탐색 종료 포인트 생성 (" + resultPos.getX() + ", " + resultPos.getY() + ", " + resultPos.getZ() + ")"));
         });*/
-        createAndRegisterJumpPoint(resultPos, direction,trailedDistance,endPos,false,false,openList,closedList,world);
+        int nextTrailDistance = trailedDistance + diagonalCount*10 + maxReapetCount*10;
+        createAndRegisterJumpPoint(largeRefPos,resultPos, direction,nextTrailDistance,endPos,false,false,openList,closedList,world);
         // 결과 반환
         return new SearchResult(false, null);
     }
@@ -118,13 +121,14 @@ public class LinearSearcher {
         }
         return !duplicatedInOL && !duplicatedInCL;
     }
-    public static JumpPoint createAndRegisterJumpPoint(BlockPos refPos, Direction direction, int trailedDistance,BlockPos endPos, boolean leftBlocked, boolean rightBlocked,
+    public JumpPoint createAndRegisterJumpPoint(BlockPos largeRefPos,BlockPos currentPos, Direction direction, int trailedDistance,BlockPos endPos, boolean leftBlocked, boolean rightBlocked,
                                                        ArrayList<JumpPoint> openList, HashMap<BlockPos, SearchResult> closedList, ServerWorld world){
+        // TODO: 지금은 refPos에 대탐색 refPos가 아닌 소탐색 refPos가 들어가고 있음!!
         // 점프 포인트 생성
-        JumpPoint jumpPoint = new JumpPoint(refPos, direction,endPos,trailedDistance,leftBlocked,rightBlocked);
-        if(isValidCoordForJumpPoint(refPos, openList, closedList)){
+        JumpPoint jumpPoint = new JumpPoint(largeRefPos,currentPos, direction,endPos,trailedDistance,leftBlocked,rightBlocked);
+        if(isValidCoordForJumpPoint(currentPos, openList, closedList)){
             // 갑옷 거치대 소환
-            /*EntityManager.summonEntity(world, EntityType.ARMOR_STAND, refPos);*/
+            EntityManager.summonEntity(world, EntityType.ARMOR_STAND, currentPos);
             // 오픈 리스트에 점프 포인트 추가
             openList.add(jumpPoint);
         }
@@ -135,6 +139,7 @@ public class LinearSearcher {
         int cursorX = refPos.getX() + direction.getX();
         int cursorY = refPos.getY();
         int cursorZ = refPos.getZ() + direction.getZ();
+
         BlockPos nextPos = new BlockPos(cursorX, cursorY, cursorZ);
         if(BlockStateTester.isSolid(world, nextPos.up(1))){
             // 올라가기

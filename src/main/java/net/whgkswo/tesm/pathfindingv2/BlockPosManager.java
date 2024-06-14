@@ -8,4 +8,7 @@ public class BlockPosManager {
         int closeGap = Math.min(Math.abs(pos1.getX()- pos2.getX()),Math.abs(pos1.getZ()- pos2.getZ()));
         return 1.4*(closeGap) + farGap-closeGap;
     }
+    public static BlockPos getCopyPos(BlockPos targetPos){
+        return new BlockPos(targetPos.getX(), targetPos.getY(), targetPos.getZ());
+    }
 }

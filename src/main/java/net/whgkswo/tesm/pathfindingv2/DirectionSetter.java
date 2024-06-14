@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 public class DirectionSetter {
     public static ArrayList<Direction> setSearchDirections(BlockPos startPos, JumpPoint nextJumpPoint){
+        Direction prevDirection = nextJumpPoint.getPrevDirection();
         // 첫 탐색인 경우
         if(nextJumpPoint.getBlockPos().equals(startPos)){
             return new ArrayList<>(Arrays.asList(Direction.EAST, Direction.SOUTHEAST, Direction.SOUTH,
@@ -14,15 +15,17 @@ public class DirectionSetter {
                     Direction.NORTHEAST));
         }
         ArrayList<Direction> directions = new ArrayList<>();
-        // 왼쪽이 막혔으면 왼쪽 추가 탐색
+        // 왼쪽이 막혔으면 왼쪽과 왼쪽 대각선 추가 탐색
         if(nextJumpPoint.isLeftBlocked()){
-            directions.add(nextJumpPoint.getPrevDirection().getLeftDirection());
+            directions.add(prevDirection.getLeftDirection());
+            directions.add(prevDirection.getLeftDiagDirection());
         }
         // 가던 방향은 기본적으로 탐색
-        directions.add(nextJumpPoint.getPrevDirection());
-        // 오른쪽이 막혔으면 오른쪽 추가 탐색
+        directions.add(prevDirection);
+        // 오른쪽이 막혔으면 오른쪽과 오른쪽 대각선 추가 탐색
         if(nextJumpPoint.isRightBlocked()){
-            directions.add(nextJumpPoint.getPrevDirection().getRightDirection());
+            directions.add(prevDirection.getRightDirection());
+            directions.add(prevDirection.getRightDiagDirection());
         }
         return directions;
     }

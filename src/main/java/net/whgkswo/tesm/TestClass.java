@@ -8,6 +8,9 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+
+import java.util.HashMap;
 
 public class TestClass {
     public static final Identifier DIRT_BROKEN = new Identifier(TESMMod.MODID, "dirt_broken");
@@ -30,5 +33,16 @@ public class TestClass {
                 });
             }
         });
+    }
+
+    public static void main(String[] args) {
+        /*HashMap<BlockPos,Integer> map = new HashMap<>();
+        map.put(new BlockPos(1,2,3), 1);
+        System.out.println(map.get(new BlockPos(1,2,3)));*/
+
+        BlockPos posA = new BlockPos(1,2,3);
+        BlockPos posB = new BlockPos(1,2,3);
+        System.out.println(posB.equals(posA));
+
     }
 }
