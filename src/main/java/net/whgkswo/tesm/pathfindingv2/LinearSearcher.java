@@ -17,7 +17,6 @@ public class LinearSearcher {
         this.direction = direction;
         this.refPos = refPos;    this.endPos = endPos;
     }
-    // TODO: 휴리스틱이 오작동하는듯. trailedDistance에 i반복 횟수만큼 더해 주는 로직 점검할 것
     public SearchResult linearSearch(ServerWorld world, BlockPos largeRefPos, ArrayList<JumpPoint> openList, HashMap<BlockPos,SearchResult> closedList,
                                      int maxReapetCount, int trailedDistance, int diagonalCount){
         cursorX = refPos.getX();
@@ -77,18 +76,17 @@ public class LinearSearcher {
             // 대각선 방향일 때 양옆으로 추가 탐색
             int branchLength = maxReapetCount-i;
             if(direction.isDiagonal() && maxReapetCount-i > 0){
-                SearchResult result;
                 LinearSearcher xSearcher = new LinearSearcher(nextPos, endPos, Direction.getDirectionByComponent(direction.getX(), 0));
                 // x방향 탐색
-                result = xSearcher.linearSearch(world,largeRefPos,openList,closedList,branchLength,trailedDistance,i);
-                if(result.hasFoundDestination()){
-                    return result;
+                SearchResult xBranchResult = xSearcher.linearSearch(world,largeRefPos,openList,closedList,branchLength,trailedDistance,i);
+                if(xBranchResult.hasFoundDestination()){
+                    return xBranchResult;
                 }else{ // 목적지를 찾지 못했다면
                     LinearSearcher zSearcher = new LinearSearcher(nextPos, endPos, Direction.getDirectionByComponent(0, direction.getZ()));
                     // z방향 탐색
-                    result = zSearcher.linearSearch(world,largeRefPos,openList,closedList,branchLength,trailedDistance,i);
-                    if(result.hasFoundDestination()){
-                        return result;
+                    SearchResult zBranchResult = zSearcher.linearSearch(world,largeRefPos,openList,closedList,branchLength,trailedDistance,i);
+                    if(zBranchResult.hasFoundDestination()){
+                        return zBranchResult;
                     }
                 }
             }

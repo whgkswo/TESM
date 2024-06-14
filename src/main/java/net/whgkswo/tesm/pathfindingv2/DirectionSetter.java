@@ -27,6 +27,11 @@ public class DirectionSetter {
             directions.add(prevDirection.getRightDirection());
             directions.add(prevDirection.getRightDiagDirection());
         }
+        // 대각선 방향이었으면 왼쪽, 오른쪽 추가 탐색
+        if(nextJumpPoint.getPrevDirection().isDiagonal()){
+            directions.add(Direction.getDirectionByComponent(prevDirection.getX(), 0));
+            directions.add(Direction.getDirectionByComponent(0, prevDirection.getZ()));
+        }
         return directions;
     }
 }

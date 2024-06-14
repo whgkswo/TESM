@@ -35,10 +35,14 @@ public class BlockStateTester {
             // 낭떠러지
             return false;
         }
-        if(world.getBlockState(nextPos).isLiquid()){
+        if(!world.getBlockState(nextPos).getFluidState().isEmpty()){
             // 액체
             return false;
         }
+        /*if(world.getBlockState(nextPos).isLiquid()){
+            // 액체
+            return false;
+        }*/
         return true;
     }
 }

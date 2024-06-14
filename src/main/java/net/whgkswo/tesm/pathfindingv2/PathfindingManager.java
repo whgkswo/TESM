@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class PathfindingManager {
-    private static final int MAX_SEARCH_REPEAT_COUNT = 500;
+    private static final int MAX_SEARCH_REPEAT_COUNT = 2000;
     public void pathfindingStart(ServerWorld world, String targetName, BlockPos endPos){
         // 월드 내 이름이 일치하는 주민 찾기
         List<VillagerEntity> entityList = world.getEntitiesByType(EntityType.VILLAGER,
