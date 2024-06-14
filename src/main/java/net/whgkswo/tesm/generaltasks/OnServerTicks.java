@@ -140,7 +140,7 @@ public class OnServerTicks {
                 }else{ //runTimeCounter!=0일 때 (초기화 시점 후 모든 틱마다)
                     if(!Objects.equals(previousBiomeID,currentBiomeID)){ // 바이옴 변경이 일어날 때
 
-                        player.sendMessage(Text.literal("바이옴 변경 감지 ("+previousBiomeID+" -> "+currentBiomeID+"), "+currentRegionTag));
+                        /*player.sendMessage(Text.literal("바이옴 변경 감지 ("+previousBiomeID+" -> "+currentBiomeID+"), "+currentRegionTag));*/
                         previousBiomeID = currentBiomeID;
 
                         //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 지역 정보 갱신 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ

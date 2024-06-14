@@ -1,5 +1,7 @@
 package net.whgkswo.tesm.pathfindingv2;
 
+import net.minecraft.fluid.Fluid;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 
@@ -31,6 +33,10 @@ public class BlockStateTester {
         }
         if(!isSolid(world, nextPos.up(1)) && !isSolid(world, nextPos) && !isSolid(world, nextPos.down(1))){
             // 낭떠러지
+            return false;
+        }
+        if(world.getBlockState(nextPos).isLiquid()){
+            // 액체
             return false;
         }
         return true;

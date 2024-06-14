@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class PathfindingManager {
-    private static final int MAX_SEARCH_REPEAT_COUNT = 50;
+    private static final int MAX_SEARCH_REPEAT_COUNT = 500;
     public void pathfindingStart(ServerWorld world, String targetName, BlockPos endPos){
         // 월드 내 이름이 일치하는 주민 찾기
         List<VillagerEntity> entityList = world.getEntitiesByType(EntityType.VILLAGER,
@@ -78,7 +78,7 @@ public class PathfindingManager {
         });
         SearchResult result = new SearchResult(false, null);
         // 대탐색 시작 위치에 닭 소환
-        EntityManager.summonEntity(world, EntityType.CHICKEN, refPos);
+        /*EntityManager.summonEntity(world, EntityType.CHICKEN, refPos);*/
         // 다음 방향들에 대해 소탐색 시작
         for(Direction direction : directions){
             // 이전 소탐색에서 사용된 갑옷 거치대와 알레이, 닭, 벌 없애기
