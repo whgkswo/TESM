@@ -72,22 +72,37 @@ public class LinearSearcher {
                 }
             }
             // 이동한 위치에 벌 소환
-            /*EntityManager.summonEntity(world, EntityType.BEE, nextPos);*/
+            EntityManager.summonEntity(world, EntityType.BEE, nextPos);
             // 대각선 방향일 때 양옆으로 추가 탐색
             int branchLength = maxReapetCount-i;
             if(direction.isDiagonal() && maxReapetCount-i > 0){
-                LinearSearcher xSearcher = new LinearSearcher(nextPos, endPos, Direction.getDirectionByComponent(direction.getX(), 0));
+                // 한 칸 앞의 y좌표를 검사
+                BlockPos nextTempPos = moveOneBlock(world, nextPos, direction);
+                int dy = nextTempPos.getY() - nextPos.getY();
+                // 올라가는 칸의 경우 검사 기준 좌표를 한 칸 올려 줘야 함
+                int offset = (dy == 1) ? 2:1;
+
+                BlockPos xRefPos = new BlockPos(nextPos.getX() + direction.getX(), nextPos.getY(), nextPos.getZ()).up(offset);
+                BlockPos zRefPos = new BlockPos(nextPos.getX(), nextPos.getY(), nextPos.getZ() + direction.getZ()).up(offset);
+                boolean xBlocked = BlockStateTester.isSolid(world, xRefPos) || BlockStateTester.isSolid(world, xRefPos.up(1));
+                boolean zBlocked = BlockStateTester.isSolid(world, zRefPos) || BlockStateTester.isSolid(world, zRefPos.up(1));
+
+                // TODO: x,z 방향이 막혔으면 해당 방향의 반대 방향 추가 탐색에서 무조건 다음 칸에 점프 포인트 생성하게 만들기
                 // x방향 탐색
+                LinearSearcher xSearcher = new LinearSearcher(nextPos, endPos, Direction.getDirectionByComponent(direction.getX(), 0));
                 SearchResult xBranchResult = xSearcher.linearSearch(world,largeRefPos,openList,closedList,branchLength,trailedDistance,i);
                 if(xBranchResult.hasFoundDestination()){
                     return xBranchResult;
-                }else{ // 목적지를 찾지 못했다면
+                }else { // 목적지를 찾지 못했다면
                     LinearSearcher zSearcher = new LinearSearcher(nextPos, endPos, Direction.getDirectionByComponent(0, direction.getZ()));
                     // z방향 탐색
                     SearchResult zBranchResult = zSearcher.linearSearch(world,largeRefPos,openList,closedList,branchLength,trailedDistance,i);
                     if(zBranchResult.hasFoundDestination()){
                         return zBranchResult;
                     }
+                }
+                if(xBlocked || zBlocked){
+                    return new SearchResult(false, null);
                 }
             }
         }

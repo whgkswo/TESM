@@ -42,7 +42,7 @@ public class TestClass {
 
         BlockPos posA = new BlockPos(1,2,3);
         BlockPos posB = new BlockPos(1,2,3);
-        System.out.println(posB.equals(posA));
+        System.out.println(posB.up(0).getY());
 
     }
 }
