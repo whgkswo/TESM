@@ -76,6 +76,10 @@ public enum Direction {
     public RelativeDirection getRelativeDirection(Direction targetDirection){
         int refNo = getDirectionNo();
         int targetNo = targetDirection.getDirectionNo();
-        return RelativeDirection.getRelativeDirection((targetNo - refNo) % 8);
+        int index = (targetNo - refNo) % 8;
+        if(index < 0){
+            index += 8;
+        }
+        return RelativeDirection.getRelativeDirection(index);
     }
 }

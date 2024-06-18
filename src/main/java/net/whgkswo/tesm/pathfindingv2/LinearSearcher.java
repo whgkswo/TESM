@@ -55,24 +55,29 @@ public class LinearSearcher {
                     // z방향
                     Direction targetDirection = Direction.getDirectionByComponent(0,diagSearchState.getDirection().getZ());
                     // x방향에 대해 z방향의 상대방향 구하기
-                    RelativeDirection blockedDirection = direction.getRelativeDirection(targetDirection);
+                    /*RelativeDirection blockedDirection = direction.getRelativeDirection(targetDirection);
                     boolean leftBlocked = (blockedDirection == RelativeDirection.LEFT);
                     boolean rightBlocked = (blockedDirection == RelativeDirection.RIGHT);
                     int nextTrailedDistance = trailedDistance + diagSearchState.getSearchedCount()*10 + i*10;
                     JumpPoint jumpPoint = createAndRegisterJumpPoint(largeRefPos, nextPos, direction,nextTrailedDistance, endPos,
-                            leftBlocked,rightBlocked,openList,closedList,world);
+                            leftBlocked,rightBlocked,openList,closedList,world);*/
+                    JumpPoint jumpPoint = createJumpPointForBranch(world, direction, targetDirection, i, trailedDistance, diagSearchState, largeRefPos,
+                             nextPos, endPos, openList, closedList);
                     return new SearchResult(false, jumpPoint);
                 }
                 if(direction.getZ() != 0 && diagSearchState.isxBlocked()){
                     // x방향
-                    Direction targetDirection = Direction.getDirectionByComponent(0,diagSearchState.getDirection().getX());
+                    Direction targetDirection = Direction.getDirectionByComponent(diagSearchState.getDirection().getX(),0);
                     // z방향에 대해 x방향의 상대방향 구하기
-                    RelativeDirection blockedDirection = direction.getRelativeDirection(targetDirection);
+                    /*RelativeDirection blockedDirection = direction.getRelativeDirection(targetDirection);
                     boolean leftBlocked = (blockedDirection == RelativeDirection.LEFT);
                     boolean rightBlocked = (blockedDirection == RelativeDirection.RIGHT);
                     int nextTrailedDistance = trailedDistance + diagSearchState.getSearchedCount()*10 + i*10;
                     JumpPoint jumpPoint = createAndRegisterJumpPoint(largeRefPos, nextPos, direction,nextTrailedDistance, endPos,
-                            leftBlocked,rightBlocked,openList,closedList,world);
+                            leftBlocked,rightBlocked,openList,closedList,world);*/
+                    JumpPoint jumpPoint = createJumpPointForBranch(world, direction, targetDirection, i, trailedDistance, diagSearchState, largeRefPos,
+                            nextPos, endPos, openList, closedList);
+
                     return new SearchResult(false, jumpPoint);
                 }
                 TriangleTestResult leftTestResult = new TriangleTestResult(world, prevPos, direction, RelativeDirection.LEFT);
@@ -144,6 +149,16 @@ public class LinearSearcher {
         // 결과 반환
         return new SearchResult(false, null);
     }
+    private static JumpPoint createJumpPointForBranch(ServerWorld world, Direction direction, Direction targetDirection, int i, int trailedDistance, DiagSearchState diagSearchState, BlockPos largeRefPos,
+                                                      BlockPos nextPos, BlockPos endPos, ArrayList<JumpPoint> openList, HashMap<BlockPos, SearchResult> closedList){
+        RelativeDirection blockedDirection = direction.getRelativeDirection(targetDirection);
+        boolean leftBlocked = (blockedDirection == RelativeDirection.LEFT);
+        boolean rightBlocked = (blockedDirection == RelativeDirection.RIGHT);
+        int nextTrailedDistance = trailedDistance + diagSearchState.getSearchedCount()*10 + i*10;
+        JumpPoint jumpPoint = createAndRegisterJumpPoint(largeRefPos, nextPos, direction,nextTrailedDistance, endPos,
+                leftBlocked,rightBlocked,openList,closedList,world);
+        return jumpPoint;
+    }
     public static boolean isValidCoordForJumpPoint(BlockPos targetPos, ArrayList<JumpPoint> openList, HashMap<BlockPos, SearchResult> closedList){
         boolean duplicatedInOL = false;
         for (JumpPoint jumpPoint : openList) {
@@ -162,7 +177,7 @@ public class LinearSearcher {
         }
         return !duplicatedInOL && !duplicatedInCL;
     }
-    public JumpPoint createAndRegisterJumpPoint(BlockPos largeRefPos,BlockPos currentPos, Direction direction, int trailedDistance,BlockPos endPos, boolean leftBlocked, boolean rightBlocked,
+    public static JumpPoint createAndRegisterJumpPoint(BlockPos largeRefPos,BlockPos currentPos, Direction direction, int trailedDistance,BlockPos endPos, boolean leftBlocked, boolean rightBlocked,
                                                        ArrayList<JumpPoint> openList, HashMap<BlockPos, SearchResult> closedList, ServerWorld world){
         // TODO: 지금은 refPos에 대탐색 refPos가 아닌 소탐색 refPos가 들어가고 있음!!
         // 점프 포인트 생성
