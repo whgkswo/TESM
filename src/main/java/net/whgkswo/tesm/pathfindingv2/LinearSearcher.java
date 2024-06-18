@@ -50,45 +50,33 @@ public class LinearSearcher {
             }
             // 직선 탐색일 때만 점프 포인트 조건 검사
             if(!direction.isDiagonal()){
+                boolean leftBlocked = false;    boolean rightBlocked = false;
                 // x방향 추가탐색이고 z방향이 막혔었다면 점프 포인트 생성
                  if(direction.getX() != 0 && diagSearchState.iszBlocked()){
                     // z방향
                     Direction targetDirection = Direction.getDirectionByComponent(0,diagSearchState.getDirection().getZ());
                     // x방향에 대해 z방향의 상대방향 구하기
-                    /*RelativeDirection blockedDirection = direction.getRelativeDirection(targetDirection);
-                    boolean leftBlocked = (blockedDirection == RelativeDirection.LEFT);
-                    boolean rightBlocked = (blockedDirection == RelativeDirection.RIGHT);
-                    int nextTrailedDistance = trailedDistance + diagSearchState.getSearchedCount()*10 + i*10;
-                    JumpPoint jumpPoint = createAndRegisterJumpPoint(largeRefPos, nextPos, direction,nextTrailedDistance, endPos,
-                            leftBlocked,rightBlocked,openList,closedList,world);*/
-                    JumpPoint jumpPoint = createJumpPointForBranch(world, direction, targetDirection, i, trailedDistance, diagSearchState, largeRefPos,
-                             nextPos, endPos, openList, closedList);
-                    return new SearchResult(false, jumpPoint);
+                    RelativeDirection blockedDirection = direction.getRelativeDirection(targetDirection);
+                    leftBlocked = (blockedDirection == RelativeDirection.LEFT);
+                    rightBlocked = (blockedDirection == RelativeDirection.RIGHT);
                 }
                 if(direction.getZ() != 0 && diagSearchState.isxBlocked()){
                     // x방향
                     Direction targetDirection = Direction.getDirectionByComponent(diagSearchState.getDirection().getX(),0);
                     // z방향에 대해 x방향의 상대방향 구하기
-                    /*RelativeDirection blockedDirection = direction.getRelativeDirection(targetDirection);
-                    boolean leftBlocked = (blockedDirection == RelativeDirection.LEFT);
-                    boolean rightBlocked = (blockedDirection == RelativeDirection.RIGHT);
-                    int nextTrailedDistance = trailedDistance + diagSearchState.getSearchedCount()*10 + i*10;
-                    JumpPoint jumpPoint = createAndRegisterJumpPoint(largeRefPos, nextPos, direction,nextTrailedDistance, endPos,
-                            leftBlocked,rightBlocked,openList,closedList,world);*/
-                    JumpPoint jumpPoint = createJumpPointForBranch(world, direction, targetDirection, i, trailedDistance, diagSearchState, largeRefPos,
-                            nextPos, endPos, openList, closedList);
-
-                    return new SearchResult(false, jumpPoint);
+                    RelativeDirection blockedDirection = direction.getRelativeDirection(targetDirection);
+                    leftBlocked = (blockedDirection == RelativeDirection.LEFT);
+                    rightBlocked = (blockedDirection == RelativeDirection.RIGHT);
                 }
                 TriangleTestResult leftTestResult = new TriangleTestResult(world, prevPos, direction, RelativeDirection.LEFT);
                 TriangleTestResult rightTestResult = new TriangleTestResult(world, prevPos, direction, RelativeDirection.RIGHT);
                 boolean finalTestLeft = BlockStateTester.isReachable(world, nextPos, direction.getLeftDirection());
                 boolean finalTestRight = BlockStateTester.isReachable(world, nextPos, direction.getRightDirection());
-                boolean leftBlocked = false;    boolean rightBlocked = false;
-                if(JumpPointTester.jumpPointTest(leftTestResult, finalTestLeft)){
+                /*boolean leftBlocked = false;    boolean rightBlocked = false;*/
+                if(!leftBlocked && JumpPointTester.jumpPointTest(leftTestResult, finalTestLeft)){
                     leftBlocked = true;
                 }
-                if(JumpPointTester.jumpPointTest(rightTestResult, finalTestRight)){
+                if(!rightBlocked && JumpPointTester.jumpPointTest(rightTestResult, finalTestRight)){
                     rightBlocked = true;
                 }
                 // 점프 포인트 생성 기본 조건을 만족했을 때
@@ -104,7 +92,7 @@ public class LinearSearcher {
                 }
             }
             // 이동한 위치에 벌 소환
-            EntityManager.summonEntity(world, EntityType.BEE, nextPos);
+            /*EntityManager.summonEntity(world, EntityType.BEE, nextPos);*/
             // 대각선 방향일 때 양옆으로 추가 탐색
             int branchLength = maxRepeatCount-i;
             if(direction.isDiagonal() && maxRepeatCount-i > 0){
@@ -149,16 +137,6 @@ public class LinearSearcher {
         // 결과 반환
         return new SearchResult(false, null);
     }
-    private static JumpPoint createJumpPointForBranch(ServerWorld world, Direction direction, Direction targetDirection, int i, int trailedDistance, DiagSearchState diagSearchState, BlockPos largeRefPos,
-                                                      BlockPos nextPos, BlockPos endPos, ArrayList<JumpPoint> openList, HashMap<BlockPos, SearchResult> closedList){
-        RelativeDirection blockedDirection = direction.getRelativeDirection(targetDirection);
-        boolean leftBlocked = (blockedDirection == RelativeDirection.LEFT);
-        boolean rightBlocked = (blockedDirection == RelativeDirection.RIGHT);
-        int nextTrailedDistance = trailedDistance + diagSearchState.getSearchedCount()*10 + i*10;
-        JumpPoint jumpPoint = createAndRegisterJumpPoint(largeRefPos, nextPos, direction,nextTrailedDistance, endPos,
-                leftBlocked,rightBlocked,openList,closedList,world);
-        return jumpPoint;
-    }
     public static boolean isValidCoordForJumpPoint(BlockPos targetPos, ArrayList<JumpPoint> openList, HashMap<BlockPos, SearchResult> closedList){
         boolean duplicatedInOL = false;
         for (JumpPoint jumpPoint : openList) {
@@ -179,7 +157,6 @@ public class LinearSearcher {
     }
     public static JumpPoint createAndRegisterJumpPoint(BlockPos largeRefPos,BlockPos currentPos, Direction direction, int trailedDistance,BlockPos endPos, boolean leftBlocked, boolean rightBlocked,
                                                        ArrayList<JumpPoint> openList, HashMap<BlockPos, SearchResult> closedList, ServerWorld world){
-        // TODO: 지금은 refPos에 대탐색 refPos가 아닌 소탐색 refPos가 들어가고 있음!!
         // 점프 포인트 생성
         JumpPoint jumpPoint = new JumpPoint(largeRefPos,currentPos, direction,endPos,trailedDistance,leftBlocked,rightBlocked);
         if(isValidCoordForJumpPoint(currentPos, openList, closedList)){
