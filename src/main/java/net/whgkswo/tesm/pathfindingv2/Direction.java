@@ -1,15 +1,16 @@
 package net.whgkswo.tesm.pathfindingv2;
 
 public enum Direction {
-    EAST(1,0),
-    SOUTHEAST(1,1),
-    SOUTH(0,1),
-    SOUTHWEST(-1,1),
-    WEST(-1,0),
-    NORTHWEST(-1,-1),
-    NORTH(0,-1),
-    NORTHEAST(1,-1)
+    EAST(1,1,0),
+    SOUTHEAST(2,1,1),
+    SOUTH(3,0,1),
+    SOUTHWEST(4,-1,1),
+    WEST(5,-1,0),
+    NORTHWEST(6,-1,-1),
+    NORTH(7,0,-1),
+    NORTHEAST(8,1,-1)
     ;
+    private int directionNo;
     private int directionX; private int directionZ;
 
     public static Direction getDirectionByNumber(int no){
@@ -33,7 +34,8 @@ public enum Direction {
         }
         return null;
     }
-    Direction(int directionX, int directionZ) {
+    Direction(int directionNo,int directionX, int directionZ) {
+        this.directionNo = directionNo;
         this.directionX = directionX;
         this.directionZ = directionZ;
     }
@@ -67,5 +69,13 @@ public enum Direction {
     }
     public boolean isDiagonal(){
         return Math.abs(directionX) == Math.abs(directionZ);
+    }
+    public int getDirectionNo(){
+        return directionNo;
+    }
+    public RelativeDirection getRelativeDirection(Direction targetDirection){
+        int refNo = getDirectionNo();
+        int targetNo = targetDirection.getDirectionNo();
+        return RelativeDirection.getRelativeDirection((targetNo - refNo) % 8);
     }
 }

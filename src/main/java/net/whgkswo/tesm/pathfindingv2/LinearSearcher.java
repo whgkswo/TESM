@@ -12,13 +12,15 @@ public class LinearSearcher {
     private int cursorX;    private int cursorY;    private int cursorZ;
     private Direction direction;
     private final BlockPos refPos;  private final BlockPos endPos;
+    private final int maxRepeatCount;
 
-    public LinearSearcher(BlockPos refPos, BlockPos endPos, Direction direction){
+    public LinearSearcher(BlockPos refPos, BlockPos endPos, Direction direction, int maxRepeatCount){
         this.direction = direction;
         this.refPos = refPos;    this.endPos = endPos;
+        this.maxRepeatCount = maxRepeatCount;
     }
     public SearchResult linearSearch(ServerWorld world, BlockPos largeRefPos, ArrayList<JumpPoint> openList, HashMap<BlockPos,SearchResult> closedList,
-                                     int maxReapetCount, int trailedDistance, int diagonalCount){
+                                     DiagSearchState diagSearchState, int trailedDistance){
         cursorX = refPos.getX();
         cursorY = refPos.getY();
         cursorZ = refPos.getZ();
@@ -26,7 +28,7 @@ public class LinearSearcher {
         /*EntityManager.summonEntity(world,EntityType.CHICKEN, refPos);*/
         // 루프 돌며 일직선으로 진행
         boolean metObstacle = false;
-        for(int i = 1; i<= maxReapetCount; i++){
+        for(int i = 1; i<= maxRepeatCount; i++){
             BlockPos prevPos;
             // 다음 칸에 장애물과 낭떠러지가 있으면
             if(!BlockStateTester.isReachable(world, new BlockPos(cursorX, cursorY, cursorZ), direction)){
@@ -48,8 +50,33 @@ public class LinearSearcher {
             }
             // 직선 탐색일 때만 점프 포인트 조건 검사
             if(!direction.isDiagonal()){
-                TriangleTestResult leftTestResult = new TriangleTestResult(world, prevPos, direction, TestDirection.LEFT);
-                TriangleTestResult rightTestResult = new TriangleTestResult(world, prevPos, direction, TestDirection.RIGHT);
+                // x방향 추가탐색이고 z방향이 막혔었다면 점프 포인트 생성
+                 if(direction.getX() != 0 && diagSearchState.iszBlocked()){
+                    // z방향
+                    Direction targetDirection = Direction.getDirectionByComponent(0,diagSearchState.getDirection().getZ());
+                    // x방향에 대해 z방향의 상대방향 구하기
+                    RelativeDirection blockedDirection = direction.getRelativeDirection(targetDirection);
+                    boolean leftBlocked = (blockedDirection == RelativeDirection.LEFT);
+                    boolean rightBlocked = (blockedDirection == RelativeDirection.RIGHT);
+                    int nextTrailedDistance = trailedDistance + diagSearchState.getSearchedCount()*10 + i*10;
+                    JumpPoint jumpPoint = createAndRegisterJumpPoint(largeRefPos, nextPos, direction,nextTrailedDistance, endPos,
+                            leftBlocked,rightBlocked,openList,closedList,world);
+                    return new SearchResult(false, jumpPoint);
+                }
+                if(direction.getZ() != 0 && diagSearchState.isxBlocked()){
+                    // x방향
+                    Direction targetDirection = Direction.getDirectionByComponent(0,diagSearchState.getDirection().getX());
+                    // z방향에 대해 x방향의 상대방향 구하기
+                    RelativeDirection blockedDirection = direction.getRelativeDirection(targetDirection);
+                    boolean leftBlocked = (blockedDirection == RelativeDirection.LEFT);
+                    boolean rightBlocked = (blockedDirection == RelativeDirection.RIGHT);
+                    int nextTrailedDistance = trailedDistance + diagSearchState.getSearchedCount()*10 + i*10;
+                    JumpPoint jumpPoint = createAndRegisterJumpPoint(largeRefPos, nextPos, direction,nextTrailedDistance, endPos,
+                            leftBlocked,rightBlocked,openList,closedList,world);
+                    return new SearchResult(false, jumpPoint);
+                }
+                TriangleTestResult leftTestResult = new TriangleTestResult(world, prevPos, direction, RelativeDirection.LEFT);
+                TriangleTestResult rightTestResult = new TriangleTestResult(world, prevPos, direction, RelativeDirection.RIGHT);
                 boolean finalTestLeft = BlockStateTester.isReachable(world, nextPos, direction.getLeftDirection());
                 boolean finalTestRight = BlockStateTester.isReachable(world, nextPos, direction.getRightDirection());
                 boolean leftBlocked = false;    boolean rightBlocked = false;
@@ -62,7 +89,7 @@ public class LinearSearcher {
                 // 점프 포인트 생성 기본 조건을 만족했을 때
                 if(leftBlocked || rightBlocked){
                     // 점프 포인트 생성
-                    int nextTrailedDistance = trailedDistance + diagonalCount*10 + i*10;
+                    int nextTrailedDistance = trailedDistance + diagSearchState.getSearchedCount()*10 + i*10;
                         /*world.getPlayers().forEach(player -> {
                             player.sendMessage(Text.literal("점프 포인트 생성 (" + nextPos.getX() + ", " + nextPos.getY() + ", " + nextPos.getZ() + ")"));
                         });*/
@@ -74,8 +101,8 @@ public class LinearSearcher {
             // 이동한 위치에 벌 소환
             EntityManager.summonEntity(world, EntityType.BEE, nextPos);
             // 대각선 방향일 때 양옆으로 추가 탐색
-            int branchLength = maxReapetCount-i;
-            if(direction.isDiagonal() && maxReapetCount-i > 0){
+            int branchLength = maxRepeatCount-i;
+            if(direction.isDiagonal() && maxRepeatCount-i > 0){
                 // 한 칸 앞의 y좌표를 검사
                 BlockPos nextTempPos = moveOneBlock(world, nextPos, direction);
                 int dy = nextTempPos.getY() - nextPos.getY();
@@ -87,16 +114,17 @@ public class LinearSearcher {
                 boolean xBlocked = BlockStateTester.isSolid(world, xRefPos) || BlockStateTester.isSolid(world, xRefPos.up(1));
                 boolean zBlocked = BlockStateTester.isSolid(world, zRefPos) || BlockStateTester.isSolid(world, zRefPos.up(1));
 
-                // TODO: x,z 방향이 막혔으면 해당 방향의 반대 방향 추가 탐색에서 무조건 다음 칸에 점프 포인트 생성하게 만들기
+                DiagSearchState currentDiagSearchState = new DiagSearchState(i, direction,xBlocked, zBlocked);
+
                 // x방향 탐색
-                LinearSearcher xSearcher = new LinearSearcher(nextPos, endPos, Direction.getDirectionByComponent(direction.getX(), 0));
-                SearchResult xBranchResult = xSearcher.linearSearch(world,largeRefPos,openList,closedList,branchLength,trailedDistance,i);
+                LinearSearcher xSearcher = new LinearSearcher(nextPos, endPos, Direction.getDirectionByComponent(direction.getX(), 0), branchLength);
+                SearchResult xBranchResult = xSearcher.linearSearch(world,largeRefPos,openList,closedList,currentDiagSearchState,trailedDistance);
                 if(xBranchResult.hasFoundDestination()){
                     return xBranchResult;
                 }else { // 목적지를 찾지 못했다면
-                    LinearSearcher zSearcher = new LinearSearcher(nextPos, endPos, Direction.getDirectionByComponent(0, direction.getZ()));
+                    LinearSearcher zSearcher = new LinearSearcher(nextPos, endPos, Direction.getDirectionByComponent(0, direction.getZ()),branchLength);
                     // z방향 탐색
-                    SearchResult zBranchResult = zSearcher.linearSearch(world,largeRefPos,openList,closedList,branchLength,trailedDistance,i);
+                    SearchResult zBranchResult = zSearcher.linearSearch(world,largeRefPos,openList,closedList,currentDiagSearchState,trailedDistance);
                     if(zBranchResult.hasFoundDestination()){
                         return zBranchResult;
                     }
@@ -111,7 +139,7 @@ public class LinearSearcher {
         /*world.getPlayers().forEach(player -> {
             player.sendMessage(Text.literal("탐색 종료 포인트 생성 (" + resultPos.getX() + ", " + resultPos.getY() + ", " + resultPos.getZ() + ")"));
         });*/
-        int nextTrailDistance = trailedDistance + diagonalCount*10 + maxReapetCount*10;
+        int nextTrailDistance = trailedDistance + diagSearchState.getSearchedCount()*10 + maxRepeatCount*10;
         createAndRegisterJumpPoint(largeRefPos,resultPos, direction,nextTrailDistance,endPos,false,false,openList,closedList,world);
         // 결과 반환
         return new SearchResult(false, null);

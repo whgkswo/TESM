@@ -20,12 +20,12 @@ public class TriangleTestResult {
     }
 
     private boolean hypotenuseTestResult;
-    public TriangleTestResult(ServerWorld world, BlockPos refPos, Direction direction, TestDirection testDirection){
-        triangleTest(world, refPos, direction, testDirection);
+    public TriangleTestResult(ServerWorld world, BlockPos refPos, Direction direction, RelativeDirection relativeDirection){
+        triangleTest(world, refPos, direction, relativeDirection);
     }
-    public void triangleTest(ServerWorld world, BlockPos refPos, Direction refDirection, TestDirection testDirection){
+    public void triangleTest(ServerWorld world, BlockPos refPos, Direction refDirection, RelativeDirection relativeDirection){
         Direction perpendicularDirection;
-        if(testDirection == TestDirection.LEFT){
+        if(relativeDirection == RelativeDirection.LEFT){
             perpendicularDirection = refDirection.getLeftDirection();
         }else{
             perpendicularDirection = refDirection.getRightDirection();

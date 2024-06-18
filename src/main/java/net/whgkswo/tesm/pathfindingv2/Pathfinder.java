@@ -36,10 +36,10 @@ public class Pathfinder {
     }
 
     public SearchResult search(BlockPos largeRefPos, Direction direction, int hValue){
-        LinearSearcher searcher = new LinearSearcher(largeRefPos, endPos, direction);
+        LinearSearcher searcher = new LinearSearcher(largeRefPos, endPos, direction, MAX_SEARCH_RADIUS);
         // 일직선 탐색 실행
-        SearchResult result = searcher.linearSearch(world,largeRefPos,openList,closedList,MAX_SEARCH_RADIUS,hValue,0);
-
+        DiagSearchState diagSearchState = new DiagSearchState(0,direction,false,false);
+        SearchResult result = searcher.linearSearch(world,largeRefPos,openList,closedList,diagSearchState,hValue);
         return result;
     }
 }

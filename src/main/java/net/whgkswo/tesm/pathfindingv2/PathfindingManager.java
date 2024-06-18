@@ -118,7 +118,7 @@ public class PathfindingManager {
         BlockPos jumpPointPos = finalRefPos;
         BlockPos prevPos = finalRefPos;
         while(!prevPos.equals(startPos)){
-            prevPos = closedList.get(jumpPointPos).getJumpPoint().getRefPos();
+            prevPos = closedList.get(jumpPointPos).getJumpPoint().getLargeRefPos();
             trailPosList.add(prevPos);
             jumpPointPos = prevPos;
         }
