@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class Pathfinder {
     private ServerWorld world;
-    private static final int MAX_SEARCH_RADIUS = 10;
+    private static final int MAX_SEARCH_RADIUS = 15;
     private Entity targetEntity;
     private final BlockPos startPos;    private final BlockPos endPos;
     private ArrayList<JumpPoint> openList;
