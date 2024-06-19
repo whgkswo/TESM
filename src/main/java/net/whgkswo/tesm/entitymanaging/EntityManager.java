@@ -3,8 +3,10 @@ package net.whgkswo.tesm.entitymanaging;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 
@@ -23,5 +25,24 @@ public class EntityManager {
         List<Entity> entityList = world.getEntitiesByType(entityType,
                 new Box(-10000, -64, -10000, 10000, 1024, 10000), entity -> true);
         entityList.forEach(Entity::kill);
+    }
+    public static Entity findEntityByName(ServerWorld world, String targetName){
+        // 월드 내 이름이 일치하는 주민 찾기
+        List<VillagerEntity> entityList = world.getEntitiesByType(EntityType.VILLAGER,
+                new Box(-10000, -64, -10000, 10000, 1024, 10000), entity -> {
+                    try{
+                        Text name = entity.getCustomName();
+                        return name != null && name.getString().equals(targetName);
+                    }catch (NullPointerException e){
+                        return false;
+                    }
+                });
+        if(entityList.isEmpty()){
+            world.getPlayers().forEach(player -> {
+                player.sendMessage(Text.literal("엔티티를 찾을 수 없습니다."));
+            });
+            throw new NullPointerException();
+        }
+        return entityList.get(0);
     }
 }

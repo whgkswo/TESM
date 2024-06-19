@@ -1,11 +1,17 @@
 package net.whgkswo.tesm.pathfindingv2;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
+import net.whgkswo.tesm.entitymanaging.EntityManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Pathfinder {
     private ServerWorld world;
@@ -15,10 +21,10 @@ public class Pathfinder {
     private ArrayList<JumpPoint> openList;
     private HashMap<BlockPos, SearchResult> closedList;
 
+
     public BlockPos getStartPos() {
         return startPos;
     }
-
     public Pathfinder(ServerWorld world, Entity targetEntity, BlockPos startPos, BlockPos endPos){
         this.targetEntity = targetEntity;
         this.startPos = startPos;   this.endPos = endPos;

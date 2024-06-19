@@ -6,6 +6,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.hit.BlockHitResult;
+import net.whgkswo.tesm.pathfindingv2.Pathfinder;
 import net.whgkswo.tesm.pathfindingv2.PathfindingManager;
 
 
@@ -15,6 +16,7 @@ public class UseBlockC2SPacket {
         // 아래 코드들은 서버에서만 실행됨!
         BlockHitResult hitResult = buf.readBlockHitResult();
         //PathFinder.pathFindingStart(server.getOverworld().toServerWorld(), "인두리온", hitResult.getBlockPos().getX(), hitResult.getBlockPos().getY(),hitResult.getBlockPos().getZ());
+
         PathfindingManager pathfindingManager = new PathfindingManager();
         pathfindingManager.pathfindingStart(server.getOverworld().toServerWorld(), "인두리온", hitResult.getBlockPos());
     }
