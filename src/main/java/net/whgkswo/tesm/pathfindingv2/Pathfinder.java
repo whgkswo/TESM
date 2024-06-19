@@ -2,16 +2,13 @@ package net.whgkswo.tesm.pathfindingv2;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
 import net.whgkswo.tesm.entitymanaging.EntityManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class Pathfinder {
     private ServerWorld world;
@@ -45,10 +42,7 @@ public class Pathfinder {
     }
     public void pathfind(){
         // 이전 탐색에서 사용된 갑옷 거치대와 알레이, 닭 ,벌 없애기
-        EntityManager.killEntities(world, EntityType.ALLAY);
-        EntityManager.killEntities(world, EntityType.ARMOR_STAND);
-        EntityManager.killEntities(world, EntityType.CHICKEN);
-        EntityManager.killEntities(world, EntityType.BEE);
+        EntityManager.killEntities(world, EntityType.ALLAY, EntityType.ARMOR_STAND, EntityType.CHICKEN, EntityType.BEE);
         // 시작점, 끝점 표시
         BlockPos startPos = targetEntity.getBlockPos().down(1);
         EntityManager.summonEntity(world, EntityType.ARMOR_STAND, startPos);
@@ -90,12 +84,10 @@ public class Pathfinder {
         // 다음 방향들에 대해 소탐색 시작
         for(Direction direction : directions){
             // 이전 소탐색에서 사용된 갑옷 거치대와 알레이, 닭, 벌 없애기
-            /*EntityManager.killEntities(world, EntityType.ARMOR_STAND);
-            EntityManager.killEntities(world, EntityType.CHICKEN);
-            EntityManager.killEntities(world, EntityType.BEE);*/
+            /*EntityManager.killEntities(world, EntityType.ARMOR_STAND, EntityType.CHICKEN, EntityType.BEE);*/
             // 탐색 실시
             BlockPos largeRefPos = new BlockPos(refPos.getX(), refPos.getY(), refPos.getZ()); // 얕은 복사 방지
-            result = search(largeRefPos, direction, nextJumpPoint.getHValue());
+            result = largeSearch(largeRefPos, direction, nextJumpPoint.getHValue());
             // 목적지를 찾았으면
             if(result.hasFoundDestination()){
                 world.getPlayers().forEach(player -> {
@@ -121,9 +113,9 @@ public class Pathfinder {
         return false;
     }
 
-    public SearchResult search(BlockPos largeRefPos, Direction direction, int hValue){
+    public SearchResult largeSearch(BlockPos largeRefPos, Direction direction, int hValue){
         LinearSearcher searcher = new LinearSearcher(largeRefPos, endPos, direction, MAX_SEARCH_RADIUS);
-        // 일직선 탐색 실행
+        // 대탐색 실행
         DiagSearchState diagSearchState = new DiagSearchState(0,direction,false,false);
         SearchResult result = searcher.linearSearch(world,largeRefPos,openList,closedList,diagSearchState,hValue);
         return result;

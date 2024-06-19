@@ -10,6 +10,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 public class EntityManager {
@@ -25,6 +28,15 @@ public class EntityManager {
         List<Entity> entityList = world.getEntitiesByType(entityType,
                 new Box(-10000, -64, -10000, 10000, 1024, 10000), entity -> true);
         entityList.forEach(Entity::kill);
+    }
+    public static void killEntities(ServerWorld world, EntityType ...entityTypes){
+        HashSet entityTypeSet = new HashSet<>(Arrays.asList(entityTypes));
+
+        List<Entity> allEntities = world.getEntitiesByClass(Entity.class,
+                new Box(-10000, -64, -10000, 10000, 1024, 10000), entity -> true);
+        allEntities.stream()
+                .filter(entity -> entityTypeSet.contains(entity.getType()))
+                .forEach(Entity::kill);
     }
     public static Entity findEntityByName(ServerWorld world, String targetName){
         // 월드 내 이름이 일치하는 주민 찾기

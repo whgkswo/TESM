@@ -19,6 +19,5 @@ public class UseBlockC2SPacket {
         ServerWorld world = server.getOverworld().toServerWorld();
 
         new Pathfinder(world, "인두리온", hitResult.getBlockPos());
-
     }
 }
