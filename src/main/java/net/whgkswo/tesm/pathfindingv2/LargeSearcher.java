@@ -8,9 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class LargeSearcher {
-    /*private BlockPos refPos;
-    private Direction direction;
-    private */
     private ServerWorld world;
     private BlockPos endPos;
     private final int MAX_SEARCH_RADIUS;
@@ -30,10 +27,11 @@ public class LargeSearcher {
         searchCount++;
         int searchCount2 = searchCount;
         // 다음 점프 포인트 선정 (F값이 최소인 걸로)
+        // TODO: 인덱스 가져오지 말고 바로 점프포인트 반환하도록 수정
         int nextIndex = OpenListManager.getMinFIndex(openList);
         JumpPoint nextJumpPoint = openList.get(nextIndex);
         BlockPos refPos = nextJumpPoint.getBlockPos();
-        // 다음 탐색의 방향 선정
+        // 소탐색 방향 선정
         ArrayList<Direction> directions = DirectionSetter.setSearchDirections(startPos, nextJumpPoint);
         world.getPlayers().forEach(player ->{
             player.sendMessage(Text.of(String.format("(%d, %d, %d)를 기준으로 탐색(%d), %s", refPos.getX(),
@@ -54,16 +52,6 @@ public class LargeSearcher {
                 world.getPlayers().forEach(player -> {
                     player.sendMessage(Text.literal("목적지 탐색 완료"));
                 });
-                // 거쳐온 좌표마다 갑옷 거치대 소환
-                // TODO: backTrack()메서드로 교체 요망
-                //ArrayList<BlockPos> trailPosList = getTrailPosList(pathfinder.getStartPos(), refPos, pathfinder.getClosedList());
-                /*ArrayList<BlockPos> trailPosList = new ArrayList<>();
-                for(BlockPos blockPos : pathfinder.getClosedList().keySet()){
-                    trailPosList.add(blockPos);
-                }
-                for(BlockPos blockPos : trailPosList){
-                    EntityManager.summonEntity(world,EntityType.ARMOR_STAND, blockPos);
-                }*/
                 return true;
             }
         }

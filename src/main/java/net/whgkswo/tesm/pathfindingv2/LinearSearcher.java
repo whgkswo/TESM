@@ -72,7 +72,7 @@ public class LinearSearcher {
                 TriangleTestResult rightTestResult = new TriangleTestResult(world, prevPos, direction, RelativeDirection.RIGHT);
                 boolean finalTestLeft = BlockStateTester.isReachable(world, nextPos, direction.getLeftDirection());
                 boolean finalTestRight = BlockStateTester.isReachable(world, nextPos, direction.getRightDirection());
-                /*boolean leftBlocked = false;    boolean rightBlocked = false;*/
+
                 if(!leftBlocked && JumpPointTester.jumpPointTest(leftTestResult, finalTestLeft)){
                     leftBlocked = true;
                 }

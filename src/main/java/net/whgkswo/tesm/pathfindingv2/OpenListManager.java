@@ -14,4 +14,15 @@ public class OpenListManager {
         }
         return minFIndex;
     }
+    public static JumpPoint getMinFPoint(ArrayList<JumpPoint> openList){
+        int minF = Integer.MAX_VALUE;
+        JumpPoint minFPoint = null;
+        for(int i = 0; i< openList.size(); i++){
+            if(openList.get(i).getFValue() <= minF){
+                minF = openList.get(i).getFValue();
+                minFPoint = openList.get(i);
+            }
+        }
+        return minFPoint;
+    }
 }
