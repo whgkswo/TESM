@@ -20,7 +20,6 @@ import net.whgkswo.tesm.items.TestItem;
 import net.whgkswo.tesm.networking.ModMessages;
 import net.whgkswo.tesm.pathfinding.PathFinder;
 import net.whgkswo.tesm.pathfindingv2.Pathfinder;
-import net.whgkswo.tesm.pathfindingv2.PathfindingManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
