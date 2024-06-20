@@ -1,12 +1,9 @@
 package net.whgkswo.tesm.general;
 
-import com.mojang.brigadier.ParseResults;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.tag.TagKey;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -105,7 +102,7 @@ public class OnServerTicks {
                     world = server.getOverworld().toServerWorld();
                     //player = world.getPlayers().get(0);
 
-                    GlobalVariables.commandSource = server.getCommandSource();
+                    commandSource = server.getCommandSource();
 
                     commandManager = server.getCommandManager();
                     parseResults = commandManager.getDispatcher().parse(parseCommand,commandSource);

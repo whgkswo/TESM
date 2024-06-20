@@ -48,8 +48,6 @@ public class TESMMod implements ModInitializer {
 				entries.add(ModBlocks.STONE_ROAD);
 			})
 			.build();
-
-
 	@Override
 	public void onInitialize() {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
