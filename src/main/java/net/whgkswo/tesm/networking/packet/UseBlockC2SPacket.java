@@ -16,8 +16,7 @@ public class UseBlockC2SPacket {
                                PacketByteBuf buf, PacketSender responseSender){
         // 아래 코드들은 서버에서만 실행됨!
         BlockHitResult hitResult = buf.readBlockHitResult();
-        ServerWorld world = server.getOverworld().toServerWorld();
 
-        new Pathfinder(world, "인두리온", hitResult.getBlockPos());
+        new Pathfinder("인두리온", hitResult.getBlockPos());
     }
 }

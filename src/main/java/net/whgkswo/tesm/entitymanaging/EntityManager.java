@@ -15,8 +15,10 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+import static net.whgkswo.tesm.general.GlobalVariables.world;
+
 public class EntityManager {
-    public static Entity summonEntity(ServerWorld world, EntityType entityType, BlockPos blockPos){
+    public static Entity summonEntity(EntityType entityType, BlockPos blockPos){
         Entity entity = entityType.spawn(world, blockPos.up(1), SpawnReason.TRIGGERED);
         NbtCompound entityNbt = entity.writeNbt(new NbtCompound());
         entityNbt.putBoolean("NoAI", true);
@@ -24,12 +26,12 @@ public class EntityManager {
         world.spawnEntity(entity);
         return entity;
     }
-    public static void killEntities(ServerWorld world, EntityType entityType){
+    public static void killEntities(EntityType entityType){
         List<Entity> entityList = world.getEntitiesByType(entityType,
                 new Box(-10000, -64, -10000, 10000, 1024, 10000), entity -> true);
         entityList.forEach(Entity::kill);
     }
-    public static void killEntities(ServerWorld world, EntityType ...entityTypes){
+    public static void killEntities(EntityType ...entityTypes){
         HashSet entityTypeSet = new HashSet<>(Arrays.asList(entityTypes));
 
         List<Entity> allEntities = world.getEntitiesByClass(Entity.class,
@@ -38,7 +40,7 @@ public class EntityManager {
                 .filter(entity -> entityTypeSet.contains(entity.getType()))
                 .forEach(Entity::kill);
     }
-    public static Entity findEntityByName(ServerWorld world, String targetName){
+    public static Entity findEntityByName(String targetName){
         // 월드 내 이름이 일치하는 주민 찾기
         List<VillagerEntity> entityList = world.getEntitiesByType(EntityType.VILLAGER,
                 new Box(-10000, -64, -10000, 10000, 1024, 10000), entity -> {

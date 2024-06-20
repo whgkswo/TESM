@@ -1,25 +1,26 @@
 package net.whgkswo.tesm.pathfindingv2;
 
-import net.minecraft.fluid.Fluid;
-import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 
+import static net.whgkswo.tesm.general.GlobalVariables.world;
+
+
 public class BlockStateTester {
-    public static boolean isSolid(ServerWorld world, BlockPos blockPos){
+    public static boolean isSolid(BlockPos blockPos){
         return world.getBlockState(blockPos).isSolidBlock(world, blockPos);
     }
     public static boolean isSteppable(ServerWorld world, BlockPos blockPos){
         // 해당 좌표가 단단하고
-        if(isSolid(world, blockPos)){
+        if(isSolid(blockPos)){
             // 그 위 두 칸이 뚫렸으면
-            if(!isSolid(world, blockPos.up(1)) && !isSolid(world, blockPos.up(2))  ){
+            if(!isSolid(blockPos.up(1)) && !isSolid(blockPos.up(2))  ){
                 return true;
             }
         }
         return false;
     }
-    public static boolean isReachable(ServerWorld world, BlockPos refPos, Direction direction){
+    public static boolean isReachable(BlockPos refPos, Direction direction){
         int cursorX = refPos.getX();
         int cursorY = refPos.getY();
         int cursorZ = refPos.getZ();
@@ -27,11 +28,11 @@ public class BlockStateTester {
         cursorX += direction.getX();  cursorZ += direction.getZ();
         BlockPos nextPos = new BlockPos(cursorX, cursorY, cursorZ);
 
-        if(isSolid(world, nextPos.up(2))){
+        if(isSolid(nextPos.up(2))){
             // 장애물
             return false;
         }
-        if(!isSolid(world, nextPos.up(1)) && !isSolid(world, nextPos) && !isSolid(world, nextPos.down(1))){
+        if(!isSolid(nextPos.up(1)) && !isSolid(nextPos) && !isSolid(nextPos.down(1))){
             // 낭떠러지
             return false;
         }
