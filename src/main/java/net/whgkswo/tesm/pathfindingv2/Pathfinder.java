@@ -7,6 +7,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.whgkswo.tesm.entitymanaging.EntityManager;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -18,6 +21,7 @@ public class Pathfinder {
     private final BlockPos startPos;    private final BlockPos endPos;
     private ArrayList<JumpPoint> openList;
     private HashMap<BlockPos, SearchResult> closedList;
+    private LocalDateTime startTime;
 
 
     public BlockPos getStartPos() {
@@ -31,6 +35,7 @@ public class Pathfinder {
         openList = new ArrayList<>();
         closedList = new HashMap<>();
         this.world = world;
+        startTime = LocalDateTime.now();
         pathfind();
     }
 
@@ -56,7 +61,13 @@ public class Pathfinder {
         while(searchCount < MAX_SEARCH_REPEAT_COUNT){
             LargeSearcher largeSearcher = new LargeSearcher(world, endPos, MAX_SEARCH_RADIUS, openList,closedList);
             // 경로 탐색 완료했으면 알고리즘 전체 종료
-            if(largeSearcher.largeSearch(searchCount, startPos)){
+            result = largeSearcher.largeSearch(searchCount, startPos);
+            if(result.hasFoundDestination()){
+                SearchResult result1 = result;
+                world.getPlayers().forEach(player -> {
+                    String duration = Duration.between(startTime, result1.getTime()).toString();
+                    player.sendMessage(Text.literal(duration.substring(2) + "초 소요"));
+                });
                 return;
             }
             searchCount++;

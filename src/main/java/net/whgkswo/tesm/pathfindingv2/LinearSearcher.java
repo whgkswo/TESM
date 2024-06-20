@@ -161,7 +161,7 @@ public class LinearSearcher {
         JumpPoint jumpPoint = new JumpPoint(largeRefPos,currentPos, direction,endPos,trailedDistance,leftBlocked,rightBlocked);
         if(isValidCoordForJumpPoint(currentPos, openList, closedList)){
             // 갑옷 거치대 소환
-            EntityManager.summonEntity(world, EntityType.ARMOR_STAND, currentPos);
+            /*EntityManager.summonEntity(world, EntityType.ARMOR_STAND, currentPos);*/
             // 오픈 리스트에 점프 포인트 추가
             openList.add(jumpPoint);
         }

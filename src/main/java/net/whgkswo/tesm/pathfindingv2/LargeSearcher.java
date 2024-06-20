@@ -23,7 +23,7 @@ public class LargeSearcher {
         this.closedList = closedList;
     }
 
-    public boolean largeSearch(int searchCount, BlockPos startPos){
+    public SearchResult largeSearch(int searchCount, BlockPos startPos){
         searchCount++;
         int searchCount2 = searchCount;
         // 다음 점프 포인트 선정 (F값이 최소인 걸로)
@@ -52,14 +52,14 @@ public class LargeSearcher {
                 world.getPlayers().forEach(player -> {
                     player.sendMessage(Text.literal("목적지 탐색 완료"));
                 });
-                return true;
+                return result;
             }
         }
         // 해당 좌표를 클로즈 리스트에 추가한 후 오픈 리스트에서 제거
         BlockPos tempPos = new BlockPos(refPos.getX(), refPos.getY(), refPos.getZ()); // 얕은 복사 방지
         closedList.put(tempPos, result);
         openList.remove(nextIndex);
-        return false;
+        return new SearchResult(false, null);
     }
     public SearchResult search(BlockPos largeRefPos, Direction direction, int hValue){
         LinearSearcher searcher = new LinearSearcher(largeRefPos, endPos, direction, MAX_SEARCH_RADIUS);
