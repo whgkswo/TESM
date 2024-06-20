@@ -6,6 +6,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.whgkswo.tesm.entitymanaging.EntityManager;
+import net.whgkswo.tesm.general.GlobalVariables;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -14,14 +15,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Pathfinder {
-    private ServerWorld world;
+    private final ServerWorld world;
     private static final int MAX_SEARCH_RADIUS = 15;
     private static final int MAX_SEARCH_REPEAT_COUNT = 1000;
-    private Entity targetEntity;
+    private final Entity targetEntity;
     private final BlockPos startPos;    private final BlockPos endPos;
     private ArrayList<JumpPoint> openList;
     private HashMap<BlockPos, SearchResult> closedList;
-    private LocalDateTime startTime;
+    private final LocalDateTime startTime;
 
 
     public BlockPos getStartPos() {
@@ -64,17 +65,13 @@ public class Pathfinder {
             result = largeSearcher.largeSearch(searchCount, startPos);
             if(result.hasFoundDestination()){
                 SearchResult result1 = result;
-                world.getPlayers().forEach(player -> {
-                    String duration = Duration.between(startTime, result1.getTime()).toString();
-                    player.sendMessage(Text.literal(duration.substring(2) + "초 소요"));
-                });
+                String duration = Duration.between(startTime, result1.getTime()).toString();
+                GlobalVariables.player.sendMessage(Text.literal("목적지 탐색 완료 ("+ duration.substring(2) + "초)"));
                 return;
             }
             searchCount++;
         }
         // 끝까지 길을 찾지 못했다면
-        world.getPlayers().forEach(player ->{
-            player.sendMessage(Text.literal("탐색 실패, 너무 멀거나 갈 수 없는 곳입니다."));
-        });
+        GlobalVariables.player.sendMessage(Text.literal("탐색 실패, 너무 멀거나 갈 수 없는 곳입니다."));
     }
 }

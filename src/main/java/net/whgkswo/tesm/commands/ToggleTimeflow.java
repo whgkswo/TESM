@@ -2,8 +2,7 @@ package net.whgkswo.tesm.commands;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.text.Text;
-import net.whgkswo.tesm.TESMMod;
-import net.whgkswo.tesm.generaltasks.OnServerTicks;
+import net.whgkswo.tesm.general.OnServerTicks;
 
 import static net.minecraft.server.command.CommandManager.literal;
 

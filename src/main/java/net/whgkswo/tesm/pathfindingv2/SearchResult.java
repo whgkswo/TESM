@@ -3,9 +3,9 @@ package net.whgkswo.tesm.pathfindingv2;
 import java.time.LocalDateTime;
 
 public class SearchResult {
-    private boolean foundDestination;
-    private JumpPoint jumpPoint;
-    private LocalDateTime time;
+    private final boolean foundDestination;
+    private final JumpPoint jumpPoint;
+    private final LocalDateTime time;
 
     public boolean hasFoundDestination() {
         return foundDestination;
@@ -26,7 +26,7 @@ public class SearchResult {
     public SearchResult(boolean foundDestination, JumpPoint jumpPoint){
         this.foundDestination = foundDestination;
         this.jumpPoint = jumpPoint;
-        time = LocalDateTime.now();
+        time = foundDestination ? LocalDateTime.now() : null;
     }
 
 }

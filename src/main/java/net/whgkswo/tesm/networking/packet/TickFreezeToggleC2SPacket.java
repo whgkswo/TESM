@@ -5,7 +5,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.whgkswo.tesm.generaltasks.OnServerTicks;
+import net.whgkswo.tesm.general.OnServerTicks;
 
 public class TickFreezeToggleC2SPacket {
     public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler,

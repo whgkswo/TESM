@@ -3,6 +3,7 @@ package net.whgkswo.tesm.pathfindingv2;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
+import net.whgkswo.tesm.general.GlobalVariables;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,10 +34,10 @@ public class LargeSearcher {
         BlockPos refPos = nextJumpPoint.getBlockPos();
         // 소탐색 방향 선정
         ArrayList<Direction> directions = DirectionSetter.setSearchDirections(startPos, nextJumpPoint);
-        world.getPlayers().forEach(player ->{
-            player.sendMessage(Text.of(String.format("(%d, %d, %d)를 기준으로 탐색(%d), %s", refPos.getX(),
-                    refPos.getY(), refPos.getZ(), searchCount2, directions)));
-        });
+        // 대탐색 정보 채팅창에 출력
+        GlobalVariables.player.sendMessage(Text.of(String.format("(%d, %d, %d)를 기준으로 탐색(%d), %s", refPos.getX(),
+                refPos.getY(), refPos.getZ(), searchCount2, directions)));
+
         SearchResult result = new SearchResult(false, null);
         // 대탐색 시작 위치에 닭 소환
         /*EntityManager.summonEntity(world, EntityType.CHICKEN, refPos);*/
@@ -47,11 +48,8 @@ public class LargeSearcher {
             // 탐색 실시
             BlockPos largeRefPos = new BlockPos(refPos.getX(), refPos.getY(), refPos.getZ()); // 얕은 복사 방지
             result = search(largeRefPos, direction, nextJumpPoint.getHValue());
-            // 목적지를 찾았으면
+            // 목적지를 찾았으면 메서드 종료
             if(result.hasFoundDestination()){
-                world.getPlayers().forEach(player -> {
-                    player.sendMessage(Text.literal("목적지 탐색 완료"));
-                });
                 return result;
             }
         }

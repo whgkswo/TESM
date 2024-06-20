@@ -1,19 +1,13 @@
-package net.whgkswo.tesm.generaltasks;
+package net.whgkswo.tesm.general;
 
-import com.mojang.authlib.minecraft.client.MinecraftClient;
 import com.mojang.brigadier.ParseResults;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.event.player.UseBlockCallback;
-import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
-import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.tag.TagKey;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.GameRuleCommand;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -21,7 +15,6 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.whgkswo.tesm.musics.TESMusicsMain;
-import net.whgkswo.tesm.pathfinding.PathFinder;
 import net.whgkswo.tesm.tags.BiomeTags;
 
 import java.util.Arrays;
@@ -29,9 +22,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static net.whgkswo.tesm.general.GlobalVariables.*;
+
 public class OnServerTicks {
 
     public static int runTimeCounter = 0;
+    public static final int INITIALIZE_POINT = 0;
     public static boolean timeFlowOn = true;
     static int addTimeCounter = 0;
     static String parseCommand = "";
@@ -101,46 +97,51 @@ public class OnServerTicks {
 
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ OnServerTicks 본체 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     public static void onServerTick() {
-
         ServerTickEvents.END_SERVER_TICK.register(server -> {
-            World world = server.getOverworld();
-            server.getPlayerManager().getPlayerList().forEach(player -> {
-                ServerCommandSource source = player.getServer().getCommandSource();
-                CommandManager commandManager = player.getServer().getCommandManager();
-                ParseResults<ServerCommandSource> parseResults = commandManager.getDispatcher().parse(parseCommand,source);
-
+            if(player != null){
                 //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 플레이어가 월드에 접속할 때 실행 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ *runTimeCounter == 0일 때
-                if(runTimeCounter == 0){
+                if(runTimeCounter == INITIALIZE_POINT){
+
+                    world = server.getOverworld().toServerWorld();
+                    //player = world.getPlayers().get(0);
+
+                    GlobalVariables.commandSource = server.getCommandSource();
+
+                    commandManager = server.getCommandManager();
+                    parseResults = commandManager.getDispatcher().parse(parseCommand,commandSource);
 
                     player.sendMessage(Text.literal("환영합니다!"),false);
 
                     server.getGameRules().get(GameRules.SEND_COMMAND_FEEDBACK).set(false,server);
                     server.getGameRules().get(GameRules.DO_DAYLIGHT_CYCLE).set(false,server);
-
-                }
-                //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 플레이어 좌표 및 바이옴 정보 갱신 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-
-                BlockPos playerPos = player.getBlockPos();
-
-                Optional<RegistryKey<Biome>> biomeRegistry = world.getBiome(playerPos).getKey();
-                RegistryKey<Biome> key = biomeRegistry.get();
-                Identifier biomeID = key.getValue();
-                currentBiomeID=biomeID.toString();
-
-                //player.sendMessage(Text.literal(playerPos.getX()+","+playerPos.getY()+","+playerPos.getZ()+" "+ currentBiomeID));
-
-
-                if(runTimeCounter==0){
                     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 바이옴 ID 및 지역 정보 초기화 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
                     previousBiomeID = currentBiomeID;
-                    previousRegionTag = getCurrentRegion(world,playerPos); //previousRegionTag 초기화
+                    previousRegionTag = getCurrentRegion(world,player.getBlockPos()); //previousRegionTag 초기화
                     player.sendMessage(Text.literal("현재 지역: "+previousRegionTag));
 
-                }else{ //runTimeCounter!=0일 때 (초기화 시점 후 모든 틱마다)
+                } else if (runTimeCounter > INITIALIZE_POINT) {
+                    //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 플레이어 좌표 및 바이옴 정보 갱신 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+                    BlockPos playerPos = player.getBlockPos();
+
+                    Optional<RegistryKey<Biome>> biomeRegistry = world.getBiome(playerPos).getKey();
+                    RegistryKey<Biome> key = biomeRegistry.get();
+                    Identifier biomeID = key.getValue();
+                    currentBiomeID=biomeID.toString();
+
+                    //player.sendMessage(Text.literal(playerPos.getX()+","+playerPos.getY()+","+playerPos.getZ()+" "+ currentBiomeID));
+
+
+                    //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 내부 메소드 호출 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+                    getCompassPos(player);
+
+                    //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 외부 메소드 호출 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+                    TESMusicsMain.tesMusicsMain(player,world,commandManager,commandSource);
+                    //runTimeCounter!=0일 때 (초기화 시점 후 모든 틱마다)
                     if(!Objects.equals(previousBiomeID,currentBiomeID)){ // 바이옴 변경이 일어날 때
 
-                        /*player.sendMessage(Text.literal("바이옴 변경 감지 ("+previousBiomeID+" -> "+currentBiomeID+"), "+currentRegionTag));*/
+                        player.sendMessage(Text.literal("바이옴 변경 감지 ("+previousBiomeID+" -> "+currentBiomeID+"), "+currentRegionTag));
                         previousBiomeID = currentBiomeID;
 
                         //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 지역 정보 갱신 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
@@ -154,13 +155,6 @@ public class OnServerTicks {
                         }
                     }
                 }
-                //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 내부 메소드 호출 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-                getCompassPos(player);
-
-                //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 외부 메소드 호출 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-                TESMusicsMain.tesMusicsMain(player,world,commandManager,source);
-
-
                 //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 타이머 및 인게임 시간 갱신 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
                 runTimeCounter++;
@@ -174,8 +168,7 @@ public class OnServerTicks {
                     parseCommand = "time add 1";
                     commandManager.execute(parseResults, parseCommand);
                 }
-
-            });
+            }
         });
     }
 }

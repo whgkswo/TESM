@@ -8,7 +8,7 @@ import net.minecraft.client.render.GameRenderer;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
 
-import static net.whgkswo.tesm.generaltasks.OnServerTicks.*;
+import static net.whgkswo.tesm.general.OnServerTicks.*;
 
 public class Compass implements HudRenderCallback {
 

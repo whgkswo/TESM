@@ -9,17 +9,18 @@ import net.minecraft.item.ItemGroups;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.blocks.ModBlocks;
 import net.whgkswo.tesm.commands.SummonVillager;
 import net.whgkswo.tesm.commands.ToggleTimeflow;
-import net.whgkswo.tesm.generaltasks.InitializeTasks;
-import net.whgkswo.tesm.generaltasks.OnServerTicks;
+import net.whgkswo.tesm.general.InitializeTasks;
+import net.whgkswo.tesm.general.OnServerTicks;
 import net.whgkswo.tesm.items.TestItem;
 import net.whgkswo.tesm.networking.ModMessages;
 import net.whgkswo.tesm.pathfinding.PathFinder;
-import net.whgkswo.tesm.pathfindingv2.Pathfinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,7 +61,6 @@ public class TESMMod implements ModInitializer {
 			content.add(TEST_ITEM);
 		});
 
-		InitializeTasks.initializeTasks();
 
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 레지스트리 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
@@ -77,6 +77,7 @@ public class TESMMod implements ModInitializer {
 
 		ModBlocks.registerModBlocks();
 		InitializeTasks.initializeTasks();
+		InitializeTasks.registerPlayer();
 		OnServerTicks.onServerTick();
 		PathFinder.onServerTicks();
 		/*PathfindingManager pathfindingManager = new PathfindingManager();
