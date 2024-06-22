@@ -5,6 +5,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.whgkswo.tesm.entitymanaging.EntityManager;
+import net.whgkswo.tesm.exceptions.EmptyOpenListExeption;
 import net.whgkswo.tesm.exceptions.EntityNotFoundExeption;
 import net.whgkswo.tesm.general.GlobalVariables;
 
@@ -13,9 +14,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static net.whgkswo.tesm.general.GlobalVariables.player;
+
 public class Pathfinder {
     private static final int MAX_SEARCH_RADIUS = 1;
-    private static final int MAX_SEARCH_REPEAT_COUNT = 20000;
+    private static final int MAX_SEARCH_REPEAT_COUNT = 50000;
     private final Entity targetEntity;
     private final BlockPos startPos;    private final BlockPos endPos;
     private ArrayList<JumpPoint> openList;
@@ -28,7 +31,7 @@ public class Pathfinder {
         return startPos;
     }
 
-    public Pathfinder(String targetName, BlockPos endPos) throws EntityNotFoundExeption {
+    public Pathfinder(String targetName, BlockPos endPos){
         targetEntity = EntityManager.findEntityByName(targetName);
 
         startPos = targetEntity.getBlockPos().down(1);
@@ -37,7 +40,11 @@ public class Pathfinder {
         closedList = new HashMap<>();
         newClosedList = new HashMap<>();
         startTime = LocalDateTime.now();
-        pathfind();
+        try{
+            pathfind();
+        }catch (EmptyOpenListExeption e){
+            player.sendMessage(Text.literal(String.format("탐색 실패, 갈 수 없는 곳입니다. (%s)", e.getClass().getSimpleName())));
+        }
     }
 
     public ArrayList<JumpPoint> getOpenList() {
@@ -67,14 +74,14 @@ public class Pathfinder {
                 String duration = Duration.between(startTime, result.getTime()).toString();
 
                 int distance = backtrack(result.getLargeRefPos());
-                GlobalVariables.player.sendMessage(Text.literal("목적지 탐색 완료 ("+ distance + "m - "
+                player.sendMessage(Text.literal("목적지 탐색 완료 ("+ distance + "m - "
                         + duration.substring(2) + "s)"));
                 return;
             }
             searchCount++;
         }
         // 끝까지 길을 찾지 못했다면
-        GlobalVariables.player.sendMessage(Text.literal("탐색 실패, 너무 멀거나 갈 수 없는 곳입니다."));
+        player.sendMessage(Text.literal("탐색 실패, 너무 멀거나 갈 수 없는 곳입니다."));
     }
     private int backtrack(BlockPos lastRefPos){
         BlockPos refPos = lastRefPos; // 마지막 원점 필요

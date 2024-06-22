@@ -41,7 +41,7 @@ public class EntityManager {
                 .filter(entity -> entityTypeSet.contains(entity.getType()))
                 .forEach(Entity::kill);
     }
-    public static Entity findEntityByName(String targetName) throws EntityNotFoundExeption {
+    public static Entity findEntityByName(String targetName) {
         // 월드 내 이름이 일치하는 주민 찾기
         List<VillagerEntity> entityList = world.getEntitiesByType(EntityType.VILLAGER,
                 new Box(-10000, -64, -10000, 10000, 1024, 10000), entity -> {

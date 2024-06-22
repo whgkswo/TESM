@@ -2,6 +2,7 @@ package net.whgkswo.tesm.pathfindingv2;
 
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
+import net.whgkswo.tesm.exceptions.EmptyOpenListExeption;
 import net.whgkswo.tesm.general.GlobalVariables;
 
 import java.util.ArrayList;
@@ -29,6 +30,9 @@ public class LargeSearcher {
         searchCount++;
         // 다음 점프 포인트 선정 (F값이 최소인 걸로)
         int nextIndex = OpenListManager.getMinFIndex(openList);
+        if(openList.isEmpty()){
+            throw new EmptyOpenListExeption();
+        }
         JumpPoint nextJumpPoint = openList.get(nextIndex);
         // 대탐색 시작 위치 선정
         BlockPos refPos = nextJumpPoint.getBlockPos();
