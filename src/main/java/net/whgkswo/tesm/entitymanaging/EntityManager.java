@@ -9,6 +9,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.whgkswo.tesm.exceptions.EntityNotFoundExeption;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,7 +41,7 @@ public class EntityManager {
                 .filter(entity -> entityTypeSet.contains(entity.getType()))
                 .forEach(Entity::kill);
     }
-    public static Entity findEntityByName(String targetName){
+    public static Entity findEntityByName(String targetName) throws EntityNotFoundExeption {
         // 월드 내 이름이 일치하는 주민 찾기
         List<VillagerEntity> entityList = world.getEntitiesByType(EntityType.VILLAGER,
                 new Box(-10000, -64, -10000, 10000, 1024, 10000), entity -> {
@@ -53,9 +54,9 @@ public class EntityManager {
                 });
         if(entityList.isEmpty()){
             world.getPlayers().forEach(player -> {
-                player.sendMessage(Text.literal("엔티티를 찾을 수 없습니다."));
+                player.sendMessage(Text.literal(targetName + "을(를) 찾을 수 없습니다."));
             });
-            throw new NullPointerException();
+            throw new EntityNotFoundExeption();
         }
         return entityList.get(0);
     }

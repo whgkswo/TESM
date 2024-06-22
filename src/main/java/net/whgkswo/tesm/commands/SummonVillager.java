@@ -52,6 +52,7 @@ public class SummonVillager {
 
         NbtCompound vanillaNbt = entity.writeNbt(new NbtCompound()); // nbt 태그 읽어와서 변수에 쓰고(writeNbt)
         vanillaNbt.putBoolean("NoAI", true); // 원하는 데이터 끼워 넣은 다음에
+        vanillaNbt.putBoolean("PersistenceRequired", true);
         entity.readNbt(vanillaNbt); // 다시 엔티티로 하여금 변수를 읽어들이게 하기(readNbt)
 
         NbtCompound customData = new NbtCompound();

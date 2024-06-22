@@ -5,6 +5,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.whgkswo.tesm.entitymanaging.EntityManager;
+import net.whgkswo.tesm.exceptions.EntityNotFoundExeption;
 import net.whgkswo.tesm.general.GlobalVariables;
 
 import java.time.Duration;
@@ -27,8 +28,12 @@ public class Pathfinder {
         return startPos;
     }
 
-    public Pathfinder(String targetName, BlockPos endPos){
-        targetEntity = EntityManager.findEntityByName(targetName);
+    public Pathfinder(String targetName, BlockPos endPos) throws EntityNotFoundExeption {
+        try{
+            targetEntity = EntityManager.findEntityByName(targetName);
+        }catch(EntityNotFoundExeption e){
+            throw e;
+        }
         startPos = targetEntity.getBlockPos().down(1);
         this.endPos = endPos;
         openList = new ArrayList<>();

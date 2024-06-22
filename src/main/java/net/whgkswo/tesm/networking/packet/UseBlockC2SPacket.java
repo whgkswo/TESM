@@ -9,6 +9,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.whgkswo.tesm.exceptions.EntityNotFoundExeption;
 import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.pathfindingv2.Pathfinder;
 
@@ -27,6 +28,10 @@ public class UseBlockC2SPacket {
         if(!world.getBlockState(hitResultPos).isSolidBlock(world, hitResultPos)){
             hitResultPos = hitResultPos.down(1);
         }
-        new Pathfinder("인두리온", hitResultPos);
+        try{
+            new Pathfinder("인두리온", hitResultPos);
+        }catch (EntityNotFoundExeption e){
+
+        }
     }
 }
