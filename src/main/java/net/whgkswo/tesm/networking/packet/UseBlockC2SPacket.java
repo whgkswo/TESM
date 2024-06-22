@@ -31,7 +31,7 @@ public class UseBlockC2SPacket {
         try{
             new Pathfinder("인두리온", hitResultPos);
         }catch (EntityNotFoundExeption e){
-
+            // 아무것도 안함
         }
     }
 }

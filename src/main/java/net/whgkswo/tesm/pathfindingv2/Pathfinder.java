@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 public class Pathfinder {
     private static final int MAX_SEARCH_RADIUS = 1;
-    private static final int MAX_SEARCH_REPEAT_COUNT = 10000;
+    private static final int MAX_SEARCH_REPEAT_COUNT = 20000;
     private final Entity targetEntity;
     private final BlockPos startPos;    private final BlockPos endPos;
     private ArrayList<JumpPoint> openList;
@@ -29,11 +29,8 @@ public class Pathfinder {
     }
 
     public Pathfinder(String targetName, BlockPos endPos) throws EntityNotFoundExeption {
-        try{
-            targetEntity = EntityManager.findEntityByName(targetName);
-        }catch(EntityNotFoundExeption e){
-            throw e;
-        }
+        targetEntity = EntityManager.findEntityByName(targetName);
+
         startPos = targetEntity.getBlockPos().down(1);
         this.endPos = endPos;
         openList = new ArrayList<>();
@@ -68,9 +65,10 @@ public class Pathfinder {
             result = largeSearcher.largeSearch(searchCount, startPos);
             if(result.isFoundDestination()){
                 String duration = Duration.between(startTime, result.getTime()).toString();
-                GlobalVariables.player.sendMessage(Text.literal("목적지 탐색 완료 ("+ duration.substring(2) + "s)"));
 
-                backtrack(result.getLargeRefPos());
+                int distance = backtrack(result.getLargeRefPos());
+                GlobalVariables.player.sendMessage(Text.literal("목적지 탐색 완료 ("+ distance + "m - "
+                        + duration.substring(2) + "s)"));
                 return;
             }
             searchCount++;
@@ -78,15 +76,17 @@ public class Pathfinder {
         // 끝까지 길을 찾지 못했다면
         GlobalVariables.player.sendMessage(Text.literal("탐색 실패, 너무 멀거나 갈 수 없는 곳입니다."));
     }
-    private void backtrack(BlockPos lastRefPos){
+    private int backtrack(BlockPos lastRefPos){
         BlockPos refPos = lastRefPos; // 마지막 원점 필요
+        int backtrackCount = 0;
         ArrayList pathList = new ArrayList();
         while(!refPos.equals(startPos)){
             pathList.add(0, refPos);
             EntityManager.summonEntity(EntityType.FROG, refPos);
             refPos = newClosedList.get(refPos);
-
+            backtrackCount++;
         }
+        return backtrackCount;
         /*GlobalVariables.player.sendMessage(Text.literal(pathList.toString()));*/
     }
 }
