@@ -4,6 +4,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 
 import static net.whgkswo.tesm.general.GlobalVariables.world;
+import static net.whgkswo.tesm.pathfindingv2.LinearSearcher.moveOneBlock;
 
 
 public class BlockStateTester {
@@ -40,10 +41,20 @@ public class BlockStateTester {
             // 액체
             return false;
         }
-        /*if(world.getBlockState(nextPos).isLiquid()){
-            // 액체
-            return false;
-        }*/
+        // 전방에 장애물이 없었고 대각선 방향일 경우 추가 검사
+        if(direction.isDiagonal()){
+            // 한 칸 앞의 y좌표를 검사
+            BlockPos nextTempPos = moveOneBlock(refPos, direction);
+            int dy = nextTempPos.getY() - nextPos.getY();
+            // 올라가는 칸의 경우 검사 기준 좌표를 한 칸 올려 줘야 함
+            int offset = (dy == 1) ? 2:1;
+
+            BlockPos xRefPos = new BlockPos(refPos.getX() + direction.getX(), refPos.getY(), refPos.getZ()).up(offset);
+            BlockPos zRefPos = new BlockPos(refPos.getX(), refPos.getY(), refPos.getZ() + direction.getZ()).up(offset);
+            boolean xBlocked = BlockStateTester.isSolid(xRefPos) || BlockStateTester.isSolid(xRefPos.up(1));
+            boolean zBlocked = BlockStateTester.isSolid(zRefPos) || BlockStateTester.isSolid(zRefPos.up(1));
+            return !xBlocked && !zBlocked;
+        }
         return true;
     }
 }

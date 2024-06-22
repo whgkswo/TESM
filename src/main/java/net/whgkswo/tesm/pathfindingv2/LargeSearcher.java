@@ -62,7 +62,7 @@ public class LargeSearcher {
     public SearchResult search(BlockPos largeRefPos, Direction direction, int hValue){
         LinearSearcher searcher = new LinearSearcher(largeRefPos, endPos, direction, MAX_SEARCH_RADIUS);
         // 주어진 방향에 대해 탐색 실행
-        DiagSearchState diagSearchState = new DiagSearchState(0,direction,false,false);
+        DiagSearchState diagSearchState = new DiagSearchState(0,direction);
         SearchResult result = searcher.linearSearch(BlockPosManager.getCopyPos(largeRefPos),openList,closedList,diagSearchState,hValue);
         return result;
     }

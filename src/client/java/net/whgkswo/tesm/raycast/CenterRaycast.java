@@ -33,10 +33,9 @@ public class CenterRaycast {
             HitResult hitResult = client.crosshairTarget;
             PlayerEntity player = MinecraftClient.getInstance().player;
 
-            if(hitResult==null){
+            if(hitResult == null){
                 return;
             }
-
             switch (hitResult.getType()){
                 case MISS:
                     if(interactOverlayOn){
@@ -59,8 +58,12 @@ public class CenterRaycast {
 
                 case ENTITY:
                     EntityHitResult entityHitResult = (EntityHitResult) hitResult;
-                    Entity entity = entityHitResult.getEntity();
-
+                    Entity entity;
+                    try{
+                        entity = entityHitResult.getEntity();
+                    }catch (NullPointerException e){
+                        return;
+                    }
                     // 서버로 패킷 전송 (엔티티 NBT 데이터 읽어오기)
                     PacketByteBuf buf = PacketByteBufs.create();
                     buf.writeInt(entity.getId());

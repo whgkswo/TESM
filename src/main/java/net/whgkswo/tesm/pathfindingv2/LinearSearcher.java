@@ -46,23 +46,7 @@ public class LinearSearcher {
             // 직선 탐색일 때만 점프 포인트 조건 검사
             if(!direction.isDiagonal()){
                 boolean leftBlocked = false;    boolean rightBlocked = false;
-                // x방향 추가탐색이고 z방향이 막혔었다면 점프 포인트 생성
-                 if(direction.getX() != 0 && diagSearchState.iszBlocked()){
-                    // z방향
-                    Direction targetDirection = Direction.getDirectionByComponent(0,diagSearchState.getDirection().getZ());
-                    // x방향에 대해 z방향의 상대방향 구하기
-                    RelativeDirection blockedDirection = direction.getRelativeDirection(targetDirection);
-                    leftBlocked = (blockedDirection == RelativeDirection.LEFT);
-                    rightBlocked = (blockedDirection == RelativeDirection.RIGHT);
-                }
-                if(direction.getZ() != 0 && diagSearchState.isxBlocked()){
-                    // x방향
-                    Direction targetDirection = Direction.getDirectionByComponent(diagSearchState.getDirection().getX(),0);
-                    // z방향에 대해 x방향의 상대방향 구하기
-                    RelativeDirection blockedDirection = direction.getRelativeDirection(targetDirection);
-                    leftBlocked = (blockedDirection == RelativeDirection.LEFT);
-                    rightBlocked = (blockedDirection == RelativeDirection.RIGHT);
-                }
+
                 TriangleTestResult leftTestResult = new TriangleTestResult(prevPos, direction, RelativeDirection.LEFT);
                 TriangleTestResult rightTestResult = new TriangleTestResult(prevPos, direction, RelativeDirection.RIGHT);
                 boolean finalTestLeft = BlockStateTester.isReachable(nextPos, direction.getLeftDirection());
@@ -89,19 +73,7 @@ public class LinearSearcher {
             // 대각선 방향일 때 양옆으로 추가 탐색
             int branchLength = maxRepeatCount-i;
             if(direction.isDiagonal() && maxRepeatCount-i > 0){
-                // 한 칸 앞의 y좌표를 검사
-                BlockPos nextTempPos = moveOneBlock(nextPos, direction);
-                int dy = nextTempPos.getY() - nextPos.getY();
-                // 올라가는 칸의 경우 검사 기준 좌표를 한 칸 올려 줘야 함
-                int offset = (dy == 1) ? 2:1;
-
-                BlockPos xRefPos = new BlockPos(nextPos.getX() + direction.getX(), nextPos.getY(), nextPos.getZ()).up(offset);
-                BlockPos zRefPos = new BlockPos(nextPos.getX(), nextPos.getY(), nextPos.getZ() + direction.getZ()).up(offset);
-                boolean xBlocked = BlockStateTester.isSolid(xRefPos) || BlockStateTester.isSolid(xRefPos.up(1));
-                boolean zBlocked = BlockStateTester.isSolid(zRefPos) || BlockStateTester.isSolid(zRefPos.up(1));
-
-                DiagSearchState currentDiagSearchState = new DiagSearchState(i, direction,xBlocked, zBlocked);
-
+                DiagSearchState currentDiagSearchState = new DiagSearchState(i, direction);
                 // x방향 탐색
                 LinearSearcher xSearcher = new LinearSearcher(nextPos, endPos, Direction.getDirectionByComponent(direction.getX(), 0), branchLength);
                 SearchResult xBranchResult = xSearcher.linearSearch(largeRefPos,openList,closedList,currentDiagSearchState,trailedDistance);
@@ -114,9 +86,6 @@ public class LinearSearcher {
                     if(zBranchResult.hasFoundDestination()){
                         return zBranchResult;
                     }
-                }
-                if(xBlocked || zBlocked){
-                    return new SearchResult(false, null);
                 }
             }
         }
