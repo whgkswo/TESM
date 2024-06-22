@@ -1,13 +1,9 @@
 package net.whgkswo.tesm.pathfindingv2;
 
-import net.minecraft.entity.EntityType;
 import net.minecraft.util.math.BlockPos;
-import net.whgkswo.tesm.entitymanaging.EntityManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import static net.whgkswo.tesm.general.GlobalVariables.world;
 
 public class LinearSearcher {
     private int cursorX;    private int cursorY;    private int cursorZ;
@@ -17,7 +13,7 @@ public class LinearSearcher {
 
     public LinearSearcher(BlockPos refPos, BlockPos endPos, Direction direction, int maxRepeatCount){
         this.direction = direction;
-        this.refPos = refPos;    this.endPos = endPos;
+        this.refPos = BlockPosManager.getCopyPos(refPos);    this.endPos = endPos;
         this.maxRepeatCount = maxRepeatCount;
     }
     public SearchResult linearSearch(BlockPos largeRefPos, ArrayList<JumpPoint> openList, HashMap<BlockPos,SearchResult> closedList,
@@ -28,7 +24,6 @@ public class LinearSearcher {
         // 소탐색 시작 지점에 닭 소환
         /*EntityManager.summonEntity(EntityType.CHICKEN, refPos);*/
         // 루프 돌며 일직선으로 진행
-        boolean metObstacle = false;
         for(int i = 1; i<= maxRepeatCount; i++){
             BlockPos prevPos;
             // 다음 칸에 장애물과 낭떠러지가 있으면

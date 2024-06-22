@@ -19,6 +19,7 @@ public class Pathfinder {
     private final BlockPos startPos;    private final BlockPos endPos;
     private ArrayList<JumpPoint> openList;
     private HashMap<BlockPos, SearchResult> closedList;
+    private HashMap<BlockPos, BlockPos> newClosedList;
     private final LocalDateTime startTime;
 
 
@@ -32,6 +33,7 @@ public class Pathfinder {
         this.endPos = endPos;
         openList = new ArrayList<>();
         closedList = new HashMap<>();
+        newClosedList = new HashMap<>();
         startTime = LocalDateTime.now();
         pathfind();
     }
@@ -44,7 +46,7 @@ public class Pathfinder {
     }
     public void pathfind(){
         // 이전 탐색에서 사용된 갑옷 거치대와 알레이, 닭 ,벌 없애기
-        EntityManager.killEntities(EntityType.ALLAY, EntityType.ARMOR_STAND, EntityType.CHICKEN, EntityType.BEE);
+        EntityManager.killEntities(EntityType.ALLAY, EntityType.ARMOR_STAND, EntityType.CHICKEN, EntityType.BEE, EntityType.FROG);
         // 시작점, 끝점 표시
         BlockPos startPos = targetEntity.getBlockPos().down(1);
         EntityManager.summonEntity(EntityType.ARMOR_STAND, startPos);
@@ -52,22 +54,34 @@ public class Pathfinder {
         // 시작점을 오픈리스트에 추가
         getOpenList().add(new JumpPoint(startPos,startPos, null, endPos, -1, false, false));
         // 탐색 - 탐색 결과 초기화
-        SearchResult result = new SearchResult(false,null);
+        LargeSearchResult result;
         int searchCount = 0;
         // 루프 돌며 대탐색 실시
         while(searchCount < MAX_SEARCH_REPEAT_COUNT){
-            LargeSearcher largeSearcher = new LargeSearcher(endPos, MAX_SEARCH_RADIUS, openList,closedList);
+            LargeSearcher largeSearcher = new LargeSearcher(endPos, MAX_SEARCH_RADIUS, openList,closedList, newClosedList);
             // 경로 탐색 완료했으면 알고리즘 전체 종료
             result = largeSearcher.largeSearch(searchCount, startPos);
-            if(result.hasFoundDestination()){
-                SearchResult result1 = result;
-                String duration = Duration.between(startTime, result1.getTime()).toString();
+            if(result.isFoundDestination()){
+                String duration = Duration.between(startTime, result.getTime()).toString();
                 GlobalVariables.player.sendMessage(Text.literal("목적지 탐색 완료 ("+ duration.substring(2) + "s)"));
+
+                backtrack(result.getLargeRefPos());
                 return;
             }
             searchCount++;
         }
         // 끝까지 길을 찾지 못했다면
         GlobalVariables.player.sendMessage(Text.literal("탐색 실패, 너무 멀거나 갈 수 없는 곳입니다."));
+    }
+    private void backtrack(BlockPos lastRefPos){
+        BlockPos refPos = lastRefPos; // 마지막 원점 필요
+        ArrayList pathList = new ArrayList();
+        while(!refPos.equals(startPos)){
+            pathList.add(0, refPos);
+            EntityManager.summonEntity(EntityType.FROG, refPos);
+            refPos = newClosedList.get(refPos);
+
+        }
+        /*GlobalVariables.player.sendMessage(Text.literal(pathList.toString()));*/
     }
 }
