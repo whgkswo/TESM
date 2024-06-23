@@ -5,15 +5,11 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.whgkswo.tesm.exceptions.EntityNotFoundExeption;
-import net.whgkswo.tesm.general.GlobalVariables;
+import net.whgkswo.tesm.pathfindingv2.BlockStateHelper;
 import net.whgkswo.tesm.pathfindingv2.Pathfinder;
-
-import static net.whgkswo.tesm.general.GlobalVariables.world;
 /*import net.whgkswo.tesm.pathfindingv2.PathfindingManager;*/
 
 
@@ -24,9 +20,9 @@ public class UseBlockC2SPacket {
         BlockHitResult hitResult = buf.readBlockHitResult();
 
         BlockPos hitResultPos = hitResult.getBlockPos();
-
-        if(!world.getBlockState(hitResultPos).isSolidBlock(world, hitResultPos)){
-            hitResultPos = hitResultPos.down(1);
+        // 목적지 좌표의 블럭이 높이가 낮으면 기준을 한 칸 내리기
+        if(BlockStateHelper.getBlockHeight(hitResultPos) < 0.25){
+            hitResultPos = hitResultPos.down();
         }
         try{
             new Pathfinder("인두리온", hitResultPos);

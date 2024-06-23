@@ -27,7 +27,7 @@ public class LinearSearcher {
         for(int i = 1; i<= maxRepeatCount; i++){
             BlockPos prevPos;
             // 다음 칸에 장애물과 낭떠러지가 있으면
-            if(!BlockStateTester.isReachable(new BlockPos(cursorX, cursorY, cursorZ), direction)){
+            if(!BlockStateHelper.isReachable(new BlockPos(cursorX, cursorY, cursorZ), direction)){
                 return new SearchResult(false, null);
             }else{ // 장애물과 낭떠러지가 없으면
                 prevPos = new BlockPos(cursorX, cursorY, cursorZ);
@@ -49,8 +49,8 @@ public class LinearSearcher {
 
                 TriangleTestResult leftTestResult = new TriangleTestResult(prevPos, direction, RelativeDirection.LEFT);
                 TriangleTestResult rightTestResult = new TriangleTestResult(prevPos, direction, RelativeDirection.RIGHT);
-                boolean finalTestLeft = BlockStateTester.isReachable(nextPos, direction.getLeftDirection());
-                boolean finalTestRight = BlockStateTester.isReachable(nextPos, direction.getRightDirection());
+                boolean finalTestLeft = BlockStateHelper.isReachable(nextPos, direction.getLeftDirection());
+                boolean finalTestRight = BlockStateHelper.isReachable(nextPos, direction.getRightDirection());
 
                 if(!leftBlocked && JumpPointTester.jumpPointTest(leftTestResult, finalTestLeft)){
                     leftBlocked = true;
@@ -135,10 +135,10 @@ public class LinearSearcher {
         int cursorZ = refPos.getZ() + direction.getZ();
 
         BlockPos nextPos = new BlockPos(cursorX, cursorY, cursorZ);
-        if(BlockStateTester.isSolid(nextPos.up(1))){
+        if(BlockStateHelper.isSolid(nextPos.up(1))){
             // 올라가기
             cursorY++;
-        }else if (!BlockStateTester.isSolid(nextPos)){
+        }else if (!BlockStateHelper.isSolid(nextPos)){
             // 내려가기
             cursorY--;
         }

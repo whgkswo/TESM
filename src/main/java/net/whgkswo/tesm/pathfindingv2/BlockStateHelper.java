@@ -2,14 +2,17 @@ package net.whgkswo.tesm.pathfindingv2;
 
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.shape.VoxelShape;
+import net.whgkswo.tesm.tags.BlockTags;
 
 import static net.whgkswo.tesm.general.GlobalVariables.world;
 import static net.whgkswo.tesm.pathfindingv2.LinearSearcher.moveOneBlock;
 
 
-public class BlockStateTester {
+public class BlockStateHelper {
     public static boolean isSolid(BlockPos blockPos){
-        return world.getBlockState(blockPos).isSolidBlock(world, blockPos);
+        VoxelShape shape = world.getBlockState(blockPos).getCollisionShape(world,blockPos);
+        return !shape.isEmpty();
     }
     public static boolean isSteppable(ServerWorld world, BlockPos blockPos){
         // 해당 좌표가 단단하고
@@ -29,7 +32,7 @@ public class BlockStateTester {
         cursorX += direction.getX();  cursorZ += direction.getZ();
         BlockPos nextPos = new BlockPos(cursorX, cursorY, cursorZ);
 
-        if(isSolid(nextPos.up(2))){
+        if(isObstacle(nextPos)){
             // 장애물
             return false;
         }
@@ -37,7 +40,7 @@ public class BlockStateTester {
             // 낭떠러지
             return false;
         }
-        if(!world.getBlockState(nextPos).getFluidState().isEmpty()){
+        if(isFluid(nextPos) || isFluid(nextPos.up())){
             // 액체
             return false;
         }
@@ -51,10 +54,22 @@ public class BlockStateTester {
 
             BlockPos xRefPos = new BlockPos(refPos.getX() + direction.getX(), refPos.getY(), refPos.getZ()).up(offset);
             BlockPos zRefPos = new BlockPos(refPos.getX(), refPos.getY(), refPos.getZ() + direction.getZ()).up(offset);
-            boolean xBlocked = BlockStateTester.isSolid(xRefPos) || BlockStateTester.isSolid(xRefPos.up(1));
-            boolean zBlocked = BlockStateTester.isSolid(zRefPos) || BlockStateTester.isSolid(zRefPos.up(1));
+            boolean xBlocked = BlockStateHelper.isSolid(xRefPos) || BlockStateHelper.isSolid(xRefPos.up(1));
+            boolean zBlocked = BlockStateHelper.isSolid(zRefPos) || BlockStateHelper.isSolid(zRefPos.up(1));
             return !xBlocked && !zBlocked;
         }
         return true;
+    }
+    public static boolean isObstacle(BlockPos blockPos){
+        return isSolid(blockPos.up(2)) || isTrapBlock(blockPos.up()) || isTrapBlock(blockPos.up(2));
+    }
+    public static double getBlockHeight(BlockPos blockPos){
+        return world.getBlockState(blockPos).getCollisionShape(world, blockPos).getMax(net.minecraft.util.math.Direction.Axis.Y);
+    }
+    public static boolean isTrapBlock(BlockPos blockPos){
+        return world.getBlockState(blockPos).isIn(BlockTags.TRAP_BLOCK);
+    }
+    public static boolean isFluid(BlockPos blockPos){
+        return !world.getBlockState(blockPos).getFluidState().isEmpty();
     }
 }

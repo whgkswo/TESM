@@ -58,7 +58,7 @@ public class Pathfinder {
         EntityManager.killEntities(EntityType.ALLAY, EntityType.ARMOR_STAND, EntityType.CHICKEN, EntityType.BEE, EntityType.FROG);
         // 시작점, 끝점 표시
         BlockPos startPos = targetEntity.getBlockPos().down(1);
-        EntityManager.summonEntity(EntityType.ARMOR_STAND, startPos);
+        /*EntityManager.summonEntity(EntityType.ARMOR_STAND, startPos);*/
         EntityManager.summonEntity(EntityType.ALLAY, endPos);
         // 시작점을 오픈리스트에 추가
         getOpenList().add(new JumpPoint(startPos,startPos, null, endPos, -1, false, false));
