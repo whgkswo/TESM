@@ -74,7 +74,7 @@ public class Pathfinder {
                 String duration = Duration.between(startTime, result.getTime()).toString();
 
                 int distance = backtrack(result.getLargeRefPos());
-                player.sendMessage(Text.literal("목적지 탐색 완료 ("+ distance + "m - "
+                player.sendMessage(Text.literal("목적지 탐색 완료 ("+ (distance + 1) + "m - "
                         + duration.substring(2) + "s)"));
                 return;
             }

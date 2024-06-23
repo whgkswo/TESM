@@ -32,7 +32,7 @@ public class BlockStateHelper {
         cursorX += direction.getX();  cursorZ += direction.getZ();
         BlockPos nextPos = new BlockPos(cursorX, cursorY, cursorZ);
 
-        if(isObstacle(nextPos)){
+        if(isTrapBlock(nextPos.up()) || isObstacle(nextPos.up(2))){
             // 장애물
             return false;
         }
@@ -54,14 +54,14 @@ public class BlockStateHelper {
 
             BlockPos xRefPos = new BlockPos(refPos.getX() + direction.getX(), refPos.getY(), refPos.getZ()).up(offset);
             BlockPos zRefPos = new BlockPos(refPos.getX(), refPos.getY(), refPos.getZ() + direction.getZ()).up(offset);
-            boolean xBlocked = BlockStateHelper.isSolid(xRefPos) || BlockStateHelper.isSolid(xRefPos.up(1));
-            boolean zBlocked = BlockStateHelper.isSolid(zRefPos) || BlockStateHelper.isSolid(zRefPos.up(1));
+            boolean xBlocked = BlockStateHelper.isObstacle(xRefPos) || BlockStateHelper.isObstacle(xRefPos.up(1));
+            boolean zBlocked = BlockStateHelper.isObstacle(zRefPos) || BlockStateHelper.isObstacle(zRefPos.up(1));
             return !xBlocked && !zBlocked;
         }
         return true;
     }
     public static boolean isObstacle(BlockPos blockPos){
-        return isSolid(blockPos.up(2)) || isTrapBlock(blockPos.up()) || isTrapBlock(blockPos.up(2));
+        return isSolid(blockPos) || isTrapBlock(blockPos);
     }
     public static double getBlockHeight(BlockPos blockPos){
         return world.getBlockState(blockPos).getCollisionShape(world, blockPos).getMax(net.minecraft.util.math.Direction.Axis.Y);
