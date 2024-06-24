@@ -1,28 +1,28 @@
 package net.whgkswo.tesm.pathfindingv2;
 
 public enum Direction {
-    EAST(1,1,0),
-    SOUTHEAST(2,1,1),
-    SOUTH(3,0,1),
-    SOUTHWEST(4,-1,1),
-    WEST(5,-1,0),
-    NORTHWEST(6,-1,-1),
-    NORTH(7,0,-1),
-    NORTHEAST(8,1,-1)
+    EAST(0,1,0),
+    SOUTHEAST(1,1,1),
+    SOUTH(2,0,1),
+    SOUTHWEST(3,-1,1),
+    WEST(4,-1,0),
+    NORTHWEST(5,-1,-1),
+    NORTH(6,0,-1),
+    NORTHEAST(7,1,-1)
     ;
     private int directionNo;
     private int directionX; private int directionZ;
 
     public static Direction getDirectionByNumber(int no){
-        return switch (no) {
-            case 1 -> EAST;
-            case 2 -> SOUTHEAST;
-            case 3 -> SOUTH;
-            case 4 -> SOUTHWEST;
-            case 5 -> WEST;
-            case 6 -> NORTHWEST;
-            case 7 -> NORTH;
-            case 8 -> NORTHEAST;
+        return switch (no % 8) {
+            case 0 -> EAST;
+            case 1 -> SOUTHEAST;
+            case 2 -> SOUTH;
+            case 3 -> SOUTHWEST;
+            case 4 -> WEST;
+            case 5 -> NORTHWEST;
+            case 6 -> NORTH;
+            case 7 -> NORTHEAST;
             default -> null;
         };
     }
@@ -46,18 +46,20 @@ public enum Direction {
         return directionZ;
     }
     public Direction getLeftDirection(){
-        if(directionX == 0){
+        /*if(directionX == 0){
             return getDirectionByComponent(directionZ, directionX);
         }else{
             return getDirectionByComponent(directionZ, -directionX);
-        }
+        }*/
+        return getDirectionByNumber(directionNo + 6);
     }
     public Direction getRightDirection(){
-        if(directionX == 0){
+        /*if(directionX == 0){
             return getDirectionByComponent(-directionZ, directionX);
         }else{
             return getDirectionByComponent(directionZ, directionX);
-        }
+        }*/
+        return getDirectionByNumber(directionNo + 2);
     }
     public Direction getLeftDiagDirection(){
         Direction leftDirection = getLeftDirection();

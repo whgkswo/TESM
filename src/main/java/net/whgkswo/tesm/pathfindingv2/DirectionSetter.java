@@ -28,21 +28,21 @@ public class DirectionSetter {
         }
         // 가던 방향은 기본적으로 탐색
         directions.add(prevDirection);
+        // 대각선 방향이었으면 왼쪽, 오른쪽 추가 탐색
+        if(nextJumpPoint.getPrevDirection().isDiagonal()){
+            directions.add(Direction.getDirectionByComponent(prevDirection.getX(), 0));
+            directions.add(Direction.getDirectionByComponent(0, prevDirection.getZ()));
+        }
         // 오른쪽이 막혔으면 오른쪽과 오른쪽 대각선 추가 탐색
         if(nextJumpPoint.isRightBlocked()){
             if(prevDirection.isDiagonal()){
                 Direction rightDirection = prevDirection.getRightDirection();
                 directions.add(rightDirection);
-                directions.add(rightDirection.getRightDiagDirection());
+                directions.add(rightDirection.getRightDiagForDiag());
             }else{
                 directions.add(prevDirection.getRightDirection());
                 directions.add(prevDirection.getRightDiagDirection());
             }
-        }
-        // 대각선 방향이었으면 왼쪽, 오른쪽 추가 탐색
-        if(nextJumpPoint.getPrevDirection().isDiagonal()){
-            directions.add(Direction.getDirectionByComponent(prevDirection.getX(), 0));
-            directions.add(Direction.getDirectionByComponent(0, prevDirection.getZ()));
         }
         return directions;
     }
