@@ -18,7 +18,7 @@ import static net.whgkswo.tesm.general.GlobalVariables.player;
 
 public class Pathfinder {
     private static final int MAX_SEARCH_RADIUS = 1;
-    private static final int MAX_SEARCH_REPEAT_COUNT = 50000;
+    private static final int MAX_SEARCH_REPEAT_COUNT = 20000;
     private final Entity targetEntity;
     private final BlockPos startPos;    private final BlockPos endPos;
     private ArrayList<JumpPoint> openList;

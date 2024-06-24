@@ -27,6 +27,7 @@ public class LinearSearcher {
         cursorZ = refPos.getZ();
         // 소탐색 시작 지점에 닭 소환
         /*EntityManager.summonEntity(EntityType.CHICKEN, refPos);*/
+        int dy = 0;
         // 루프 돌며 일직선으로 진행
         for(int i = 1; i<= maxRepeatCount; i++){
             BlockPos prevPos;
@@ -38,6 +39,7 @@ public class LinearSearcher {
                 // 탐색 방향으로 한 칸 가기
                 BlockPos nextPos = moveOneBlock(prevPos, direction);
                 cursorX = nextPos.getX();   cursorY = nextPos.getY();   cursorZ = nextPos.getZ();
+                dy += Math.abs(prevPos.getY() - nextPos.getY());
             }
             // 이동한 좌표 업데이트
             BlockPos nextPos = new BlockPos(cursorX, cursorY, cursorZ);
@@ -66,7 +68,7 @@ public class LinearSearcher {
                 if(leftBlocked || rightBlocked){
                     // 점프 포인트 생성
                     /*player.sendMessage(Text.literal("점프 포인트 생성 (" + nextPos.getX() + ", " + nextPos.getY() + ", " + nextPos.getZ() + ")"));*/
-                    JumpPoint jumpPoint = createAndRegisterJumpPoint(largeRefPos,nextPos, direction, trailedDistance,diagSearchState, endPos,leftBlocked,rightBlocked,openList,closedList);
+                    JumpPoint jumpPoint = createAndRegisterJumpPoint(largeRefPos,nextPos, direction, trailedDistance,diagSearchState, endPos,leftBlocked,rightBlocked,openList,closedList, dy);
                     // 결과 리턴
                     return new SearchResult(false, jumpPoint);
                 }
@@ -76,7 +78,7 @@ public class LinearSearcher {
             // 대각선 방향일 때 양옆으로 추가 탐색
             int branchLength = maxRepeatCount-i;
             if(direction.isDiagonal() && maxRepeatCount-i > 0){
-                DiagSearchState currentDiagSearchState = new DiagSearchState(i, direction);
+                DiagSearchState currentDiagSearchState = new DiagSearchState(i, direction, dy*17 + (i-dy)*14);
                 // x방향 탐색
                 LinearSearcher xSearcher = new LinearSearcher(nextPos, endPos, Direction.getDirectionByComponent(direction.getX(), 0), branchLength);
                 SearchResult xBranchResult = xSearcher.linearSearch(largeRefPos,openList,closedList,currentDiagSearchState,trailedDistance);
@@ -96,7 +98,7 @@ public class LinearSearcher {
         BlockPos resultPos = new BlockPos(cursorX,cursorY,cursorZ);
         /*player.sendMessage(Text.literal("탐색 종료 포인트 생성 (" + resultPos.getX() + ", " + resultPos.getY() + ", " + resultPos.getZ() + ")"));*/
 
-        createAndRegisterJumpPoint(largeRefPos,resultPos, direction,trailedDistance,diagSearchState,endPos,false,false,openList,closedList);
+        createAndRegisterJumpPoint(largeRefPos,resultPos, direction,trailedDistance,diagSearchState,endPos,false,false,openList,closedList, dy);
         // 결과 반환
         return new SearchResult(false, null);
     }
@@ -119,9 +121,9 @@ public class LinearSearcher {
         return !duplicatedInOL && !duplicatedInCL;
     }
     public JumpPoint createAndRegisterJumpPoint(BlockPos largeRefPos, BlockPos currentPos, Direction direction, int trailedDistance,DiagSearchState diagSearchState, BlockPos endPos, boolean leftBlocked, boolean rightBlocked,
-                                                ArrayList<JumpPoint> openList, HashMap<BlockPos, SearchResult> closedList){
+                                                ArrayList<JumpPoint> openList, HashMap<BlockPos, SearchResult> closedList, int dy){
 
-        int nextTrailedDistance = trailedDistance + diagSearchState.getSearchedCount()*14 + this.getMaxRepeatCount()*10;
+        int nextTrailedDistance = trailedDistance + diagSearchState.getTrailedDistance() + dy*14 +(this.getMaxRepeatCount()-dy)*10;
         // 점프 포인트 생성
         JumpPoint jumpPoint = new JumpPoint(largeRefPos,currentPos, direction,endPos,nextTrailedDistance,leftBlocked,rightBlocked);
         if(isValidCoordForJumpPoint(currentPos, openList, closedList)){
