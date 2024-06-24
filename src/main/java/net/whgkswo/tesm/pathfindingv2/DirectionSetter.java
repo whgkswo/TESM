@@ -17,15 +17,27 @@ public class DirectionSetter {
         ArrayList<Direction> directions = new ArrayList<>();
         // 왼쪽이 막혔으면 왼쪽과 왼쪽 대각선 추가 탐색
         if(nextJumpPoint.isLeftBlocked()){
-            directions.add(prevDirection.getLeftDirection());
-            directions.add(prevDirection.getLeftDiagDirection());
+            if(prevDirection.isDiagonal()){
+                Direction leftDirection = prevDirection.getLeftDirection();
+                directions.add(leftDirection);
+                directions.add(leftDirection.getLeftDiagForDiag());
+            }else{
+                directions.add(prevDirection.getLeftDirection());
+                directions.add(prevDirection.getLeftDiagDirection());
+            }
         }
         // 가던 방향은 기본적으로 탐색
         directions.add(prevDirection);
         // 오른쪽이 막혔으면 오른쪽과 오른쪽 대각선 추가 탐색
         if(nextJumpPoint.isRightBlocked()){
-            directions.add(prevDirection.getRightDirection());
-            directions.add(prevDirection.getRightDiagDirection());
+            if(prevDirection.isDiagonal()){
+                Direction rightDirection = prevDirection.getRightDirection();
+                directions.add(rightDirection);
+                directions.add(rightDirection.getRightDiagDirection());
+            }else{
+                directions.add(prevDirection.getRightDirection());
+                directions.add(prevDirection.getRightDiagDirection());
+            }
         }
         // 대각선 방향이었으면 왼쪽, 오른쪽 추가 탐색
         if(nextJumpPoint.getPrevDirection().isDiagonal()){

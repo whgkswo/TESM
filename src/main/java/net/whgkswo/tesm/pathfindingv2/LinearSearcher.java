@@ -50,28 +50,36 @@ public class LinearSearcher {
                 return new SearchResult(true, null);
             }
             // 직선 탐색일 때만 점프 포인트 조건 검사
+            boolean leftBlocked = false;    boolean rightBlocked = false;
             if(!direction.isDiagonal()){
-                boolean leftBlocked = false;    boolean rightBlocked = false;
-
                 TriangleTestResult leftTestResult = new TriangleTestResult(prevPos, direction, RelativeDirection.LEFT);
                 TriangleTestResult rightTestResult = new TriangleTestResult(prevPos, direction, RelativeDirection.RIGHT);
                 boolean finalTestLeft = BlockStateHelper.isReachable(nextPos, direction.getLeftDirection());
                 boolean finalTestRight = BlockStateHelper.isReachable(nextPos, direction.getRightDirection());
 
-                if(!leftBlocked && JumpPointTester.jumpPointTest(leftTestResult, finalTestLeft)){
+                if(JumpPointTester.jumpPointTest(leftTestResult, finalTestLeft)){
                     leftBlocked = true;
                 }
-                if(!rightBlocked && JumpPointTester.jumpPointTest(rightTestResult, finalTestRight)){
+                if(JumpPointTester.jumpPointTest(rightTestResult, finalTestRight)){
                     rightBlocked = true;
                 }
-                // 점프 포인트 생성 기본 조건을 만족했을 때
-                if(leftBlocked || rightBlocked){
-                    // 점프 포인트 생성
-                    /*player.sendMessage(Text.literal("점프 포인트 생성 (" + nextPos.getX() + ", " + nextPos.getY() + ", " + nextPos.getZ() + ")"));*/
-                    JumpPoint jumpPoint = createAndRegisterJumpPoint(largeRefPos,nextPos, direction, trailedDistance,diagSearchState, endPos,leftBlocked,rightBlocked,openList,closedList);
-                    // 결과 리턴
-                    return new SearchResult(false, jumpPoint);
+            }else{// 대각선일 때도 점프 포인트를 생성할 수 있음!!
+                TriangleTestForDiag leftTest = new TriangleTestForDiag(prevPos, nextPos, direction, RelativeDirection.LEFT);
+                TriangleTestForDiag rightTest = new TriangleTestForDiag(prevPos, nextPos, direction, RelativeDirection.RIGHT);
+                if(!leftTest.isRefPosToNeighborPos() && leftTest.isNextPosToNeighborPos()){
+                    leftBlocked = true;
                 }
+                if(!rightTest.isRefPosToNeighborPos() && rightTest.isNextPosToNeighborPos()){
+                    rightBlocked = true;
+                }
+            }
+            // 점프 포인트 생성 기본 조건을 만족했을 때
+            if(leftBlocked || rightBlocked){
+                // 점프 포인트 생성
+                /*player.sendMessage(Text.literal("점프 포인트 생성 (" + nextPos.getX() + ", " + nextPos.getY() + ", " + nextPos.getZ() + ")"));*/
+                JumpPoint jumpPoint = createAndRegisterJumpPoint(largeRefPos,nextPos, direction, trailedDistance,diagSearchState, endPos,leftBlocked,rightBlocked,openList,closedList);
+                // 결과 리턴
+                return new SearchResult(false, jumpPoint);
             }
             // 이동한 위치에 벌 소환
             /*EntityManager.summonEntity(EntityType.BEE, nextPos);*/

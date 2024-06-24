@@ -67,6 +67,22 @@ public enum Direction {
         Direction rightDirection = getRightDirection();
         return getDirectionByComponent(directionX + rightDirection.getX(), directionZ + rightDirection.getZ());
     }
+    public Direction getLeftDiagForDiag(){
+        // x성분과 z성분이 다르면 z방향이 왼쪽
+        if(directionX + directionZ == 0){
+            return getDirectionByComponent(0, directionZ);
+        }else{ // 같으면 x방향이 왼쪽
+            return getDirectionByComponent(directionX, 0);
+        }
+    }
+    public Direction getRightDiagForDiag(){
+        // x성분과 z성분이 다르면 x방향이 오른쪽
+        if(directionX + directionZ == 0){
+            return getDirectionByComponent(directionX, 0);
+        }else{ // 같으면 z방향이 오른쪽
+            return getDirectionByComponent(0, directionZ);
+        }
+    }
     public boolean isDiagonal(){
         return Math.abs(directionX) == Math.abs(directionZ);
     }

@@ -22,9 +22,9 @@ public class TriangleTestResult {
     public TriangleTestResult(BlockPos refPos, Direction direction, RelativeDirection relativeDirection){
         triangleTest(refPos, direction, relativeDirection);
     }
-    public void triangleTest(BlockPos refPos, Direction refDirection, RelativeDirection relativeDirection){
+    private void triangleTest(BlockPos refPos, Direction refDirection, RelativeDirection testDirection){
         Direction perpendicularDirection;
-        if(relativeDirection == RelativeDirection.LEFT){
+        if(testDirection == RelativeDirection.LEFT){
             perpendicularDirection = refDirection.getLeftDirection();
         }else{
             perpendicularDirection = refDirection.getRightDirection();
