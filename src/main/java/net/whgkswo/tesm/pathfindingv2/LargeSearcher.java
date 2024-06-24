@@ -12,12 +12,12 @@ public class LargeSearcher {
     private BlockPos endPos;
     private final int MAX_SEARCH_RADIUS;
 
-    private ArrayList<JumpPoint> openList;
+    private OpenList openList;
 
     private HashMap<BlockPos, SearchResult> closedList;
     private HashMap<BlockPos, BlockPos> newClosedList;
 
-    public LargeSearcher(BlockPos endPos, int MAX_SEARCH_RADIUS, ArrayList<JumpPoint> openList, HashMap<BlockPos, SearchResult> closedList,
+    public LargeSearcher(BlockPos endPos, int MAX_SEARCH_RADIUS, OpenList openList, HashMap<BlockPos, SearchResult> closedList,
                          HashMap<BlockPos, BlockPos> newClosedList) {
         this.endPos = endPos;
         this.MAX_SEARCH_RADIUS = MAX_SEARCH_RADIUS;
@@ -29,11 +29,11 @@ public class LargeSearcher {
     public LargeSearchResult largeSearch(int searchCount, BlockPos startPos){
         searchCount++;
         // 다음 점프 포인트 선정 (F값이 최소인 걸로)
-        int nextIndex = OpenListManager.getMinFIndex(openList);
-        if(openList.isEmpty()){
+        int nextIndex = /*OpenListManager.getMinFIndex(openList.getJumpPointList())*/0;
+        if(openList.getJumpPointList().isEmpty()){
             throw new EmptyOpenListExeption();
         }
-        JumpPoint nextJumpPoint = openList.get(nextIndex);
+        JumpPoint nextJumpPoint = openList.getJumpPointList().get(nextIndex);
         // 대탐색 시작 위치 선정
         BlockPos refPos = nextJumpPoint.getBlockPos();
         // 소탐색 방향 선정
@@ -49,7 +49,13 @@ public class LargeSearcher {
         BlockPos tempPos = new BlockPos(refPos.getX(), refPos.getY(), refPos.getZ()); // 얕은 복사 방지
         closedList.put(tempPos, result);
         newClosedList.put(refPos,nextJumpPoint.getLargeRefPos());
-        openList.remove(nextIndex);
+        openList.getJumpPointList().remove(nextIndex);
+        if(openList.getJumpPointList().isEmpty()){
+            openList.setMinFValue(0);
+        }else{
+            openList.setMinFValue(openList.getJumpPointList().get(0).getFValue());
+        }
+
         // 다음 방향들에 대해 소탐색 시작
         for(Direction direction : directions){
             // 이전 소탐색에서 사용된 갑옷 거치대와 알레이, 닭, 벌 없애기

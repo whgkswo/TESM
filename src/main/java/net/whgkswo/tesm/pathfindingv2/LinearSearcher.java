@@ -22,7 +22,7 @@ public class LinearSearcher {
         this.refPos = BlockPosManager.getCopyPos(refPos);    this.endPos = endPos;
         this.maxRepeatCount = maxRepeatCount;
     }
-    public SearchResult linearSearch(BlockPos largeRefPos, ArrayList<JumpPoint> openList, HashMap<BlockPos,SearchResult> closedList,
+    public SearchResult linearSearch(BlockPos largeRefPos, OpenList openList, HashMap<BlockPos,SearchResult> closedList,
                                      DiagSearchState diagSearchState, int trailedDistance){
         cursorX = refPos.getX();
         cursorY = refPos.getY();
@@ -110,9 +110,9 @@ public class LinearSearcher {
         // 결과 반환
         return new SearchResult(false, null);
     }
-    public static boolean isValidCoordForJumpPoint(BlockPos targetPos, ArrayList<JumpPoint> openList, HashMap<BlockPos, SearchResult> closedList){
+    public static boolean isValidCoordForJumpPoint(BlockPos targetPos, OpenList openList, HashMap<BlockPos, SearchResult> closedList){
         boolean duplicatedInOL = false;
-        for (JumpPoint jumpPoint : openList) {
+        for (JumpPoint jumpPoint : openList.getJumpPointList()) {
             BlockPos jpPos = jumpPoint.getBlockPos();
             if (jpPos.getX() == targetPos.getX() && jpPos.getY() == targetPos.getY() && jpPos.getZ() == targetPos.getZ()) {
                 duplicatedInOL = true;
@@ -129,7 +129,7 @@ public class LinearSearcher {
         return !duplicatedInOL && !duplicatedInCL;
     }
     public JumpPoint createAndRegisterJumpPoint(BlockPos largeRefPos, BlockPos currentPos, Direction direction, int trailedDistance,DiagSearchState diagSearchState, BlockPos endPos, boolean leftBlocked, boolean rightBlocked,
-                                                ArrayList<JumpPoint> openList, HashMap<BlockPos, SearchResult> closedList){
+                                                OpenList openList, HashMap<BlockPos, SearchResult> closedList){
 
         int nextTrailedDistance = trailedDistance + diagSearchState.getSearchedCount()*14 + this.getMaxRepeatCount()*10;
         // 점프 포인트 생성
@@ -138,7 +138,12 @@ public class LinearSearcher {
             // 갑옷 거치대 소환
             /*EntityManager.summonEntity(EntityType.ARMOR_STAND, currentPos);*/
             // 오픈 리스트에 점프 포인트 추가
-            openList.add(jumpPoint);
+            if(jumpPoint.getFValue() <= openList.getMinFValue()){
+                openList.setMinFValue(jumpPoint.getFValue());
+                openList.getJumpPointList().add(0,jumpPoint);
+            }else{
+                openList.getJumpPointList().add(jumpPoint);
+            }
         }
         return jumpPoint;
     }

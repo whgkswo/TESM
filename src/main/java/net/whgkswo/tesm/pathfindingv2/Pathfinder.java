@@ -21,7 +21,7 @@ public class Pathfinder {
     private static final int MAX_SEARCH_REPEAT_COUNT = 20000;
     private final Entity targetEntity;
     private final BlockPos startPos;    private final BlockPos endPos;
-    private ArrayList<JumpPoint> openList;
+    private OpenList openList;
     private HashMap<BlockPos, SearchResult> closedList;
     private HashMap<BlockPos, BlockPos> newClosedList;
     private final LocalDateTime startTime;
@@ -36,7 +36,7 @@ public class Pathfinder {
 
         startPos = targetEntity.getBlockPos().down(1);
         this.endPos = endPos;
-        openList = new ArrayList<>();
+        openList = new OpenList();
         closedList = new HashMap<>();
         newClosedList = new HashMap<>();
         startTime = LocalDateTime.now();
@@ -47,7 +47,7 @@ public class Pathfinder {
         }
     }
 
-    public ArrayList<JumpPoint> getOpenList() {
+    public OpenList getOpenList() {
         return openList;
     }
     public HashMap<BlockPos, SearchResult> getClosedList() {
@@ -61,7 +61,7 @@ public class Pathfinder {
         /*EntityManager.summonEntity(EntityType.ARMOR_STAND, startPos);*/
         EntityManager.summonEntity(EntityType.ALLAY, endPos);
         // 시작점을 오픈리스트에 추가
-        getOpenList().add(new JumpPoint(startPos,startPos, null, endPos, -1, false, false));
+        getOpenList().getJumpPointList().add(new JumpPoint(startPos,startPos, null, endPos, -1, false, false));
         // 탐색 - 탐색 결과 초기화
         LargeSearchResult result;
         int searchCount = 0;
