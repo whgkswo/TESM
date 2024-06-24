@@ -11,6 +11,10 @@ public class LinearSearcher {
     private final BlockPos refPos;  private final BlockPos endPos;
     private final int maxRepeatCount;
 
+    public int getMaxRepeatCount() {
+        return maxRepeatCount;
+    }
+
     public LinearSearcher(BlockPos refPos, BlockPos endPos, Direction direction, int maxRepeatCount){
         this.direction = direction;
         this.refPos = BlockPosManager.getCopyPos(refPos);    this.endPos = endPos;
@@ -61,9 +65,8 @@ public class LinearSearcher {
                 // 점프 포인트 생성 기본 조건을 만족했을 때
                 if(leftBlocked || rightBlocked){
                     // 점프 포인트 생성
-                    int nextTrailedDistance = trailedDistance + diagSearchState.getSearchedCount()*10 + i*10;
                     /*player.sendMessage(Text.literal("점프 포인트 생성 (" + nextPos.getX() + ", " + nextPos.getY() + ", " + nextPos.getZ() + ")"));*/
-                    JumpPoint jumpPoint = createAndRegisterJumpPoint(largeRefPos,nextPos, direction, nextTrailedDistance, endPos,leftBlocked,rightBlocked,openList,closedList);
+                    JumpPoint jumpPoint = createAndRegisterJumpPoint(largeRefPos,nextPos, direction, trailedDistance,diagSearchState, endPos,leftBlocked,rightBlocked,openList,closedList);
                     // 결과 리턴
                     return new SearchResult(false, jumpPoint);
                 }
@@ -93,8 +96,7 @@ public class LinearSearcher {
         BlockPos resultPos = new BlockPos(cursorX,cursorY,cursorZ);
         /*player.sendMessage(Text.literal("탐색 종료 포인트 생성 (" + resultPos.getX() + ", " + resultPos.getY() + ", " + resultPos.getZ() + ")"));*/
 
-        int nextTrailDistance = trailedDistance + diagSearchState.getSearchedCount()*10 + maxRepeatCount*10;
-        createAndRegisterJumpPoint(largeRefPos,resultPos, direction,nextTrailDistance,endPos,false,false,openList,closedList);
+        createAndRegisterJumpPoint(largeRefPos,resultPos, direction,trailedDistance,diagSearchState,endPos,false,false,openList,closedList);
         // 결과 반환
         return new SearchResult(false, null);
     }
@@ -116,10 +118,12 @@ public class LinearSearcher {
         }
         return !duplicatedInOL && !duplicatedInCL;
     }
-    public static JumpPoint createAndRegisterJumpPoint(BlockPos largeRefPos,BlockPos currentPos, Direction direction, int trailedDistance,BlockPos endPos, boolean leftBlocked, boolean rightBlocked,
-                                                       ArrayList<JumpPoint> openList, HashMap<BlockPos, SearchResult> closedList){
+    public JumpPoint createAndRegisterJumpPoint(BlockPos largeRefPos, BlockPos currentPos, Direction direction, int trailedDistance,DiagSearchState diagSearchState, BlockPos endPos, boolean leftBlocked, boolean rightBlocked,
+                                                ArrayList<JumpPoint> openList, HashMap<BlockPos, SearchResult> closedList){
+
+        int nextTrailedDistance = trailedDistance + diagSearchState.getSearchedCount()*14 + this.getMaxRepeatCount()*10;
         // 점프 포인트 생성
-        JumpPoint jumpPoint = new JumpPoint(largeRefPos,currentPos, direction,endPos,trailedDistance,leftBlocked,rightBlocked);
+        JumpPoint jumpPoint = new JumpPoint(largeRefPos,currentPos, direction,endPos,nextTrailedDistance,leftBlocked,rightBlocked);
         if(isValidCoordForJumpPoint(currentPos, openList, closedList)){
             // 갑옷 거치대 소환
             /*EntityManager.summonEntity(EntityType.ARMOR_STAND, currentPos);*/
