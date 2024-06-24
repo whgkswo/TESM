@@ -16,12 +16,17 @@ public class GetNBTC2SPacket {
         // 아래 코드들은 서버에서만 실행됨!
         Entity targetEntity = player.getWorld().getEntityById(buf.readInt());
 
-        boolean isInteractable = ((IEntityDataSaver) targetEntity).getPersistentData().getCompound("EntityData").getBoolean("interactable");
+        try{
+            boolean isInteractable = ((IEntityDataSaver) targetEntity).getPersistentData().getCompound("EntityData").getBoolean("interactable");
 
-        // 클라이언트에 응답 송신
-        PacketByteBuf responseBuf = PacketByteBufs.create();
-        responseBuf.writeBoolean(isInteractable);
-        responseSender.sendPacket(ModMessages.GETNBT_RESPONSE_ID, responseBuf);
+            // 클라이언트에 응답 송신
+            PacketByteBuf responseBuf = PacketByteBufs.create();
+            responseBuf.writeBoolean(isInteractable);
+            responseSender.sendPacket(ModMessages.GETNBT_RESPONSE_ID, responseBuf);
+        }catch (NullPointerException e){
+            // 아무것도 안함
+        }
+
     }
 }
 
