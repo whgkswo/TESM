@@ -44,6 +44,13 @@ public class LinearSearcher {
             // 이동한 좌표 업데이트
             BlockPos nextPos = new BlockPos(cursorX, cursorY, cursorZ);
             /*player.sendMessage(Text.literal("좌표 업데이트 (" + nextPos.getX() + ", " + nextPos.getY() + ", " + nextPos.getZ() + ")"));*/
+            // 올라가는 좌표 장애물 추가 검사
+            if(prevPos.getY() < nextPos.getY()){
+                // 천장 머리쿵
+                if(BlockStateHelper.isObstacle(prevPos.up(3))){
+                    return new SearchResult(false,null);
+                }
+            }
 
             // 목적지에 도착했으면 길찾기 종료
             if(nextPos.equals(endPos)){
