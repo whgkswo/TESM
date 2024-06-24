@@ -20,7 +20,7 @@ public class DirectionSetter {
             if(prevDirection.isDiagonal()){
                 Direction leftDirection = prevDirection.getLeftDirection();
                 directions.add(leftDirection);
-                directions.add(leftDirection.getLeftDiagForDiag());
+                directions.add(leftDirection.getLeftDiagDirection());
             }else{
                 directions.add(prevDirection.getLeftDirection());
                 directions.add(prevDirection.getLeftDiagDirection());
@@ -38,7 +38,7 @@ public class DirectionSetter {
             if(prevDirection.isDiagonal()){
                 Direction rightDirection = prevDirection.getRightDirection();
                 directions.add(rightDirection);
-                directions.add(rightDirection.getRightDiagForDiag());
+                directions.add(rightDirection.getLeftDiagDirection());
             }else{
                 directions.add(prevDirection.getRightDirection());
                 directions.add(prevDirection.getRightDiagDirection());

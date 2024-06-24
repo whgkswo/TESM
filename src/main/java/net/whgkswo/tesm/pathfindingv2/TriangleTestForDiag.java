@@ -19,7 +19,7 @@ public class TriangleTestForDiag {
     private void triangleTest(BlockPos refPos, BlockPos nextPos, Direction direction, RelativeDirection testDirection){
 
         Direction refPosToNeighborDirection =
-                testDirection == RelativeDirection.LEFT ? direction.getLeftDiagForDiag() : direction.getRightDiagForDiag();
+                testDirection == RelativeDirection.LEFT ? direction.getLeftDiagDirection() : direction.getRightDiagDirection();
         refPosToNeighborPos = BlockStateHelper.isReachable(refPos, refPosToNeighborDirection);
 
         Direction nextPosToNeighborDirection =
