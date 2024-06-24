@@ -1,6 +1,8 @@
 package net.whgkswo.tesm.pathfindingv2;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.util.math.BlockPos;
+import net.whgkswo.tesm.entitymanaging.EntityManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
