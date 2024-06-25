@@ -13,12 +13,13 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
 
 import static net.whgkswo.tesm.general.GlobalVariables.player;
 
 public class Pathfinder {
     private static final int MAX_SEARCH_RADIUS = 1;
-    private static final int MAX_SEARCH_REPEAT_COUNT = 20000;
+    private static final int MAX_SEARCH_REPEAT_COUNT = 50000;
     private final Entity targetEntity;
     private final BlockPos startPos;    private final BlockPos endPos;
     private ArrayList<JumpPoint> openList;
@@ -41,7 +42,9 @@ public class Pathfinder {
         newClosedList = new HashMap<>();
         startTime = LocalDateTime.now();
         try{
-            pathfind();
+            CompletableFuture.runAsync(() -> {
+                pathfind();
+            });
         }catch (EmptyOpenListExeption e){
             player.sendMessage(Text.literal(String.format("탐색 실패, 갈 수 없는 곳입니다. (%s)", e.getClass().getSimpleName())));
         }
