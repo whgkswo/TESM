@@ -1,8 +1,6 @@
 package net.whgkswo.tesm.pathfindingv2;
 
-import net.minecraft.entity.EntityType;
 import net.minecraft.util.math.BlockPos;
-import net.whgkswo.tesm.entitymanaging.EntityManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +36,7 @@ public class LinearSearcher {
             }else{ // 장애물과 낭떠러지가 없으면
                 prevPos = new BlockPos(cursorX, cursorY, cursorZ);
                 // 탐색 방향으로 한 칸 가기
-                BlockPos nextPos = moveOneBlock(prevPos, direction);
+                BlockPos nextPos = getNextBlock(prevPos, direction);
                 cursorX = nextPos.getX();   cursorY = nextPos.getY();   cursorZ = nextPos.getZ();
             }
             // 이동한 좌표 업데이트
@@ -149,7 +147,7 @@ public class LinearSearcher {
         }
         return jumpPoint;
     }
-    public static BlockPos moveOneBlock(BlockPos refPos, Direction direction){
+    public static BlockPos getNextBlock(BlockPos refPos, Direction direction){
         // 탐색 방향으로 한 칸 가기
         int cursorX = refPos.getX() + direction.getX();
         int cursorY = refPos.getY();

@@ -6,7 +6,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.whgkswo.tesm.tags.BlockTags;
 
 import static net.whgkswo.tesm.general.GlobalVariables.world;
-import static net.whgkswo.tesm.pathfindingv2.LinearSearcher.moveOneBlock;
+import static net.whgkswo.tesm.pathfindingv2.LinearSearcher.getNextBlock;
 
 
 public class BlockStateHelper {
@@ -47,7 +47,7 @@ public class BlockStateHelper {
         // 전방에 장애물이 없었고 대각선 방향일 경우 추가 검사
         if(direction.isDiagonal()){
             // 한 칸 앞의 y좌표를 검사
-            BlockPos nextTempPos = moveOneBlock(refPos, direction);
+            BlockPos nextTempPos = getNextBlock(refPos, direction);
             int dy = nextTempPos.getY() - nextPos.getY();
             // 올라가는 칸의 경우 검사 기준 좌표를 한 칸 올려 줘야 함
             int offset = (dy == 1) ? 2:1;

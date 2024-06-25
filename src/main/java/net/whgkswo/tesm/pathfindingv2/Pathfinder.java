@@ -43,8 +43,8 @@ public class Pathfinder {
         newClosedList = new HashMap<>();
         startTime = System.currentTimeMillis();
         try{
-            pathfind();
-            //CompletableFuture.runAsync(this::pathfind);
+            //pathfind();
+            CompletableFuture.runAsync(this::pathfind);
         }catch (EmptyOpenListExeption e){
             player.sendMessage(Text.literal(String.format("탐색 실패, 갈 수 없는 곳입니다. (%s)", e.getClass().getSimpleName())));
         }
@@ -58,11 +58,13 @@ public class Pathfinder {
     }
     public void pathfind(){
         // 이전 탐색에서 사용된 갑옷 거치대와 알레이, 닭 ,벌 없애기
-        EntityManager.killEntities(EntityType.ALLAY, EntityType.ARMOR_STAND, EntityType.CHICKEN, EntityType.BEE, EntityType.FROG);
+        GlobalVariables.pathfindEntityList.forEach(Entity::kill);
+        GlobalVariables.pathfindEntityList.clear();
+        //EntityManager.killEntities(EntityType.ALLAY, EntityType.ARMOR_STAND, EntityType.CHICKEN, EntityType.BEE, EntityType.FROG);
         // 시작점, 끝점 표시
         BlockPos startPos = targetEntity.getBlockPos().down(1);
         /*EntityManager.summonEntity(EntityType.ARMOR_STAND, startPos);*/
-        EntityManager.summonEntity(EntityType.ALLAY, endPos);
+        GlobalVariables.pathfindEntityList.add(EntityManager.summonEntity(EntityType.ALLAY, endPos));
         // 시작점을 오픈리스트에 추가
         getOpenList().add(new JumpPoint(startPos,startPos, null, endPos, -1, false, false));
         // 탐색 - 탐색 결과 초기화
@@ -92,7 +94,7 @@ public class Pathfinder {
         ArrayList pathList = new ArrayList();
         while(!refPos.equals(startPos)){
             pathList.add(0, refPos);
-            EntityManager.summonEntity(EntityType.FROG, refPos);
+            GlobalVariables.pathfindEntityList.add(EntityManager.summonEntity(EntityType.FROG, refPos));
             refPos = newClosedList.get(refPos);
             backtrackCount++;
         }

@@ -33,7 +33,7 @@ public class TriangleTestResult {
         adjacentTestResult = BlockStateHelper.isReachable(refPos, perpendicularDirection);
         if(adjacentTestResult){
             // 삼각 검사 - 옆변
-            BlockPos sidePos = LinearSearcher.moveOneBlock(refPos, perpendicularDirection);
+            BlockPos sidePos = LinearSearcher.getNextBlock(refPos, perpendicularDirection);
             oppositeTestResult = BlockStateHelper.isReachable(sidePos, refDirection);
             // 삼각 검사 - 대각선
             Direction hypotenuseDirection = Direction.getDirectionByComponent(refDirection.getX() + perpendicularDirection.getX(),

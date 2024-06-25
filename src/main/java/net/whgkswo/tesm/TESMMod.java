@@ -9,8 +9,6 @@ import net.minecraft.item.ItemGroups;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.blocks.ModBlocks;
@@ -18,6 +16,7 @@ import net.whgkswo.tesm.commands.SummonVillager;
 import net.whgkswo.tesm.commands.ToggleTimeflow;
 import net.whgkswo.tesm.general.InitializeTasks;
 import net.whgkswo.tesm.general.OnServerTicks;
+import net.whgkswo.tesm.general.OnPlayerLeaves;
 import net.whgkswo.tesm.items.TestItem;
 import net.whgkswo.tesm.networking.ModMessages;
 import net.whgkswo.tesm.pathfinding.PathFinder;
@@ -80,6 +79,7 @@ public class TESMMod implements ModInitializer {
 		PathFinder.onServerTicks();
 		/*PathfindingManager pathfindingManager = new PathfindingManager();
 		pathfindingManager.onServerTicks();*/
+		OnPlayerLeaves.onPlayerLeaves();
 
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 클라이언트 통신 패킷 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 		ModMessages.registerC2SPackets();
