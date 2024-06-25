@@ -1,6 +1,4 @@
-package net.whgkswo.tesm.pathfindingv2;
-
-import java.time.LocalDateTime;
+package net.whgkswo.tesm.pathfinding.v2;
 
 public class SearchResult {
     private final boolean foundDestination;

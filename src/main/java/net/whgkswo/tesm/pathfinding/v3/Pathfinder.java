@@ -1,4 +1,4 @@
-package net.whgkswo.tesm.pathfindingv2;
+package net.whgkswo.tesm.pathfinding.v3;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -6,12 +6,12 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.whgkswo.tesm.entitymanaging.EntityManager;
 import net.whgkswo.tesm.exceptions.EmptyOpenListExeption;
-import net.whgkswo.tesm.exceptions.EntityNotFoundExeption;
 import net.whgkswo.tesm.general.GlobalVariables;
+import net.whgkswo.tesm.pathfinding.v2.JumpPoint;
+import net.whgkswo.tesm.pathfinding.v2.LargeSearchResult;
+import net.whgkswo.tesm.pathfinding.v2.LargeSearcher;
+import net.whgkswo.tesm.pathfinding.v2.SearchResult;
 
-import java.sql.Time;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
@@ -28,11 +28,6 @@ public class Pathfinder {
     private HashMap<BlockPos, BlockPos> newClosedList;
     private final long startTime;
 
-
-    public BlockPos getStartPos() {
-        return startPos;
-    }
-
     public Pathfinder(String targetName, BlockPos endPos){
         targetEntity = EntityManager.findEntityByName(targetName);
 
@@ -43,13 +38,11 @@ public class Pathfinder {
         newClosedList = new HashMap<>();
         startTime = System.currentTimeMillis();
         try{
-            //pathfind();
             CompletableFuture.runAsync(this::pathfind);
         }catch (EmptyOpenListExeption e){
             player.sendMessage(Text.literal(String.format("탐색 실패, 갈 수 없는 곳입니다. (%s)", e.getClass().getSimpleName())));
         }
     }
-
     public ArrayList<JumpPoint> getOpenList() {
         return openList;
     }

@@ -162,8 +162,7 @@ public class OnServerTicks {
 
                 if(addTimeCounter >=3){
                     addTimeCounter = 0;
-                    parseCommand = "time add 1";
-                    commandManager.execute(parseResults, parseCommand);
+                    world.setTimeOfDay(world.getTimeOfDay() + 1);
                 }
             }
         });

@@ -12,6 +12,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.blocks.ModBlocks;
+import net.whgkswo.tesm.commands.NavMesh;
 import net.whgkswo.tesm.commands.SummonVillager;
 import net.whgkswo.tesm.commands.ToggleTimeflow;
 import net.whgkswo.tesm.general.InitializeTasks;
@@ -19,7 +20,7 @@ import net.whgkswo.tesm.general.OnServerTicks;
 import net.whgkswo.tesm.general.OnPlayerLeaves;
 import net.whgkswo.tesm.items.TestItem;
 import net.whgkswo.tesm.networking.ModMessages;
-import net.whgkswo.tesm.pathfinding.PathFinder;
+import net.whgkswo.tesm.pathfinding.v1.PathFinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,6 +70,7 @@ public class TESMMod implements ModInitializer {
 
 		ToggleTimeflow.register();
 		SummonVillager.register();
+		NavMesh.register();
 
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 이벤트 및 메소드 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 

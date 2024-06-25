@@ -1,4 +1,4 @@
-package net.whgkswo.tesm.pathfinding;
+package net.whgkswo.tesm.pathfinding.v1;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.entity.Entity;

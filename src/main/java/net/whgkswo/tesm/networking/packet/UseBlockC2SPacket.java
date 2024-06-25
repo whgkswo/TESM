@@ -10,8 +10,8 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.whgkswo.tesm.exceptions.EntityNotFoundExeption;
 import net.whgkswo.tesm.general.GlobalVariables;
-import net.whgkswo.tesm.pathfindingv2.BlockStateHelper;
-import net.whgkswo.tesm.pathfindingv2.Pathfinder;
+import net.whgkswo.tesm.pathfinding.v2.BlockStateHelper;
+import net.whgkswo.tesm.pathfinding.v2.Pathfinder;
 /*import net.whgkswo.tesm.pathfindingv2.PathfindingManager;*/
 
 

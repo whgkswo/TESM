@@ -1,8 +1,6 @@
-package net.whgkswo.tesm.pathfindingv2;
+package net.whgkswo.tesm.pathfinding.v2;
 
 import net.minecraft.util.math.BlockPos;
-
-import java.time.LocalDateTime;
 
 public class LargeSearchResult {
     private boolean foundDestination;

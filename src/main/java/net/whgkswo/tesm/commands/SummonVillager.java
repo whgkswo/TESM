@@ -17,7 +17,6 @@ import net.minecraft.util.math.Vec3d;
 import net.whgkswo.tesm.util.IEntityDataSaver;
 
 public class SummonVillager {
-
     public static void register() {
         CommandRegistrationCallback.EVENT.register((dispatcher,registryAccess,environment) ->
                 dispatcher.register(

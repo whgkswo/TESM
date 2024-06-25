@@ -1,4 +1,4 @@
-package net.whgkswo.tesm.pathfindingv2;
+package net.whgkswo.tesm.pathfinding.v2;
 
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -6,7 +6,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.whgkswo.tesm.tags.BlockTags;
 
 import static net.whgkswo.tesm.general.GlobalVariables.world;
-import static net.whgkswo.tesm.pathfindingv2.LinearSearcher.getNextBlock;
+import static net.whgkswo.tesm.pathfinding.v2.LinearSearcher.getNextBlock;
 
 
 public class BlockStateHelper {
@@ -14,11 +14,11 @@ public class BlockStateHelper {
         VoxelShape shape = world.getBlockState(blockPos).getCollisionShape(world,blockPos);
         return !shape.isEmpty();
     }
-    public static boolean isSteppable(ServerWorld world, BlockPos blockPos){
+    public static boolean isSteppable(BlockPos blockPos){
         // 해당 좌표가 단단하고
         if(isSolid(blockPos)){
             // 그 위 두 칸이 뚫렸으면
-            if(!isSolid(blockPos.up(1)) && !isSolid(blockPos.up(2))  ){
+            if(!isObstacle(blockPos.up(1)) && !isObstacle(blockPos.up(2))  ){
                 return true;
             }
         }

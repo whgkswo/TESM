@@ -1,4 +1,4 @@
-package net.whgkswo.tesm.pathfindingv2;
+package net.whgkswo.tesm.pathfinding.v2;
 
 public class JumpPointTester {
     public static boolean jumpPointTest(TriangleTestResult triangleTestResult, boolean finalTestResult){
