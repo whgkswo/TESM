@@ -9,6 +9,7 @@ import net.whgkswo.tesm.exceptions.EmptyOpenListExeption;
 import net.whgkswo.tesm.exceptions.EntityNotFoundExeption;
 import net.whgkswo.tesm.general.GlobalVariables;
 
+import java.sql.Time;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class Pathfinder {
     private ArrayList<JumpPoint> openList;
     private HashMap<BlockPos, SearchResult> closedList;
     private HashMap<BlockPos, BlockPos> newClosedList;
-    private final LocalDateTime startTime;
+    private final long startTime;
 
 
     public BlockPos getStartPos() {
@@ -40,11 +41,10 @@ public class Pathfinder {
         openList = new ArrayList<>();
         closedList = new HashMap<>();
         newClosedList = new HashMap<>();
-        startTime = LocalDateTime.now();
+        startTime = System.currentTimeMillis();
         try{
-            CompletableFuture.runAsync(() -> {
-                pathfind();
-            });
+            pathfind();
+            //CompletableFuture.runAsync(this::pathfind);
         }catch (EmptyOpenListExeption e){
             player.sendMessage(Text.literal(String.format("탐색 실패, 갈 수 없는 곳입니다. (%s)", e.getClass().getSimpleName())));
         }
@@ -74,11 +74,11 @@ public class Pathfinder {
             // 경로 탐색 완료했으면 알고리즘 전체 종료
             result = largeSearcher.largeSearch(searchCount, startPos);
             if(result.isFoundDestination()){
-                String duration = Duration.between(startTime, result.getTime()).toString();
+                double duration = result.getTime() - startTime;
 
                 int distance = backtrack(result.getLargeRefPos());
                 player.sendMessage(Text.literal("목적지 탐색 완료 ("+ (distance + 1) + "m - "
-                        + duration.substring(2) + "s)"));
+                        + duration / 1000 + "s)"));
                 return;
             }
             searchCount++;

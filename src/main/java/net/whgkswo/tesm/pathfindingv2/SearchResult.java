@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class SearchResult {
     private final boolean foundDestination;
     private final JumpPoint jumpPoint;
-    private final LocalDateTime time;
+    private final Long time;
 
     public boolean hasFoundDestination() {
         return foundDestination;
@@ -19,14 +19,14 @@ public class SearchResult {
         return jumpPoint;
     }
 
-    public LocalDateTime getTime() {
+    public Long getTime() {
         return time;
     }
 
     public SearchResult(boolean foundDestination, JumpPoint jumpPoint){
         this.foundDestination = foundDestination;
         this.jumpPoint = jumpPoint;
-        time = foundDestination ? LocalDateTime.now() : null;
+        time = foundDestination ? System.currentTimeMillis() : null;
     }
 
 }
