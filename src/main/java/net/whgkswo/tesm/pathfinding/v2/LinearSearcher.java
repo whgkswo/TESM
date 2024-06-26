@@ -48,34 +48,13 @@ public class LinearSearcher {
                 return new SearchResult(true, null);
             }
             // 직선 탐색일 때만 점프 포인트 조건 검사
-            boolean leftBlocked = false;    boolean rightBlocked = false;
-            if(!direction.isDiagonal()){
-                TriangleTestResult leftTestResult = new TriangleTestResult(prevPos, direction, RelativeDirection.LEFT);
-                TriangleTestResult rightTestResult = new TriangleTestResult(prevPos, direction, RelativeDirection.RIGHT);
-                boolean finalTestLeft = BlockPosUtil.isReachable(nextPos, direction.getLeftDirection());
-                boolean finalTestRight = BlockPosUtil.isReachable(nextPos, direction.getRightDirection());
-
-                if(JumpPointTester.jumpPointTest(leftTestResult, finalTestLeft)){
-                    leftBlocked = true;
-                }
-                if(JumpPointTester.jumpPointTest(rightTestResult, finalTestRight)){
-                    rightBlocked = true;
-                }
-            }else{// 대각선일 때도 점프 포인트를 생성할 수 있음!!
-                TriangleTestForDiag leftTest = new TriangleTestForDiag(prevPos, nextPos, direction, RelativeDirection.LEFT);
-                TriangleTestForDiag rightTest = new TriangleTestForDiag(prevPos, nextPos, direction, RelativeDirection.RIGHT);
-                if(!leftTest.isRefPosToNeighborPos() && leftTest.isNextPosToNeighborPos()){
-                    leftBlocked = true;
-                }
-                if(!rightTest.isRefPosToNeighborPos() && rightTest.isNextPosToNeighborPos()){
-                    rightBlocked = true;
-                }
-            }
+            JumpPointTestResult jpTestResult = jumpPointTest(prevPos, nextPos, direction);
             // 점프 포인트 생성 기본 조건을 만족했을 때
-            if(leftBlocked || rightBlocked){
+            if(jpTestResult.isLeftBlocked() || jpTestResult.isRightBlocked()){
                 // 점프 포인트 생성
                 /*player.sendMessage(Text.literal("점프 포인트 생성 (" + nextPos.getX() + ", " + nextPos.getY() + ", " + nextPos.getZ() + ")"));*/
-                JumpPoint jumpPoint = createAndRegisterJumpPoint(largeRefPos,nextPos, direction, trailedDistance,diagSearchState, endPos,leftBlocked,rightBlocked,openList, closedList);
+                JumpPoint jumpPoint = createAndRegisterJumpPoint(largeRefPos,nextPos, direction, trailedDistance,
+                        diagSearchState, endPos,jpTestResult.isLeftBlocked(),jpTestResult.isRightBlocked(),openList, closedList);
                 // 결과 리턴
                 return new SearchResult(false, jumpPoint);
             }
@@ -107,6 +86,32 @@ public class LinearSearcher {
         createAndRegisterJumpPoint(largeRefPos,resultPos, direction,trailedDistance,diagSearchState,endPos,false,false,openList, closedList);
         // 결과 반환
         return new SearchResult(false, null);
+    }
+    private static JumpPointTestResult jumpPointTest(BlockPos blockPos, BlockPos nextPos, Direction direction){
+        boolean leftBlocked = false;    boolean rightBlocked = false;
+        if(!direction.isDiagonal()){
+            TriangleTestResult leftTestResult = new TriangleTestResult(blockPos, direction, RelativeDirection.LEFT);
+            TriangleTestResult rightTestResult = new TriangleTestResult(blockPos, direction, RelativeDirection.RIGHT);
+            boolean finalTestLeft = BlockPosUtil.isReachable(nextPos, direction.getLeftDirection());
+            boolean finalTestRight = BlockPosUtil.isReachable(nextPos, direction.getRightDirection());
+
+            if(JumpPointTester.jumpPointTest(leftTestResult, finalTestLeft)){
+                leftBlocked = true;
+            }
+            if(JumpPointTester.jumpPointTest(rightTestResult, finalTestRight)){
+                rightBlocked = true;
+            }
+        }else{// 대각선일 때도 점프 포인트를 생성할 수 있음!!
+            TriangleTestForDiag leftTest = new TriangleTestForDiag(blockPos, nextPos, direction, RelativeDirection.LEFT);
+            TriangleTestForDiag rightTest = new TriangleTestForDiag(blockPos, nextPos, direction, RelativeDirection.RIGHT);
+            if(!leftTest.isRefPosToNeighborPos() && leftTest.isNextPosToNeighborPos()){
+                leftBlocked = true;
+            }
+            if(!rightTest.isRefPosToNeighborPos() && rightTest.isNextPosToNeighborPos()){
+                rightBlocked = true;
+            }
+        }
+        return new JumpPointTestResult(leftBlocked, rightBlocked);
     }
     private static boolean isObstacleFound(BlockPos prevPos, Direction direction){
         // 다음 칸에 장애물과 낭떠러지가 있으면
