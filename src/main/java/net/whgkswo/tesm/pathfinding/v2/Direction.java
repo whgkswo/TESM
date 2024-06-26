@@ -1,5 +1,8 @@
 package net.whgkswo.tesm.pathfinding.v2;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public enum Direction {
     EAST(0,1,0),
     SOUTHEAST(1,1,1),
@@ -10,9 +13,12 @@ public enum Direction {
     NORTH(6,0,-1),
     NORTHEAST(7,1,-1)
     ;
-    private int directionNo;
+    private int number;
     private int directionX; private int directionZ;
-
+    public static ArrayList<Direction> getAllDirections(){
+        return new ArrayList<>(Arrays.asList(Direction.EAST, Direction.SOUTHEAST, Direction.SOUTH,
+                Direction.SOUTHWEST, Direction.WEST, Direction.NORTHWEST, Direction.NORTH, Direction.NORTH));
+    }
     public static Direction getDirectionByNumber(int no){
         return switch (no % 8) {
             case 0 -> EAST;
@@ -34,8 +40,8 @@ public enum Direction {
         }
         return null;
     }
-    Direction(int directionNo,int directionX, int directionZ) {
-        this.directionNo = directionNo;
+    Direction(int number, int directionX, int directionZ) {
+        this.number = number;
         this.directionX = directionX;
         this.directionZ = directionZ;
     }
@@ -46,36 +52,26 @@ public enum Direction {
         return directionZ;
     }
     public Direction getLeftDirection(){
-        /*if(directionX == 0){
-            return getDirectionByComponent(directionZ, directionX);
-        }else{
-            return getDirectionByComponent(directionZ, -directionX);
-        }*/
-        return getDirectionByNumber(directionNo + 6);
+        return getDirectionByNumber(number + 6);
     }
     public Direction getRightDirection(){
-        /*if(directionX == 0){
-            return getDirectionByComponent(-directionZ, directionX);
-        }else{
-            return getDirectionByComponent(directionZ, directionX);
-        }*/
-        return getDirectionByNumber(directionNo + 2);
+        return getDirectionByNumber(number + 2);
     }
     public Direction getLeftDiagDirection(){
-        return getDirectionByNumber(directionNo + 7);
+        return getDirectionByNumber(number + 7);
     }
     public Direction getRightDiagDirection(){
-        return getDirectionByNumber(directionNo + 1);
+        return getDirectionByNumber(number + 1);
     }
     public boolean isDiagonal(){
         return Math.abs(directionX) == Math.abs(directionZ);
     }
-    public int getDirectionNo(){
-        return directionNo;
+    public int getNumber(){
+        return number;
     }
     public RelativeDirection getRelativeDirection(Direction targetDirection){
-        int refNo = getDirectionNo();
-        int targetNo = targetDirection.getDirectionNo();
+        int refNo = getNumber();
+        int targetNo = targetDirection.getNumber();
         int index = (targetNo - refNo) % 8;
         if(index < 0){
             index += 8;

@@ -6,13 +6,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class DirectionSetter {
+
     public static ArrayList<Direction> setSearchDirections(BlockPos startPos, JumpPoint nextJumpPoint){
         Direction prevDirection = nextJumpPoint.getPrevDirection();
         // 첫 탐색인 경우
         if(nextJumpPoint.getBlockPos().equals(startPos)){
-            return new ArrayList<>(Arrays.asList(Direction.EAST, Direction.SOUTHEAST, Direction.SOUTH,
-                    Direction.SOUTHWEST, Direction.WEST, Direction.NORTHWEST, Direction.NORTH,
-                    Direction.NORTHEAST));
+            return Direction.getAllDirections();
         }
         ArrayList<Direction> directions = new ArrayList<>();
         // 왼쪽이 막혔으면 왼쪽과 왼쪽 대각선 추가 탐색

@@ -20,6 +20,7 @@ public class NavMeshCommand {
     public static void register(){
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
             LiteralArgumentBuilder<ServerCommandSource> navMeshCommand = literal("navmesh")
+                    .executes(NavMeshCommand::executeNavMeshCommand)
                     .then(argument("method", StringArgumentType.string())
                             .suggests(METHOD_SUGGESTIONS)
                             .executes(NavMeshCommand::executeNavMeshCommand));
@@ -28,7 +29,12 @@ public class NavMeshCommand {
         });
     }
     private static int executeNavMeshCommand(CommandContext<ServerCommandSource> context) {
-        String methodInput = StringArgumentType.getString(context, "method");
+        String methodInput;
+        try{
+            methodInput = StringArgumentType.getString(context, "method");
+        }catch (IllegalArgumentException e){
+            methodInput = "generate";
+        }
         NavMasher.NavMeshMethod navMeshMethod;
         NavMasher navMasher = new NavMasher();
         try{

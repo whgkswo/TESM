@@ -7,12 +7,15 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.Heightmap;
 import net.whgkswo.tesm.customDataType.SizedStack;
 import net.whgkswo.tesm.general.GlobalVariables;
+import net.whgkswo.tesm.pathfinding.v2.Direction;
+import net.whgkswo.tesm.pathfinding.v2.SearchResult;
 import net.whgkswo.tesm.util.BlockStateHelper;
 
 import java.util.HashMap;
 
 import static net.whgkswo.tesm.general.GlobalVariables.player;
 import static net.whgkswo.tesm.general.GlobalVariables.world;
+import static net.whgkswo.tesm.pathfinding.v2.LinearSearcher.getNextBlock;
 
 public class NavMasher {
     private static final int NAVMESH_RADIUS = 5;
@@ -38,9 +41,32 @@ public class NavMasher {
     public void navMesh(NavMeshMethod navMeshMethod){
         // 네비메쉬 범위 정하기
         Box box = createBox();
-
         // 유효한 좌표를 찾기
         getSteppableBlocks(box);
+        // 내비메쉬 시작
+
+    }
+    private NavMeshDataOfBlockPos blockTest(BlockPos blockPos){
+        NavMeshDataOfBlockPos data = new NavMeshDataOfBlockPos();
+        // 8방향에 대해서
+        for(Direction direction : Direction.getAllDirections()){
+            BlockPos nextPos;
+            // 다음 칸에 장애물과 낭떠러지가 있으면
+            if(!BlockStateHelper.isReachable(blockPos, direction)){
+                data.getData().get(direction).setObstacleFound(true);
+            }else{ // 장애물과 낭떠러지가 없으면
+                // 탐색 방향으로 한 칸 가기
+                nextPos = getNextBlock(blockPos, direction);
+                // 올라가는 좌표 장애물 추가 검사
+                if(blockPos.getY() < nextPos.getY()){
+                    // 천장 머리쿵
+                    if(BlockStateHelper.isObstacle(blockPos.up(3))){
+                        data.getData().get(direction).setObstacleFound(true);
+                    }
+                }
+            }
+        }
+        return null;
     }
     private Box createBox(){
         BlockPos playerPos = new BlockPos(player.getBlockX(), player.getBlockY(), player.getBlockZ());
@@ -82,7 +108,6 @@ public class NavMasher {
             }
             cursorX ++;
         }
-        //player.sendMessage(Text.literal(validPosMap.toString()));
         player.sendMessage(Text.literal(validPosMap.size() + ""));
     }
     private void addSurfaceToMap(){
