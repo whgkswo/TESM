@@ -13,17 +13,14 @@ public class LargeSearcher {
     private final int MAX_SEARCH_RADIUS;
 
     private ArrayList<JumpPoint> openList;
+    private HashMap<BlockPos, BlockPos> closedList;
 
-    private HashMap<BlockPos, SearchResult> closedList;
-    private HashMap<BlockPos, BlockPos> newClosedList;
-
-    public LargeSearcher(BlockPos endPos, int MAX_SEARCH_RADIUS, ArrayList<JumpPoint> openList, HashMap<BlockPos, SearchResult> closedList,
-                         HashMap<BlockPos, BlockPos> newClosedList) {
+    public LargeSearcher(BlockPos endPos, int MAX_SEARCH_RADIUS, ArrayList<JumpPoint> openList,
+                         HashMap<BlockPos, BlockPos> closedList) {
         this.endPos = endPos;
         this.MAX_SEARCH_RADIUS = MAX_SEARCH_RADIUS;
         this.openList = openList;
         this.closedList = closedList;
-        this.newClosedList = newClosedList;
     }
 
     public LargeSearchResult largeSearch(int searchCount, BlockPos startPos){
@@ -47,8 +44,7 @@ public class LargeSearcher {
         /*EntityManager.summonEntity(EntityType.CHICKEN, refPos);*/
         // 해당 좌표를 클로즈 리스트에 추가한 후 오픈 리스트에서 제거
         BlockPos tempPos = new BlockPos(refPos.getX(), refPos.getY(), refPos.getZ()); // 얕은 복사 방지
-        closedList.put(tempPos, result);
-        newClosedList.put(refPos,nextJumpPoint.getLargeRefPos());
+        closedList.put(refPos,nextJumpPoint.getLargeRefPos());
         openList.remove(nextIndex);
         // 다음 방향들에 대해 소탐색 시작
         for(Direction direction : directions){
@@ -67,7 +63,7 @@ public class LargeSearcher {
         LinearSearcher searcher = new LinearSearcher(largeRefPos, endPos, direction, MAX_SEARCH_RADIUS);
         // 주어진 방향에 대해 탐색 실행
         DiagSearchState diagSearchState = new DiagSearchState(0,direction);
-        SearchResult result = searcher.linearSearch(BlockPosManager.getCopyPos(largeRefPos),openList,closedList,diagSearchState,hValue);
+        SearchResult result = searcher.linearSearch(BlockPosManager.getCopyPos(largeRefPos),openList, closedList,diagSearchState,hValue);
         return result;
     }
 }

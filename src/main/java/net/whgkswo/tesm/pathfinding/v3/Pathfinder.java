@@ -65,7 +65,7 @@ public class Pathfinder {
         int searchCount = 0;
         // 루프 돌며 대탐색 실시
         while(searchCount < MAX_SEARCH_REPEAT_COUNT){
-            LargeSearcher largeSearcher = new LargeSearcher(endPos, MAX_SEARCH_RADIUS, openList,closedList, newClosedList);
+            LargeSearcher largeSearcher = new LargeSearcher(endPos, MAX_SEARCH_RADIUS, openList, newClosedList);
             // 경로 탐색 완료했으면 알고리즘 전체 종료
             result = largeSearcher.largeSearch(searchCount, startPos);
             if(result.isFoundDestination()){

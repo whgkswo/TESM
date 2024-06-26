@@ -20,14 +20,9 @@ public class Pathfinder {
     private final Entity targetEntity;
     private final BlockPos startPos;    private final BlockPos endPos;
     private ArrayList<JumpPoint> openList;
-    private HashMap<BlockPos, SearchResult> closedList;
-    private HashMap<BlockPos, BlockPos> newClosedList;
+    private HashMap<BlockPos, BlockPos> closedList;
     private final long startTime;
 
-
-    public BlockPos getStartPos() {
-        return startPos;
-    }
 
     public Pathfinder(String targetName, BlockPos endPos){
         targetEntity = EntityManager.findEntityByName(targetName);
@@ -36,7 +31,6 @@ public class Pathfinder {
         this.endPos = endPos;
         openList = new ArrayList<>();
         closedList = new HashMap<>();
-        newClosedList = new HashMap<>();
         startTime = System.currentTimeMillis();
         try{
             CompletableFuture.runAsync(this::pathfind);
@@ -48,9 +42,7 @@ public class Pathfinder {
     public ArrayList<JumpPoint> getOpenList() {
         return openList;
     }
-    public HashMap<BlockPos, SearchResult> getClosedList() {
-        return closedList;
-    }
+
     public void pathfind(){
         // 이전 탐색에서 사용된 갑옷 거치대와 알레이, 닭 ,벌 없애기
         GlobalVariables.pathfindEntityList.forEach(Entity::kill);
@@ -67,7 +59,7 @@ public class Pathfinder {
         int searchCount = 0;
         // 루프 돌며 대탐색 실시
         while(searchCount < MAX_SEARCH_REPEAT_COUNT){
-            LargeSearcher largeSearcher = new LargeSearcher(endPos, MAX_SEARCH_RADIUS, openList,closedList, newClosedList);
+            LargeSearcher largeSearcher = new LargeSearcher(endPos, MAX_SEARCH_RADIUS, openList, closedList);
             // 경로 탐색 완료했으면 알고리즘 전체 종료
             result = largeSearcher.largeSearch(searchCount, startPos);
             if(result.isFoundDestination()){
@@ -90,7 +82,7 @@ public class Pathfinder {
         while(!refPos.equals(startPos)){
             pathList.add(0, refPos);
             GlobalVariables.pathfindEntityList.add(EntityManager.summonEntity(EntityType.FROG, refPos));
-            refPos = newClosedList.get(refPos);
+            refPos = closedList.get(refPos);
             backtrackCount++;
         }
         return backtrackCount;

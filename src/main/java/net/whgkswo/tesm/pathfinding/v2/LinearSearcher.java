@@ -20,7 +20,7 @@ public class LinearSearcher {
         this.refPos = BlockPosManager.getCopyPos(refPos);    this.endPos = endPos;
         this.maxRepeatCount = maxRepeatCount;
     }
-    public SearchResult linearSearch(BlockPos largeRefPos, ArrayList<JumpPoint> openList, HashMap<BlockPos,SearchResult> closedList,
+    public SearchResult linearSearch(BlockPos largeRefPos, ArrayList<JumpPoint> openList, HashMap<BlockPos,BlockPos> closedList,
                                      DiagSearchState diagSearchState, int trailedDistance){
         cursorX = refPos.getX();
         cursorY = refPos.getY();
@@ -82,7 +82,7 @@ public class LinearSearcher {
             if(leftBlocked || rightBlocked){
                 // 점프 포인트 생성
                 /*player.sendMessage(Text.literal("점프 포인트 생성 (" + nextPos.getX() + ", " + nextPos.getY() + ", " + nextPos.getZ() + ")"));*/
-                JumpPoint jumpPoint = createAndRegisterJumpPoint(largeRefPos,nextPos, direction, trailedDistance,diagSearchState, endPos,leftBlocked,rightBlocked,openList,closedList);
+                JumpPoint jumpPoint = createAndRegisterJumpPoint(largeRefPos,nextPos, direction, trailedDistance,diagSearchState, endPos,leftBlocked,rightBlocked,openList, closedList);
                 // 결과 리턴
                 return new SearchResult(false, jumpPoint);
             }
@@ -94,13 +94,13 @@ public class LinearSearcher {
                 DiagSearchState currentDiagSearchState = new DiagSearchState(i, direction);
                 // x방향 탐색
                 LinearSearcher xSearcher = new LinearSearcher(nextPos, endPos, Direction.getDirectionByComponent(direction.getX(), 0), branchLength);
-                SearchResult xBranchResult = xSearcher.linearSearch(largeRefPos,openList,closedList,currentDiagSearchState,trailedDistance);
+                SearchResult xBranchResult = xSearcher.linearSearch(largeRefPos,openList, closedList,currentDiagSearchState,trailedDistance);
                 if(xBranchResult.hasFoundDestination()){
                     return xBranchResult;
                 }else { // 목적지를 찾지 못했다면
                     LinearSearcher zSearcher = new LinearSearcher(nextPos, endPos, Direction.getDirectionByComponent(0, direction.getZ()),branchLength);
                     // z방향 탐색
-                    SearchResult zBranchResult = zSearcher.linearSearch(largeRefPos,openList,closedList,currentDiagSearchState,trailedDistance);
+                    SearchResult zBranchResult = zSearcher.linearSearch(largeRefPos,openList, closedList,currentDiagSearchState,trailedDistance);
                     if(zBranchResult.hasFoundDestination()){
                         return zBranchResult;
                     }
@@ -111,11 +111,11 @@ public class LinearSearcher {
         BlockPos resultPos = new BlockPos(cursorX,cursorY,cursorZ);
         /*player.sendMessage(Text.literal("탐색 종료 포인트 생성 (" + resultPos.getX() + ", " + resultPos.getY() + ", " + resultPos.getZ() + ")"));*/
 
-        createAndRegisterJumpPoint(largeRefPos,resultPos, direction,trailedDistance,diagSearchState,endPos,false,false,openList,closedList);
+        createAndRegisterJumpPoint(largeRefPos,resultPos, direction,trailedDistance,diagSearchState,endPos,false,false,openList, closedList);
         // 결과 반환
         return new SearchResult(false, null);
     }
-    public static boolean isValidCoordForJumpPoint(BlockPos targetPos, ArrayList<JumpPoint> openList, HashMap<BlockPos, SearchResult> closedList){
+    public static boolean isValidCoordForJumpPoint(BlockPos targetPos, ArrayList<JumpPoint> openList, HashMap<BlockPos, BlockPos> closedList){
         boolean duplicatedInOL = false;
         for (JumpPoint jumpPoint : openList) {
             BlockPos jpPos = jumpPoint.getBlockPos();
@@ -125,7 +125,7 @@ public class LinearSearcher {
             }
         }
         boolean duplicatedInCL = false;
-        for(BlockPos blockPos :closedList.keySet()){
+        for(BlockPos blockPos : closedList.keySet()){
             if(targetPos.getX() == blockPos.getX() && targetPos.getY() == blockPos.getY() && targetPos.getZ() == blockPos.getZ()){
                 duplicatedInCL = true;
                 break;
@@ -134,7 +134,7 @@ public class LinearSearcher {
         return !duplicatedInOL && !duplicatedInCL;
     }
     public JumpPoint createAndRegisterJumpPoint(BlockPos largeRefPos, BlockPos currentPos, Direction direction, int trailedDistance,DiagSearchState diagSearchState, BlockPos endPos, boolean leftBlocked, boolean rightBlocked,
-                                                ArrayList<JumpPoint> openList, HashMap<BlockPos, SearchResult> closedList){
+                                                ArrayList<JumpPoint> openList, HashMap<BlockPos, BlockPos> closedList){
 
         int nextTrailedDistance = trailedDistance + diagSearchState.getSearchedCount()*14 + this.getMaxRepeatCount()*10;
         // 점프 포인트 생성
