@@ -87,7 +87,7 @@ public class LinearSearcher {
         // 결과 반환
         return new SearchResult(false, null);
     }
-    private static JumpPointTestResult jumpPointTest(BlockPos blockPos, BlockPos nextPos, Direction direction){
+    public static JumpPointTestResult jumpPointTest(BlockPos blockPos, BlockPos nextPos, Direction direction){
         boolean leftBlocked = false;    boolean rightBlocked = false;
         if(!direction.isDiagonal()){
             TriangleTestResult leftTestResult = new TriangleTestResult(blockPos, direction, RelativeDirection.LEFT);

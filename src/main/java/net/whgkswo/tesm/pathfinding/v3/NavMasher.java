@@ -1,13 +1,18 @@
 package net.whgkswo.tesm.pathfinding.v3;
 
+import net.minecraft.entity.EntityType;
+import net.minecraft.network.packet.s2c.play.ChunkData;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.Heightmap;
 import net.whgkswo.tesm.customDataType.SizedStack;
+import net.whgkswo.tesm.entitymanaging.EntityManager;
 import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.pathfinding.v2.Direction;
+import net.whgkswo.tesm.pathfinding.v2.JumpPointTestResult;
+import net.whgkswo.tesm.pathfinding.v2.LinearSearcher;
 import net.whgkswo.tesm.util.BlockPosUtil;
 
 import java.util.HashMap;
@@ -37,37 +42,53 @@ public class NavMasher {
     }
 
     public void navMesh(NavMeshMethod navMeshMethod){
+        BlockPos playerPos = new BlockPos(player.getBlockX(), player.getBlockY(), player.getBlockZ());
         // 네비메쉬 범위 정하기
-        Box box = createBox();
+        Box box = createBox(playerPos);
         // 유효한 좌표를 찾기
         getSteppableBlocks(box);
+        /*for(BlockPos blockPos : validPosMap.keySet()){
+            EntityManager.summonEntity(EntityType.FROG, blockPos);
+        }*/
         // 내비메쉬 시작
-
+        NavMeshDataOfChunk chunkData = new NavMeshDataOfChunk(world.getChunk(playerPos));
+        for(BlockPos blockPos : validPosMap.keySet()){
+            NavMeshDataOfBlockPos blockData = blockTest(blockPos);
+            chunkData.getData().put(blockPos, blockData);
+        }
+        // 청크 스캔 데이터를 파일로 저장하기
     }
     private NavMeshDataOfBlockPos blockTest(BlockPos blockPos){
-        NavMeshDataOfBlockPos data = new NavMeshDataOfBlockPos();
+        NavMeshDataOfBlockPos blockData = new NavMeshDataOfBlockPos();
         // 8방향에 대해서
         for(Direction direction : Direction.getAllDirections()){
-            BlockPos nextPos;
+            boolean obstacleFound = false;
+            BlockPos nextPos = BlockPosUtil.getNextBlock(blockPos, direction);
             // 다음 칸에 장애물과 낭떠러지가 있으면
             if(!BlockPosUtil.isReachable(blockPos, direction)){
-                data.getData().get(direction).setObstacleFound(true);
+                obstacleFound = true;
             }else{ // 장애물과 낭떠러지가 없으면
-                // 탐색 방향으로 한 칸 가기
-                nextPos = BlockPosUtil.getNextBlock(blockPos, direction);
                 // 올라가는 좌표 장애물 추가 검사
                 if(blockPos.getY() < nextPos.getY()){
                     // 천장 머리쿵
                     if(BlockPosUtil.isObstacle(blockPos.up(3))){
-                        data.getData().get(direction).setObstacleFound(true);
+                        obstacleFound = true;
                     }
                 }
             }
+            NavMeshDataOfDirection directionData;
+            if(obstacleFound){
+                directionData = new NavMeshDataOfDirection(true, null, null);
+            }else{
+                JumpPointTestResult jpTestResult = LinearSearcher.jumpPointTest(blockPos, nextPos,direction);
+                directionData = new NavMeshDataOfDirection(
+                        obstacleFound, jpTestResult.isLeftBlocked(), jpTestResult.isRightBlocked());
+            }
+            blockData.getDirectionData().put(direction, directionData);
         }
-        return null;
+        return blockData;
     }
-    private Box createBox(){
-        BlockPos playerPos = new BlockPos(player.getBlockX(), player.getBlockY(), player.getBlockZ());
+    private Box createBox(BlockPos playerPos){
         /*Box box = new Box(playerPos.getX() - NAVMESH_RADIUS,0, playerPos.getZ() - NAVMESH_RADIUS,
                 playerPos.getX() + NAVMESH_RADIUS,0,playerPos.getZ() + NAVMESH_RADIUS);*/
         ChunkPos chunkPos = world.getChunk(playerPos).getPos();
@@ -76,7 +97,7 @@ public class NavMasher {
         return box;
     }
     private void getSteppableBlocks(Box box){
-        cursorX = (int) box.minX;  cursorZ = (int) box.minZ;
+        cursorX = (int) box.minX;
 
         for(int i = 0; i< 16; i++){
             cursorZ = (int) box.minZ;
@@ -110,7 +131,8 @@ public class NavMasher {
     }
     private void addSurfaceToMap(){
         //player.sendMessage(Text.literal(String.format("(%d, %d)", cursorX,cursorZ)));
-        cursorY = GlobalVariables.world.getTopPosition(Heightmap.Type.WORLD_SURFACE, new BlockPos(cursorX,0,cursorZ)).getY();
+        cursorY = GlobalVariables.world.
+                getTopPosition(Heightmap.Type.WORLD_SURFACE, new BlockPos(cursorX,0,cursorZ)).getY() - 1 ;
         validPosMap.put(new BlockPos(cursorX, cursorY, cursorZ), true);
     }
     private void down3Blocks(){

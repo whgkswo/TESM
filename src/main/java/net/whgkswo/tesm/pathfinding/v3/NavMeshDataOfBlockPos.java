@@ -6,11 +6,19 @@ import net.whgkswo.tesm.pathfinding.v2.Direction;
 import java.util.HashMap;
 
 public class NavMeshDataOfBlockPos {
-    private BlockPos blockPos;
 
-    public HashMap<Direction, NavMeshDataOfDirection> getData() {
-        return data;
+
+    public NavMeshDataOfBlockPos() {
+        directionData = new HashMap<>();
     }
 
-    private HashMap<Direction, NavMeshDataOfDirection> data;
+    public void setDirectionData(HashMap<Direction, NavMeshDataOfDirection> directionData) {
+        this.directionData = directionData;
+    }
+
+    public HashMap<Direction, NavMeshDataOfDirection> getDirectionData() {
+        return directionData;
+    }
+
+    private HashMap<Direction, NavMeshDataOfDirection> directionData;
 }

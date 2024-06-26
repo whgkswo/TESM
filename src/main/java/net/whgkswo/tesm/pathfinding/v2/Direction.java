@@ -17,7 +17,7 @@ public enum Direction {
     private int directionX; private int directionZ;
     public static ArrayList<Direction> getAllDirections(){
         return new ArrayList<>(Arrays.asList(Direction.EAST, Direction.SOUTHEAST, Direction.SOUTH,
-                Direction.SOUTHWEST, Direction.WEST, Direction.NORTHWEST, Direction.NORTH, Direction.NORTH));
+                Direction.SOUTHWEST, Direction.WEST, Direction.NORTHWEST, Direction.NORTH, Direction.NORTHEAST));
     }
     public static Direction getDirectionByNumber(int no){
         return switch (no % 8) {
