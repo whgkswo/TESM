@@ -22,10 +22,10 @@ public class SummonVillager {
                 dispatcher.register(
                         CommandManager.literal("summonVillager")
                                 .then(CommandManager.argument("name", StringArgumentType.string())
-                                        .executes(context -> {
-                                            String name = StringArgumentType.getString(context, "name");
-                                            return executeCommand(context.getSource(), name);
-                                        }))
+                                .executes(context -> {
+                                    String name = StringArgumentType.getString(context, "name");
+                                    return executeCommand(context.getSource(), name);
+                                }))
                 )
         );
     }

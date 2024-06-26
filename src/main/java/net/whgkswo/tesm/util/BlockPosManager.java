@@ -1,4 +1,4 @@
-package net.whgkswo.tesm.pathfinding.v2;
+package net.whgkswo.tesm.util;
 
 import net.minecraft.util.math.BlockPos;
 

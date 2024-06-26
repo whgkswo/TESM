@@ -4,6 +4,8 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.whgkswo.tesm.exceptions.EmptyOpenListExeption;
 import net.whgkswo.tesm.general.GlobalVariables;
+import net.whgkswo.tesm.util.BlockPosManager;
+import net.whgkswo.tesm.util.OpenListManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,6 +1,7 @@
 package net.whgkswo.tesm.pathfinding.v2;
 
 import net.minecraft.util.math.BlockPos;
+import net.whgkswo.tesm.util.BlockStateHelper;
 
 public class TriangleTestForDiag {
     private boolean refPosToNeighborPos;

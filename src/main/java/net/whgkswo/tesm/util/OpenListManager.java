@@ -1,4 +1,6 @@
-package net.whgkswo.tesm.pathfinding.v2;
+package net.whgkswo.tesm.util;
+
+import net.whgkswo.tesm.pathfinding.v2.JumpPoint;
 
 import java.util.ArrayList;
 

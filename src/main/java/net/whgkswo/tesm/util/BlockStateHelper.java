@@ -1,8 +1,8 @@
-package net.whgkswo.tesm.pathfinding.v2;
+package net.whgkswo.tesm.util;
 
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
+import net.whgkswo.tesm.pathfinding.v2.Direction;
 import net.whgkswo.tesm.tags.BlockTags;
 
 import static net.whgkswo.tesm.general.GlobalVariables.world;
