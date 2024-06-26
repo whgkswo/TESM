@@ -8,6 +8,14 @@ public class NavMeshDataOfDirection {
     private Boolean leftBlocked;
     private Boolean rightBlocked;
 
+    public Boolean getLeftBlocked() {
+        return leftBlocked;
+    }
+
+    public Boolean getRightBlocked() {
+        return rightBlocked;
+    }
+
     public NavMeshDataOfDirection(boolean obstacleFound, Boolean leftBlocked, Boolean rightBlocked) {
         this.obstacleFound = obstacleFound;
         this.leftBlocked = leftBlocked;

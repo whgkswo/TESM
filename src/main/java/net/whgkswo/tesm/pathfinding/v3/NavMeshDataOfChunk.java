@@ -7,16 +7,17 @@ import java.util.HashMap;
 
 
 public class NavMeshDataOfChunk {
-    private Chunk chunk;
     private HashMap<BlockPos, NavMeshDataOfBlockPos> data;
 
-    public NavMeshDataOfChunk(Chunk chunk) {
-        this.chunk = chunk;
+    public NavMeshDataOfChunk() {
         data = new HashMap<>();
     }
 
     public NavMeshDataOfBlockPos getBlockData(BlockPos blockPos){
         return data.get(blockPos);
+    }
+    public void putBlockData(BlockPos blockPos,NavMeshDataOfBlockPos data){
+        this.data.put(blockPos, data);
     }
 
     public HashMap<BlockPos, NavMeshDataOfBlockPos> getData() {

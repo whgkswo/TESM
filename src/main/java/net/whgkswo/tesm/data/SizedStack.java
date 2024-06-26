@@ -1,4 +1,4 @@
-package net.whgkswo.tesm.customDataType;
+package net.whgkswo.tesm.data;
 import java.util.Stack;
 
 public class SizedStack<T> extends Stack<T> {

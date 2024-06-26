@@ -16,7 +16,7 @@ import static net.minecraft.server.command.CommandManager.argument;
 
 public class NavMeshCommand {
     private static final SuggestionProvider<ServerCommandSource> METHOD_SUGGESTIONS = (context, builder) ->
-            CommandSource.suggestMatching(new String[]{"generate", "update"}, builder);
+            CommandSource.suggestMatching(new String[]{"missing", "all"}, builder);
     public static void register(){
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
             LiteralArgumentBuilder<ServerCommandSource> navMeshCommand = literal("navmesh")
@@ -33,7 +33,7 @@ public class NavMeshCommand {
         try{
             methodInput = StringArgumentType.getString(context, "method");
         }catch (IllegalArgumentException e){
-            methodInput = "generate";
+            methodInput = "missing";
         }
         NavMasher.NavMeshMethod navMeshMethod;
         NavMasher navMasher = new NavMasher();

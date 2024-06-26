@@ -1,14 +1,12 @@
 package net.whgkswo.tesm.pathfinding.v3;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.network.packet.s2c.play.ChunkData;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.Heightmap;
-import net.whgkswo.tesm.customDataType.SizedStack;
-import net.whgkswo.tesm.entitymanaging.EntityManager;
+import net.whgkswo.tesm.data.DataSerializer;
+import net.whgkswo.tesm.data.SizedStack;
 import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.pathfinding.v2.Direction;
 import net.whgkswo.tesm.pathfinding.v2.JumpPointTestResult;
@@ -21,20 +19,19 @@ import static net.whgkswo.tesm.general.GlobalVariables.player;
 import static net.whgkswo.tesm.general.GlobalVariables.world;
 
 public class NavMasher {
-    private static final int NAVMESH_RADIUS = 5;
     private final SizedStack<Boolean> stack = new SizedStack<>(2);
     private int cursorX;    private int cursorY;    private int cursorZ;
     boolean prevPosIsObstacle;
     HashMap<BlockPos, Boolean> validPosMap = new HashMap<>();
     public enum NavMeshMethod{
-        GENERATE,
-        UPDATE
+        MISSING,
+        ALL
         ;
         public static NavMeshMethod getMethod(String str){
-            if(str.equals("generate")){
-                return GENERATE;
-            }else if (str.equals("update")){
-                return UPDATE;
+            if(str.equals("missing")){
+                return MISSING;
+            }else if (str.equals("all")){
+                return ALL;
             }else{
                 throw null;
             }
@@ -43,6 +40,7 @@ public class NavMasher {
 
     public void navMesh(NavMeshMethod navMeshMethod){
         BlockPos playerPos = new BlockPos(player.getBlockX(), player.getBlockY(), player.getBlockZ());
+        /*player.sendMessage(Text.literal(world.getChunk(playerPos).getPos().toString()));*/
         // 네비메쉬 범위 정하기
         Box box = createBox(playerPos);
         // 유효한 좌표를 찾기
@@ -51,12 +49,14 @@ public class NavMasher {
             EntityManager.summonEntity(EntityType.FROG, blockPos);
         }*/
         // 내비메쉬 시작
-        NavMeshDataOfChunk chunkData = new NavMeshDataOfChunk(world.getChunk(playerPos));
+        NavMeshDataOfChunk chunkData = new NavMeshDataOfChunk();
         for(BlockPos blockPos : validPosMap.keySet()){
             NavMeshDataOfBlockPos blockData = blockTest(blockPos);
-            chunkData.getData().put(blockPos, blockData);
+            chunkData.putBlockData(blockPos, blockData);
         }
         // 청크 스캔 데이터를 파일로 저장하기
+        ChunkPos chunkPos = world.getChunk(playerPos).getPos();
+        DataSerializer.createJson(chunkData, chunkPos.x + "_" + chunkPos.z + ".json");
     }
     private NavMeshDataOfBlockPos blockTest(BlockPos blockPos){
         NavMeshDataOfBlockPos blockData = new NavMeshDataOfBlockPos();
@@ -84,7 +84,7 @@ public class NavMasher {
                 directionData = new NavMeshDataOfDirection(
                         obstacleFound, jpTestResult.isLeftBlocked(), jpTestResult.isRightBlocked());
             }
-            blockData.getDirectionData().put(direction, directionData);
+            blockData.putDirectionData(direction, directionData);
         }
         return blockData;
     }

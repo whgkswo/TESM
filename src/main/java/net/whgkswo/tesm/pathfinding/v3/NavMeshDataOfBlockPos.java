@@ -1,6 +1,5 @@
 package net.whgkswo.tesm.pathfinding.v3;
 
-import net.minecraft.util.math.BlockPos;
 import net.whgkswo.tesm.pathfinding.v2.Direction;
 
 import java.util.HashMap;
@@ -9,16 +8,19 @@ public class NavMeshDataOfBlockPos {
 
 
     public NavMeshDataOfBlockPos() {
-        directionData = new HashMap<>();
+        data = new HashMap<>();
     }
 
-    public void setDirectionData(HashMap<Direction, NavMeshDataOfDirection> directionData) {
-        this.directionData = directionData;
+    public void setData(HashMap<Direction, NavMeshDataOfDirection> data) {
+        this.data = data;
+    }
+    public void putDirectionData(Direction direction, NavMeshDataOfDirection data){
+        this.data.put(direction,data);
     }
 
-    public HashMap<Direction, NavMeshDataOfDirection> getDirectionData() {
-        return directionData;
+    public HashMap<Direction, NavMeshDataOfDirection> getData() {
+        return data;
     }
 
-    private HashMap<Direction, NavMeshDataOfDirection> directionData;
+    private HashMap<Direction, NavMeshDataOfDirection> data;
 }
