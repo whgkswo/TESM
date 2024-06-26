@@ -1,7 +1,7 @@
 package net.whgkswo.tesm.pathfinding.v2;
 
 import net.minecraft.util.math.BlockPos;
-import net.whgkswo.tesm.util.BlockStateHelper;
+import net.whgkswo.tesm.util.BlockPosUtil;
 
 public class TriangleTestResult {
     private boolean adjacentTestResult;
@@ -31,15 +31,15 @@ public class TriangleTestResult {
             perpendicularDirection = refDirection.getRightDirection();
         }
         // 삼각 검사 - 밑변
-        adjacentTestResult = BlockStateHelper.isReachable(refPos, perpendicularDirection);
+        adjacentTestResult = BlockPosUtil.isReachable(refPos, perpendicularDirection);
         if(adjacentTestResult){
             // 삼각 검사 - 옆변
-            BlockPos sidePos = LinearSearcher.getNextBlock(refPos, perpendicularDirection);
-            oppositeTestResult = BlockStateHelper.isReachable(sidePos, refDirection);
+            BlockPos sidePos = BlockPosUtil.getNextBlock(refPos, perpendicularDirection);
+            oppositeTestResult = BlockPosUtil.isReachable(sidePos, refDirection);
             // 삼각 검사 - 대각선
             Direction hypotenuseDirection = Direction.getDirectionByComponent(refDirection.getX() + perpendicularDirection.getX(),
                     refDirection.getZ() + perpendicularDirection.getZ());
-            hypotenuseTestResult = BlockStateHelper.isReachable(refPos,hypotenuseDirection);
+            hypotenuseTestResult = BlockPosUtil.isReachable(refPos,hypotenuseDirection);
         }
     }
 }

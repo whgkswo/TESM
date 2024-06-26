@@ -1,7 +1,7 @@
 package net.whgkswo.tesm.pathfinding.v2;
 
 import net.minecraft.util.math.BlockPos;
-import net.whgkswo.tesm.util.BlockStateHelper;
+import net.whgkswo.tesm.util.BlockPosUtil;
 
 public class TriangleTestForDiag {
     private boolean refPosToNeighborPos;
@@ -21,10 +21,10 @@ public class TriangleTestForDiag {
 
         Direction refPosToNeighborDirection =
                 testDirection == RelativeDirection.LEFT ? direction.getLeftDiagDirection() : direction.getRightDiagDirection();
-        refPosToNeighborPos = BlockStateHelper.isReachable(refPos, refPosToNeighborDirection);
+        refPosToNeighborPos = BlockPosUtil.isReachable(refPos, refPosToNeighborDirection);
 
         Direction nextPosToNeighborDirection =
                 testDirection == RelativeDirection.LEFT ? refPosToNeighborDirection.getLeftDirection() : refPosToNeighborDirection.getRightDirection();
-        nextPosToNeighborPos = BlockStateHelper.isReachable(nextPos, nextPosToNeighborDirection);
+        nextPosToNeighborPos = BlockPosUtil.isReachable(nextPos, nextPosToNeighborDirection);
     }
 }

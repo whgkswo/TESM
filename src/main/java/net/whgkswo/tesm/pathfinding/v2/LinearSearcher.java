@@ -1,12 +1,13 @@
 package net.whgkswo.tesm.pathfinding.v2;
 
 import net.minecraft.util.math.BlockPos;
-import net.whgkswo.tesm.util.BlockPosManager;
-import net.whgkswo.tesm.util.BlockStateHelper;
+import net.whgkswo.tesm.util.BlockPosUtil;
 import net.whgkswo.tesm.util.JumpPointTester;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static net.whgkswo.tesm.util.BlockPosUtil.getNextBlock;
 
 public class LinearSearcher {
     private int cursorX;    private int cursorY;    private int cursorZ;
@@ -20,7 +21,7 @@ public class LinearSearcher {
 
     public LinearSearcher(BlockPos refPos, BlockPos endPos, Direction direction, int maxRepeatCount){
         this.direction = direction;
-        this.refPos = BlockPosManager.getCopyPos(refPos);    this.endPos = endPos;
+        this.refPos = BlockPosUtil.getCopyPos(refPos);    this.endPos = endPos;
         this.maxRepeatCount = maxRepeatCount;
     }
     public SearchResult linearSearch(BlockPos largeRefPos, ArrayList<JumpPoint> openList, HashMap<BlockPos,BlockPos> closedList,
@@ -51,8 +52,8 @@ public class LinearSearcher {
             if(!direction.isDiagonal()){
                 TriangleTestResult leftTestResult = new TriangleTestResult(prevPos, direction, RelativeDirection.LEFT);
                 TriangleTestResult rightTestResult = new TriangleTestResult(prevPos, direction, RelativeDirection.RIGHT);
-                boolean finalTestLeft = BlockStateHelper.isReachable(nextPos, direction.getLeftDirection());
-                boolean finalTestRight = BlockStateHelper.isReachable(nextPos, direction.getRightDirection());
+                boolean finalTestLeft = BlockPosUtil.isReachable(nextPos, direction.getLeftDirection());
+                boolean finalTestRight = BlockPosUtil.isReachable(nextPos, direction.getRightDirection());
 
                 if(JumpPointTester.jumpPointTest(leftTestResult, finalTestLeft)){
                     leftBlocked = true;
@@ -109,7 +110,7 @@ public class LinearSearcher {
     }
     private static boolean isObstacleFound(BlockPos prevPos, Direction direction){
         // 다음 칸에 장애물과 낭떠러지가 있으면
-        if(!BlockStateHelper.isReachable(prevPos, direction)){
+        if(!BlockPosUtil.isReachable(prevPos, direction)){
             return true;
         }else{ // 장애물과 낭떠러지가 없으면
             // 탐색 방향으로 한 칸 가기
@@ -117,14 +118,14 @@ public class LinearSearcher {
             // 올라가는 좌표 장애물 추가 검사
             if(prevPos.getY() < nextPos.getY()){
                 // 천장 머리쿵
-                if(BlockStateHelper.isObstacle(prevPos.up(3))){
+                if(BlockPosUtil.isObstacle(prevPos.up(3))){
                     return true;
                 }
             }
         }
         return false;
     }
-    public static boolean isValidCoordForJumpPoint(BlockPos targetPos, ArrayList<JumpPoint> openList, HashMap<BlockPos, BlockPos> closedList){
+    private static boolean isValidCoordForJumpPoint(BlockPos targetPos, ArrayList<JumpPoint> openList, HashMap<BlockPos, BlockPos> closedList){
         boolean duplicatedInOL = false;
         for (JumpPoint jumpPoint : openList) {
             BlockPos jpPos = jumpPoint.getBlockPos();
@@ -142,7 +143,7 @@ public class LinearSearcher {
         }
         return !duplicatedInOL && !duplicatedInCL;
     }
-    public JumpPoint createAndRegisterJumpPoint(BlockPos largeRefPos, BlockPos currentPos, Direction direction, int trailedDistance,DiagSearchState diagSearchState, BlockPos endPos, boolean leftBlocked, boolean rightBlocked,
+    private JumpPoint createAndRegisterJumpPoint(BlockPos largeRefPos, BlockPos currentPos, Direction direction, int trailedDistance,DiagSearchState diagSearchState, BlockPos endPos, boolean leftBlocked, boolean rightBlocked,
                                                 ArrayList<JumpPoint> openList, HashMap<BlockPos, BlockPos> closedList){
 
         int nextTrailedDistance = trailedDistance + diagSearchState.getSearchedCount()*14 + this.getMaxRepeatCount()*10;
@@ -155,21 +156,5 @@ public class LinearSearcher {
             openList.add(jumpPoint);
         }
         return jumpPoint;
-    }
-    public static BlockPos getNextBlock(BlockPos refPos, Direction direction){
-        // 탐색 방향으로 한 칸 가기
-        int cursorX = refPos.getX() + direction.getX();
-        int cursorY = refPos.getY();
-        int cursorZ = refPos.getZ() + direction.getZ();
-
-        BlockPos nextPos = new BlockPos(cursorX, cursorY, cursorZ);
-        if(BlockStateHelper.isSolid(nextPos.up(1))){
-            // 올라가기
-            cursorY++;
-        }else if (!BlockStateHelper.isSolid(nextPos)){
-            // 내려가기
-            cursorY--;
-        }
-        return new BlockPos(cursorX, cursorY, cursorZ);
     }
 }

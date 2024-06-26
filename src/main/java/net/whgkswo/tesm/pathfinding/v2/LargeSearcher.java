@@ -4,7 +4,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.whgkswo.tesm.exceptions.EmptyOpenListExeption;
 import net.whgkswo.tesm.general.GlobalVariables;
-import net.whgkswo.tesm.util.BlockPosManager;
+import net.whgkswo.tesm.util.BlockPosUtil;
 import net.whgkswo.tesm.util.OpenListManager;
 
 import java.util.ArrayList;
@@ -65,7 +65,7 @@ public class LargeSearcher {
         LinearSearcher searcher = new LinearSearcher(largeRefPos, endPos, direction, MAX_SEARCH_RADIUS);
         // 주어진 방향에 대해 탐색 실행
         DiagSearchState diagSearchState = new DiagSearchState(0,direction);
-        SearchResult result = searcher.linearSearch(BlockPosManager.getCopyPos(largeRefPos),openList, closedList,diagSearchState,hValue);
+        SearchResult result = searcher.linearSearch(BlockPosUtil.getCopyPos(largeRefPos),openList, closedList,diagSearchState,hValue);
         return result;
     }
 }

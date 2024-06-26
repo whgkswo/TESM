@@ -6,10 +6,32 @@ import net.whgkswo.tesm.pathfinding.v2.Direction;
 import net.whgkswo.tesm.tags.BlockTags;
 
 import static net.whgkswo.tesm.general.GlobalVariables.world;
-import static net.whgkswo.tesm.pathfinding.v2.LinearSearcher.getNextBlock;
 
+public class BlockPosUtil {
+    public static double getRoughDistance(BlockPos pos1, BlockPos pos2){
+        int farGap = Math.max(Math.abs(pos1.getX()- pos2.getX()),Math.abs(pos1.getZ()- pos2.getZ()));
+        int closeGap = Math.min(Math.abs(pos1.getX()- pos2.getX()),Math.abs(pos1.getZ()- pos2.getZ()));
+        return 1.4*(closeGap) + farGap-closeGap;
+    }
+    public static BlockPos getCopyPos(BlockPos targetPos){
+        return new BlockPos(targetPos.getX(), targetPos.getY(), targetPos.getZ());
+    }
+    public static BlockPos getNextBlock(BlockPos refPos, Direction direction) {
+        // 탐색 방향으로 한 칸 가기
+        int cursorX = refPos.getX() + direction.getX();
+        int cursorY = refPos.getY();
+        int cursorZ = refPos.getZ() + direction.getZ();
 
-public class BlockStateHelper {
+        BlockPos nextPos = new BlockPos(cursorX, cursorY, cursorZ);
+        if (BlockPosUtil.isSolid(nextPos.up(1))) {
+            // 올라가기
+            cursorY++;
+        } else if (!BlockPosUtil.isSolid(nextPos)) {
+            // 내려가기
+            cursorY--;
+        }
+        return new BlockPos(cursorX, cursorY, cursorZ);
+    }
     public static boolean isSolid(BlockPos blockPos){
         VoxelShape shape = world.getBlockState(blockPos).getCollisionShape(world,blockPos);
         return !shape.isEmpty();
@@ -54,8 +76,8 @@ public class BlockStateHelper {
 
             BlockPos xRefPos = new BlockPos(refPos.getX() + direction.getX(), refPos.getY(), refPos.getZ()).up(offset);
             BlockPos zRefPos = new BlockPos(refPos.getX(), refPos.getY(), refPos.getZ() + direction.getZ()).up(offset);
-            boolean xBlocked = BlockStateHelper.isObstacle(xRefPos) || BlockStateHelper.isObstacle(xRefPos.up(1));
-            boolean zBlocked = BlockStateHelper.isObstacle(zRefPos) || BlockStateHelper.isObstacle(zRefPos.up(1));
+            boolean xBlocked = BlockPosUtil.isObstacle(xRefPos) || BlockPosUtil.isObstacle(xRefPos.up(1));
+            boolean zBlocked = BlockPosUtil.isObstacle(zRefPos) || BlockPosUtil.isObstacle(zRefPos.up(1));
             return !xBlocked && !zBlocked;
         }
         return true;

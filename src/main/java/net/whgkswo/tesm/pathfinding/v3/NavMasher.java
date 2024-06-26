@@ -8,14 +8,12 @@ import net.minecraft.world.Heightmap;
 import net.whgkswo.tesm.customDataType.SizedStack;
 import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.pathfinding.v2.Direction;
-import net.whgkswo.tesm.pathfinding.v2.SearchResult;
-import net.whgkswo.tesm.util.BlockStateHelper;
+import net.whgkswo.tesm.util.BlockPosUtil;
 
 import java.util.HashMap;
 
 import static net.whgkswo.tesm.general.GlobalVariables.player;
 import static net.whgkswo.tesm.general.GlobalVariables.world;
-import static net.whgkswo.tesm.pathfinding.v2.LinearSearcher.getNextBlock;
 
 public class NavMasher {
     private static final int NAVMESH_RADIUS = 5;
@@ -52,15 +50,15 @@ public class NavMasher {
         for(Direction direction : Direction.getAllDirections()){
             BlockPos nextPos;
             // 다음 칸에 장애물과 낭떠러지가 있으면
-            if(!BlockStateHelper.isReachable(blockPos, direction)){
+            if(!BlockPosUtil.isReachable(blockPos, direction)){
                 data.getData().get(direction).setObstacleFound(true);
             }else{ // 장애물과 낭떠러지가 없으면
                 // 탐색 방향으로 한 칸 가기
-                nextPos = getNextBlock(blockPos, direction);
+                nextPos = BlockPosUtil.getNextBlock(blockPos, direction);
                 // 올라가는 좌표 장애물 추가 검사
                 if(blockPos.getY() < nextPos.getY()){
                     // 천장 머리쿵
-                    if(BlockStateHelper.isObstacle(blockPos.up(3))){
+                    if(BlockPosUtil.isObstacle(blockPos.up(3))){
                         data.getData().get(direction).setObstacleFound(true);
                     }
                 }
@@ -93,10 +91,10 @@ public class NavMasher {
                     }else{
                         down1Blocks();
                     }
-                    if(BlockStateHelper.isObstacle(new BlockPos(cursorX,cursorY,cursorZ))){
+                    if(BlockPosUtil.isObstacle(new BlockPos(cursorX,cursorY,cursorZ))){
                         prevPosIsObstacle = true;
                         // 트랩 말고 진짜로 유효한, 단단한 블럭이었다면
-                        if(!BlockStateHelper.isTrapBlock(new BlockPos(cursorX,cursorY,cursorZ))){
+                        if(!BlockPosUtil.isTrapBlock(new BlockPos(cursorX,cursorY,cursorZ))){
                             if(!stack.get(0) && !stack.get(1)){
                                 // 유효한 좌표
                                 validPosMap.put(new BlockPos(cursorX,cursorY,cursorZ), true);
@@ -118,12 +116,12 @@ public class NavMasher {
     private void down3Blocks(){
         cursorY -= 3;
         stack.clear();
-        stack.push(BlockStateHelper.isObstacle(new BlockPos(cursorX,cursorY,cursorZ).up(2)));
-        stack.push(BlockStateHelper.isObstacle(new BlockPos(cursorX,cursorY,cursorZ).up()));
+        stack.push(BlockPosUtil.isObstacle(new BlockPos(cursorX,cursorY,cursorZ).up(2)));
+        stack.push(BlockPosUtil.isObstacle(new BlockPos(cursorX,cursorY,cursorZ).up()));
         prevPosIsObstacle = false;
     }
     private void down1Blocks(){
         cursorY -= 1;
-        stack.push(BlockStateHelper.isObstacle(new BlockPos(cursorX,cursorY,cursorZ).up()));
+        stack.push(BlockPosUtil.isObstacle(new BlockPos(cursorX,cursorY,cursorZ).up()));
     }
 }

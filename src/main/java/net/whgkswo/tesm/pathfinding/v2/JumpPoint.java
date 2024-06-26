@@ -1,7 +1,7 @@
 package net.whgkswo.tesm.pathfinding.v2;
 
 import net.minecraft.util.math.BlockPos;
-import net.whgkswo.tesm.util.BlockPosManager;
+import net.whgkswo.tesm.util.BlockPosUtil;
 
 public class JumpPoint {
     private BlockPos largeRefPos;
@@ -42,11 +42,11 @@ public class JumpPoint {
     }
 
     public JumpPoint(BlockPos largeRefPos, BlockPos blockPos, Direction prevDirection, BlockPos destPos, int hValue, boolean leftBlocked, boolean rightBlocked){
-        this.largeRefPos = BlockPosManager.getCopyPos(largeRefPos);
-        this.blockPos = BlockPosManager.getCopyPos(blockPos);
+        this.largeRefPos = BlockPosUtil.getCopyPos(largeRefPos);
+        this.blockPos = BlockPosUtil.getCopyPos(blockPos);
         this.prevDirection = prevDirection;
         this.hValue = hValue;
-        int gValue = (int)(10*BlockPosManager.getRoughDistance(blockPos, destPos));
+        int gValue = (int)(10* BlockPosUtil.getRoughDistance(blockPos, destPos));
         this.fValue = hValue + gValue;
         this.leftBlocked = leftBlocked;
         this.rightBlocked = rightBlocked;
