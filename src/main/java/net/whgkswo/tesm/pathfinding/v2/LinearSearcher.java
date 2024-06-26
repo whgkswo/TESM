@@ -33,26 +33,15 @@ public class LinearSearcher {
         // 루프 돌며 일직선으로 진행
         for(int i = 1; i<= maxRepeatCount; i++){
             BlockPos prevPos;
-            // 다음 칸에 장애물과 낭떠러지가 있으면
-            if(!BlockStateHelper.isReachable(new BlockPos(cursorX, cursorY, cursorZ), direction)){
-                return new SearchResult(false, null);
-            }else{ // 장애물과 낭떠러지가 없으면
-                prevPos = new BlockPos(cursorX, cursorY, cursorZ);
-                // 탐색 방향으로 한 칸 가기
-                BlockPos nextPos = getNextBlock(prevPos, direction);
-                cursorX = nextPos.getX();   cursorY = nextPos.getY();   cursorZ = nextPos.getZ();
-            }
-            // 이동한 좌표 업데이트
-            BlockPos nextPos = new BlockPos(cursorX, cursorY, cursorZ);
-            /*player.sendMessage(Text.literal("좌표 업데이트 (" + nextPos.getX() + ", " + nextPos.getY() + ", " + nextPos.getZ() + ")"));*/
-            // 올라가는 좌표 장애물 추가 검사
-            if(prevPos.getY() < nextPos.getY()){
-                // 천장 머리쿵
-                if(BlockStateHelper.isObstacle(prevPos.up(3))){
-                    return new SearchResult(false,null);
-                }
-            }
+            prevPos = new BlockPos(cursorX,cursorY,cursorZ);
+            BlockPos nextPos;
 
+            // 장애물 검사
+            if(isObstacleFound(prevPos,direction)){
+                return new SearchResult(false, null);
+            }
+            nextPos = getNextBlock(prevPos,direction);
+            cursorX = nextPos.getX();   cursorY = nextPos.getY(); cursorZ = nextPos.getZ();
             // 목적지에 도착했으면 길찾기 종료
             if(nextPos.equals(endPos)){
                 return new SearchResult(true, null);
@@ -117,6 +106,23 @@ public class LinearSearcher {
         createAndRegisterJumpPoint(largeRefPos,resultPos, direction,trailedDistance,diagSearchState,endPos,false,false,openList, closedList);
         // 결과 반환
         return new SearchResult(false, null);
+    }
+    private static boolean isObstacleFound(BlockPos prevPos, Direction direction){
+        // 다음 칸에 장애물과 낭떠러지가 있으면
+        if(!BlockStateHelper.isReachable(prevPos, direction)){
+            return true;
+        }else{ // 장애물과 낭떠러지가 없으면
+            // 탐색 방향으로 한 칸 가기
+            BlockPos nextPos = getNextBlock(prevPos, direction);
+            // 올라가는 좌표 장애물 추가 검사
+            if(prevPos.getY() < nextPos.getY()){
+                // 천장 머리쿵
+                if(BlockStateHelper.isObstacle(prevPos.up(3))){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     public static boolean isValidCoordForJumpPoint(BlockPos targetPos, ArrayList<JumpPoint> openList, HashMap<BlockPos, BlockPos> closedList){
         boolean duplicatedInOL = false;
