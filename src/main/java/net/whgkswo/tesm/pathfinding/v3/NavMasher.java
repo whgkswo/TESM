@@ -1,6 +1,5 @@
 package net.whgkswo.tesm.pathfinding.v3;
 
-import net.minecraft.entity.EntityType;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -8,18 +7,17 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.Heightmap;
 import net.whgkswo.tesm.data.JsonManager;
 import net.whgkswo.tesm.data.SizedStack;
-import net.whgkswo.tesm.entitymanaging.EntityManager;
 import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.pathfinding.v2.Direction;
 import net.whgkswo.tesm.pathfinding.v2.JumpPointTestResult;
 import net.whgkswo.tesm.pathfinding.v2.LinearSearcher;
 import net.whgkswo.tesm.util.BlockPosUtil;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import static net.whgkswo.tesm.general.GlobalVariables.player;
-import static net.whgkswo.tesm.general.GlobalVariables.world;
 
 public class NavMasher {
     private static final int NAVMESH_CHUNK_RADIUS = 1;
@@ -40,22 +38,34 @@ public class NavMasher {
             }
         }
     }
-    public void navMesh(NavMeshMethod navMeshMethod, int chunkRadius){
+    public void navMesh(NavMeshMethod method, int chunkRadius){
         ChunkPos refChunkPos = player.getChunkPos();
-        ArrayList<ChunkPos> targetChunkList = getTargetChunkPosList(refChunkPos, chunkRadius);
+        ArrayList<ChunkPos> targetChunkList = getTargetChunkPosList(method, refChunkPos, chunkRadius);
         /*player.sendMessage(Text.literal(targetChunkList.toString()));*/
-        for(ChunkPos chunkPos : targetChunkList){
-            scanChunk(chunkPos);
+        if(targetChunkList.isEmpty()){
+            player.sendMessage(Text.literal("누락된 청크 스캔 데이터가 없습니다."));
+            return;
         }
+        long startTime = System.currentTimeMillis();
+        for(int i = 0; i<= targetChunkList.size()-1; i++){
+            scanChunk(targetChunkList.get(i), i+1, targetChunkList.size());
+        }
+        long finishedTime = System.currentTimeMillis();
+        double timeInterval = (double) (finishedTime - startTime) /1000;
+        player.sendMessage(Text.literal("내비메쉬 완료 (" + timeInterval + "s)"));
     }
-    private ArrayList<ChunkPos> getTargetChunkPosList(ChunkPos refChunkPos, int chunkRadius){
+    private ArrayList<ChunkPos> getTargetChunkPosList(NavMeshMethod method,ChunkPos refChunkPos, int chunkRadius){
         ArrayList<ChunkPos> targetChunkList = new ArrayList<>();
         int startZ = refChunkPos.z - chunkRadius;
         int cursorX = refChunkPos.x - chunkRadius;
         int cursorZ = startZ;
         for(int i = 0; i< chunkRadius * 2 + 1; i++){
             for(int j = 0; j< chunkRadius * 2 + 1; j++){
-                targetChunkList.add(new ChunkPos(cursorX,cursorZ));
+                ChunkPos chunkPos = new ChunkPos(cursorX,cursorZ);
+                if (method == NavMeshMethod.ALL
+                        || (method == NavMeshMethod.MISSING && !isChunkScanDataExist(chunkPos))) {
+                    targetChunkList.add(chunkPos);
+                }
                 cursorZ++;
             }
             cursorX++;
@@ -63,8 +73,15 @@ public class NavMasher {
         }
         return targetChunkList;
     }
+    private static boolean isChunkScanDataExist(ChunkPos chunkPos){
+        String region = "r." + chunkPos.getRegionX() + "." + chunkPos.getRegionZ();
+        String filePath = "/" + chunkPos.x + "." + chunkPos.z + ".json";
+        File file = new File("config/tesm/navmesh/" + region + filePath);
+        return file.exists();
+    }
 
-    private void scanChunk(ChunkPos chunkPos){
+
+    private void scanChunk(ChunkPos chunkPos, int progress, int total){
         // 네비메쉬 범위 정하기
         Box box = createBox(chunkPos);
         // 유효한 좌표를 찾기
@@ -84,7 +101,8 @@ public class NavMasher {
                 chunkPos.x + "." + chunkPos.z + ".json";
 
         long time = JsonManager.createJson(chunkData, fileName);
-        player.sendMessage(Text.literal(fileName.substring(0, fileName.length()-5) + "청크에 대한 "
+        player.sendMessage(Text.literal("[" + progress + "/" + total + "] "
+                + fileName.substring(0, fileName.length()-5) + "청크에 대한 "
                 + validPosMap.size() + "좌표 스캔 데이터 저장 완료 (" + time + "ms)"));
     }
     private NavMeshDataOfBlockPos blockTest(BlockPos blockPos){
