@@ -1,5 +1,6 @@
 package net.whgkswo.tesm.commands;
 
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
@@ -23,17 +24,25 @@ public class NavMeshCommand {
                     .executes(NavMeshCommand::executeNavMeshCommand)
                     .then(argument("method", StringArgumentType.string())
                             .suggests(METHOD_SUGGESTIONS)
-                            .executes(NavMeshCommand::executeNavMeshCommand));
+                            /*.executes(NavMeshCommand::executeNavMeshCommand)*/
+                            .then(argument("chunk_radius", IntegerArgumentType.integer())
+                                    .executes(NavMeshCommand::executeNavMeshCommand)));
 
             dispatcher.register(navMeshCommand);
         });
     }
     private static int executeNavMeshCommand(CommandContext<ServerCommandSource> context) {
         String methodInput;
+        int chunkRadius;
         try{
             methodInput = StringArgumentType.getString(context, "method");
         }catch (IllegalArgumentException e){
             methodInput = "missing";
+        }
+        try{
+            chunkRadius = IntegerArgumentType.getInteger(context, "chunk_radius");
+        }catch (IllegalArgumentException e){
+            chunkRadius = 0;
         }
         NavMasher.NavMeshMethod navMeshMethod;
         NavMasher navMasher = new NavMasher();
@@ -43,7 +52,7 @@ public class NavMeshCommand {
             context.getSource().sendError(Text.literal("잘못된 네비메쉬 방식 입력입니다."));
             return 0;
         }
-        navMasher.navMesh(navMeshMethod);
+        navMasher.navMesh(navMeshMethod, chunkRadius);
         return 1;
     }
 }

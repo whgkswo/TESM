@@ -5,7 +5,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.Heightmap;
-import net.whgkswo.tesm.data.DataSerializer;
+import net.whgkswo.tesm.data.JsonManager;
 import net.whgkswo.tesm.data.SizedStack;
 import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.pathfinding.v2.Direction;
@@ -13,12 +13,14 @@ import net.whgkswo.tesm.pathfinding.v2.JumpPointTestResult;
 import net.whgkswo.tesm.pathfinding.v2.LinearSearcher;
 import net.whgkswo.tesm.util.BlockPosUtil;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static net.whgkswo.tesm.general.GlobalVariables.player;
 import static net.whgkswo.tesm.general.GlobalVariables.world;
 
 public class NavMasher {
+    private static final int NAVMESH_CHUNK_RADIUS = 1;
     private final SizedStack<Boolean> stack = new SizedStack<>(2);
     private int cursorX;    private int cursorY;    private int cursorZ;
     boolean prevPosIsObstacle;
@@ -37,14 +39,37 @@ public class NavMasher {
             }
         }
     }
+    public void navMesh(NavMeshMethod navMeshMethod, int chunkRadius){
+        ChunkPos refChunkPos = player.getChunkPos();
+        ArrayList<ChunkPos> targetChunkList = getTargetChunkPosList(refChunkPos, chunkRadius);
+        /*player.sendMessage(Text.literal(targetChunkList.toString()));*/
+        for(ChunkPos chunkPos : targetChunkList){
+            scanChunk(chunkPos);
+        }
+    }
+    private ArrayList<ChunkPos> getTargetChunkPosList(ChunkPos refChunkPos, int chunkRadius){
+        ArrayList<ChunkPos> targetChunkList = new ArrayList<>();
+        int startZ = refChunkPos.z - chunkRadius;
+        int cursorX = refChunkPos.x - chunkRadius;
+        int cursorZ = startZ;
+        for(int i = 0; i< chunkRadius * 2 + 1; i++){
+            for(int j = 0; j< chunkRadius * 2 + 1; j++){
+                targetChunkList.add(new ChunkPos(cursorX,cursorZ));
+                cursorZ++;
+            }
+            cursorX++;
+            cursorZ = startZ;
+        }
+        return targetChunkList;
+    }
 
-    public void navMesh(NavMeshMethod navMeshMethod){
+    private void scanChunk(ChunkPos chunkPos){
         BlockPos playerPos = new BlockPos(player.getBlockX(), player.getBlockY(), player.getBlockZ());
         /*player.sendMessage(Text.literal(world.getChunk(playerPos).getPos().toString()));*/
         // 네비메쉬 범위 정하기
-        Box box = createBox(playerPos);
+        Box box = createBox(chunkPos);
         // 유효한 좌표를 찾기
-        getSteppableBlocks(box);
+        int steppableBlocks = getSteppableBlocks(box);
         /*for(BlockPos blockPos : validPosMap.keySet()){
             EntityManager.summonEntity(EntityType.FROG, blockPos);
         }*/
@@ -55,9 +80,13 @@ public class NavMasher {
             chunkData.putBlockData(blockPos, blockData);
         }
         // 청크 스캔 데이터를 파일로 저장하기
-        ChunkPos chunkPos = world.getChunk(playerPos).getPos();
-        DataSerializer.createJson(chunkData, "r." + chunkPos.getRegionX() + "." + chunkPos.getRegionZ() + "/" +
-                chunkPos.x + "." + chunkPos.z + ".json");
+        /*ChunkPos chunkPos = world.getChunk(playerPos).getPos();*/
+        String fileName = "r." + chunkPos.getRegionX() + "." + chunkPos.getRegionZ() + "/" +
+                chunkPos.x + "." + chunkPos.z + ".json";
+
+        long time = JsonManager.createJson(chunkData, fileName);
+        player.sendMessage(Text.literal(fileName.substring(0, fileName.length()-5) + "청크에 대한 "
+                + steppableBlocks + "좌표 스캔 데이터 저장 완료 (" + time + "ms)"));
     }
     private NavMeshDataOfBlockPos blockTest(BlockPos blockPos){
         NavMeshDataOfBlockPos blockData = new NavMeshDataOfBlockPos();
@@ -78,17 +107,17 @@ public class NavMasher {
         }
         return blockData;
     }
-    private Box createBox(BlockPos playerPos){
+    private Box createBox(ChunkPos chunkPos){
         /*Box box = new Box(playerPos.getX() - NAVMESH_RADIUS,0, playerPos.getZ() - NAVMESH_RADIUS,
                 playerPos.getX() + NAVMESH_RADIUS,0,playerPos.getZ() + NAVMESH_RADIUS);*/
-        ChunkPos chunkPos = world.getChunk(playerPos).getPos();
+        /*ChunkPos chunkPos = world.getChunk(playerPos).getPos();*/
         Box box = new Box(chunkPos.getStartX(), 0,chunkPos.getStartZ(), chunkPos.getEndX(), 0, chunkPos.getEndZ());
         /*player.sendMessage(Text.literal(box.toString()));*/
         return box;
     }
-    private void getSteppableBlocks(Box box){
+    private int getSteppableBlocks(Box box){
         cursorX = (int) box.minX;
-
+        int prevCount = validPosMap.size();
         for(int i = 0; i< 16; i++){
             cursorZ = (int) box.minZ;
             for(int j = 0; j< 16; j++){
@@ -117,7 +146,8 @@ public class NavMasher {
             }
             cursorX ++;
         }
-        player.sendMessage(Text.literal(validPosMap.size() + ""));
+        /*player.sendMessage(Text.literal(validPosMap.size() + ""));*/
+        return validPosMap.size() - prevCount;
     }
     private void addSurfaceToMap(){
         //player.sendMessage(Text.literal(String.format("(%d, %d)", cursorX,cursorZ)));
