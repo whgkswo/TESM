@@ -113,7 +113,7 @@ public class LinearSearcher {
         }
         return new JumpPointTestResult(leftBlocked, rightBlocked);
     }
-    private static boolean isObstacleFound(BlockPos prevPos, Direction direction){
+    public static boolean isObstacleFound(BlockPos prevPos, Direction direction){
         // 다음 칸에 장애물과 낭떠러지가 있으면
         if(!BlockPosUtil.isReachable(prevPos, direction)){
             return true;

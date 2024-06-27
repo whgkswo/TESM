@@ -56,26 +56,16 @@ public class NavMasher {
         }
         // 청크 스캔 데이터를 파일로 저장하기
         ChunkPos chunkPos = world.getChunk(playerPos).getPos();
-        DataSerializer.createJson(chunkData, chunkPos.x + "_" + chunkPos.z + ".json");
+        DataSerializer.createJson(chunkData, "r." + chunkPos.getRegionX() + "." + chunkPos.getRegionZ() + "/" +
+                chunkPos.x + "." + chunkPos.z + ".json");
     }
     private NavMeshDataOfBlockPos blockTest(BlockPos blockPos){
         NavMeshDataOfBlockPos blockData = new NavMeshDataOfBlockPos();
         // 8방향에 대해서
         for(Direction direction : Direction.getAllDirections()){
-            boolean obstacleFound = false;
+            boolean obstacleFound = LinearSearcher.isObstacleFound(blockPos, direction);
             BlockPos nextPos = BlockPosUtil.getNextBlock(blockPos, direction);
-            // 다음 칸에 장애물과 낭떠러지가 있으면
-            if(!BlockPosUtil.isReachable(blockPos, direction)){
-                obstacleFound = true;
-            }else{ // 장애물과 낭떠러지가 없으면
-                // 올라가는 좌표 장애물 추가 검사
-                if(blockPos.getY() < nextPos.getY()){
-                    // 천장 머리쿵
-                    if(BlockPosUtil.isObstacle(blockPos.up(3))){
-                        obstacleFound = true;
-                    }
-                }
-            }
+
             NavMeshDataOfDirection directionData;
             if(obstacleFound){
                 directionData = new NavMeshDataOfDirection(true, null, null);
