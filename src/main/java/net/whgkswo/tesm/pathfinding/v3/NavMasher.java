@@ -1,5 +1,6 @@
 package net.whgkswo.tesm.pathfinding.v3;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -7,6 +8,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.Heightmap;
 import net.whgkswo.tesm.data.JsonManager;
 import net.whgkswo.tesm.data.SizedStack;
+import net.whgkswo.tesm.entitymanaging.EntityManager;
 import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.pathfinding.v2.Direction;
 import net.whgkswo.tesm.pathfinding.v2.JumpPointTestResult;
@@ -24,7 +26,6 @@ public class NavMasher {
     private final SizedStack<Boolean> stack = new SizedStack<>(2);
     private int cursorX;    private int cursorY;    private int cursorZ;
     boolean prevPosIsObstacle;
-    HashMap<BlockPos, Boolean> validPosMap = new HashMap<>();
     public enum NavMeshMethod{
         MISSING,
         ALL
@@ -64,12 +65,10 @@ public class NavMasher {
     }
 
     private void scanChunk(ChunkPos chunkPos){
-        BlockPos playerPos = new BlockPos(player.getBlockX(), player.getBlockY(), player.getBlockZ());
-        /*player.sendMessage(Text.literal(world.getChunk(playerPos).getPos().toString()));*/
         // 네비메쉬 범위 정하기
         Box box = createBox(chunkPos);
         // 유효한 좌표를 찾기
-        int steppableBlocks = getSteppableBlocks(box);
+        HashMap<BlockPos, Boolean> validPosMap = getSteppableBlocks(box);
         /*for(BlockPos blockPos : validPosMap.keySet()){
             EntityManager.summonEntity(EntityType.FROG, blockPos);
         }*/
@@ -86,7 +85,7 @@ public class NavMasher {
 
         long time = JsonManager.createJson(chunkData, fileName);
         player.sendMessage(Text.literal(fileName.substring(0, fileName.length()-5) + "청크에 대한 "
-                + steppableBlocks + "좌표 스캔 데이터 저장 완료 (" + time + "ms)"));
+                + validPosMap.size() + "좌표 스캔 데이터 저장 완료 (" + time + "ms)"));
     }
     private NavMeshDataOfBlockPos blockTest(BlockPos blockPos){
         NavMeshDataOfBlockPos blockData = new NavMeshDataOfBlockPos();
@@ -108,21 +107,18 @@ public class NavMasher {
         return blockData;
     }
     private Box createBox(ChunkPos chunkPos){
-        /*Box box = new Box(playerPos.getX() - NAVMESH_RADIUS,0, playerPos.getZ() - NAVMESH_RADIUS,
-                playerPos.getX() + NAVMESH_RADIUS,0,playerPos.getZ() + NAVMESH_RADIUS);*/
-        /*ChunkPos chunkPos = world.getChunk(playerPos).getPos();*/
         Box box = new Box(chunkPos.getStartX(), 0,chunkPos.getStartZ(), chunkPos.getEndX(), 0, chunkPos.getEndZ());
         /*player.sendMessage(Text.literal(box.toString()));*/
         return box;
     }
-    private int getSteppableBlocks(Box box){
+    private HashMap<BlockPos, Boolean> getSteppableBlocks(Box box){
+        HashMap<BlockPos, Boolean> validPosMap = new HashMap<>();
         cursorX = (int) box.minX;
-        int prevCount = validPosMap.size();
         for(int i = 0; i< 16; i++){
             cursorZ = (int) box.minZ;
             for(int j = 0; j< 16; j++){
                 // 표면부터 등록하고 시작
-                addSurfaceToMap();
+                addSurfaceToMap(validPosMap);
                 prevPosIsObstacle = true;
 
                 while(cursorY > GlobalVariables.world.getBottomY()){
@@ -146,10 +142,9 @@ public class NavMasher {
             }
             cursorX ++;
         }
-        /*player.sendMessage(Text.literal(validPosMap.size() + ""));*/
-        return validPosMap.size() - prevCount;
+        return validPosMap;
     }
-    private void addSurfaceToMap(){
+    private void addSurfaceToMap(HashMap<BlockPos, Boolean> validPosMap){
         //player.sendMessage(Text.literal(String.format("(%d, %d)", cursorX,cursorZ)));
         cursorY = GlobalVariables.world.
                 getTopPosition(Heightmap.Type.WORLD_SURFACE, new BlockPos(cursorX,0,cursorZ)).getY() - 1 ;
