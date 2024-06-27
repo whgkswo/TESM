@@ -1,7 +1,5 @@
 package net.whgkswo.tesm.pathfinding.v3;
 
-import net.whgkswo.tesm.pathfinding.v2.Direction;
-
 public class NavMeshDataOfDirection {
 
     private boolean obstacleFound;
@@ -36,13 +34,5 @@ public class NavMeshDataOfDirection {
 
     public void setRightBlocked(boolean rightBlocked) {
         this.rightBlocked = rightBlocked;
-    }
-
-    public boolean isLeftBlocked() {
-        return leftBlocked;
-    }
-
-    public boolean isRightBlocked() {
-        return rightBlocked;
     }
 }
