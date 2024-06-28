@@ -53,10 +53,17 @@ public class BlockPosUtil {
         // 탐색 방향으로 한 칸 앞을 보기
         cursorX += direction.getX();  cursorZ += direction.getZ();
         BlockPos nextPos = new BlockPos(cursorX, cursorY, cursorZ);
-
-        if(isTrapBlock(nextPos.up()) || isObstacle(nextPos.up(2))){
-            // 장애물
-            return false;
+        // 올라가는 좌표
+        if(isSolid(nextPos.up())){
+            if(isObstacle(nextPos.up(2)) || isObstacle(nextPos.up(3))){
+                // 장애물
+                return false;
+            }
+        }else{ // 그대로 또는 내려가는 좌표
+            if(isTrapBlock(nextPos.up()) || isObstacle(nextPos.up(2))){
+                // 장애물
+                return false;
+            }
         }
         if(!isSolid(nextPos.up(1)) && !isSolid(nextPos) && !isSolid(nextPos.down(1))){
             // 낭떠러지

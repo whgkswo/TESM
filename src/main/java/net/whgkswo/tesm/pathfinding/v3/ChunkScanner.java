@@ -19,6 +19,7 @@ import java.util.HashSet;
 
 import static net.whgkswo.tesm.data.JsonManager.isChunkScanDataExist;
 import static net.whgkswo.tesm.general.GlobalVariables.player;
+import static net.whgkswo.tesm.general.GlobalVariables.scanDataMap;
 
 public class ChunkScanner {
     private final SizedStack<Boolean> stack = new SizedStack<>(2);
@@ -79,7 +80,7 @@ public class ChunkScanner {
     }
 
 
-    private void scanChunk(ChunkPos chunkPos, int progress, int total){
+    private void scanChunk(ChunkPos chunkPos, int progress, int goal){
         // 스캔 범위 정하기
         Box box = createBox(chunkPos);
         // 유효한 좌표를 찾기
@@ -99,7 +100,10 @@ public class ChunkScanner {
                 chunkPos.x + "." + chunkPos.z + ".json";
         JsonManager.createJson(chunkData, fileName);
         //long time = System.currentTimeMillis() - startTime;
-        player.sendMessage(Text.literal("[" + progress + "/" + total + "] "
+        if(GlobalVariables.scanDataMap.containsKey(chunkPos)){
+            scanDataMap.put(chunkPos,chunkData);
+        }
+        player.sendMessage(Text.literal("[" + progress + "/" + goal + "] "
                 + fileName.substring(0, fileName.length()-5) + "청크에 대한 "
                 + validPosSet.size() + "좌표 스캔 데이터 저장 완료"));
         /*(" + time + "ms)*/
@@ -109,12 +113,12 @@ public class ChunkScanner {
         // 8방향에 대해서
         for(Direction direction : Direction.getAllDirections()){
             boolean obstacleFound = LinearSearcher.isObstacleFound(blockPos, direction);
-            BlockPos nextPos = BlockPosUtil.getNextBlock(blockPos, direction);
 
             ScanDataOfDirection directionData;
             if(obstacleFound){
                 directionData = new ScanDataOfDirection(true, null, null);
             }else{
+                BlockPos nextPos = BlockPosUtil.getNextBlock(blockPos, direction);
                 JumpPointTestResult jpTestResult = LinearSearcher.jumpPointTest(blockPos, nextPos,direction);
                 directionData = new ScanDataOfDirection(
                         obstacleFound, jpTestResult.isLeftBlocked(), jpTestResult.isRightBlocked());
