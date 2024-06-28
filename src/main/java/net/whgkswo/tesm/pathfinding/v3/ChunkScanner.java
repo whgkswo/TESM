@@ -23,6 +23,7 @@ public class ChunkScanner {
     private final SizedStack<Boolean> stack = new SizedStack<>(2);
     private int cursorX;    private int cursorY;    private int cursorZ;
     boolean prevPosIsObstacle;
+    private long startTime;
     public enum ScanMethod {
         MISSING,
         ALL
@@ -37,6 +38,9 @@ public class ChunkScanner {
             }
         }
     }
+    public ChunkScanner(){
+        startTime = System.currentTimeMillis();
+    }
     public void scan(ScanMethod method, int chunkRadius){
         ChunkPos refChunkPos = player.getChunkPos();
         ArrayList<ChunkPos> targetChunkList = getTargetChunkPosList(method, refChunkPos, chunkRadius);
@@ -45,7 +49,7 @@ public class ChunkScanner {
             player.sendMessage(Text.literal("누락된 청크 스캔 데이터가 없습니다."));
             return;
         }
-        long startTime = System.currentTimeMillis();
+        //long startTime = System.currentTimeMillis();
         for(int i = 0; i<= targetChunkList.size()-1; i++){
             scanChunk(targetChunkList.get(i), i+1, targetChunkList.size());
         }
@@ -96,13 +100,14 @@ public class ChunkScanner {
         }
         // 청크 스캔 데이터를 파일로 저장하기
         /*ChunkPos chunkPos = world.getChunk(playerPos).getPos();*/
-        String fileName = "r." + chunkPos.getRegionX() + "." + chunkPos.getRegionZ() + "/" +
+        String fileName = "r." + chunkPos.getRegionX() + "." + chunkPos.getRegionZ() + "의 " +
                 chunkPos.x + "." + chunkPos.z + ".json";
-
-        long time = JsonManager.createJson(chunkData, fileName);
+        JsonManager.createJson(chunkData, fileName);
+        //long time = System.currentTimeMillis() - startTime;
         player.sendMessage(Text.literal("[" + progress + "/" + total + "] "
                 + fileName.substring(0, fileName.length()-5) + "청크에 대한 "
-                + validPosMap.size() + "좌표 스캔 데이터 저장 완료 (" + time + "ms)"));
+                + validPosMap.size() + "좌표 스캔 데이터 저장 완료"));
+        /*(" + time + "ms)*/
     }
     private ScanDataOfBlockPos blockTest(BlockPos blockPos){
         ScanDataOfBlockPos blockData = new ScanDataOfBlockPos();
