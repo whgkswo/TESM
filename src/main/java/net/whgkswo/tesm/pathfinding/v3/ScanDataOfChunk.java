@@ -7,8 +7,7 @@ import java.util.HashMap;
 
 
 public class ScanDataOfChunk {
-    @JsonProperty("data")
-    public HashMap<BlockPos, ScanDataOfBlockPos> data;
+    private HashMap<BlockPos, ScanDataOfBlockPos> data;
 
     public ScanDataOfChunk() {
     }

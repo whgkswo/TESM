@@ -2,9 +2,9 @@ package net.whgkswo.tesm.pathfinding.v3;
 
 public class ScanDataOfDirection {
 
-    public boolean obstacleFound;
-    public Boolean leftBlocked;
-    public Boolean rightBlocked;
+    private boolean obstacleFound;
+    private Boolean leftBlocked;
+    private Boolean rightBlocked;
 
     public Boolean getLeftBlocked() {
         return leftBlocked;
@@ -25,17 +25,5 @@ public class ScanDataOfDirection {
 
     public boolean isObstacleFound() {
         return obstacleFound;
-    }
-
-    public void setobstacleFound(boolean obstacleFound) {
-        this.obstacleFound = obstacleFound;
-    }
-
-    public void setleftBlocked(Boolean leftBlocked) {
-        this.leftBlocked = leftBlocked;
-    }
-
-    public void setrightBlocked(Boolean rightBlocked) {
-        this.rightBlocked = rightBlocked;
     }
 }

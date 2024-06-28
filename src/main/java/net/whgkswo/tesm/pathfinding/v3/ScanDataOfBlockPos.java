@@ -5,15 +5,11 @@ import net.whgkswo.tesm.pathfinding.v2.Direction;
 import java.util.HashMap;
 
 public class ScanDataOfBlockPos {
-
-
     public ScanDataOfBlockPos(HashMap<Direction, ScanDataOfDirection> data) {
         this.data = data;
     }
-
     public ScanDataOfBlockPos() {
     }
-
     public void setData(HashMap<Direction, ScanDataOfDirection> data) {
         this.data = data;
     }
@@ -25,5 +21,5 @@ public class ScanDataOfBlockPos {
         return data;
     }
 
-    public HashMap<Direction, ScanDataOfDirection> data;
+    private HashMap<Direction, ScanDataOfDirection> data;
 }
