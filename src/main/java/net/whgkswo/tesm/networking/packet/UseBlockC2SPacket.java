@@ -29,9 +29,6 @@ public class UseBlockC2SPacket {
 
         BlockPos hitResultPos = hitResult.getBlockPos();
         if(BlockPosUtil.isTrapBlock(hitResultPos)){
-            ScanDataOfChunk data = JsonManager.readJson("r.-1.0/-2.0.json");
-            player.sendMessage(Text.literal(data.toString()));
-
             player.sendMessage(Text.literal(String.format(
                     "%s 위로는 갈 수 없습니다.", GlobalVariables.world.getBlockState(hitResultPos).getBlock().getName().getString())));
             return;

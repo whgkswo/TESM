@@ -56,6 +56,8 @@ public class ChunkScanner {
         long finishedTime = System.currentTimeMillis();
         double timeInterval = (double) (finishedTime - startTime) /1000;
         player.sendMessage(Text.literal("스캔 완료 (" + timeInterval + "s)"));
+        ScanDataOfChunk data = JsonManager.readJson("r.-1.0/-2.0.json");
+        player.sendMessage(Text.literal(data.toString()));
     }
     private ArrayList<ChunkPos> getTargetChunkPosList(ScanMethod method, ChunkPos refChunkPos, int chunkRadius){
         ArrayList<ChunkPos> targetChunkList = new ArrayList<>();
