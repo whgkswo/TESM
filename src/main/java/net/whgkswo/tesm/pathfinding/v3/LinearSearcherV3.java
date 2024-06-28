@@ -21,15 +21,17 @@ public class LinearSearcherV3 {
     private Direction direction;
     private final BlockPos refPos;  private final BlockPos endPos;
     private final int maxRepeatCount;
+    private final ScanDataOfBlockPos scanData;
 
     public int getMaxRepeatCount() {
         return maxRepeatCount;
     }
 
-    public LinearSearcherV3(BlockPos refPos, BlockPos endPos, Direction direction, int maxRepeatCount){
+    public LinearSearcherV3(BlockPos refPos, BlockPos endPos, Direction direction, int maxRepeatCount, ScanDataOfBlockPos scanData){
         this.direction = direction;
         this.refPos = BlockPosUtil.getCopyPos(refPos);    this.endPos = endPos;
         this.maxRepeatCount = maxRepeatCount;
+        this.scanData = scanData;
     }
     public SearchResult linearSearch(BlockPos largeRefPos, ArrayList<JumpPoint> openList, HashMap<BlockPos,BlockPos> closedList,
                                      DiagSearchState diagSearchState, int trailedDistance){
@@ -38,19 +40,15 @@ public class LinearSearcherV3 {
         cursorZ = refPos.getZ();
         // 소탐색 시작 지점에 닭 소환
         /*EntityManager.summonEntity(EntityType.CHICKEN, refPos);*/
+        ScanDataOfDirection directionData = scanData.getDirectionData(direction);
         // 루프 돌며 일직선으로 진행
         for(int i = 1; i<= maxRepeatCount; i++){
             BlockPos prevPos;
             prevPos = new BlockPos(cursorX,cursorY,cursorZ);
             BlockPos nextPos;
 
-            // 좌표에 해당하는 청크 스캔 데이터 로드
-            ScanDataOfChunk chunkData = loadChunkData(prevPos);
-            // 이 좌표의 데이터 가져오기
-            ScanDataOfDirection scanData = chunkData.getBlockData(prevPos).getDirectionData(direction);
-
             // 장애물 검사
-            if(scanData.isObstacleFound()){
+            if(directionData.isObstacleFound()){
                 return new SearchResult(false, null);
             }
             nextPos = getNextBlock(prevPos,direction);
@@ -60,11 +58,11 @@ public class LinearSearcherV3 {
                 return new SearchResult(true, null);
             }
             // 점프 포인트 생성 기본 조건을 만족했을 때
-            if(scanData.getLeftBlocked() || scanData.getRightBlocked()){
+            if(directionData.getLeftBlocked() || directionData.getRightBlocked()){
                 // 점프 포인트 생성
                 /*player.sendMessage(Text.literal("점프 포인트 생성 (" + nextPos.getX() + ", " + nextPos.getY() + ", " + nextPos.getZ() + ")"));*/
                 JumpPoint jumpPoint = createAndRegisterJumpPoint(largeRefPos,nextPos, direction, trailedDistance,
-                        diagSearchState, endPos,scanData.getLeftBlocked(),scanData.getRightBlocked(),openList, closedList);
+                        diagSearchState, endPos,directionData.getLeftBlocked(),directionData.getRightBlocked(),openList, closedList);
                 // 결과 리턴
                 return new SearchResult(false, jumpPoint);
             }
@@ -75,12 +73,13 @@ public class LinearSearcherV3 {
             if(direction.isDiagonal() && maxRepeatCount-i > 0){
                 DiagSearchState currentDiagSearchState = new DiagSearchState(i, direction);
                 // x방향 탐색
-                LinearSearcherV3 xSearcher = new LinearSearcherV3(nextPos, endPos, Direction.getDirectionByComponent(direction.getX(), 0), branchLength);
+                Direction xDirection = Direction.getDirectionByComponent(direction.getX(), 0);
+                LinearSearcherV3 xSearcher = new LinearSearcherV3(nextPos, endPos, xDirection, branchLength, scanData);
                 SearchResult xBranchResult = xSearcher.linearSearch(largeRefPos,openList, closedList,currentDiagSearchState,trailedDistance);
                 if(xBranchResult.hasFoundDestination()){
                     return xBranchResult;
                 }else { // 목적지를 찾지 못했다면
-                    LinearSearcherV3 zSearcher = new LinearSearcherV3(nextPos, endPos, Direction.getDirectionByComponent(0, direction.getZ()),branchLength);
+                    LinearSearcherV3 zSearcher = new LinearSearcherV3(nextPos, endPos, Direction.getDirectionByComponent(0, direction.getZ()),branchLength, scanData);
                     // z방향 탐색
                     SearchResult zBranchResult = zSearcher.linearSearch(largeRefPos,openList, closedList,currentDiagSearchState,trailedDistance);
                     if(zBranchResult.hasFoundDestination()){
@@ -97,22 +96,7 @@ public class LinearSearcherV3 {
         // 결과 반환
         return new SearchResult(false, null);
     }
-    private static ScanDataOfChunk loadChunkData(BlockPos blockPos){
-        ChunkPos chunkPos = world.getChunk(blockPos).getPos();
-        if(scanDataMap.containsKey(chunkPos)){
-            return scanDataMap.get(chunkPos);
-        }else{
-            if(JsonManager.isChunkScanDataExist(chunkPos)){
-                String filePath = "r." + chunkPos.getRegionX() + "." + chunkPos.getRegionZ()
-                        + "/" + chunkPos.x + "." + chunkPos.z + ".json";
-                ScanDataOfChunk chunkData = JsonManager.readJson(filePath);
-                GlobalVariables.scanDataMap.put(chunkPos, chunkData);
-                return chunkData;
-            }else{
-                throw new ChunkDataNotFoundExeption();
-            }
-        }
-    }
+
     public static JumpPointTestResult jumpPointTest(BlockPos blockPos, BlockPos nextPos, Direction direction){
         boolean leftBlocked = false;    boolean rightBlocked = false;
         if(!direction.isDiagonal()){

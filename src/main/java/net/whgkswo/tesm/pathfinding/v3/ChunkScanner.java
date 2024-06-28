@@ -1,6 +1,5 @@
 package net.whgkswo.tesm.pathfinding.v3;
 
-import net.minecraft.entity.EntityType;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -8,16 +7,15 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.Heightmap;
 import net.whgkswo.tesm.data.JsonManager;
 import net.whgkswo.tesm.data.SizedStack;
-import net.whgkswo.tesm.entitymanaging.EntityManager;
 import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.pathfinding.v2.Direction;
 import net.whgkswo.tesm.pathfinding.v2.JumpPointTestResult;
 import net.whgkswo.tesm.pathfinding.v2.LinearSearcher;
 import net.whgkswo.tesm.util.BlockPosUtil;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import static net.whgkswo.tesm.data.JsonManager.isChunkScanDataExist;
 import static net.whgkswo.tesm.general.GlobalVariables.player;
@@ -82,16 +80,16 @@ public class ChunkScanner {
 
 
     private void scanChunk(ChunkPos chunkPos, int progress, int total){
-        // 네비메쉬 범위 정하기
+        // 스캔 범위 정하기
         Box box = createBox(chunkPos);
         // 유효한 좌표를 찾기
-        HashMap<BlockPos, Boolean> validPosMap = getSteppableBlocks(box);
-        for(BlockPos blockPos : validPosMap.keySet()){
+        HashSet<BlockPos> validPosSet = getSteppableBlocks(box);
+        /*for(BlockPos blockPos : validPosSet.keySet()){
             EntityManager.summonEntity(EntityType.FROG, blockPos);
-        }
-        // 내비메쉬 시작
+        }*/
+        // 스캔 시작
         ScanDataOfChunk chunkData = new ScanDataOfChunk(new HashMap<>());
-        for(BlockPos blockPos : validPosMap.keySet()){
+        for(BlockPos blockPos : validPosSet){
             ScanDataOfBlockPos blockData = blockTest(blockPos);
             chunkData.putBlockData(blockPos, blockData);
         }
@@ -103,7 +101,7 @@ public class ChunkScanner {
         //long time = System.currentTimeMillis() - startTime;
         player.sendMessage(Text.literal("[" + progress + "/" + total + "] "
                 + fileName.substring(0, fileName.length()-5) + "청크에 대한 "
-                + validPosMap.size() + "좌표 스캔 데이터 저장 완료"));
+                + validPosSet.size() + "좌표 스캔 데이터 저장 완료"));
         /*(" + time + "ms)*/
     }
     private ScanDataOfBlockPos blockTest(BlockPos blockPos){
@@ -130,14 +128,14 @@ public class ChunkScanner {
         /*player.sendMessage(Text.literal(box.toString()));*/
         return box;
     }
-    private HashMap<BlockPos, Boolean> getSteppableBlocks(Box box){
-        HashMap<BlockPos, Boolean> validPosMap = new HashMap<>();
+    private HashSet<BlockPos> getSteppableBlocks(Box box){
+        HashSet<BlockPos> validPosSet = new HashSet<>();
         cursorX = (int) box.minX;
         for(int i = 0; i< 16; i++){
             cursorZ = (int) box.minZ;
             for(int j = 0; j< 16; j++){
                 // 표면부터 등록하고 시작
-                addSurfaceToMap(validPosMap);
+                addSurfaceToMap(validPosSet);
                 prevPosIsObstacle = true;
 
                 while(cursorY > GlobalVariables.world.getBottomY()){
@@ -152,7 +150,7 @@ public class ChunkScanner {
                         if(!BlockPosUtil.isTrapBlock(new BlockPos(cursorX,cursorY,cursorZ))){
                             if(!stack.get(0) && !stack.get(1)){
                                 // 유효한 좌표
-                                validPosMap.put(new BlockPos(cursorX,cursorY,cursorZ), true);
+                                validPosSet.add(new BlockPos(cursorX,cursorY,cursorZ));
                             }
                         }
                     }
@@ -161,13 +159,18 @@ public class ChunkScanner {
             }
             cursorX ++;
         }
-        return validPosMap;
+        return validPosSet;
     }
-    private void addSurfaceToMap(HashMap<BlockPos, Boolean> validPosMap){
+    private void addSurfaceToMap(HashSet<BlockPos> validPosSet){
         //player.sendMessage(Text.literal(String.format("(%d, %d)", cursorX,cursorZ)));
         cursorY = GlobalVariables.world.
                 getTopPosition(Heightmap.Type.WORLD_SURFACE, new BlockPos(cursorX,0,cursorZ)).getY() - 1 ;
-        validPosMap.put(new BlockPos(cursorX, cursorY, cursorZ), true);
+        BlockPos blockPos = new BlockPos(cursorX,cursorY,cursorZ);
+        // 해당 좌표의 블럭 높이가 낮으면 기준을 한 칸 내리기
+        if(BlockPosUtil.getBlockHeight(blockPos) < 0.25){
+            blockPos = blockPos.down();
+        }
+        validPosSet.add(blockPos);
     }
     private void down3Blocks(){
         cursorY -= 3;

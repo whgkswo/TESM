@@ -44,6 +44,7 @@ public class PathfinderV3 {
         }catch (ChunkDataNotFoundExeption e){
             player.sendMessage(Text.literal("탐색 실패, 누락된 청크 스캔 데이터가 존재합니다."));
         }catch (Exception e){
+            player.sendMessage(Text.literal("탐색 실패, 기타 오류가 발생했습니다."));
             e.printStackTrace();
         }
     }
