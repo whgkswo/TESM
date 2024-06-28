@@ -19,16 +19,15 @@ import java.util.HashMap;
 
 import static net.whgkswo.tesm.general.GlobalVariables.player;
 
-public class NavMasher {
-    private static final int NAVMESH_CHUNK_RADIUS = 1;
+public class ChunkScanner {
     private final SizedStack<Boolean> stack = new SizedStack<>(2);
     private int cursorX;    private int cursorY;    private int cursorZ;
     boolean prevPosIsObstacle;
-    public enum NavMeshMethod{
+    public enum ScanMethod {
         MISSING,
         ALL
         ;
-        public static NavMeshMethod getMethod(String str){
+        public static ScanMethod getMethod(String str){
             if(str.equals("missing")){
                 return MISSING;
             }else if (str.equals("all")){
@@ -38,7 +37,7 @@ public class NavMasher {
             }
         }
     }
-    public void navMesh(NavMeshMethod method, int chunkRadius){
+    public void scan(ScanMethod method, int chunkRadius){
         ChunkPos refChunkPos = player.getChunkPos();
         ArrayList<ChunkPos> targetChunkList = getTargetChunkPosList(method, refChunkPos, chunkRadius);
         /*player.sendMessage(Text.literal(targetChunkList.toString()));*/
@@ -52,9 +51,9 @@ public class NavMasher {
         }
         long finishedTime = System.currentTimeMillis();
         double timeInterval = (double) (finishedTime - startTime) /1000;
-        player.sendMessage(Text.literal("내비메쉬 완료 (" + timeInterval + "s)"));
+        player.sendMessage(Text.literal("스캔 완료 (" + timeInterval + "s)"));
     }
-    private ArrayList<ChunkPos> getTargetChunkPosList(NavMeshMethod method,ChunkPos refChunkPos, int chunkRadius){
+    private ArrayList<ChunkPos> getTargetChunkPosList(ScanMethod method, ChunkPos refChunkPos, int chunkRadius){
         ArrayList<ChunkPos> targetChunkList = new ArrayList<>();
         int startZ = refChunkPos.z - chunkRadius;
         int cursorX = refChunkPos.x - chunkRadius;
@@ -62,8 +61,8 @@ public class NavMasher {
         for(int i = 0; i< chunkRadius * 2 + 1; i++){
             for(int j = 0; j< chunkRadius * 2 + 1; j++){
                 ChunkPos chunkPos = new ChunkPos(cursorX,cursorZ);
-                if (method == NavMeshMethod.ALL
-                        || (method == NavMeshMethod.MISSING && !isChunkScanDataExist(chunkPos))) {
+                if (method == ScanMethod.ALL
+                        || (method == ScanMethod.MISSING && !isChunkScanDataExist(chunkPos))) {
                     targetChunkList.add(chunkPos);
                 }
                 cursorZ++;
@@ -76,7 +75,7 @@ public class NavMasher {
     private static boolean isChunkScanDataExist(ChunkPos chunkPos){
         String region = "r." + chunkPos.getRegionX() + "." + chunkPos.getRegionZ();
         String filePath = "/" + chunkPos.x + "." + chunkPos.z + ".json";
-        File file = new File("config/tesm/navmesh/" + region + filePath);
+        File file = new File("config/tesm/scandata/" + region + filePath);
         return file.exists();
     }
 
@@ -90,9 +89,9 @@ public class NavMasher {
             EntityManager.summonEntity(EntityType.FROG, blockPos);
         }*/
         // 내비메쉬 시작
-        NavMeshDataOfChunk chunkData = new NavMeshDataOfChunk();
+        ScanDataOfChunk chunkData = new ScanDataOfChunk();
         for(BlockPos blockPos : validPosMap.keySet()){
-            NavMeshDataOfBlockPos blockData = blockTest(blockPos);
+            ScanDataOfBlockPos blockData = blockTest(blockPos);
             chunkData.putBlockData(blockPos, blockData);
         }
         // 청크 스캔 데이터를 파일로 저장하기
@@ -105,19 +104,19 @@ public class NavMasher {
                 + fileName.substring(0, fileName.length()-5) + "청크에 대한 "
                 + validPosMap.size() + "좌표 스캔 데이터 저장 완료 (" + time + "ms)"));
     }
-    private NavMeshDataOfBlockPos blockTest(BlockPos blockPos){
-        NavMeshDataOfBlockPos blockData = new NavMeshDataOfBlockPos();
+    private ScanDataOfBlockPos blockTest(BlockPos blockPos){
+        ScanDataOfBlockPos blockData = new ScanDataOfBlockPos();
         // 8방향에 대해서
         for(Direction direction : Direction.getAllDirections()){
             boolean obstacleFound = LinearSearcher.isObstacleFound(blockPos, direction);
             BlockPos nextPos = BlockPosUtil.getNextBlock(blockPos, direction);
 
-            NavMeshDataOfDirection directionData;
+            ScanDataOfDirection directionData;
             if(obstacleFound){
-                directionData = new NavMeshDataOfDirection(true, null, null);
+                directionData = new ScanDataOfDirection(true, null, null);
             }else{
                 JumpPointTestResult jpTestResult = LinearSearcher.jumpPointTest(blockPos, nextPos,direction);
-                directionData = new NavMeshDataOfDirection(
+                directionData = new ScanDataOfDirection(
                         obstacleFound, jpTestResult.isLeftBlocked(), jpTestResult.isRightBlocked());
             }
             blockData.putDirectionData(direction, directionData);

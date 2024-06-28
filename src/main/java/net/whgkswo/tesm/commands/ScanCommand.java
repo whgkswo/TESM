@@ -9,29 +9,29 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.CommandSource;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
-import net.whgkswo.tesm.pathfinding.v3.NavMasher;
+import net.whgkswo.tesm.pathfinding.v3.ChunkScanner;
 
 import static net.minecraft.server.command.CommandManager.literal;
 import static net.minecraft.server.command.CommandManager.argument;
 
 
-public class NavMeshCommand {
+public class ScanCommand {
     private static final SuggestionProvider<ServerCommandSource> METHOD_SUGGESTIONS = (context, builder) ->
             CommandSource.suggestMatching(new String[]{"missing", "all"}, builder);
     public static void register(){
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
-            LiteralArgumentBuilder<ServerCommandSource> navMeshCommand = literal("navmesh")
-                    .executes(NavMeshCommand::executeNavMeshCommand)
+            LiteralArgumentBuilder<ServerCommandSource> scanCommand = literal("scan")
+                    .executes(ScanCommand::executeScanCommand)
                     .then(argument("method", StringArgumentType.string())
                             .suggests(METHOD_SUGGESTIONS)
-                            /*.executes(NavMeshCommand::executeNavMeshCommand)*/
+                            /*.executes(ScanCommand::executeNavMeshCommand)*/
                             .then(argument("chunk_radius", IntegerArgumentType.integer())
-                                    .executes(NavMeshCommand::executeNavMeshCommand)));
+                                    .executes(ScanCommand::executeScanCommand)));
 
-            dispatcher.register(navMeshCommand);
+            dispatcher.register(scanCommand);
         });
     }
-    private static int executeNavMeshCommand(CommandContext<ServerCommandSource> context) {
+    private static int executeScanCommand(CommandContext<ServerCommandSource> context) {
         String methodInput;
         int chunkRadius;
         try{
@@ -44,15 +44,15 @@ public class NavMeshCommand {
         }catch (IllegalArgumentException e){
             chunkRadius = 0;
         }
-        NavMasher.NavMeshMethod navMeshMethod;
-        NavMasher navMasher = new NavMasher();
+        ChunkScanner.ScanMethod scanMethod;
+        ChunkScanner chunkScanner = new ChunkScanner();
         try{
-            navMeshMethod = NavMasher.NavMeshMethod.getMethod(methodInput);
+            scanMethod = ChunkScanner.ScanMethod.getMethod(methodInput);
         }catch (NullPointerException e){
-            context.getSource().sendError(Text.literal("잘못된 네비메쉬 방식 입력입니다."));
+            context.getSource().sendError(Text.literal("잘못된 스캔 방식입니다."));
             return 0;
         }
-        navMasher.navMesh(navMeshMethod, chunkRadius);
+        chunkScanner.scan(scanMethod, chunkRadius);
         return 1;
     }
 }

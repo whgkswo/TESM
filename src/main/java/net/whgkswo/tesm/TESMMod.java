@@ -12,7 +12,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.blocks.ModBlocks;
-import net.whgkswo.tesm.commands.NavMeshCommand;
+import net.whgkswo.tesm.commands.ScanCommand;
 import net.whgkswo.tesm.commands.SummonVillager;
 import net.whgkswo.tesm.commands.ToggleTimeflow;
 import net.whgkswo.tesm.general.InitializeTasks;
@@ -70,7 +70,7 @@ public class TESMMod implements ModInitializer {
 
 		ToggleTimeflow.register();
 		SummonVillager.register();
-		NavMeshCommand.register();
+		ScanCommand.register();
 
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 이벤트 및 메소드 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
