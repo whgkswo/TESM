@@ -1,24 +1,25 @@
-package net.whgkswo.tesm.pathfinding.v2;
+package net.whgkswo.tesm.pathfinding.v3;
 
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.whgkswo.tesm.exceptions.EmptyOpenListExeption;
 import net.whgkswo.tesm.general.GlobalVariables;
+import net.whgkswo.tesm.pathfinding.v2.*;
 import net.whgkswo.tesm.util.BlockPosUtil;
 import net.whgkswo.tesm.util.OpenListManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class LargeSearcher {
+public class LargeSearcherV3 {
     private BlockPos endPos;
     private final int MAX_SEARCH_RADIUS;
 
     private ArrayList<JumpPoint> openList;
     private HashMap<BlockPos, BlockPos> closedList;
 
-    public LargeSearcher(BlockPos endPos, int MAX_SEARCH_RADIUS, ArrayList<JumpPoint> openList,
-                         HashMap<BlockPos, BlockPos> closedList) {
+    public LargeSearcherV3(BlockPos endPos, int MAX_SEARCH_RADIUS, ArrayList<JumpPoint> openList,
+                           HashMap<BlockPos, BlockPos> closedList) {
         this.endPos = endPos;
         this.MAX_SEARCH_RADIUS = MAX_SEARCH_RADIUS;
         this.openList = openList;
@@ -61,7 +62,7 @@ public class LargeSearcher {
         return new LargeSearchResult();
     }
     public SearchResult search(BlockPos largeRefPos, Direction direction, int hValue){
-        LinearSearcher searcher = new LinearSearcher(largeRefPos, endPos, direction, MAX_SEARCH_RADIUS);
+        LinearSearcherV3 searcher = new LinearSearcherV3(largeRefPos, endPos, direction, MAX_SEARCH_RADIUS);
         // 주어진 방향에 대해 탐색 실행
         DiagSearchState diagSearchState = new DiagSearchState(0,direction);
         SearchResult result = searcher.linearSearch(BlockPosUtil.getCopyPos(largeRefPos),openList, closedList,diagSearchState,hValue);

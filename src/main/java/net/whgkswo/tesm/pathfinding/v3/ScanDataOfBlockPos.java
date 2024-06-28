@@ -22,4 +22,7 @@ public class ScanDataOfBlockPos {
     }
 
     private HashMap<Direction, ScanDataOfDirection> data;
+    public ScanDataOfDirection getDirectionData(Direction direction){
+        return this.data.get(direction);
+    }
 }

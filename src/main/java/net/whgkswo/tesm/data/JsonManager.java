@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.whgkswo.tesm.pathfinding.v3.ScanDataOfChunk;
 
 import java.io.File;
@@ -41,5 +42,11 @@ public class JsonManager {
             e.printStackTrace();
             return null;
         }
+    }
+    public static boolean isChunkScanDataExist(ChunkPos chunkPos){
+        String region = "r." + chunkPos.getRegionX() + "." + chunkPos.getRegionZ();
+        String filePath = "/" + chunkPos.x + "." + chunkPos.z + ".json";
+        File file = new File("config/tesm/scandata/" + region + filePath);
+        return file.exists();
     }
 }

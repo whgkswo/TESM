@@ -1,5 +1,6 @@
 package net.whgkswo.tesm.pathfinding.v3;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -7,6 +8,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.Heightmap;
 import net.whgkswo.tesm.data.JsonManager;
 import net.whgkswo.tesm.data.SizedStack;
+import net.whgkswo.tesm.entitymanaging.EntityManager;
 import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.pathfinding.v2.Direction;
 import net.whgkswo.tesm.pathfinding.v2.JumpPointTestResult;
@@ -17,6 +19,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static net.whgkswo.tesm.data.JsonManager.isChunkScanDataExist;
 import static net.whgkswo.tesm.general.GlobalVariables.player;
 
 public class ChunkScanner {
@@ -56,8 +59,6 @@ public class ChunkScanner {
         long finishedTime = System.currentTimeMillis();
         double timeInterval = (double) (finishedTime - startTime) /1000;
         player.sendMessage(Text.literal("스캔 완료 (" + timeInterval + "s)"));
-        ScanDataOfChunk data = JsonManager.readJson("r.-1.0/-2.0.json");
-        player.sendMessage(Text.literal(data.toString()));
     }
     private ArrayList<ChunkPos> getTargetChunkPosList(ScanMethod method, ChunkPos refChunkPos, int chunkRadius){
         ArrayList<ChunkPos> targetChunkList = new ArrayList<>();
@@ -78,12 +79,6 @@ public class ChunkScanner {
         }
         return targetChunkList;
     }
-    private static boolean isChunkScanDataExist(ChunkPos chunkPos){
-        String region = "r." + chunkPos.getRegionX() + "." + chunkPos.getRegionZ();
-        String filePath = "/" + chunkPos.x + "." + chunkPos.z + ".json";
-        File file = new File("config/tesm/scandata/" + region + filePath);
-        return file.exists();
-    }
 
 
     private void scanChunk(ChunkPos chunkPos, int progress, int total){
@@ -91,9 +86,9 @@ public class ChunkScanner {
         Box box = createBox(chunkPos);
         // 유효한 좌표를 찾기
         HashMap<BlockPos, Boolean> validPosMap = getSteppableBlocks(box);
-        /*for(BlockPos blockPos : validPosMap.keySet()){
+        for(BlockPos blockPos : validPosMap.keySet()){
             EntityManager.summonEntity(EntityType.FROG, blockPos);
-        }*/
+        }
         // 내비메쉬 시작
         ScanDataOfChunk chunkData = new ScanDataOfChunk(new HashMap<>());
         for(BlockPos blockPos : validPosMap.keySet()){
