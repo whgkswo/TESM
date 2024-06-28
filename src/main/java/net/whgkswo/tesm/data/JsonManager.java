@@ -2,7 +2,9 @@ package net.whgkswo.tesm.data;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.BlockPos;
 import net.whgkswo.tesm.pathfinding.v3.ScanDataOfChunk;
 
 import java.io.File;
@@ -26,11 +28,17 @@ public class JsonManager {
     }
     public static ScanDataOfChunk readJson(String filePath){
         ObjectMapper objectMapper = new ObjectMapper();
+        SimpleModule module = new SimpleModule();
+        module.addKeyDeserializer(BlockPos.class, new BlockPosKeyDeserializer());
+        objectMapper.registerModule(module);
+        File file = new File(BASE_PATH + filePath);
+
         try{
-            return objectMapper.readValue(BASE_PATH + filePath + "", ScanDataOfChunk.class);
+            return objectMapper.readValue(file, ScanDataOfChunk.class);
         }catch(IOException e){
             //아무것도 안함
             player.sendMessage(Text.literal(e.getClass().getSimpleName() + " 발생"));
+            e.printStackTrace();
             return null;
         }
     }

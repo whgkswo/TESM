@@ -93,14 +93,14 @@ public class ChunkScanner {
             EntityManager.summonEntity(EntityType.FROG, blockPos);
         }*/
         // 내비메쉬 시작
-        ScanDataOfChunk chunkData = new ScanDataOfChunk();
+        ScanDataOfChunk chunkData = new ScanDataOfChunk(new HashMap<>());
         for(BlockPos blockPos : validPosMap.keySet()){
             ScanDataOfBlockPos blockData = blockTest(blockPos);
             chunkData.putBlockData(blockPos, blockData);
         }
         // 청크 스캔 데이터를 파일로 저장하기
         /*ChunkPos chunkPos = world.getChunk(playerPos).getPos();*/
-        String fileName = "r." + chunkPos.getRegionX() + "." + chunkPos.getRegionZ() + "의 " +
+        String fileName = "r." + chunkPos.getRegionX() + "." + chunkPos.getRegionZ() + "/" +
                 chunkPos.x + "." + chunkPos.z + ".json";
         JsonManager.createJson(chunkData, fileName);
         //long time = System.currentTimeMillis() - startTime;
@@ -110,7 +110,7 @@ public class ChunkScanner {
         /*(" + time + "ms)*/
     }
     private ScanDataOfBlockPos blockTest(BlockPos blockPos){
-        ScanDataOfBlockPos blockData = new ScanDataOfBlockPos();
+        ScanDataOfBlockPos blockData = new ScanDataOfBlockPos(new HashMap<>());
         // 8방향에 대해서
         for(Direction direction : Direction.getAllDirections()){
             boolean obstacleFound = LinearSearcher.isObstacleFound(blockPos, direction);

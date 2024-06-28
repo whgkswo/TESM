@@ -8,10 +8,16 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.whgkswo.tesm.data.JsonManager;
 import net.whgkswo.tesm.exceptions.EntityNotFoundExeption;
 import net.whgkswo.tesm.general.GlobalVariables;
+import net.whgkswo.tesm.pathfinding.v3.ScanDataOfChunk;
 import net.whgkswo.tesm.util.BlockPosUtil;
 import net.whgkswo.tesm.pathfinding.v2.Pathfinder;
+
+import java.io.IOException;
+
+import static net.whgkswo.tesm.general.GlobalVariables.player;
 /*import net.whgkswo.tesm.pathfindingv2.PathfindingManager;*/
 
 
@@ -23,6 +29,9 @@ public class UseBlockC2SPacket {
 
         BlockPos hitResultPos = hitResult.getBlockPos();
         if(BlockPosUtil.isTrapBlock(hitResultPos)){
+            ScanDataOfChunk data = JsonManager.readJson("r.-1.0/-2.0.json");
+            player.sendMessage(Text.literal(data.toString()));
+
             player.sendMessage(Text.literal(String.format(
                     "%s 위로는 갈 수 없습니다.", GlobalVariables.world.getBlockState(hitResultPos).getBlock().getName().getString())));
             return;

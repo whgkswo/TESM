@@ -7,8 +7,11 @@ import java.util.HashMap;
 public class ScanDataOfBlockPos {
 
 
+    public ScanDataOfBlockPos(HashMap<Direction, ScanDataOfDirection> data) {
+        this.data = data;
+    }
+
     public ScanDataOfBlockPos() {
-        data = new HashMap<>();
     }
 
     public void setData(HashMap<Direction, ScanDataOfDirection> data) {
@@ -22,5 +25,5 @@ public class ScanDataOfBlockPos {
         return data;
     }
 
-    private HashMap<Direction, ScanDataOfDirection> data;
+    public HashMap<Direction, ScanDataOfDirection> data;
 }
