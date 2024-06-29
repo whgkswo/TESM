@@ -11,6 +11,8 @@ import net.whgkswo.tesm.util.JumpPointTester;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.PriorityQueue;
 
 import static net.whgkswo.tesm.general.GlobalVariables.scanDataMap;
 import static net.whgkswo.tesm.general.GlobalVariables.world;
@@ -22,18 +24,21 @@ public class LinearSearcherV3 {
     private final BlockPos refPos;  private final BlockPos endPos;
     private final int maxRepeatCount;
     private final ScanDataOfBlockPos scanData;
+    private HashSet<BlockPos> openSet;
 
     public int getMaxRepeatCount() {
         return maxRepeatCount;
     }
 
-    public LinearSearcherV3(BlockPos refPos, BlockPos endPos, Direction direction, int maxRepeatCount, ScanDataOfBlockPos scanData){
+    public LinearSearcherV3(BlockPos refPos, BlockPos endPos, Direction direction, int maxRepeatCount, ScanDataOfBlockPos scanData,
+                            HashSet<BlockPos> openSet){
         this.direction = direction;
         this.refPos = BlockPosUtil.getCopyPos(refPos);    this.endPos = endPos;
         this.maxRepeatCount = maxRepeatCount;
         this.scanData = scanData;
+        this.openSet = openSet;
     }
-    public SearchResult linearSearch(BlockPos largeRefPos, ArrayList<JumpPoint> openList, HashMap<BlockPos,BlockPos> closedList,
+    public SearchResult linearSearch(BlockPos largeRefPos, PriorityQueue<JumpPoint> openList, HashMap<BlockPos,BlockPos> closedList,
                                      DiagSearchState diagSearchState, int trailedDistance){
         cursorX = refPos.getX();
         cursorY = refPos.getY();
@@ -62,7 +67,7 @@ public class LinearSearcherV3 {
                 // 점프 포인트 생성
                 /*player.sendMessage(Text.literal("점프 포인트 생성 (" + nextPos.getX() + ", " + nextPos.getY() + ", " + nextPos.getZ() + ")"));*/
                 JumpPoint jumpPoint = createAndRegisterJumpPoint(largeRefPos,nextPos, direction, trailedDistance,
-                        diagSearchState, endPos,directionData.getLeftBlocked(),directionData.getRightBlocked(),openList, closedList);
+                        diagSearchState, endPos,directionData.getLeftBlocked(),directionData.getRightBlocked(),openList, openSet,closedList);
                 // 결과 리턴
                 return new SearchResult(false, jumpPoint);
             }
@@ -74,12 +79,12 @@ public class LinearSearcherV3 {
                 DiagSearchState currentDiagSearchState = new DiagSearchState(i, direction);
                 // x방향 탐색
                 Direction xDirection = Direction.getDirectionByComponent(direction.getX(), 0);
-                LinearSearcherV3 xSearcher = new LinearSearcherV3(nextPos, endPos, xDirection, branchLength, scanData);
+                LinearSearcherV3 xSearcher = new LinearSearcherV3(nextPos, endPos, xDirection, branchLength, scanData, openSet);
                 SearchResult xBranchResult = xSearcher.linearSearch(largeRefPos,openList, closedList,currentDiagSearchState,trailedDistance);
                 if(xBranchResult.hasFoundDestination()){
                     return xBranchResult;
                 }else { // 목적지를 찾지 못했다면
-                    LinearSearcherV3 zSearcher = new LinearSearcherV3(nextPos, endPos, Direction.getDirectionByComponent(0, direction.getZ()),branchLength, scanData);
+                    LinearSearcherV3 zSearcher = new LinearSearcherV3(nextPos, endPos, Direction.getDirectionByComponent(0, direction.getZ()),branchLength, scanData, openSet);
                     // z방향 탐색
                     SearchResult zBranchResult = zSearcher.linearSearch(largeRefPos,openList, closedList,currentDiagSearchState,trailedDistance);
                     if(zBranchResult.hasFoundDestination()){
@@ -92,83 +97,26 @@ public class LinearSearcherV3 {
         BlockPos resultPos = new BlockPos(cursorX,cursorY,cursorZ);
         /*player.sendMessage(Text.literal("탐색 종료 포인트 생성 (" + resultPos.getX() + ", " + resultPos.getY() + ", " + resultPos.getZ() + ")"));*/
 
-        createAndRegisterJumpPoint(largeRefPos,resultPos, direction,trailedDistance,diagSearchState,endPos,false,false,openList, closedList);
+        createAndRegisterJumpPoint(largeRefPos,resultPos, direction,trailedDistance,diagSearchState,endPos,false,false,openList,openSet,closedList);
         // 결과 반환
         return new SearchResult(false, null);
     }
 
-    public static JumpPointTestResult jumpPointTest(BlockPos blockPos, BlockPos nextPos, Direction direction){
-        boolean leftBlocked = false;    boolean rightBlocked = false;
-        if(!direction.isDiagonal()){
-            TriangleTestResult leftTestResult = new TriangleTestResult(blockPos, direction, RelativeDirection.LEFT);
-            TriangleTestResult rightTestResult = new TriangleTestResult(blockPos, direction, RelativeDirection.RIGHT);
-            boolean finalTestLeft = BlockPosUtil.isReachable(nextPos, direction.getLeftDirection());
-            boolean finalTestRight = BlockPosUtil.isReachable(nextPos, direction.getRightDirection());
-
-            if(JumpPointTester.jumpPointTest(leftTestResult, finalTestLeft)){
-                leftBlocked = true;
-            }
-            if(JumpPointTester.jumpPointTest(rightTestResult, finalTestRight)){
-                rightBlocked = true;
-            }
-        }else{// 대각선일 때도 점프 포인트를 생성할 수 있음!!
-            TriangleTestForDiag leftTest = new TriangleTestForDiag(blockPos, nextPos, direction, RelativeDirection.LEFT);
-            TriangleTestForDiag rightTest = new TriangleTestForDiag(blockPos, nextPos, direction, RelativeDirection.RIGHT);
-            if(!leftTest.isRefPosToNeighborPos() && leftTest.isNextPosToNeighborPos()){
-                leftBlocked = true;
-            }
-            if(!rightTest.isRefPosToNeighborPos() && rightTest.isNextPosToNeighborPos()){
-                rightBlocked = true;
-            }
-        }
-        return new JumpPointTestResult(leftBlocked, rightBlocked);
-    }
-    public static boolean isObstacleFound(BlockPos prevPos, Direction direction){
-        // 다음 칸에 장애물과 낭떠러지가 있으면
-        if(!BlockPosUtil.isReachable(prevPos, direction)){
-            return true;
-        }else{ // 장애물과 낭떠러지가 없으면
-            // 탐색 방향으로 한 칸 가기
-            BlockPos nextPos = getNextBlock(prevPos, direction);
-            // 올라가는 좌표 장애물 추가 검사
-            if(prevPos.getY() < nextPos.getY()){
-                // 천장 머리쿵
-                if(BlockPosUtil.isObstacle(prevPos.up(3))){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    private static boolean isValidCoordForJumpPoint(BlockPos targetPos, ArrayList<JumpPoint> openList, HashMap<BlockPos, BlockPos> closedList){
-        boolean duplicatedInOL = false;
-        for (JumpPoint jumpPoint : openList) {
-            BlockPos jpPos = jumpPoint.getBlockPos();
-            if (jpPos.getX() == targetPos.getX() && jpPos.getY() == targetPos.getY() && jpPos.getZ() == targetPos.getZ()) {
-                duplicatedInOL = true;
-                break;
-            }
-        }
-        boolean duplicatedInCL = false;
-        for(BlockPos blockPos : closedList.keySet()){
-            if(targetPos.getX() == blockPos.getX() && targetPos.getY() == blockPos.getY() && targetPos.getZ() == blockPos.getZ()){
-                duplicatedInCL = true;
-                break;
-            }
-        }
-        return !duplicatedInOL && !duplicatedInCL;
+    private static boolean isValidCoordForJumpPoint(BlockPos targetPos, HashSet<BlockPos> openSet, HashMap<BlockPos, BlockPos> closedList){
+        return !openSet.contains(targetPos) && !closedList.containsKey(targetPos);
     }
     private JumpPoint createAndRegisterJumpPoint(BlockPos largeRefPos, BlockPos currentPos, Direction direction, int trailedDistance,DiagSearchState diagSearchState, BlockPos endPos, boolean leftBlocked, boolean rightBlocked,
-                                                ArrayList<JumpPoint> openList, HashMap<BlockPos, BlockPos> closedList){
+                                                 PriorityQueue<JumpPoint> openList, HashSet<BlockPos> openSet, HashMap<BlockPos, BlockPos> closedList){
 
         int nextTrailedDistance = trailedDistance + diagSearchState.getSearchedCount()*14 + this.getMaxRepeatCount()*10;
         // 점프 포인트 생성
         JumpPoint jumpPoint = new JumpPoint(largeRefPos,currentPos, direction,endPos,nextTrailedDistance,leftBlocked,rightBlocked);
-        if(isValidCoordForJumpPoint(currentPos, openList, closedList)){
+        if(isValidCoordForJumpPoint(currentPos, openSet, closedList)){
             // 갑옷 거치대 소환
             /*EntityManager.summonEntity(EntityType.ARMOR_STAND, currentPos);*/
             // 오픈 리스트에 점프 포인트 추가
             openList.add(jumpPoint);
+            openSet.add(jumpPoint.getBlockPos());
         }
         return jumpPoint;
     }

@@ -14,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static net.whgkswo.tesm.general.GlobalVariables.player;
 
-public class Pathfinder {
+public class PathfinderV2 {
     private static final int MAX_SEARCH_RADIUS = 1;
     private static final int MAX_SEARCH_REPEAT_COUNT = 50000;
     private final Entity targetEntity;
@@ -24,7 +24,7 @@ public class Pathfinder {
     private final long startTime;
 
 
-    public Pathfinder(String targetName, BlockPos endPos){
+    public PathfinderV2(String targetName, BlockPos endPos){
         targetEntity = EntityManager.findEntityByName(targetName);
 
         startPos = targetEntity.getBlockPos().down(1);

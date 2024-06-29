@@ -10,10 +10,8 @@ import net.whgkswo.tesm.exceptions.EmptyOpenListExeption;
 import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.pathfinding.v2.JumpPoint;
 import net.whgkswo.tesm.pathfinding.v2.LargeSearchResult;
-import net.whgkswo.tesm.pathfinding.v2.SearchResult;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 import static net.whgkswo.tesm.general.GlobalVariables.player;
@@ -23,22 +21,22 @@ public class PathfinderV3 {
     private static final int MAX_SEARCH_REPEAT_COUNT = 50000;
     private final Entity targetEntity;
     private final BlockPos startPos;    private final BlockPos endPos;
-    private ArrayList<JumpPoint> openList;
-    private HashMap<BlockPos, SearchResult> closedList;
-    private HashMap<BlockPos, BlockPos> newClosedList;
+    private PriorityQueue<JumpPoint> openList;
+    private HashSet<BlockPos> openSet;
+    private HashMap<BlockPos, BlockPos> closedList;
     private final long startTime;
 
     public PathfinderV3(String targetName, BlockPos endPos){
         targetEntity = EntityManager.findEntityByName(targetName);
         startPos = targetEntity.getBlockPos().down(1);
         this.endPos = endPos;
-        openList = new ArrayList<>();
+        openList = new PriorityQueue<>(Comparator.comparingInt(JumpPoint::getFValue));
+        openSet = new HashSet<>();
         closedList = new HashMap<>();
-        newClosedList = new HashMap<>();
         startTime = System.currentTimeMillis();
         try{
-            pathfind();
-            //CompletableFuture.runAsync(this::pathfind);
+            //pathfind();
+            CompletableFuture.runAsync(this::pathfind);
         }catch (EmptyOpenListExeption e){
             player.sendMessage(Text.literal(String.format("탐색 실패, 갈 수 없는 곳입니다. (%s)", e.getClass().getSimpleName())));
         }catch (ChunkDataNotFoundExeption e){
@@ -48,12 +46,10 @@ public class PathfinderV3 {
             e.printStackTrace();
         }
     }
-    public ArrayList<JumpPoint> getOpenList() {
+    public PriorityQueue<JumpPoint> getOpenList() {
         return openList;
     }
-    public HashMap<BlockPos, SearchResult> getClosedList() {
-        return closedList;
-    }
+
     public void pathfind(){
         // 이전 탐색에서 사용된 갑옷 거치대와 알레이, 닭 ,벌 없애기
         GlobalVariables.pathfindEntityList.forEach(Entity::kill);
@@ -70,14 +66,14 @@ public class PathfinderV3 {
         int searchCount = 0;
         // 루프 돌며 대탐색 실시
         while(searchCount < MAX_SEARCH_REPEAT_COUNT){
-            LargeSearcherV3 largeSearcherV3 = new LargeSearcherV3(endPos, MAX_SEARCH_RADIUS, openList, newClosedList);
+            LargeSearcherV3 largeSearcherV3 = new LargeSearcherV3(endPos, MAX_SEARCH_RADIUS, openList,openSet, closedList);
             // 경로 탐색 완료했으면 알고리즘 전체 종료
             result = largeSearcherV3.largeSearch(searchCount, startPos);
             if(result.isFoundDestination()){
                 double duration = result.getTime() - startTime;
 
                 int distance = backtrack(result.getLargeRefPos());
-                player.sendMessage(Text.literal("목적지 탐색 완료 ("+ (distance + 1) + "m - "
+                player.sendMessage(Text.literal("목적지 탐색 완료 ("+ (distance + 1) + "m -> "
                         + duration / 1000 + "s)"));
                 return;
             }
@@ -93,7 +89,7 @@ public class PathfinderV3 {
         while(!refPos.equals(startPos)){
             pathList.add(0, refPos);
             GlobalVariables.pathfindEntityList.add(EntityManager.summonEntity(EntityType.FROG, refPos));
-            refPos = newClosedList.get(refPos);
+            refPos = closedList.get(refPos);
             backtrackCount++;
         }
         return backtrackCount;

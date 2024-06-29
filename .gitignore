@@ -41,3 +41,6 @@ replay_*.log
 
 # Resources
 src/main/resources
+
+# Test Class
+src/main/java/net/whgkswo/tesm/TestClass.java

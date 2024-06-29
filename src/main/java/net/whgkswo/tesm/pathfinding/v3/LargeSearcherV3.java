@@ -13,6 +13,8 @@ import net.whgkswo.tesm.util.OpenListManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.PriorityQueue;
 
 import static net.whgkswo.tesm.general.GlobalVariables.scanDataMap;
 import static net.whgkswo.tesm.general.GlobalVariables.world;
@@ -20,28 +22,31 @@ import static net.whgkswo.tesm.general.GlobalVariables.world;
 public class LargeSearcherV3 {
     private BlockPos endPos;
     private final int MAX_SEARCH_RADIUS;
-
-    private ArrayList<JumpPoint> openList;
+    private PriorityQueue<JumpPoint> openList;
+    private HashSet<BlockPos> openSet;
     private HashMap<BlockPos, BlockPos> closedList;
 
-    public LargeSearcherV3(BlockPos endPos, int MAX_SEARCH_RADIUS, ArrayList<JumpPoint> openList,
-                           HashMap<BlockPos, BlockPos> closedList) {
+    public LargeSearcherV3(BlockPos endPos, int MAX_SEARCH_RADIUS, PriorityQueue<JumpPoint> openList,
+                           HashSet<BlockPos> openSet, HashMap<BlockPos, BlockPos> closedList) {
         this.endPos = endPos;
         this.MAX_SEARCH_RADIUS = MAX_SEARCH_RADIUS;
         this.openList = openList;
+        this.openSet = openSet;
         this.closedList = closedList;
     }
 
     public LargeSearchResult largeSearch(int searchCount, BlockPos startPos){
         searchCount++;
         // 다음 점프 포인트 선정 (F값이 최소인 걸로)
-        int nextIndex = OpenListManager.getMinFIndex(openList);
         if(openList.isEmpty()){
             throw new EmptyOpenListExeption();
         }
-        JumpPoint nextJumpPoint = openList.get(nextIndex);
-        // 대탐색 시작 위치 선정
+        // 대탐색 시작 위치 선정 및 해당 좌표를 오픈 리스트에서 제거
+        JumpPoint nextJumpPoint = openList.poll();
         BlockPos refPos = nextJumpPoint.getBlockPos();
+        openSet.remove(refPos);
+        // 해당 좌표를 클로즈 리스트에 추가
+        closedList.put(refPos,nextJumpPoint.getLargeRefPos());
         // 소탐색 방향 선정
         ArrayList<Direction> directions = DirectionSetter.setSearchDirections(startPos, nextJumpPoint);
         // 대탐색 정보 채팅창에 출력
@@ -51,9 +56,6 @@ public class LargeSearcherV3 {
         SearchResult result = new SearchResult(false, null);
         // 대탐색 시작 위치에 닭 소환
         /*EntityManager.summonEntity(EntityType.CHICKEN, refPos);*/
-        // 해당 좌표를 클로즈 리스트에 추가한 후 오픈 리스트에서 제거
-        closedList.put(refPos,nextJumpPoint.getLargeRefPos());
-        openList.remove(nextIndex);
         // 좌표에 해당하는 청크 스캔 데이터 로드
         ScanDataOfChunk chunkData = loadChunkData(refPos);
         // 이 좌표의 데이터 가져오기
@@ -72,10 +74,10 @@ public class LargeSearcherV3 {
         return new LargeSearchResult();
     }
     public SearchResult search(BlockPos largeRefPos, Direction direction, int hValue, ScanDataOfBlockPos scanData){
-        LinearSearcherV3 searcher = new LinearSearcherV3(largeRefPos, endPos, direction, MAX_SEARCH_RADIUS, scanData);
+        LinearSearcherV3 searcher = new LinearSearcherV3(largeRefPos, endPos, direction, MAX_SEARCH_RADIUS, scanData, openSet);
         // 주어진 방향에 대해 탐색 실행
         DiagSearchState diagSearchState = new DiagSearchState(0,direction);
-        SearchResult result = searcher.linearSearch(BlockPosUtil.getCopyPos(largeRefPos),openList, closedList,diagSearchState,hValue);
+        SearchResult result = searcher.linearSearch(BlockPosUtil.getCopyPos(largeRefPos),openList,closedList,diagSearchState,hValue);
         return result;
     }
     private static ScanDataOfChunk loadChunkData(BlockPos blockPos){
