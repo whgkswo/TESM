@@ -92,7 +92,7 @@ public class LargeSearcherV3 {
                 GlobalVariables.scanDataMap.put(chunkPos, chunkData);
                 return chunkData;
             }else{
-                throw new ChunkDataNotFoundExeption();
+                throw new ChunkDataNotFoundExeption(chunkPos);
             }
         }
     }

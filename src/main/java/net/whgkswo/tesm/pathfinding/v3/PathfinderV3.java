@@ -34,18 +34,35 @@ public class PathfinderV3 {
         openSet = new HashSet<>();
         closedList = new HashMap<>();
         startTime = System.currentTimeMillis();
-        try{
+        /*try{
             //pathfind();
             CompletableFuture.runAsync(this::pathfind);
         }catch (EmptyOpenListExeption e){
             player.sendMessage(Text.literal(String.format("탐색 실패, 갈 수 없는 곳입니다. (%s)", e.getClass().getSimpleName())));
         }catch (ChunkDataNotFoundExeption e){
-            player.sendMessage(Text.literal("탐색 실패, 누락된 청크 스캔 데이터가 존재합니다."));
+            player.sendMessage(Text.literal(String.format("탐색 실패, [%s] 청크 스캔 데이터가 누락되었습니다.", e.getChunkPos())));
         }catch (Exception e){
+            player.sendMessage(Text.literal("탐색 실패, 기타 오류가 발생했습니다."));
+            e.printStackTrace();
+        }*/
+        CompletableFuture.runAsync(this::pathfind)
+                .exceptionally(e -> {
+                    handleException(e);
+                    return null;
+                });
+    }
+    private void handleException(Throwable e) {
+        if (e.getCause() instanceof EmptyOpenListExeption) {
+            player.sendMessage(Text.literal(String.format("탐색 실패, 갈 수 없는 곳입니다. (%s)", e.getClass().getSimpleName())));
+        } else if (e.getCause() instanceof ChunkDataNotFoundExeption) {
+            ChunkDataNotFoundExeption ex = (ChunkDataNotFoundExeption) e.getCause();
+            player.sendMessage(Text.literal(String.format("탐색 실패, %s 청크의 스캔 데이터가 누락되었습니다.", ex.getChunkPos())));
+        } else {
             player.sendMessage(Text.literal("탐색 실패, 기타 오류가 발생했습니다."));
             e.printStackTrace();
         }
     }
+
     public PriorityQueue<JumpPoint> getOpenList() {
         return openList;
     }
