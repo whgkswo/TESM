@@ -54,8 +54,7 @@ public class PathfinderV3 {
     private void handleException(Throwable e) {
         if (e.getCause() instanceof EmptyOpenListExeption) {
             player.sendMessage(Text.literal(String.format("탐색 실패, 갈 수 없는 곳입니다. (%s)", e.getClass().getSimpleName())));
-        } else if (e.getCause() instanceof ChunkDataNotFoundExeption) {
-            ChunkDataNotFoundExeption ex = (ChunkDataNotFoundExeption) e.getCause();
+        } else if (e.getCause() instanceof ChunkDataNotFoundExeption ex) {
             player.sendMessage(Text.literal(String.format("탐색 실패, %s 청크의 스캔 데이터가 누락되었습니다.", ex.getChunkPos())));
         } else {
             player.sendMessage(Text.literal("탐색 실패, 기타 오류가 발생했습니다."));
