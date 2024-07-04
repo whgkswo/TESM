@@ -5,6 +5,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.whgkswo.tesm.entitymanaging.EntityManager;
+import net.whgkswo.tesm.exceptions.BlockDataNotFoundExeption;
 import net.whgkswo.tesm.exceptions.ChunkDataNotFoundExeption;
 import net.whgkswo.tesm.exceptions.EmptyOpenListExeption;
 import net.whgkswo.tesm.general.GlobalVariables;
@@ -15,6 +16,7 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 import static net.whgkswo.tesm.general.GlobalVariables.player;
+import static net.whgkswo.tesm.general.GlobalVariables.world;
 
 public class PathfinderV3 {
     private static final int MAX_SEARCH_RADIUS = 1;
@@ -34,17 +36,7 @@ public class PathfinderV3 {
         openSet = new HashSet<>();
         closedList = new HashMap<>();
         startTime = System.currentTimeMillis();
-        /*try{
-            //pathfind();
-            CompletableFuture.runAsync(this::pathfind);
-        }catch (EmptyOpenListExeption e){
-            player.sendMessage(Text.literal(String.format("탐색 실패, 갈 수 없는 곳입니다. (%s)", e.getClass().getSimpleName())));
-        }catch (ChunkDataNotFoundExeption e){
-            player.sendMessage(Text.literal(String.format("탐색 실패, [%s] 청크 스캔 데이터가 누락되었습니다.", e.getChunkPos())));
-        }catch (Exception e){
-            player.sendMessage(Text.literal("탐색 실패, 기타 오류가 발생했습니다."));
-            e.printStackTrace();
-        }*/
+
         CompletableFuture.runAsync(this::pathfind)
                 .exceptionally(e -> {
                     handleException(e);
@@ -54,11 +46,16 @@ public class PathfinderV3 {
     private void handleException(Throwable e) {
         if (e.getCause() instanceof EmptyOpenListExeption) {
             player.sendMessage(Text.literal(String.format("탐색 실패, 갈 수 없는 곳입니다. (%s)", e.getClass().getSimpleName())));
-        } else if (e.getCause() instanceof ChunkDataNotFoundExeption ex) {
-            player.sendMessage(Text.literal(String.format("탐색 실패, %s 청크의 스캔 데이터가 누락되었습니다.", ex.getChunkPos())));
-        } else {
-            player.sendMessage(Text.literal("탐색 실패, 기타 오류가 발생했습니다."));
-            e.printStackTrace();
+        } else if (e.getCause() instanceof ChunkDataNotFoundExeption e2) {
+            player.sendMessage(Text.literal(String.format("탐색 실패, %s 청크의 스캔 데이터가 누락되었습니다.", e2.getChunkPos())));
+        } else if (e.getCause() instanceof BlockDataNotFoundExeption e3){
+            BlockPos blockPos = e3.getBlockPos();
+            String blockPosStr = blockPos.toShortString();
+            player.sendMessage(Text.literal(String.format("탐색 실패, (%s) 좌표에서 문제 발생\n" +
+                            "%s 청크의 데이터가 실제 지형과 다릅니다. 스캔 데이터를 업데이트하세요.",
+                    blockPosStr, world.getChunk(blockPos).getPos())));
+        } else{
+            player.sendMessage(Text.literal("기타 오류 발생"));
         }
     }
 

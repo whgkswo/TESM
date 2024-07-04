@@ -4,6 +4,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.whgkswo.tesm.data.JsonManager;
+import net.whgkswo.tesm.exceptions.BlockDataNotFoundExeption;
 import net.whgkswo.tesm.exceptions.ChunkDataNotFoundExeption;
 import net.whgkswo.tesm.exceptions.EmptyOpenListExeption;
 import net.whgkswo.tesm.general.GlobalVariables;
@@ -50,8 +51,8 @@ public class LargeSearcherV3 {
         // 소탐색 방향 선정
         ArrayList<Direction> directions = DirectionSetter.setSearchDirections(startPos, nextJumpPoint);
         // 대탐색 정보 채팅창에 출력
-        GlobalVariables.player.sendMessage(Text.of(String.format("(%d) (%d, %d, %d)를 기준으로 탐색, %s", searchCount,
-                refPos.getX(), refPos.getY(), refPos.getZ(), directions)));
+        GlobalVariables.player.sendMessage(Text.of(String.format("(%d) (%s)를 기준으로 탐색, %s", searchCount,
+                refPos.toShortString(), directions)));
 
         SearchResult result = new SearchResult(false, null);
         // 대탐색 시작 위치에 닭 소환
@@ -60,6 +61,9 @@ public class LargeSearcherV3 {
         ScanDataOfChunk chunkData = loadChunkData(refPos);
         // 이 좌표의 데이터 가져오기
         ScanDataOfBlockPos scanData = chunkData.getBlockData(refPos);
+        if(scanData == null){
+            throw new BlockDataNotFoundExeption(refPos);
+        }
         // 다음 방향들에 대해 소탐색 시작
         for(Direction direction : directions){
             // 이전 소탐색에서 사용된 갑옷 거치대와 알레이, 닭, 벌 없애기
