@@ -23,7 +23,7 @@ public class UseBlockC2SPacket {
         BlockHitResult hitResult = buf.readBlockHitResult();
 
         BlockPos hitResultPos = hitResult.getBlockPos();
-        if(BlockPosUtil.isTrapBlock(hitResultPos)){
+        if(!BlockPosUtil.isSteppable(hitResultPos)){
             player.sendMessage(Text.literal(String.format(
                     "%s 위로는 갈 수 없습니다.", GlobalVariables.world.getBlockState(hitResultPos).getBlock().getName().getString())));
             return;

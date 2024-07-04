@@ -37,14 +37,16 @@ public class BlockPosUtil {
         return !shape.isEmpty();
     }
     public static boolean isSteppable(BlockPos blockPos){
-        // 해당 좌표가 단단하고
-        if(isSolid(blockPos)){
-            // 그 위 두 칸이 뚫렸으면
-            if(!isObstacle(blockPos.up(1)) && !isObstacle(blockPos.up(2))  ){
-                return true;
-            }
+        if(isTrapBlock(blockPos)){
+            return false;
         }
-        return false;
+        if(!isSolid(blockPos)){
+            return false;
+        }else{
+            return !isObstacle(blockPos.up()) && !isFluid(blockPos.up())
+                    && !isObstacle(blockPos.up(2)) && !isFluid(blockPos.up(2));
+        }
+
     }
     public static boolean isReachable(BlockPos refPos, Direction direction){
         int cursorX = refPos.getX();
