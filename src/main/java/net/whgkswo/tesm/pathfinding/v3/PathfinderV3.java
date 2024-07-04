@@ -20,7 +20,7 @@ import static net.whgkswo.tesm.general.GlobalVariables.world;
 
 public class PathfinderV3 {
     private static final int MAX_SEARCH_RADIUS = 1;
-    private static final int MAX_SEARCH_REPEAT_COUNT = 50000;
+    private static final int MAX_SEARCH_REPEAT_COUNT = 100000;
     private final Entity targetEntity;
     private final BlockPos startPos;    private final BlockPos endPos;
     private PriorityQueue<JumpPoint> openList;
