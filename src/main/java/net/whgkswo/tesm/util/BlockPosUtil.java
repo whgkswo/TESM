@@ -85,8 +85,8 @@ public class BlockPosUtil {
 
             BlockPos xRefPos = new BlockPos(refPos.getX() + direction.getX(), refPos.getY(), refPos.getZ()).up(offset);
             BlockPos zRefPos = new BlockPos(refPos.getX(), refPos.getY(), refPos.getZ() + direction.getZ()).up(offset);
-            boolean xBlocked = BlockPosUtil.isObstacle(xRefPos) || BlockPosUtil.isObstacle(xRefPos.up(1));
-            boolean zBlocked = BlockPosUtil.isObstacle(zRefPos) || BlockPosUtil.isObstacle(zRefPos.up(1));
+            boolean xBlocked = isObstacle(xRefPos) || isFluid(xRefPos) || isObstacle(xRefPos.up(1)) || isFluid(xRefPos.up());
+            boolean zBlocked = isObstacle(zRefPos) || isFluid(zRefPos) || isObstacle(zRefPos.up(1)) || isFluid(zRefPos.up());
             return !xBlocked && !zBlocked;
         }
         return true;
