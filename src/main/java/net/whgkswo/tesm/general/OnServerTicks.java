@@ -111,6 +111,7 @@ public class OnServerTicks {
 
                     server.getGameRules().get(GameRules.SEND_COMMAND_FEEDBACK).set(false,server);
                     server.getGameRules().get(GameRules.DO_DAYLIGHT_CYCLE).set(false,server);
+                    server.getGameRules().get(GameRules.RANDOM_TICK_SPEED).set(0, server);
                     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 바이옴 ID 및 지역 정보 초기화 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
                     previousBiomeID = currentBiomeID;

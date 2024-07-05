@@ -25,7 +25,7 @@ public class UseBlockC2SPacket {
         BlockPos hitResultPos = hitResult.getBlockPos();
 
         // 목적지 좌표의 블럭이 높이가 낮으면 기준을 한 칸 내리기
-        if(BlockPosUtil.getBlockHeight(hitResultPos) < 0.25){
+        if(BlockPosUtil.isLowBlock(hitResultPos)){
             hitResultPos = hitResultPos.down();
         }
         if(!BlockPosUtil.isSteppable(hitResultPos)){

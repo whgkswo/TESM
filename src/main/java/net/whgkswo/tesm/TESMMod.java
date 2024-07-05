@@ -19,6 +19,7 @@ import net.whgkswo.tesm.general.InitializeTasks;
 import net.whgkswo.tesm.general.OnServerTicks;
 import net.whgkswo.tesm.general.OnPlayerLeaves;
 import net.whgkswo.tesm.items.TestItem;
+import net.whgkswo.tesm.mixin.WorldMixin;
 import net.whgkswo.tesm.networking.ModMessages;
 import net.whgkswo.tesm.pathfinding.v1.PathFinder;
 import org.slf4j.Logger;

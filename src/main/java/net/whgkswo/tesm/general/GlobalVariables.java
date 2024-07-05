@@ -11,6 +11,7 @@ import net.whgkswo.tesm.pathfinding.v3.ScanDataOfChunk;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class GlobalVariables {
     public static ServerWorld world;
@@ -20,4 +21,6 @@ public class GlobalVariables {
     public static CommandManager commandManager;
     public static ParseResults<ServerCommandSource> parseResults;
     public static ArrayList<Entity> pathfindEntityList = new ArrayList<>();
+    public static HashSet<ChunkPos> updatedChunkSet = new HashSet<>();
+    public static final double LOW_BLOCKHEIGHT_REF = 0.25;
 }

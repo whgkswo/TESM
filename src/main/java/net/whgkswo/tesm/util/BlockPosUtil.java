@@ -5,6 +5,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.whgkswo.tesm.pathfinding.v2.Direction;
 import net.whgkswo.tesm.tags.BlockTags;
 
+import static net.whgkswo.tesm.general.GlobalVariables.LOW_BLOCKHEIGHT_REF;
 import static net.whgkswo.tesm.general.GlobalVariables.world;
 
 public class BlockPosUtil {
@@ -102,5 +103,9 @@ public class BlockPosUtil {
     }
     public static boolean isFluid(BlockPos blockPos){
         return !world.getBlockState(blockPos).getFluidState().isEmpty();
+    }
+    public static boolean isLowBlock(BlockPos blockPos){
+        return world.getBlockState(blockPos).getCollisionShape(world,blockPos)
+                .getMax(net.minecraft.util.math.Direction.Axis.Y) < LOW_BLOCKHEIGHT_REF;
     }
 }
