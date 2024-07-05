@@ -24,6 +24,8 @@ import static net.whgkswo.tesm.general.GlobalVariables.scanDataMap;
 public class ChunkScanner {
     private final ScanMethod method;
     private ArrayList<ChunkPos> targetChunkList;
+    private ChunkPos refChunkPos;
+    private int chunkRadius;
     private final SizedStack<Boolean> stack = new SizedStack<>(2);
     private int cursorX;    private int cursorY;    private int cursorZ;
     boolean prevPosIsObstacle;
@@ -49,7 +51,12 @@ public class ChunkScanner {
         this.method = method;
         startTime = System.currentTimeMillis();
     }
-    public void scan(ChunkPos refChunkPos, int chunkRadius){
+    public ChunkScanner(ScanMethod method, ChunkPos refChunkPos, int chunkRadius){
+        this.method = method;
+        this.refChunkPos = refChunkPos;
+        this.chunkRadius = chunkRadius;
+    }
+    public void scan(){
         if(method == ScanMethod.UPDATE){
             targetChunkList = new ArrayList<>(GlobalVariables.updatedChunkSet);
         }else{

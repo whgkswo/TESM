@@ -41,10 +41,10 @@ public class ScanCommand {
     private static int executeScanCommand(CommandContext<ServerCommandSource> context) {
         String methodInput = StringArgumentType.getString(context, "method");
         ChunkScanner.ScanMethod scanMethod = ChunkScanner.ScanMethod.getMethod(methodInput);
-        ChunkScanner chunkScanner = new ChunkScanner(scanMethod);
 
         if(scanMethod == ChunkScanner.ScanMethod.UPDATE){
-            chunkScanner.scan(null, -1);
+            ChunkScanner chunkScanner = new ChunkScanner(scanMethod);
+            chunkScanner.scan();
             GlobalVariables.updatedChunkSet.clear();
             return 1;
         }
@@ -57,8 +57,8 @@ public class ScanCommand {
         }catch (IllegalArgumentException e){
             chunkPos = player.getChunkPos();
         }
-
-        chunkScanner.scan(chunkPos,chunkRadius);
+        ChunkScanner chunkScanner = new ChunkScanner(scanMethod,chunkPos,chunkRadius);
+        chunkScanner.scan();
         return 1;
     }
 }
