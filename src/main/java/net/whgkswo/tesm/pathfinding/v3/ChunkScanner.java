@@ -43,8 +43,7 @@ public class ChunkScanner {
     public ChunkScanner(){
         startTime = System.currentTimeMillis();
     }
-    public void scan(ScanMethod method, int chunkRadius){
-        ChunkPos refChunkPos = player.getChunkPos();
+    public void scan(ScanMethod method, ChunkPos refChunkPos, int chunkRadius){
         ArrayList<ChunkPos> targetChunkList = getTargetChunkPosList(method, refChunkPos, chunkRadius);
         /*player.sendMessage(Text.literal(targetChunkList.toString()));*/
         if(targetChunkList.isEmpty()){
