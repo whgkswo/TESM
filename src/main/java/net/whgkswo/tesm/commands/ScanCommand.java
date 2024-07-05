@@ -8,12 +8,14 @@ import com.mojang.brigadier.suggestion.SuggestionProvider;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.CommandSource;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.ChunkPos;
 import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.pathfinding.v3.ChunkScanner;
 
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
+import static net.whgkswo.tesm.general.GlobalVariables.player;
 
 public class ScanCommand {
     private static final SuggestionProvider<ServerCommandSource> METHOD_SUGGESTIONS = (context, builder) ->
@@ -22,6 +24,7 @@ public class ScanCommand {
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
             LiteralArgumentBuilder<ServerCommandSource> scanCommand = literal("scan")
                     .then(argument("method", StringArgumentType.word())
+                            .executes(ScanCommand::executeScanCommand)
                             .suggests(METHOD_SUGGESTIONS)
                             .then(argument("chunk_radius", IntegerArgumentType.integer(0))
                                     .executes(ScanCommand::executeScanCommand))
@@ -35,9 +38,13 @@ public class ScanCommand {
 
     private static int executeScanCommand(CommandContext<ServerCommandSource> context) {
         String methodInput = StringArgumentType.getString(context, "method");
+        ChunkScanner.ScanMethod scanMethod = ChunkScanner.ScanMethod.getMethod(methodInput);
+        if(scanMethod == ChunkScanner.ScanMethod.UPDATE){
+            player.sendMessage(Text.literal("업데이트!"));
+            return 1;
+        }
         int chunkRadius = IntegerArgumentType.getInteger(context, "chunk_radius");
 
-        ChunkScanner.ScanMethod scanMethod = ChunkScanner.ScanMethod.getMethod(methodInput);
         ChunkScanner chunkScanner = new ChunkScanner();
 
         ChunkPos chunkPos;
@@ -45,7 +52,7 @@ public class ScanCommand {
             chunkPos = new ChunkPos(IntegerArgumentType.getInteger(context,"source_chunk_x"),
                     IntegerArgumentType.getInteger(context, "source_chunk_z"));
         }catch (IllegalArgumentException e){
-            chunkPos = GlobalVariables.player.getChunkPos();
+            chunkPos = player.getChunkPos();
         }
         chunkScanner.scan(scanMethod,chunkPos,chunkRadius);
         return 1;

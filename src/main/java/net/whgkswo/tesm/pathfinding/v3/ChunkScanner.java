@@ -28,14 +28,17 @@ public class ChunkScanner {
     private long startTime;
     public enum ScanMethod {
         MISSING,
-        ALL
+        ALL,
+        UPDATE
         ;
         public static ScanMethod getMethod(String str){
             if(str.equals("missing")){
                 return MISSING;
             }else if (str.equals("all")){
                 return ALL;
-            }else{
+            } else if (str.equals("update")) {
+                return UPDATE;
+            } else{
                 throw null;
             }
         }
