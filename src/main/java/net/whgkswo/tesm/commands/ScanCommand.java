@@ -42,9 +42,11 @@ public class ScanCommand {
         String methodInput = StringArgumentType.getString(context, "method");
         ChunkScanner.ScanMethod scanMethod = ChunkScanner.ScanMethod.getMethod(methodInput);
 
+        // 업데이트는 뒤의 다른 인자들을 받을 필요가 없음
         if(scanMethod == ChunkScanner.ScanMethod.UPDATE){
-            ChunkScanner chunkScanner = new ChunkScanner(scanMethod);
-            chunkScanner.scan();
+            // 스캐너 생성과 함께 스캔(생성자에서 호출)
+            new ChunkScanner(scanMethod);
+            // 스캔 후 업데이트 청크 목록 비우기
             GlobalVariables.updatedChunkSet.clear();
             return 1;
         }
@@ -57,8 +59,8 @@ public class ScanCommand {
         }catch (IllegalArgumentException e){
             chunkPos = player.getChunkPos();
         }
-        ChunkScanner chunkScanner = new ChunkScanner(scanMethod,chunkPos,chunkRadius);
-        chunkScanner.scan();
+        // 스캐너 생성과 함께 스캔(생성자에서 호출)
+        new ChunkScanner(scanMethod,chunkPos,chunkRadius);
         return 1;
     }
 }

@@ -50,11 +50,13 @@ public class ChunkScanner {
     public ChunkScanner(ScanMethod method){
         this.method = method;
         startTime = System.currentTimeMillis();
+        scan();
     }
     public ChunkScanner(ScanMethod method, ChunkPos refChunkPos, int chunkRadius){
         this.method = method;
         this.refChunkPos = refChunkPos;
         this.chunkRadius = chunkRadius;
+        scan();
     }
     public void scan(){
         if(method == ScanMethod.UPDATE){
