@@ -22,6 +22,8 @@ import static net.whgkswo.tesm.general.GlobalVariables.player;
 import static net.whgkswo.tesm.general.GlobalVariables.scanDataMap;
 
 public class ChunkScanner {
+    private final ScanMethod method;
+    private ArrayList<ChunkPos> targetChunkList;
     private final SizedStack<Boolean> stack = new SizedStack<>(2);
     private int cursorX;    private int cursorY;    private int cursorZ;
     boolean prevPosIsObstacle;
@@ -43,17 +45,26 @@ public class ChunkScanner {
             }
         }
     }
-    public ChunkScanner(){
+    public ChunkScanner(ScanMethod method){
+        this.method = method;
         startTime = System.currentTimeMillis();
     }
-    public void scan(ScanMethod method, ChunkPos refChunkPos, int chunkRadius){
-        ArrayList<ChunkPos> targetChunkList = getTargetChunkPosList(method, refChunkPos, chunkRadius);
-        /*player.sendMessage(Text.literal(targetChunkList.toString()));*/
+    public void scan(ChunkPos refChunkPos, int chunkRadius){
+        if(method == ScanMethod.UPDATE){
+            targetChunkList = new ArrayList<>(GlobalVariables.updatedChunkSet);
+        }else{
+            targetChunkList = getTargetChunkPosList(method, refChunkPos, chunkRadius);
+        }
+
         if(targetChunkList.isEmpty()){
-            player.sendMessage(Text.literal("누락된 청크 스캔 데이터가 없습니다."));
+            if(method == ScanMethod.UPDATE) {
+                player.sendMessage(Text.literal("청크 스캔 데이터가 최신 상태입니다."));
+            }else{
+                player.sendMessage(Text.literal("누락된 청크 스캔 데이터가 없습니다."));
+            }
             return;
         }
-        //long startTime = System.currentTimeMillis();
+        // 청크 리스트 순회하며 스캔
         for(int i = 0; i<= targetChunkList.size()-1; i++){
             scanChunk(targetChunkList.get(i), i+1, targetChunkList.size());
         }
@@ -61,7 +72,7 @@ public class ChunkScanner {
         double timeInterval = (double) (finishedTime - startTime) /1000;
         player.sendMessage(Text.literal("스캔 완료 (" + timeInterval + "s)"));
     }
-    private ArrayList<ChunkPos> getTargetChunkPosList(ScanMethod method, ChunkPos refChunkPos, int chunkRadius){
+    public ArrayList<ChunkPos> getTargetChunkPosList(ScanMethod method, ChunkPos refChunkPos, int chunkRadius){
         ArrayList<ChunkPos> targetChunkList = new ArrayList<>();
         int startZ = refChunkPos.z - chunkRadius;
         int cursorX = refChunkPos.x - chunkRadius;

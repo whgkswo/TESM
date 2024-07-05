@@ -13,6 +13,8 @@ import net.minecraft.util.math.ChunkPos;
 import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.pathfinding.v3.ChunkScanner;
 
+import java.util.ArrayList;
+
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 import static net.whgkswo.tesm.general.GlobalVariables.player;
@@ -39,13 +41,14 @@ public class ScanCommand {
     private static int executeScanCommand(CommandContext<ServerCommandSource> context) {
         String methodInput = StringArgumentType.getString(context, "method");
         ChunkScanner.ScanMethod scanMethod = ChunkScanner.ScanMethod.getMethod(methodInput);
+        ChunkScanner chunkScanner = new ChunkScanner(scanMethod);
+
         if(scanMethod == ChunkScanner.ScanMethod.UPDATE){
-            player.sendMessage(Text.literal("업데이트!"));
+            chunkScanner.scan(null, -1);
+            GlobalVariables.updatedChunkSet.clear();
             return 1;
         }
         int chunkRadius = IntegerArgumentType.getInteger(context, "chunk_radius");
-
-        ChunkScanner chunkScanner = new ChunkScanner();
 
         ChunkPos chunkPos;
         try{
@@ -54,7 +57,8 @@ public class ScanCommand {
         }catch (IllegalArgumentException e){
             chunkPos = player.getChunkPos();
         }
-        chunkScanner.scan(scanMethod,chunkPos,chunkRadius);
+
+        chunkScanner.scan(chunkPos,chunkRadius);
         return 1;
     }
 }
