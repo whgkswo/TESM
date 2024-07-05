@@ -95,17 +95,15 @@ public class ChunkScanner {
         }
         // 청크 스캔 데이터를 파일로 저장하기
         /*ChunkPos chunkPos = world.getChunk(playerPos).getPos();*/
-        String fileName = "r." + chunkPos.getRegionX() + "." + chunkPos.getRegionZ() + "/" +
-                chunkPos.x + "." + chunkPos.z + ".json";
+        String chunkName = "/" + chunkPos.x + "." + chunkPos.z + ".json";
+        String fileName = "r." + chunkPos.getRegionX() + "." + chunkPos.getRegionZ() + chunkName;
         JsonManager.createJson(chunkData, fileName);
-        //long time = System.currentTimeMillis() - startTime;
         if(GlobalVariables.scanDataMap.containsKey(chunkPos)){
             scanDataMap.put(chunkPos,chunkData);
         }
         player.sendMessage(Text.literal("[" + progress + "/" + goal + "] "
-                + fileName.substring(0, fileName.length()-5) + "청크에 대한 "
+                + chunkName.substring(1, chunkName.length()-5) + "청크에 대한 "
                 + validPosSet.size() + "좌표 스캔 데이터 저장 완료"));
-        /*(" + time + "ms)*/
     }
     private ScanDataOfBlockPos blockTest(BlockPos blockPos){
         ScanDataOfBlockPos blockData = new ScanDataOfBlockPos(new HashMap<>());

@@ -25,9 +25,9 @@ public class ScanCommand {
                             .suggests(METHOD_SUGGESTIONS)
                             .then(argument("chunk_radius", IntegerArgumentType.integer(0))
                                     .executes(ScanCommand::executeScanCommand))
-                            .then(argument("source_chunk_x", IntegerArgumentType.integer())
-                                    .then(argument("source_chunk_z", IntegerArgumentType.integer())
-                                            .then(argument("chunk_radius", IntegerArgumentType.integer(0))
+                            .then(argument("chunk_radius", IntegerArgumentType.integer())
+                                    .then(argument("source_chunk_x", IntegerArgumentType.integer())
+                                            .then(argument("source_chunk_z", IntegerArgumentType.integer(0))
                                                     .executes(ScanCommand::executeScanCommand)))));
             dispatcher.register(scanCommand);
         });
