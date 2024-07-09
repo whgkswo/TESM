@@ -27,6 +27,18 @@ public class JsonManager {
             player.sendMessage(Text.literal(e.getClass().getSimpleName() + " 발생"));
         }
     }
+    public static<T> void createJson(T data, String filePath){
+        ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
+        try{
+            File file = new File(BASE_PATH + filePath);
+            // 경로가 없으면 생성
+            file.getParentFile().mkdirs();
+            objectMapper.writeValue(file, data);
+        }catch(IOException e){
+            //아무것도 안함
+            player.sendMessage(Text.literal(e.getClass().getSimpleName() + " 발생"));
+        }
+    }
     public static ScanDataOfChunk readJson(String filePath){
         ObjectMapper objectMapper = new ObjectMapper();
         SimpleModule module = new SimpleModule();

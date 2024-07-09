@@ -7,6 +7,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.Heightmap;
 import net.whgkswo.tesm.data.JsonManager;
 import net.whgkswo.tesm.data.SizedStack;
+import net.whgkswo.tesm.data.dto.ChunkPosDto;
 import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.pathfinding.v2.Direction;
 import net.whgkswo.tesm.pathfinding.v2.JumpPointTestResult;

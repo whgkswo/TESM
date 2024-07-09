@@ -7,6 +7,7 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.ChunkPos;
+import net.whgkswo.tesm.data.dto.ChunkPosDto;
 import net.whgkswo.tesm.pathfinding.v3.ScanDataOfChunk;
 
 import java.util.ArrayList;

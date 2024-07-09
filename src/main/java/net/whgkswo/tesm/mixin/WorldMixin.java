@@ -1,27 +1,23 @@
 package net.whgkswo.tesm.mixin;
 
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.GrassBlock;
-import net.minecraft.entity.Entity;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.WorldChunk;
+import net.whgkswo.tesm.data.JsonManager;
+import net.whgkswo.tesm.data.dto.ChunkPosDto;
 import net.whgkswo.tesm.general.GlobalVariables;
-import net.whgkswo.tesm.networking.ModMessages;
 import net.whgkswo.tesm.util.BlockPosUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static net.whgkswo.tesm.general.GlobalVariables.*;
 
@@ -45,15 +41,11 @@ public class WorldMixin {
             GlobalVariables.player.sendMessage(Text.literal("Block changed at " + pos));
             GlobalVariables.updatedChunkSet.add(world.getChunk(pos).getPos());
 
-            // 청크 업데이트 목록 저장을 위해 패킷 보내기
-            PacketByteBuf data = PacketByteBufs.create();
-            long[] chunkSetToLongArray =  updatedChunkSet.stream()
-                    .mapToLong(chunkPos -> chunkPos.toLong())
-                    .toArray();
-            data.writeLongArray(chunkSetToLongArray);
-
-            ServerPlayerEntity playerEntity = GlobalVariables.world.getServer().getPlayerManager().getPlayer(player.getUuid());
-            ServerPlayNetworking.send(playerEntity, ModMessages.CHUNK_UPDATE_ID, data);
+            // 청크 업데이트 목록 저장
+            Set<ChunkPosDto> chunkPosDtoSet = updatedChunkSet.stream()
+                            .map(chunkPos -> new ChunkPosDto(chunkPos))
+                                    .collect(Collectors.toSet());
+            JsonManager.createJson(chunkPosDtoSet, "updatedChunkSet.json");
         }
     }
 }
