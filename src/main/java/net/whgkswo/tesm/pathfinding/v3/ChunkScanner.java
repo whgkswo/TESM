@@ -14,13 +14,13 @@ import net.whgkswo.tesm.pathfinding.v2.JumpPointTestResult;
 import net.whgkswo.tesm.pathfinding.v2.LinearSearcher;
 import net.whgkswo.tesm.util.BlockPosUtil;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
 import static net.whgkswo.tesm.data.JsonManager.isChunkScanDataExist;
-import static net.whgkswo.tesm.general.GlobalVariables.player;
-import static net.whgkswo.tesm.general.GlobalVariables.scanDataMap;
+import static net.whgkswo.tesm.general.GlobalVariables.*;
 
 public class ChunkScanner {
     private final ScanMethod method;
@@ -62,6 +62,9 @@ public class ChunkScanner {
     public void scan(){
         if(method == ScanMethod.UPDATE){
             targetChunkList = new ArrayList<>(GlobalVariables.updatedChunkSet);
+            // 업데이트 청크 대기열 삭제
+            updatedChunkSet.clear();
+            JsonManager.deleteJson("/updatedChunkSet.json");
         }else{
             targetChunkList = getTargetChunkPosList(method, refChunkPos, chunkRadius);
         }

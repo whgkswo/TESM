@@ -1,17 +1,24 @@
 package net.whgkswo.tesm.data;
 
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.whgkswo.tesm.data.dto.ChunkPosDto;
 import net.whgkswo.tesm.pathfinding.v3.ScanDataOfChunk;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static net.whgkswo.tesm.general.GlobalVariables.player;
+import static net.whgkswo.tesm.general.GlobalVariables.world;
 
 public class JsonManager {
     private static final String BASE_PATH = "config/tesm/scandata/";
@@ -53,6 +60,28 @@ public class JsonManager {
             player.sendMessage(Text.literal(e.getClass().getSimpleName() + " 발생"));
             e.printStackTrace();
             return null;
+        }
+    }
+    public static HashSet<ChunkPos> readJsonToSet(String filePath){
+        ObjectMapper objectMapper = new ObjectMapper();
+        File file = new File(BASE_PATH + filePath);
+        try{
+            HashSet<ChunkPosDto> chunkPosDtos = objectMapper.readValue(file, new TypeReference<>() {
+            });
+            return chunkPosDtos.stream()
+                    .map(chunkPosDto -> world.getChunk(chunkPosDto.getX(), chunkPosDto.getZ()).getPos())
+                    .collect(Collectors.toCollection(HashSet::new));
+        }catch(IOException e){
+            //아무것도 안함
+            player.sendMessage(Text.literal(e.getClass().getSimpleName() + " 발생"));
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public static void deleteJson(String filePath){
+        File file = new File(BASE_PATH + filePath);
+        if(file.exists()){
+            file.delete();
         }
     }
     public static boolean isChunkScanDataExist(ChunkPos chunkPos){

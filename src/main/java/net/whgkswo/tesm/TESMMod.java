@@ -60,7 +60,6 @@ public class TESMMod implements ModInitializer {
 			content.add(TEST_ITEM);
 		});
 
-
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 레지스트리 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
 		Registry.register(Registries.ITEM_GROUP,

@@ -10,6 +10,9 @@ public class ChunkPosDto {
         this.z = z;
     }
 
+    public ChunkPosDto() {
+    }
+
     public void setX(int x) {
         this.x = x;
     }

@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.whgkswo.tesm.data.JsonManager;
 import net.whgkswo.tesm.musics.TESMusicsMain;
 import net.whgkswo.tesm.tags.BiomeTags;
 
@@ -112,6 +113,8 @@ public class OnServerTicks {
                     server.getGameRules().get(GameRules.SEND_COMMAND_FEEDBACK).set(false,server);
                     server.getGameRules().get(GameRules.DO_DAYLIGHT_CYCLE).set(false,server);
                     server.getGameRules().get(GameRules.RANDOM_TICK_SPEED).set(0, server);
+
+                    updatedChunkSet = JsonManager.readJsonToSet("/updatedChunkSet.json");
                     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 바이옴 ID 및 지역 정보 초기화 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
                     previousBiomeID = currentBiomeID;
