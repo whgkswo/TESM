@@ -62,20 +62,18 @@ public class JsonManager {
             return null;
         }
     }
-    public static HashSet<ChunkPos> readJsonToSet(String filePath){
+    public static HashSet<ChunkPosDto> readJsonToSet(String filePath){
         ObjectMapper objectMapper = new ObjectMapper();
         File file = new File(BASE_PATH + filePath);
         try{
             HashSet<ChunkPosDto> chunkPosDtos = objectMapper.readValue(file, new TypeReference<>() {
             });
-            return chunkPosDtos.stream()
-                    .map(chunkPosDto -> world.getChunk(chunkPosDto.getX(), chunkPosDto.getZ()).getPos())
-                    .collect(Collectors.toCollection(HashSet::new));
+            return chunkPosDtos;
         }catch(IOException e){
             //아무것도 안함
             player.sendMessage(Text.literal(e.getClass().getSimpleName() + " 발생"));
             e.printStackTrace();
-            return null;
+            return new HashSet<>();
         }
     }
     public static void deleteJson(String filePath){

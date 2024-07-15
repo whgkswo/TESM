@@ -2,6 +2,8 @@ package net.whgkswo.tesm.data.dto;
 
 import net.minecraft.util.math.ChunkPos;
 
+import java.util.Objects;
+
 public class ChunkPosDto {
     private int x;
     private int z;
@@ -27,6 +29,18 @@ public class ChunkPosDto {
 
     public int getZ() {
         return z;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ChunkPosDto that)) return false;
+        return getX() == that.getX() && getZ() == that.getZ();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getX(), getZ());
     }
 
     public ChunkPosDto(ChunkPos chunkPos){

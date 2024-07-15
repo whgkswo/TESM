@@ -18,13 +18,15 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static net.whgkswo.tesm.data.JsonManager.isChunkScanDataExist;
 import static net.whgkswo.tesm.general.GlobalVariables.*;
 
 public class ChunkScanner {
     private final ScanMethod method;
-    private ArrayList<ChunkPos> targetChunkList;
+    private Set<ChunkPos> targetChunkList;
     private ChunkPos refChunkPos;
     private int chunkRadius;
     private final SizedStack<Boolean> stack = new SizedStack<>(2);
@@ -61,7 +63,9 @@ public class ChunkScanner {
     }
     public void scan(){
         if(method == ScanMethod.UPDATE){
-            targetChunkList = new ArrayList<>(GlobalVariables.updatedChunkSet);
+            targetChunkList = updatedChunkSet.stream()
+                    .map(chunkPosDto -> world.getChunk(chunkPosDto.getX(),chunkPosDto.getZ()).getPos())
+                    .collect(Collectors.toSet());
             // 업데이트 청크 대기열 삭제
             updatedChunkSet.clear();
             JsonManager.deleteJson("/updatedChunkSet.json");
@@ -78,15 +82,19 @@ public class ChunkScanner {
             return;
         }
         // 청크 리스트 순회하며 스캔
-        for(int i = 0; i<= targetChunkList.size()-1; i++){
-            scanChunk(targetChunkList.get(i), i+1, targetChunkList.size());
+        int i = 1;
+        for(ChunkPos chunkPos : targetChunkList){
+            scanChunk(chunkPos, i, targetChunkList.size());
+            // 업데이트 필요 청크 목록에 해당하는 청크였다면 목록에서 삭제
+            updatedChunkSet.remove(new ChunkPosDto(chunkPos));
+            i++;
         }
         long finishedTime = System.currentTimeMillis();
         double timeInterval = (double) (finishedTime - startTime) /1000;
         player.sendMessage(Text.literal("스캔 완료 (" + timeInterval + "s)"));
     }
-    public ArrayList<ChunkPos> getTargetChunkPosList(ScanMethod method, ChunkPos refChunkPos, int chunkRadius){
-        ArrayList<ChunkPos> targetChunkList = new ArrayList<>();
+    public Set<ChunkPos> getTargetChunkPosList(ScanMethod method, ChunkPos refChunkPos, int chunkRadius){
+        Set<ChunkPos> targetChunkList = new HashSet<>();
         int startZ = refChunkPos.z - chunkRadius;
         int cursorX = refChunkPos.x - chunkRadius;
         int cursorZ = startZ;

@@ -39,13 +39,10 @@ public class WorldMixin {
             }
 
             GlobalVariables.player.sendMessage(Text.literal("Block changed at " + pos));
-            GlobalVariables.updatedChunkSet.add(world.getChunk(pos).getPos());
+            GlobalVariables.updatedChunkSet.add(new ChunkPosDto(world.getChunk(pos).getPos()));
 
             // 청크 업데이트 목록 저장
-            Set<ChunkPosDto> chunkPosDtoSet = updatedChunkSet.stream()
-                            .map(chunkPos -> new ChunkPosDto(chunkPos))
-                                    .collect(Collectors.toSet());
-            JsonManager.createJson(chunkPosDtoSet, "updatedChunkSet.json");
+            JsonManager.createJson(updatedChunkSet, "updatedChunkSet.json");
         }
     }
 }

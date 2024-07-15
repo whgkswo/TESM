@@ -22,6 +22,6 @@ public class GlobalVariables {
     public static CommandManager commandManager;
     public static ParseResults<ServerCommandSource> parseResults;
     public static ArrayList<Entity> pathfindEntityList = new ArrayList<>();
-    public static HashSet<ChunkPos> updatedChunkSet = new HashSet<>();
+    public static HashSet<ChunkPosDto> updatedChunkSet = new HashSet<>();
     public static final double LOW_BLOCKHEIGHT_REF = 0.25;
 }
