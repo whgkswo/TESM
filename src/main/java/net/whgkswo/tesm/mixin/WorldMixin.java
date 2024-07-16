@@ -11,7 +11,9 @@ import net.whgkswo.tesm.data.JsonManager;
 import net.whgkswo.tesm.data.dto.ChunkPosDto;
 import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.util.BlockPosUtil;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -23,10 +25,10 @@ import static net.whgkswo.tesm.general.GlobalVariables.*;
 
 @Mixin(WorldChunk.class)
 public class WorldMixin {
+    @Shadow @Final private World world;
     @Inject(method = "setBlockState", at = @At("HEAD"))
     private void onBlockStateChange(BlockPos pos, BlockState state, boolean moved, CallbackInfoReturnable<BlockState> cir) {
-        World world = ((WorldChunk)(Object)this).getWorld();
-        if(!(world instanceof ServerWorld)){
+        if(GlobalVariables.world == null || world.isClient){
             return;
         }
         BlockState oldState = world.getBlockState(pos);
