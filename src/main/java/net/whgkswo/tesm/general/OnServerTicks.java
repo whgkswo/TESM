@@ -97,6 +97,7 @@ public class OnServerTicks {
     public static void onServerTick() {
         ServerTickEvents.END_SERVER_TICK.register(server -> {
             if(player != null){
+                /*player.sendMessage(Text.literal("Tick updated"));*/
                 //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 플레이어가 월드에 접속할 때 실행 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ *runTimeCounter == 0일 때
                 if(runTimeCounter == INITIALIZE_POINT){
 
@@ -138,7 +139,7 @@ public class OnServerTicks {
                     getCompassPos(player);
 
                     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 외부 메소드 호출 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-                    TESMusicsMain.tesMusicsMain(player,world,commandManager,commandSource);
+                    /*TESMusicsMain.tesMusicsMain(player,world,commandManager,commandSource);*/
                     //runTimeCounter!=0일 때 (초기화 시점 후 모든 틱마다)
                     if(!Objects.equals(previousBiomeID,currentBiomeID)){ // 바이옴 변경이 일어날 때
 
