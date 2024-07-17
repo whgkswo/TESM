@@ -20,6 +20,7 @@ import net.whgkswo.tesm.general.OnServerTicks;
 import net.whgkswo.tesm.general.OnPlayerLeaves;
 import net.whgkswo.tesm.items.TestItem;
 import net.whgkswo.tesm.mixin.WorldMixin;
+import net.whgkswo.tesm.musics.v2.MusicPlayer;
 import net.whgkswo.tesm.networking.ModMessages;
 import net.whgkswo.tesm.pathfinding.v1.PathFinder;
 import org.slf4j.Logger;
@@ -82,6 +83,8 @@ public class TESMMod implements ModInitializer {
 		/*PathfindingManager pathfindingManager = new PathfindingManager();
 		pathfindingManager.onServerTicks();*/
 		OnPlayerLeaves.onPlayerLeaves();
+
+		new MusicPlayer().onServerTick();
 
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 클라이언트 통신 패킷 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 		ModMessages.registerC2SPackets();
