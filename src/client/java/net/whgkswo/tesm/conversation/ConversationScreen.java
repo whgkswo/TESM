@@ -1,4 +1,4 @@
-package net.whgkswo.tesm.gui.screen;
+package net.whgkswo.tesm.conversation;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;

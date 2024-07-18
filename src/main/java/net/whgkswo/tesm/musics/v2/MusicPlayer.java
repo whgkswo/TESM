@@ -36,9 +36,9 @@ public class MusicPlayer {
             }
             playMusic();
         }
-        if(GlobalVariables.player != null){
+        /*if(GlobalVariables.player != null){
             GlobalVariables.player.sendMessage(Text.literal(tickCounter + "/" + tickGoal + " - " + currentPlaying));
-        }
+        }*/
     }
     public int selectTrackNumber(MusicKey musicKey, int maxTracks){
         // NPE를 방지하기 위한 코드

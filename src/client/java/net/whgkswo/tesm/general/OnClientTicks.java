@@ -1,7 +1,7 @@
 package net.whgkswo.tesm.general;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.whgkswo.tesm.gui.screen.ConversationScreen;
+import net.whgkswo.tesm.conversation.ConversationScreen;
 import net.whgkswo.tesm.gui.screen.JournalScreen;
 
 public class OnClientTicks {

@@ -7,6 +7,7 @@ import net.minecraft.client.color.world.BiomeColors;
 import net.minecraft.util.math.BlockPos;
 import net.whgkswo.tesm.TestClassClient;
 import net.whgkswo.tesm.conversation.ConversationStart;
+import net.whgkswo.tesm.conversation.v2.NpcDialogues;
 import net.whgkswo.tesm.events.UseBlockEvent;
 import net.whgkswo.tesm.general.OnClientTicks;
 import net.whgkswo.tesm.gui.overlay.Compass;
@@ -15,7 +16,6 @@ import net.whgkswo.tesm.gui.overlay.QuestStartAndClear;
 import net.whgkswo.tesm.keybinds.KeyInputHandler;
 import net.whgkswo.tesm.networking.ModMessages;
 import net.whgkswo.tesm.networking.ModMessagesClient;
-import net.whgkswo.tesm.npcs.NpcDialogues;
 import net.whgkswo.tesm.raycast.CenterRaycast;
 
 
@@ -79,7 +79,7 @@ public class TESMModClient implements ClientModInitializer {
 		KeyInputHandler.register();
 
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ NPC 대사 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-		NpcDialogues.npcDialoues();
+		/*NpcDialogues.npcDialoues();*/
 
 		TestClassClient.testClassClient(); // 테스트용!
 	}

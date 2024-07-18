@@ -31,7 +31,6 @@ public class CenterRaycast {
         ClientTickEvents.END_WORLD_TICK.register(world -> {
             MinecraftClient client = MinecraftClient.getInstance();
             HitResult hitResult = client.crosshairTarget;
-            PlayerEntity player = MinecraftClient.getInstance().player;
 
             if(hitResult == null){
                 return;
