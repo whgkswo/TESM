@@ -1,12 +1,10 @@
-package net.whgkswo.tesm.musics.v2;
+package net.whgkswo.tesm.musics;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
-import net.whgkswo.tesm.general.GlobalVariables;
-import net.whgkswo.tesm.musics.v2.soundEvents.MusicEvent;
-import net.whgkswo.tesm.musics.v2.soundEvents.MusicKey;
+import net.whgkswo.tesm.musics.soundEvents.MusicEvent;
+import net.whgkswo.tesm.musics.soundEvents.MusicKey;
 
 import java.util.*;
 

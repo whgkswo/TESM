@@ -1,10 +1,10 @@
-package net.whgkswo.tesm.musics.v2.soundEvents;
+package net.whgkswo.tesm.musics.soundEvents;
 
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
-import net.whgkswo.tesm.musics.v2.Region;
-import net.whgkswo.tesm.musics.v2.TimePeriod;
+import net.whgkswo.tesm.musics.Region;
+import net.whgkswo.tesm.musics.TimePeriod;
 
 import java.util.Arrays;
 import java.util.HashMap;

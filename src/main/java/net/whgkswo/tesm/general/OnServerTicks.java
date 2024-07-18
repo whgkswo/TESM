@@ -12,7 +12,6 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.whgkswo.tesm.data.JsonManager;
-import net.whgkswo.tesm.musics.TESMusicsMain;
 import net.whgkswo.tesm.tags.BiomeTags;
 
 import java.util.Arrays;

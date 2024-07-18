@@ -19,15 +19,12 @@ import net.whgkswo.tesm.general.InitializeTasks;
 import net.whgkswo.tesm.general.OnServerTicks;
 import net.whgkswo.tesm.general.OnPlayerLeaves;
 import net.whgkswo.tesm.items.TestItem;
-import net.whgkswo.tesm.mixin.WorldMixin;
-import net.whgkswo.tesm.musics.v2.MusicPlayer;
+import net.whgkswo.tesm.musics.MusicPlayer;
 import net.whgkswo.tesm.networking.ModMessages;
 import net.whgkswo.tesm.pathfinding.v1.PathFinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static net.whgkswo.tesm.musics.TESMusicsMain.currentMusicID;
-import static net.whgkswo.tesm.musics.TESMusicsMain.soundEvent;
 
 
 public class TESMMod implements ModInitializer {
@@ -65,7 +62,6 @@ public class TESMMod implements ModInitializer {
 
 		Registry.register(Registries.ITEM_GROUP,
 				new Identifier(TESMMod.MODID, "tesassets"), TESASSETS);
-		Registry.register(Registries.SOUND_EVENT, currentMusicID, soundEvent);
 
         //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 커스텀 커맨드 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
@@ -76,7 +72,6 @@ public class TESMMod implements ModInitializer {
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 이벤트 및 메소드 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
 		ModBlocks.registerModBlocks();
-		InitializeTasks.initializeTasks();
 		InitializeTasks.registerPlayer();
 		OnServerTicks.onServerTick();
 		PathFinder.onServerTicks();

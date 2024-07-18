@@ -1,10 +1,8 @@
-package net.whgkswo.tesm.musics.v2.soundEvents;
+package net.whgkswo.tesm.musics.soundEvents;
 
-import net.whgkswo.tesm.musics.v2.Region;
-import net.whgkswo.tesm.musics.v2.TimePeriod;
+import net.whgkswo.tesm.musics.Region;
+import net.whgkswo.tesm.musics.TimePeriod;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class MusicKey {
