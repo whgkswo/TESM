@@ -37,7 +37,7 @@ public class IndurionDL extends NpcDialogues {
                         "General"));
         normalLines.put("General-2-2",
                 new NormalStage(new ArrayList<>(Arrays.asList(
-                        "1번 선택지를 골랐습니다.",
+                        "2번 선택지를 골랐습니다.",
                         "[General-2]로 돌아갑니다.")),
                         NormalStage.ExecuteAfter.JUMP_TO,
                         "General-2"));

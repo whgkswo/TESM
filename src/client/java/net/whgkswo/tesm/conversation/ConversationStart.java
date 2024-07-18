@@ -49,19 +49,6 @@ public class ConversationStart {
                     convPartner = (LivingEntity) target;
                     convPartnerName = String.valueOf(entityHitResult.getEntity().getCustomName().getString());
 
-                    /*if(ConversationScreen.getDLArray() == null) {
-                        player.sendMessage(Text.literal("안녕하세요!"));
-                    }else{
-                        // 대화 상대 움직임 제한 (서버에 패킷 전송)
-                        PacketByteBuf buf = PacketByteBufs.create();
-                        buf.writeInt(convPartner.getId());
-                        ClientPlayNetworking.send(ModMessages.FREEZE_ENTITY_ID, buf);
-                        // 플레이어 시선 방향 조정
-                        player.setYaw(getYawAndPitch(convPartner.getPos(),player.getPos())[0]);
-                        player.setPitch(getYawAndPitch(convPartner.getPos(),player.getPos())[1]);
-                        // 스크린 열기
-                        client.setScreen(new ConversationScreen());
-                    }*/
                     // 대화 상대 움직임 제한 (서버에 패킷 전송)
                     PacketByteBuf buf = PacketByteBufs.create();
                     buf.writeInt(convPartner.getId());
