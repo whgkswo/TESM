@@ -1,15 +1,11 @@
 package net.whgkswo.tesm.conversation.v2;
 
-import net.whgkswo.tesm.conversation.v2.Decision;
-import net.whgkswo.tesm.conversation.v2.DialogueStage;
-import net.whgkswo.tesm.conversation.v2.DialogueType;
 
 import java.util.List;
 
-public class DecisionStage extends DialogueStage {
+public class DecisionStage{
     private List<Decision> contents;
-    public DecisionStage(DialogueType dialogueType, List<Decision> contents) {
-        super(dialogueType);
+    public DecisionStage( List<Decision> contents) {
         this.contents = contents;
     }
     public List<Decision> getContents() {

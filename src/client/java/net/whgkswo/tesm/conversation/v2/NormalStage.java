@@ -1,17 +1,20 @@
 package net.whgkswo.tesm.conversation.v2;
 
-import net.whgkswo.tesm.conversation.v2.DialogueStage;
-import net.whgkswo.tesm.conversation.v2.DialogueType;
 
 import java.util.List;
 
-public class NormalStage extends DialogueStage {
+public class NormalStage{
     private List<String> contents;
     private ExecuteAfter executeAfter;
-    public NormalStage(DialogueType dialogueType, List<String> contents, ExecuteAfter executeAfter) {
-        super(dialogueType);
+    private String executeTarget;
+    public NormalStage(List<String> contents, ExecuteAfter executeAfter) {
         this.contents = contents;
         this.executeAfter = executeAfter;
+    }
+    public NormalStage(List<String> contents, ExecuteAfter executeAfter, String executeTarget) {
+        this.contents = contents;
+        this.executeAfter = executeAfter;
+        this.executeTarget = executeTarget;
     }
 
     public List<String> getContents() {
@@ -20,6 +23,10 @@ public class NormalStage extends DialogueStage {
 
     public ExecuteAfter getExecuteAfter() {
         return executeAfter;
+    }
+
+    public String getExecuteTarget() {
+        return executeTarget;
     }
 
     public enum ExecuteAfter{

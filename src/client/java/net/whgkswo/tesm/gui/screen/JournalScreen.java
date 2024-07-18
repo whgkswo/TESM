@@ -8,6 +8,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
+import net.whgkswo.tesm.general.GlobalVariablesClient;
 import net.whgkswo.tesm.general.OnClientTicks;
 import net.whgkswo.tesm.networking.ModMessages;
 import net.whgkswo.tesm.npcs.quests.Quests;
@@ -17,6 +18,7 @@ import java.awt.*;
 import java.util.Arrays;
 
 import static net.whgkswo.tesm.conversation.ConversationStart.convPartner;
+import static net.whgkswo.tesm.general.GlobalVariablesClient.arrowState;
 
 public class JournalScreen extends Screen {
     public JournalScreen() {
@@ -175,10 +177,10 @@ public class JournalScreen extends Screen {
             }
             // 퀘스트 목록 - 화살표
             if(upArrowOn()){
-                context.drawTexture(UP_ARROW, (int)(width*0.1+(questListW -height/24)/2),(int)(height*(0.22-0.01*(OnClientTicks.arrowState?1:0))),0,0,height/24,height/48,height/24,height/48);
+                context.drawTexture(UP_ARROW, (int)(width*0.1+(questListW -height/24)/2),(int)(height*(0.22-0.01*(arrowState?1:0))),0,0,height/24,height/48,height/24,height/48);
             }
             if(downArrowOn()){
-                context.drawTexture(DOWN_ARROW, (int)(width*0.1+(questListW -height/24)/2),(int)(height*(0.9+0.01*(OnClientTicks.arrowState?1:0))),0,0,height/24,height/48,height/24,height/48);
+                context.drawTexture(DOWN_ARROW, (int)(width*0.1+(questListW -height/24)/2),(int)(height*(0.9+0.01*(arrowState?1:0))),0,0,height/24,height/48,height/24,height/48);
             }
             // 퀘스트 목록 - 퀘스트 제목 출력 준비
             context.getMatrices().push();

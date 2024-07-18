@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GlobalVariablesClient {
+    public static int arrowCounter = 0;
+    public static boolean arrowState = false;
     public static final Map<String, NpcDialogues> NPC_DIALOGUES = new HashMap<>(){{
         put("인두리온", new IndurionDL());
     }};

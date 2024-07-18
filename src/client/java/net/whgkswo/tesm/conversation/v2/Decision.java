@@ -15,4 +15,8 @@ public class Decision {
     public boolean isChosen() {
         return isChosen;
     }
+
+    public void setChosen(boolean chosen) {
+        isChosen = chosen;
+    }
 }

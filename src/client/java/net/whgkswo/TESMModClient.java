@@ -7,6 +7,7 @@ import net.minecraft.client.color.world.BiomeColors;
 import net.minecraft.util.math.BlockPos;
 import net.whgkswo.tesm.TestClassClient;
 import net.whgkswo.tesm.conversation.ConversationStart;
+import net.whgkswo.tesm.conversation.v2.ConversationScreen;
 import net.whgkswo.tesm.conversation.v2.NpcDialogues;
 import net.whgkswo.tesm.events.UseBlockEvent;
 import net.whgkswo.tesm.general.OnClientTicks;

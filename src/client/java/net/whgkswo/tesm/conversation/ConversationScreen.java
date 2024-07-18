@@ -11,6 +11,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
+import net.whgkswo.tesm.general.GlobalVariablesClient;
 import net.whgkswo.tesm.general.OnClientTicks;
 import net.whgkswo.tesm.networking.ModMessages;
 import net.whgkswo.tesm.npcs.NpcDialogues;
@@ -211,10 +212,10 @@ public class ConversationScreen extends Screen {
             }
         // 선택지 화살표 출력
         if (upArrowOn()){
-            context.drawTexture(ARROW_UP, (int)(width*0.2), (int)(height*(0.745-0.01*(OnClientTicks.arrowState?1:0))), 0, 0, height/24,height/48,height/24,height/48);
+            context.drawTexture(ARROW_UP, (int)(width*0.2), (int)(height*(0.745-0.01*(GlobalVariablesClient.arrowState?1:0))), 0, 0, height/24,height/48,height/24,height/48);
         }
         if (downArrowOn()) {
-            context.drawTexture(ARROW_DOWN, (int)(width*0.2), (int)(height*(0.94+0.01*(OnClientTicks.arrowState?1:0)+1/48)), 0, 0, height/24,height/48,height/24,height/48);
+            context.drawTexture(ARROW_DOWN, (int)(width*0.2), (int)(height*(0.94+0.01*(GlobalVariablesClient.arrowState?1:0)+1/48)), 0, 0, height/24,height/48,height/24,height/48);
         }
     }
 

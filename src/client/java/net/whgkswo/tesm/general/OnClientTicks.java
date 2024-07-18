@@ -4,19 +4,16 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.whgkswo.tesm.conversation.ConversationScreen;
 import net.whgkswo.tesm.gui.screen.JournalScreen;
 
-public class OnClientTicks {
+import static net.whgkswo.tesm.general.GlobalVariablesClient.arrowCounter;
+import static net.whgkswo.tesm.general.GlobalVariablesClient.arrowState;
 
-    public static int arrowCounter = 0;
-    public static boolean arrowState = false;
+public class OnClientTicks {
     public static void getArrowState(){
         ClientTickEvents.END_CLIENT_TICK.register(client ->{
-            if (ConversationScreen.upArrowOn()||ConversationScreen.downArrowOn()
-            || JournalScreen.upArrowOn() || JournalScreen.downArrowOn()){
-                arrowCounter++;
-                if (arrowCounter>=15){
-                    arrowState = !arrowState;
-                    arrowCounter = 0;
-                }
+            arrowCounter++;
+            if (arrowCounter>=15){
+                arrowState = !arrowState;
+                arrowCounter = 0;
             }
         });
     }
