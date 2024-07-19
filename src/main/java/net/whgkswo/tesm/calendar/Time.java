@@ -20,17 +20,21 @@ public class Time {
             }
             case COLONAL_12H -> {
                 String amPm = hour<=12 ? "AM" : "PM";
-                return includeSecond ? String.format("%s %d:%d:%d",amPm,hour%12,minute,second) :
-                        String.format("%s %d:%d",amPm,hour%12,minute);
+                // 원칙적으로 정오는 오후 0시가 맞으나 예외적으로 오후 12시로 표기
+                int displayHour = (hour == 12) ? 12 : hour % 12;
+                return includeSecond ? String.format("%s %d:%d:%d",amPm,displayHour,minute,second) :
+                        String.format("%s %d:%d",amPm,displayHour,minute);
             }
             case LINGUAL_24H -> {
                 return includeSecond ? String.format("%d시 %d분 %d초", hour,minute,second) :
                         String.format("%d시 %d분", hour,minute);
             }
             case LINGUAL_12H -> {
-                String amPm = hour<=12 ? "오전" : "오후";
-                return includeSecond ? String.format("%s %d시 %d분 %d초", amPm,hour%12,minute,second) :
-                        String.format("%s %d시 %d분", amPm,hour%12,minute);
+                String amPm = hour<12 ? "오전" : "오후";
+                // 원칙적으로 정오는 오후 0시가 맞으나 예외적으로 오후 12시로 표기
+                int displayHour = (hour == 12) ? 12 : hour % 12;
+                return includeSecond ? String.format("%s %d시 %d분 %d초", amPm,displayHour,minute,second) :
+                        String.format("%s %d시 %d분", amPm,displayHour,minute);
             }
             default -> {
                 return null;
@@ -41,11 +45,11 @@ public class Time {
     public static Time getTime(){
         double time = (double) GlobalVariables.world.getTimeOfDay() % 24000;
         double hour = time/1000;
-        time -= hour * 1000;
+        time -= (int) hour * 1000;
         double minute = time / (1000.0/60);
-        time -= minute * (1000.0/60);
+        time -= (int) minute * (1000.0/60);
         double second = time / (1000.0/3600);
-        hour += 6;
+        hour = (hour+6) % 24;
         return new Time(hour,minute,second);
     }
     public enum TimeFormat{
