@@ -2,18 +2,16 @@ package net.whgkswo;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.client.color.world.BiomeColors;
 import net.minecraft.util.math.BlockPos;
 import net.whgkswo.tesm.TestClassClient;
 import net.whgkswo.tesm.conversation.ConversationStart;
-import net.whgkswo.tesm.conversation.v2.ConversationScreen;
-import net.whgkswo.tesm.conversation.v2.NpcDialogues;
 import net.whgkswo.tesm.events.UseBlockEvent;
 import net.whgkswo.tesm.general.OnClientTicks;
 import net.whgkswo.tesm.gui.overlay.Compass;
 import net.whgkswo.tesm.gui.overlay.InteractOverlay;
 import net.whgkswo.tesm.gui.overlay.QuestStartAndClear;
+import net.whgkswo.tesm.gui.overlay.Watch;
 import net.whgkswo.tesm.keybinds.KeyInputHandler;
 import net.whgkswo.tesm.networking.ModMessages;
 import net.whgkswo.tesm.networking.ModMessagesClient;
@@ -64,6 +62,7 @@ public class TESMModClient implements ClientModInitializer {
 		HudRenderCallback.EVENT.register(new InteractOverlay());
 		HudRenderCallback.EVENT.register(new Compass());
 		HudRenderCallback.EVENT.register(new QuestStartAndClear());
+		HudRenderCallback.EVENT.register(new Watch());
 
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 클라이언트 사이드 메소드 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 		CenterRaycast.centerRaycast();

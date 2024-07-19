@@ -1,6 +1,9 @@
-package net.whgkswo.tesm.conversation.v2.dialogues;
+package net.whgkswo.tesm.conversation.dialogues;
 
-import net.whgkswo.tesm.conversation.v2.*;
+import net.whgkswo.tesm.conversation.Decision;
+import net.whgkswo.tesm.conversation.DecisionStage;
+import net.whgkswo.tesm.conversation.NormalStage;
+import net.whgkswo.tesm.conversation.NpcDialogues;
 
 import java.util.ArrayList;
 import java.util.Arrays;

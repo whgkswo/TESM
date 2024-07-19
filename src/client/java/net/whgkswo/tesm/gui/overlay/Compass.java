@@ -3,33 +3,32 @@ package net.whgkswo.tesm.gui.overlay;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
+import net.whgkswo.tesm.calendar.Time;
+import net.whgkswo.tesm.general.GlobalVariables;
+import net.whgkswo.tesm.gui.RenderUtil;
 
 import static net.whgkswo.tesm.general.OnServerTicks.*;
 
 public class Compass implements HudRenderCallback {
 
-    MinecraftClient client = MinecraftClient.getInstance();
-    int screenWidth = 0;
-    int screenHeight = 0;
+    private MinecraftClient client = MinecraftClient.getInstance();
+    private int screenWidth = 0;
+    private int screenHeight = 0;
 
-    static final int TEXTURE_W = 208;
-    static final int TEXTURE_H = 19;
+    private static final int TEXTURE_W = 208;
+    private static final int TEXTURE_H = 19;
+    private static final float HUD_MAG = 0.7f;
     private final Identifier COMPASS_BLACK = new Identifier(TESMMod.MODID, "textures/gui/compass_black.png");
     private final Identifier COMPASS_WHITE = new Identifier(TESMMod.MODID, "textures/gui/compass_white.png");
     @Override
     public void onHudRender(DrawContext drawContext, float tickDelta) {
-
-        final float HUD_MAG = 0.7f;
-        //final float TEXT_MAG = 0.8f;
-
         if(client!=null){
             screenWidth = client.getWindow().getScaledWidth();
-            //screenWidth = client.getWindow().
-            //screenHeight = client.getWindow().getHeight();
             screenHeight = client.getWindow().getScaledHeight();
         }
 

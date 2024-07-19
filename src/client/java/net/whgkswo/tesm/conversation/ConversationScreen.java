@@ -1,6 +1,5 @@
-package net.whgkswo.tesm.conversation.v2;
+package net.whgkswo.tesm.conversation;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -13,13 +12,12 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
 import net.whgkswo.tesm.general.GlobalVariablesClient;
+import net.whgkswo.tesm.gui.RenderUtil;
 import net.whgkswo.tesm.networking.ModMessages;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static net.whgkswo.tesm.general.GlobalVariablesClient.arrowState;
 
@@ -97,31 +95,16 @@ public class ConversationScreen extends Screen {
         ClientPlayNetworking.send(ModMessages.UNFREEZE_ENTITY_ID,buf);
         super.close();
     }
-    private void renderText(Alignment alignment, DrawContext context , float scale, String str,
-                            int x, int y, int color){
-        context.getMatrices().push();
-        context.getMatrices().scale(scale,scale,1);
-        if(alignment == Alignment.LEFT){
-            context.drawTextWithShadow(textRenderer,str, x,y,color);
-        } else if (alignment == Alignment.CENTER) {
-            context.drawCenteredTextWithShadow(textRenderer,str, x,y,color);
-        }
-        context.getMatrices().pop();
-    }
-    private void renderTexture(DrawContext context, Identifier id, int x, int y, int width, int height){
-        RenderSystem.enableBlend();
-        context.drawTexture(id, x, y,0,0, width, height, width, height);
-    }
     private void renderPartnerName(DrawContext context){
         final float nameScale = 1.5f;
-        renderText(Alignment.CENTER,context,nameScale,partnerName,(int)(width/2/nameScale),(int)(height*0.55/nameScale),0xffffff);
+        RenderUtil.renderText(RenderUtil.Alignment.CENTER,context,nameScale,partnerName,(int)(width/2/nameScale),(int)(height*0.55/nameScale),0xffffff);
     }
     private void renderLine(DrawContext context){
         currentDialogues = partnerDL.getNormalLines().get(stage);
         String content = decisionMakingOn ?
                 lastLine : currentDialogues.getContents().get(currentLineIndex);
 
-        renderText(Alignment.CENTER,context, LINE_SCALE,content,
+        RenderUtil.renderText(RenderUtil.Alignment.CENTER,context, LINE_SCALE,content,
                 (int) (width/2/ LINE_SCALE),(int) (height*0.7/ LINE_SCALE),0xffffff);
     }
     private void renderDecisions(DrawContext context){
@@ -135,7 +118,7 @@ public class ConversationScreen extends Screen {
             }
             // 출력
             for(int i = decisionOffset; i< endIndex; i++){
-                renderText(Alignment.LEFT,context, LINE_SCALE,currentDecisions.getContents().get(i).getContent(),
+                RenderUtil.renderText(RenderUtil.Alignment.LEFT,context, LINE_SCALE,currentDecisions.getContents().get(i).getContent(),
                         (int)(width*0.15/ LINE_SCALE),
                         (int)(height*(0.78+0.04*(i-decisionOffset))/ LINE_SCALE),
                         colors.get(i));
@@ -155,7 +138,7 @@ public class ConversationScreen extends Screen {
         if(mouseArea != MouseArea.REST_AREA){
             int areaNumber = mouseArea.getNumber();
             if(currentDecisions.getContents().size() >= areaNumber){
-                renderTexture(context, DECISION_BACKGROUND, (int) (width*0.12), (int) (height*(0.775+0.04*(areaNumber-1))),220,(int) (height*0.04));
+                RenderUtil.renderTexture(context, DECISION_BACKGROUND, (int) (width*0.12), (int) (height*(0.775+0.04*(areaNumber-1))),220,(int) (height*0.04));
                 colors.set(areaNumber-1,0xAAA685);
             }
         }
@@ -238,10 +221,7 @@ public class ConversationScreen extends Screen {
         this.stage = stage;
         currentLineIndex = 0;
     }
-    private enum Alignment{
-        LEFT,
-        CENTER
-    }
+
     private enum MouseArea {
         AREA_1(1),
         AREA_2(2),

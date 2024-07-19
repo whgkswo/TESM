@@ -1,4 +1,4 @@
-package net.whgkswo.tesm.conversation.v2;
+package net.whgkswo.tesm.conversation;
 
 
 import java.util.List;

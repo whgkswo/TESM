@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.whgkswo.tesm.calendar.Time;
 import net.whgkswo.tesm.data.JsonManager;
 import net.whgkswo.tesm.tags.BiomeTags;
 
@@ -168,6 +169,7 @@ public class OnServerTicks {
                     addTimeCounter = 0;
                     world.setTimeOfDay(world.getTimeOfDay() + 1);
                 }
+                currentTime = Time.getTime();
             }
         });
     }

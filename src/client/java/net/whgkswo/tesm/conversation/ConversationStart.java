@@ -6,10 +6,8 @@ import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.Vec3d;
-import net.whgkswo.tesm.conversation.v2.ConversationScreen;
 import net.whgkswo.tesm.networking.ModMessages;
 import net.whgkswo.tesm.raycast.CenterRaycast;
 
