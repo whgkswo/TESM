@@ -26,10 +26,17 @@ public class RenderUtil {
         int yPos = getYPos(yRatio, scale);
         context.getMatrices().push();
         context.getMatrices().scale(scale,scale,1);
-        if(alignment == Alignment.LEFT){
-            context.drawTextWithShadow(TEXT_RENDERER,str, xPos, yPos,color);
-        } else if (alignment == Alignment.CENTER) {
-            context.drawCenteredTextWithShadow(TEXT_RENDERER,str, xPos, yPos,color);
+        switch (alignment){
+            case LEFT -> {
+                context.drawTextWithShadow(TEXT_RENDERER,str, xPos, yPos,color);
+            }
+            case CENTER -> {
+                context.drawCenteredTextWithShadow(TEXT_RENDERER,str, xPos, yPos,color);
+            }
+            case RIGHT -> {
+                int textWidth = TEXT_RENDERER.getWidth(str);
+                context.drawTextWithShadow(TEXT_RENDERER, str, xPos - textWidth, yPos, color);
+            }
         }
         context.getMatrices().pop();
     }
@@ -45,6 +52,7 @@ public class RenderUtil {
     }
     public enum Alignment{
         LEFT,
-        CENTER
+        CENTER,
+        RIGHT
     }
 }

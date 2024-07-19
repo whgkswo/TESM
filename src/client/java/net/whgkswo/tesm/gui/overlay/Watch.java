@@ -16,7 +16,7 @@ public class Watch implements HudRenderCallback {
         final float scale = 0.7f;
         String time = GlobalVariables.currentTime.toString(Time.TimeFormat.LINGUAL_12H, true);
 
-        RenderUtil.renderText(RenderUtil.Alignment.LEFT, drawContext,scale,
-                time, 0.85 ,0.95, 0xffffff);
+        RenderUtil.renderText(RenderUtil.Alignment.RIGHT, drawContext,scale,
+                time, 0.95 ,0.95, 0xffffff);
     }
 }
