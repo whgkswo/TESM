@@ -58,4 +58,16 @@ public class Time {
         LINGUAL_24H,
         LINGUAL_12H
     }
+
+    public int getHour() {
+        return hour;
+    }
+
+    public int getMinute() {
+        return minute;
+    }
+
+    public int getSecond() {
+        return second;
+    }
 }

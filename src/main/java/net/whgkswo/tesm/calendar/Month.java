@@ -23,4 +23,27 @@ public enum Month {
         this.name = name;
         this.daysInMonth = daysInMonth;
     }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getDaysInMonth() {
+        return daysInMonth;
+    }
+    public static Month getNextMonth(Month month){
+        for(Month nextMonth : Month.values()){
+            if(month.number == 12){
+                return MORNING_STAR;
+            }
+            if(nextMonth.getNumber() == month.number + 1){
+                return nextMonth;
+            }
+        }
+        return null;
+    }
 }

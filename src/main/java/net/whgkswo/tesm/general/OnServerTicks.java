@@ -169,7 +169,11 @@ public class OnServerTicks {
                     addTimeCounter = 0;
                     world.setTimeOfDay(world.getTimeOfDay() + 1);
                 }
+                int previousHour = currentTime.getHour();
                 currentTime = Time.getTime();
+                if(previousHour == 23 && currentTime.getHour() == 0){
+                    currentDate.addDate();
+                }
             }
         });
     }
