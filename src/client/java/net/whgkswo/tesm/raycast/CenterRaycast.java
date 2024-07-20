@@ -10,6 +10,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
@@ -18,6 +19,7 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.whgkswo.tesm.TESMMod;
 import net.whgkswo.tesm.networking.ModMessages;
+import net.whgkswo.tesm.util.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -71,11 +73,12 @@ public class CenterRaycast {
                     // 실행 결과는 결과 반환 패킷 내에서 처리되어 interactOverlayOn의 t/f를 결정함
                     if(interactOverlayOn){
                         interactType = "대화하기";
-                        try{
-                            interactTarget = entity.getCustomName().getString();
+                        /*try{
+                            //interactTarget = entity.getCustomName().getString();
+
                         }catch (NullPointerException e){
                             interactTarget = "";
-                        }
+                        }*/
                     }else{
                         interactType = "";
                         interactTarget = "";

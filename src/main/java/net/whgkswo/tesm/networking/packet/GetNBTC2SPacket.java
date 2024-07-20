@@ -3,6 +3,7 @@ package net.whgkswo.tesm.networking.packet;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.entity.Entity;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -17,12 +18,19 @@ public class GetNBTC2SPacket {
         Entity targetEntity = player.getWorld().getEntityById(buf.readInt());
 
         try{
-            boolean isInteractable = ((IEntityDataSaver) targetEntity).getPersistentData().getCompound("EntityData").getBoolean("interactable");
+            NbtCompound nbtCompound = ((IEntityDataSaver)targetEntity).getPersistentData().getCompound("EntityData");
+
+            boolean isInteractable = nbtCompound.getBoolean("interactable");
+            String tempName = nbtCompound.getString("TempName");
+            String name = nbtCompound.getString("Name");
 
             // 클라이언트에 응답 송신
             PacketByteBuf responseBuf = PacketByteBufs.create();
             responseBuf.writeBoolean(isInteractable);
+            responseBuf.writeString(tempName);
+            responseBuf.writeString(name);
             responseSender.sendPacket(ModMessages.GETNBT_RESPONSE_ID, responseBuf);
+
         }catch (NullPointerException e){
             // 아무것도 안함
         }

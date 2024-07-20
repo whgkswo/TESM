@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
 import net.whgkswo.tesm.networking.packet.*;
+import net.whgkswo.tesm.networking.response_handlers.GetNbtResponseHandler;
 import net.whgkswo.tesm.raycast.CenterRaycast;
 
 public class ModMessagesClient {
@@ -19,9 +20,7 @@ public class ModMessagesClient {
     // 결과값 수신 및 처리
     public static void registerS2CPackets(){
         ClientPlayNetworking.registerGlobalReceiver(GETNBT_RESPONSE_ID, (client2, handler, responseBuf, responseSender) -> {
-
-            CenterRaycast.interactOverlayOn = responseBuf.readBoolean();
+            GetNbtResponseHandler.handle(responseBuf);
         });
-
     }
 }

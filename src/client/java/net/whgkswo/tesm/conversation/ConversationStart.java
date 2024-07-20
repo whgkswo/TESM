@@ -45,7 +45,7 @@ public class ConversationStart {
                 if (target instanceof LivingEntity && world.isClient() && CenterRaycast.interactOverlayOn) {
 
                     convPartner = (LivingEntity) target;
-                    convPartnerName = String.valueOf(entityHitResult.getEntity().getCustomName().getString());
+                    //convPartnerName = String.valueOf(entityHitResult.getEntity().getCustomName().getString());
 
                     // 대화 상대 움직임 제한 (서버에 패킷 전송)
                     PacketByteBuf buf = PacketByteBufs.create();

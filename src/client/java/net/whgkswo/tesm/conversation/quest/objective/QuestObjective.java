@@ -1,10 +1,10 @@
 package net.whgkswo.tesm.conversation.quest.objective;
 
-import net.whgkswo.tesm.calendar.Date;
+import net.whgkswo.tesm.calendar.DateTime;
 
 public class QuestObjective {
     private String description;
-    private Date dueDate;
+    private DateTime dueDatetime;
     private ObjectiveType objectiveType;
     enum ObjectiveType{
         TALK_TO,

@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.Entity;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -14,6 +15,7 @@ import net.whgkswo.tesm.TESMMod;
 import net.whgkswo.tesm.general.GlobalVariablesClient;
 import net.whgkswo.tesm.gui.RenderUtil;
 import net.whgkswo.tesm.networking.ModMessages;
+import net.whgkswo.tesm.util.IEntityDataSaver;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -52,7 +54,11 @@ public class ConversationScreen extends Screen {
     }
     @Override
     protected void init(){
-        partnerName = partner.getCustomName().getString();
+        NbtCompound nbtCompound = ((IEntityDataSaver)partner).getPersistentData();
+        String tempName = nbtCompound.getString("TempName");
+
+        partnerName = tempName.isEmpty() ? nbtCompound.getString("Name") : tempName;
+
         partnerDL = GlobalVariablesClient.NPC_DIALOGUES.get(partnerName);
     }
     @Override
