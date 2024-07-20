@@ -9,6 +9,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.Vec3d;
 import net.whgkswo.tesm.networking.ModMessages;
+import net.whgkswo.tesm.networking.ModMessagesClient;
 import net.whgkswo.tesm.raycast.CenterRaycast;
 
 public class ConversationStart {
@@ -55,6 +56,10 @@ public class ConversationStart {
                     player.setYaw(getYawAndPitch(convPartner.getPos(),player.getPos())[0]);
                     player.setPitch(getYawAndPitch(convPartner.getPos(),player.getPos())[1]);
                     // 스크린 열기
+                    PacketByteBuf nbtRequest = PacketByteBufs.create();
+                    nbtRequest.writeInt(convPartner.getId());
+                    ClientPlayNetworking.send(ModMessages.GETNBT_BY_CONVERSATION, nbtRequest);
+
                     client.setScreen(new ConversationScreen(convPartner));
                 }
                 return ActionResult.PASS;

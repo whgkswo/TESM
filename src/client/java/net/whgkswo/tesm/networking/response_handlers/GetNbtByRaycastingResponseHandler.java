@@ -3,7 +3,7 @@ package net.whgkswo.tesm.networking.response_handlers;
 import net.minecraft.network.PacketByteBuf;
 import net.whgkswo.tesm.raycast.CenterRaycast;
 
-public class GetNbtResponseHandler {
+public class GetNbtByRaycastingResponseHandler {
     public static void handle(PacketByteBuf response){
         CenterRaycast.interactOverlayOn = response.readBoolean();
         String tempName = response.readString();

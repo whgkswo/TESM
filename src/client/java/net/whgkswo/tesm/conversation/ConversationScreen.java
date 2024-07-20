@@ -21,7 +21,7 @@ import org.lwjgl.glfw.GLFW;
 import java.util.ArrayList;
 import java.util.List;
 
-import static net.whgkswo.tesm.general.GlobalVariablesClient.arrowState;
+import static net.whgkswo.tesm.general.GlobalVariablesClient.*;
 
 @Environment(EnvType.CLIENT)
 public class ConversationScreen extends Screen {
@@ -54,11 +54,7 @@ public class ConversationScreen extends Screen {
     }
     @Override
     protected void init(){
-        NbtCompound nbtCompound = ((IEntityDataSaver)partner).getPersistentData();
-        String tempName = nbtCompound.getString("TempName");
-
-        partnerName = tempName.isEmpty() ? nbtCompound.getString("Name") : tempName;
-
+        partnerName = convPartnerTempName.isEmpty() ? convPartnerName : convPartnerTempName;
         partnerDL = GlobalVariablesClient.NPC_DIALOGUES.get(partnerName);
     }
     @Override

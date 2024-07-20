@@ -11,7 +11,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.whgkswo.tesm.networking.ModMessages;
 import net.whgkswo.tesm.util.IEntityDataSaver;
 
-public class GetNBTC2SPacket {
+public class GetNbtByRaycastingC2SPacket {
     public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler,
                                PacketByteBuf buf, PacketSender responseSender) {
         // 아래 코드들은 서버에서만 실행됨!
@@ -29,7 +29,7 @@ public class GetNBTC2SPacket {
             responseBuf.writeBoolean(isInteractable);
             responseBuf.writeString(tempName);
             responseBuf.writeString(name);
-            responseSender.sendPacket(ModMessages.GETNBT_RESPONSE_ID, responseBuf);
+            responseSender.sendPacket(ModMessages.GETNBT_BY_RAYCASTING_RESPONSE, responseBuf);
 
         }catch (NullPointerException e){
             // 아무것도 안함

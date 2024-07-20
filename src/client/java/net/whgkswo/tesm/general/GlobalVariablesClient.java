@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GlobalVariablesClient {
+    public static String convPartnerTempName;
+    public static String convPartnerName;
     public static int arrowCounter = 0;
     public static boolean arrowState = false;
     public static final Map<String, NpcDialogues> NPC_DIALOGUES = new HashMap<>(){{
