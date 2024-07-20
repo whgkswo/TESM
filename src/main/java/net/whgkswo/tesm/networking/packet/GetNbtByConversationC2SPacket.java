@@ -14,7 +14,8 @@ import net.whgkswo.tesm.util.IEntityDataSaver;
 public class GetNbtByConversationC2SPacket {
     public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler,
                                PacketByteBuf buf, PacketSender responseSender) {
-        Entity entity = player.getWorld().getEntityById(buf.readInt());
+        int id = buf.readInt();
+        Entity entity = player.getWorld().getEntityById(id);
         NbtCompound nbtCompound = ((IEntityDataSaver)entity).getPersistentData().getCompound("EntityData");
 
         String tempName = nbtCompound.getString("TempName");
@@ -22,6 +23,7 @@ public class GetNbtByConversationC2SPacket {
 
         // 클라이언트에 응답 송신
         PacketByteBuf responseBuf = PacketByteBufs.create();
+        responseBuf.writeInt(id);
         responseBuf.writeString(tempName);
         responseBuf.writeString(name);
         responseSender.sendPacket(ModMessages.GETNBT_BY_CONVERSATION_RESPONSE, responseBuf);

@@ -7,7 +7,6 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -15,7 +14,6 @@ import net.whgkswo.tesm.TESMMod;
 import net.whgkswo.tesm.general.GlobalVariablesClient;
 import net.whgkswo.tesm.gui.RenderUtil;
 import net.whgkswo.tesm.networking.ModMessages;
-import net.whgkswo.tesm.util.IEntityDataSaver;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -34,7 +32,7 @@ public class ConversationScreen extends Screen {
     private int currentLineIndex = 0;
     private boolean decisionMakingOn;
     private int decisionOffset;
-    private String partnerName;
+    private String partnerDisplayName;
     private NpcDialogues partnerDL;
     private NormalStage currentDialogues;
     private DecisionStage currentDecisions;
@@ -54,8 +52,8 @@ public class ConversationScreen extends Screen {
     }
     @Override
     protected void init(){
-        partnerName = convPartnerTempName.isEmpty() ? convPartnerName : convPartnerTempName;
-        partnerDL = GlobalVariablesClient.NPC_DIALOGUES.get(partnerName);
+        partnerDisplayName = convPartnerTempName.isEmpty() ? convPartnerName : convPartnerTempName;
+        partnerDL = GlobalVariablesClient.NPC_DIALOGUES.get(convPartnerName);
     }
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta){
@@ -99,7 +97,7 @@ public class ConversationScreen extends Screen {
     }
     private void renderPartnerName(DrawContext context){
         final float nameScale = 1.5f;
-        RenderUtil.renderText(RenderUtil.Alignment.CENTER,context,nameScale,partnerName,(int)(width/2/nameScale),(int)(height*0.55/nameScale),0xffffff);
+        RenderUtil.renderText(RenderUtil.Alignment.CENTER,context,nameScale, partnerDisplayName,(int)(width/2/nameScale),(int)(height*0.55/nameScale),0xffffff);
     }
     private void renderLine(DrawContext context){
         currentDialogues = partnerDL.getNormalLines().get(stage);

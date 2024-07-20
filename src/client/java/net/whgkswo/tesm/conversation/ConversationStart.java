@@ -59,8 +59,6 @@ public class ConversationStart {
                     PacketByteBuf nbtRequest = PacketByteBufs.create();
                     nbtRequest.writeInt(convPartner.getId());
                     ClientPlayNetworking.send(ModMessages.GETNBT_BY_CONVERSATION, nbtRequest);
-
-                    client.setScreen(new ConversationScreen(convPartner));
                 }
                 return ActionResult.PASS;
             });
