@@ -1,6 +1,7 @@
 package net.whgkswo.tesm.general;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.entity.player.PlayerEntity;
 
 public class InitializeTasks {
@@ -12,6 +13,11 @@ public class InitializeTasks {
             if(entity.isPlayer()){
                 GlobalVariables.player = (PlayerEntity) entity;
             }
+        });
+    }
+    public static void onServerStarted(){
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+            OnServerTicks.runTimeCounter = 0;
         });
     }
 }

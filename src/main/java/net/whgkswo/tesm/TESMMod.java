@@ -73,6 +73,7 @@ public class TESMMod implements ModInitializer {
 
 		ModBlocks.registerModBlocks();
 		InitializeTasks.registerPlayer();
+		InitializeTasks.onServerStarted();
 		OnServerTicks.onServerTick();
 		PathFinder.onServerTicks();
 		/*PathfindingManager pathfindingManager = new PathfindingManager();
