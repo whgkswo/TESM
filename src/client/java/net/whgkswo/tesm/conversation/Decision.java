@@ -1,15 +1,10 @@
 package net.whgkswo.tesm.conversation;
 
-public class Decision {
-    private String content;
+public class Decision extends DialogueLine{
     private boolean isChosen;
 
-    public Decision(String content) {
-        this.content = content;
-    }
-
-    public String getContent() {
-        return content;
+    public Decision(String line) {
+        super(line);
     }
 
     public boolean isChosen() {

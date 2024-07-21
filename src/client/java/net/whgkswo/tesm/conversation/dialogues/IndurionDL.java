@@ -1,9 +1,6 @@
 package net.whgkswo.tesm.conversation.dialogues;
 
-import net.whgkswo.tesm.conversation.Decision;
-import net.whgkswo.tesm.conversation.DecisionStage;
-import net.whgkswo.tesm.conversation.NormalStage;
-import net.whgkswo.tesm.conversation.NpcDialogues;
+import net.whgkswo.tesm.conversation.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,37 +14,43 @@ public class IndurionDL extends NpcDialogues {
         HashMap<String, NormalStage> normalLines = new HashMap<>();
         normalLines.put("General",
                 new NormalStage(new ArrayList<>(Arrays.asList(
-                        "테스트 대사입니다.",
-                        "테스트 대사입니다.(2)",
-                        "테스트 대사입니다.(3)")),
+                        new NormalLine("테스트 대사입니다."),
+                        new NormalLine("테스트 대사입니다.(2)"),
+                        new NormalLine("테스트 대사입니다.(3)"))),
                         NormalStage.ExecuteAfter.SHOW_DECISIONS));
         normalLines.put("General-1",
                 new NormalStage(new ArrayList<>(Arrays.asList(
-                        "1번 선택지를 골랐습니다.",
-                        "[General]로 돌아갑니다.")),
+                        new NormalLine("1번 선택지를 골랐습니다."),
+                        new NormalLine("[General]로 돌아갑니다."))),
                         NormalStage.ExecuteAfter.JUMP_TO,
                         "General"));
         normalLines.put("General-2",
                 new NormalStage(new ArrayList<>(Arrays.asList(
-                        "2번 선택지를 골랐습니다.",
-                        "추가 선택지를 출력합니다.")),
+                        new NormalLine("2번 선택지를 골랐습니다."),
+                        new NormalLine("추가 선택지를 출력합니다."))),
                         NormalStage.ExecuteAfter.SHOW_DECISIONS));
         normalLines.put("General-2-1",
                 new NormalStage(new ArrayList<>(Arrays.asList(
-                        "1번 선택지를 골랐습니다.",
-                        "[General]로 돌아갑니다.")),
-                        NormalStage.ExecuteAfter.JUMP_TO,
-                        "General"));
+                        new NormalLine("저는 인두리온입니다.", true),
+                        new NormalLine("저기 밑 부둣가 행정 사무소가 제 직장이죠.")
+                )), NormalStage.ExecuteAfter.JUMP_TO,
+                        "General-2"));
         normalLines.put("General-2-2",
                 new NormalStage(new ArrayList<>(Arrays.asList(
-                        "2번 선택지를 골랐습니다.",
-                        "[General-2]로 돌아갑니다.")),
+                        new NormalLine("2번 선택지를 골랐습니다."),
+                        new NormalLine("[General]로 돌아갑니다."))),
+                        NormalStage.ExecuteAfter.JUMP_TO,
+                        "General"));
+        normalLines.put("General-2-3",
+                new NormalStage(new ArrayList<>(Arrays.asList(
+                        new NormalLine("3번 선택지를 골랐습니다."),
+                        new NormalLine("[General-2]로 돌아갑니다."))),
                         NormalStage.ExecuteAfter.JUMP_TO,
                         "General-2"));
         normalLines.put("General-3",
                 new NormalStage(new ArrayList<>(Arrays.asList(
-                        "3번 선택지를 골랐습니다.",
-                        "대화를 종료합니다.")),
+                        new NormalLine("3번 선택지를 골랐습니다."),
+                        new NormalLine("대화를 종료합니다."))),
                         NormalStage.ExecuteAfter.EXIT));
         return normalLines;
     }
@@ -59,6 +62,7 @@ public class IndurionDL extends NpcDialogues {
                 new Decision("그럼 이만")
         ))));
         decisions.put("General-2", new DecisionStage(new ArrayList<>(Arrays.asList(
+                new Decision("당신에 대해 말해주시오"),
                 new Decision("아까 얘기로 돌아가서..."),
                 new Decision("(반복)")
         ))));

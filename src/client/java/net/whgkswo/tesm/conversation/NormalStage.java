@@ -4,20 +4,20 @@ package net.whgkswo.tesm.conversation;
 import java.util.List;
 
 public class NormalStage{
-    private List<String> contents;
+    private List<NormalLine> contents;
     private ExecuteAfter executeAfter;
     private String executeTarget;
-    public NormalStage(List<String> contents, ExecuteAfter executeAfter) {
+    public NormalStage(List<NormalLine> contents, ExecuteAfter executeAfter) {
         this.contents = contents;
         this.executeAfter = executeAfter;
     }
-    public NormalStage(List<String> contents, ExecuteAfter executeAfter, String executeTarget) {
+    public NormalStage(List<NormalLine> contents, ExecuteAfter executeAfter, String executeTarget) {
         this.contents = contents;
         this.executeAfter = executeAfter;
         this.executeTarget = executeTarget;
     }
 
-    public List<String> getContents() {
+    public List<NormalLine> getContents() {
         return contents;
     }
 

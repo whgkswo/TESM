@@ -102,7 +102,7 @@ public class ConversationScreen extends Screen {
     private void renderLine(DrawContext context){
         currentDialogues = partnerDL.getNormalLines().get(stage);
         String content = decisionMakingOn ?
-                lastLine : currentDialogues.getContents().get(currentLineIndex);
+                lastLine : currentDialogues.getContents().get(currentLineIndex).getLine();
 
         RenderUtil.renderText(RenderUtil.Alignment.CENTER,context, LINE_SCALE,content,
                 (int) (width/2/ LINE_SCALE),(int) (height*0.7/ LINE_SCALE),0xffffff);
@@ -118,7 +118,7 @@ public class ConversationScreen extends Screen {
             }
             // 출력
             for(int i = decisionOffset; i< endIndex; i++){
-                RenderUtil.renderText(RenderUtil.Alignment.LEFT,context, LINE_SCALE,currentDecisions.getContents().get(i).getContent(),
+                RenderUtil.renderText(RenderUtil.Alignment.LEFT,context, LINE_SCALE,currentDecisions.getContents().get(i).getLine(),
                         (int)(width*0.15/ LINE_SCALE),
                         (int)(height*(0.78+0.04*(i-decisionOffset))/ LINE_SCALE),
                         colors.get(i));
@@ -183,15 +183,19 @@ public class ConversationScreen extends Screen {
         if(button == GLFW.GLFW_MOUSE_BUTTON_LEFT){
             if(!decisionMakingOn){ // 일반 대사 넘기기
                 if(currentLineIndex < currentDialogues.getContents().size()-1){
+                    // 이름을 밝히는 라인일 경우
+                    if(currentDialogues.getContents().get(currentLineIndex).isRevealName()){
+                        partnerDisplayName = convPartnerName;
+                    }
                     currentLineIndex++;
                 }else{ // 현재 스테이지를 종료하며
                     switch (currentDialogues.getExecuteAfter()){
                         case SHOW_DECISIONS -> {
-                            lastLine = currentDialogues.getContents().get(currentDialogues.getContents().size()-1);
+                            lastLine = currentDialogues.getContents().get(currentDialogues.getContents().size()-1).getLine();
                             decisionMakingOn = true;
                         }
                         case JUMP_TO -> {
-                            lastLine = currentDialogues.getContents().get(currentDialogues.getContents().size()-1);
+                            lastLine = currentDialogues.getContents().get(currentDialogues.getContents().size()-1).getLine();
                             setStage(currentDialogues.getExecuteTarget());
                             decisionMakingOn = true;
                         }
