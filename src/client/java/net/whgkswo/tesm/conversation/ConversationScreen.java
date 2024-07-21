@@ -185,7 +185,9 @@ public class ConversationScreen extends Screen {
                 if(currentLineIndex < currentDialogues.getContents().size()-1){
                     // 이름을 밝히는 라인일 경우
                     if(currentDialogues.getContents().get(currentLineIndex).isRevealName()){
-                        partnerDisplayName = convPartnerName;
+                        if(partnerDisplayName.equals(convPartnerTempName)){
+                            revealPartnerName();
+                        }
                     }
                     currentLineIndex++;
                 }else{ // 현재 스테이지를 종료하며
@@ -224,6 +226,12 @@ public class ConversationScreen extends Screen {
     private void setStage(String stage){
         this.stage = stage;
         currentLineIndex = 0;
+    }
+    private void revealPartnerName(){
+        partnerDisplayName = convPartnerName;
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeInt(partner.getId());
+        ClientPlayNetworking.send(ModMessages.UPDATE_NBT, buf);
     }
 
     private enum MouseArea {
