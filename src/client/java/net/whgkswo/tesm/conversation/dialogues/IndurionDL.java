@@ -58,16 +58,16 @@ public class IndurionDL extends NpcDialogues {
     }
     public static HashMap<String, DecisionStage> registerDecisions(){
         HashMap<String, DecisionStage> decisions = new HashMap<>();
-        decisions.put("General", new DecisionStage(new ArrayList<>(Arrays.asList(
+        decisions.put("General", new DecisionStage(
                 new Decision("(반복)"),
                 new Decision("계속 말해보시오"),
                 new Decision("그럼 이만")
-        ))));
-        decisions.put("General-2", new DecisionStage(new ArrayList<>(Arrays.asList(
+        ));
+        decisions.put("General-2", new DecisionStage(
                 new Decision("당신에 대해 말해주시오"),
                 new Decision("아까 얘기로 돌아가서..."),
                 new Decision("(반복)")
-        ))));
+        ));
         return decisions;
     }
 }
