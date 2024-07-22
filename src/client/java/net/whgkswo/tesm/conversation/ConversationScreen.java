@@ -150,7 +150,7 @@ public class ConversationScreen extends Screen {
             }else{
                 String requiredQuestName = decision.getQuestRequirement().getQuestName();
                 QuestStatus requiredQuestStatus = decision.getQuestRequirement().getStatus();
-                if(Quest.quests.get(requiredQuestName).getStatus() == requiredQuestStatus){
+                if(Quest.QUESTS.get(requiredQuestName).getStatus() == requiredQuestStatus){
                     availableDecision.add(new AvailableDecision(decision, i));
                 }
             }
@@ -228,14 +228,14 @@ public class ConversationScreen extends Screen {
                         }
                         case START_QUEST -> {
                             String questName = currentDialogues.getExecuteTarget();
-                            Quest quest = Quest.quests.get(questName);
+                            Quest quest = Quest.QUESTS.get(questName);
                             quest.setStatus(QuestStatus.ONGOING);
                             GlobalVariables.player.sendMessage(Text.literal(String.format("시작: %s", questName)));
                             resetStageAfterRecieveQuest();
                         }
                         case COMPLETE_QUEST -> {
                             String questName = currentDialogues.getExecuteTarget();
-                            Quest quest = Quest.quests.get(questName);
+                            Quest quest = Quest.QUESTS.get(questName);
                             quest.setStatus(QuestStatus.COMPLETED);
                             GlobalVariables.player.sendMessage(Text.literal(String.format("완료: %s", questName)));
                             resetStageAfterRecieveQuest();

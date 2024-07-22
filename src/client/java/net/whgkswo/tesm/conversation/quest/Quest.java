@@ -11,7 +11,7 @@ public class Quest {
     private QuestType questType;
     private String subType;
     private List<QuestObjective> objectives;
-    public static final Map<String, Quest> quests = new HashMap<>();
+    public static final Map<String, Quest> QUESTS = new HashMap<>();
     public Quest(String name, String description, QuestType questType, String subType, QuestObjective... objectives){
         status = QuestStatus.AVAILABLE;
         this.name = name;
@@ -19,11 +19,11 @@ public class Quest {
         this.questType = questType;
         this.subType = subType;
         this.objectives = new ArrayList<>(Arrays.asList(objectives));
-        quests.put(name, this);
+        QUESTS.put(name, this);
     }
     public static void registerQuests(){
         new Quest("테스트 퀘스트","테스트 퀘스트입니다.",QuestType.MISCELLANEOUS,"테스트",
-                new QuestObjective("아탈리온과 대화하기", QuestObjective.ObjectiveType.TALK_TO, "아탈리온"));
+                new QuestObjective("아탈리온과 대화하기"));
     }
 
     public QuestStatus getStatus() {

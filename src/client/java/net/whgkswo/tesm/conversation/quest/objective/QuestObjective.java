@@ -24,4 +24,7 @@ public class QuestObjective {
         this.description = description;
         this.objectiveType = objectiveType;
     }
+    public QuestObjective(String description) {
+        this.description = description;
+    }
 }
