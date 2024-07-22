@@ -23,7 +23,6 @@ public class GetNbtByConversationC2SPacket {
 
         // 클라이언트에 응답 송신
         PacketByteBuf responseBuf = PacketByteBufs.create();
-        responseBuf.writeInt(id);
         responseBuf.writeString(tempName);
         responseBuf.writeString(name);
         responseSender.sendPacket(ModMessages.GETNBT_BY_CONVERSATION_RESPONSE, responseBuf);

@@ -66,7 +66,7 @@ public class TESMModClient implements ClientModInitializer {
 
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 클라이언트 사이드 메소드 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 		CenterRaycast.centerRaycast();
-		ConversationStart.conversation();
+		ConversationStart.checkCondition();
 		OnClientTicks.getArrowState();
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 클라이언트 사이드 이벤트 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 		UseBlockEvent.register();

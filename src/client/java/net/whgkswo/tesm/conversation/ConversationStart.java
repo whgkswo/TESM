@@ -4,12 +4,13 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.Vec3d;
 import net.whgkswo.tesm.networking.ModMessages;
-import net.whgkswo.tesm.networking.ModMessagesClient;
 import net.whgkswo.tesm.raycast.CenterRaycast;
 
 public class ConversationStart {
@@ -39,22 +40,15 @@ public class ConversationStart {
     }
 
     //본체 메소드
-    public static void conversation(){
+    public static void checkCondition(){
         ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
             UseEntityCallback.EVENT.register((player, world, hand, target, entityHitResult) -> {
 
                 if (target instanceof LivingEntity && world.isClient() && CenterRaycast.interactOverlayOn) {
 
                     convPartner = (LivingEntity) target;
-                    //convPartnerName = String.valueOf(entityHitResult.getEntity().getCustomName().getString());
 
-                    // 대화 상대 움직임 제한 (서버에 패킷 전송)
-                    PacketByteBuf buf = PacketByteBufs.create();
-                    buf.writeInt(convPartner.getId());
-                    ClientPlayNetworking.send(ModMessages.FREEZE_ENTITY_ID, buf);
-                    // 플레이어 시선 방향 조정
-                    player.setYaw(getYawAndPitch(convPartner.getPos(),player.getPos())[0]);
-                    player.setPitch(getYawAndPitch(convPartner.getPos(),player.getPos())[1]);
+
                     // 스크린 열기
                     PacketByteBuf nbtRequest = PacketByteBufs.create();
                     nbtRequest.writeInt(convPartner.getId());
@@ -63,5 +57,16 @@ public class ConversationStart {
                 return ActionResult.PASS;
             });
         });
+    }
+    public static void conversationStart(Entity player, MinecraftClient client){
+        // 대화 상대 움직임 제한 (서버에 패킷 전송)
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeInt(convPartner.getId());
+        ClientPlayNetworking.send(ModMessages.FREEZE_ENTITY_ID, buf);
+        // 플레이어 시선 방향 조정
+        player.setYaw(getYawAndPitch(convPartner.getPos(),player.getPos())[0]);
+        player.setPitch(getYawAndPitch(convPartner.getPos(),player.getPos())[1]);
+        // 스크린 열기
+        client.setScreen(new ConversationScreen(convPartner));
     }
 }
