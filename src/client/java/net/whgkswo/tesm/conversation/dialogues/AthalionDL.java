@@ -1,6 +1,7 @@
 package net.whgkswo.tesm.conversation.dialogues;
 
 import net.whgkswo.tesm.conversation.*;
+import net.whgkswo.tesm.conversation.quest.QuestStatus;
 
 import java.util.HashMap;
 
@@ -18,7 +19,7 @@ public class AthalionDL extends NpcDialogues {
     public static HashMap<String, DecisionStage> registerDecisions(){
         HashMap<String, DecisionStage> decisions = new HashMap<>();
         decisions.put("General", new DecisionStage(
-                new Decision("인두리온이 보내서 왔습니다.")
+                new Decision("인두리온이 보내서 왔습니다.", new QuestRequirement("테스트 퀘스트", QuestStatus.ONGOING))
         ));
         return decisions;
     }
@@ -31,20 +32,6 @@ public class AthalionDL extends NpcDialogues {
                 new NormalStage(NormalStage.ExecuteAfter.COMPLETE_QUEST, "테스트 퀘스트",
                         new NormalLine("인두리온이 말한 사람이 당신이었군요."),
                         new NormalLine("여기 보수입니다."))
-        );
-        registerDecisionLines(normalLines, "General-2",
-                new NormalStage(NormalStage.ExecuteAfter.JUMP_TO, "General-2",
-                        new NormalLine("저는 인두리온입니다.", true),
-                        new NormalLine("저기 밑 부둣가 행정 사무소가 제 직장이죠.")),
-                new NormalStage(NormalStage.ExecuteAfter.JUMP_TO, "General",
-                        new NormalLine("2번 선택지를 골랐습니다."),
-                        new NormalLine("[General]로 돌아갑니다.")),
-                new NormalStage(NormalStage.ExecuteAfter.JUMP_TO, "General-2",
-                        new NormalLine("3번 선택지를 골랐습니다."),
-                        new NormalLine("[General-2]로 돌아갑니다.")),
-                new NormalStage(NormalStage.ExecuteAfter.START_QUEST, "테스트 퀘스트",
-                        new NormalLine("퀘스트를 받겠습니까?"),
-                        new NormalLine("아탈리온과 이야기하세요."))
         );
         return normalLines;
     }

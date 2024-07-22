@@ -12,6 +12,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
 import net.whgkswo.tesm.conversation.quest.Quest;
+import net.whgkswo.tesm.conversation.quest.QuestStatus;
 import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.general.GlobalVariablesClient;
 import net.whgkswo.tesm.gui.RenderUtil;
@@ -38,6 +39,7 @@ public class ConversationScreen extends Screen {
     private NpcDialogues partnerDL;
     private NormalStage currentDialogues;
     private DecisionStage currentDecisions;
+    private List<AvailableDecision> availableDecisions;
     private static final Identifier ARROW_UP = new Identifier(TESMMod.MODID, "textures/gui/uparrow.png");
     private static final Identifier ARROW_DOWN = new Identifier(TESMMod.MODID, "textures/gui/downarrow.png");
     private final Identifier DECISION_BACKGROUND = new Identifier(TESMMod.MODID, "textures/gui/decision.png");
@@ -64,10 +66,10 @@ public class ConversationScreen extends Screen {
         renderPartnerName(context);
         // 대사 출력
         renderLine(context);
-        // 선택지 출력
-        renderDecisions(context);
-        // 선택지 배경 출력
         if(decisionMakingOn){
+            // 선택지 출력
+            renderDecisions(context);
+            // 선택지 배경 출력
             renderDecisionBackground(context,mouseY);
         }
     }
@@ -111,28 +113,49 @@ public class ConversationScreen extends Screen {
     }
     private void renderDecisions(DrawContext context){
         currentDecisions = partnerDL.getDecisions().get(stage);
-        if(decisionMakingOn){
-            int endIndex;
-            if(currentDecisions.getContents().size() >= MAX_DISPLAY_DC){
-                endIndex = decisionOffset + MAX_DISPLAY_DC;
-            }else{ // 선택지가 4개 미만
-                endIndex = currentDecisions.getContents().size();
-            }
-            // 출력
-            for(int i = decisionOffset; i< endIndex; i++){
-                RenderUtil.renderText(RenderUtil.Alignment.LEFT,context, LINE_SCALE,currentDecisions.getContents().get(i).getLine(),
-                        (int)(width*0.15/ LINE_SCALE),
-                        (int)(height*(0.78+0.04*(i-decisionOffset))/ LINE_SCALE),
-                        colors.get(i));
-            }
-            // 선택지 화살표 출력
-            if (upArrowOn()){
-                context.drawTexture(ARROW_UP, (int)(width*0.2), (int)(height*(0.745-0.01*(arrowState?1:0))), 0, 0, height/24,height/48,height/24,height/48);
-            }
-            if (downArrowOn(currentDecisions.getContents().size())) {
-                context.drawTexture(ARROW_DOWN, (int)(width*0.2), (int)(height*(0.94+0.01*(arrowState?1:0)+1/48)), 0, 0, height/24,height/48,height/24,height/48);
+        availableDecisions = getAvailableDecisions();
+        int endIndex;
+        if(availableDecisions.size() >= MAX_DISPLAY_DC){
+            endIndex = decisionOffset + MAX_DISPLAY_DC;
+        }else{ // 선택지가 4개 미만
+            endIndex = availableDecisions.size();
+        }
+        // 가용한 선택지가 하나도 없으면 대화 종료
+        if(endIndex == 0){
+            close();
+        }
+        // 출력
+        for(int i = decisionOffset; i< endIndex; i++){
+            RenderUtil.renderText(RenderUtil.Alignment.LEFT,context, LINE_SCALE,availableDecisions.get(i).getDecision().getLine(),
+                    (int)(width*0.15/ LINE_SCALE),
+                    (int)(height*(0.78+0.04*(i-decisionOffset))/ LINE_SCALE),
+                    colors.get(i));
+        }
+        // 선택지 화살표 출력
+        if (upArrowOn()){
+            context.drawTexture(ARROW_UP, (int)(width*0.2), (int)(height*(0.745-0.01*(arrowState?1:0))), 0, 0, height/24,height/48,height/24,height/48);
+        }
+        if (downArrowOn(currentDecisions.getContents().size())) {
+            context.drawTexture(ARROW_DOWN, (int)(width*0.2), (int)(height*(0.94+0.01*(arrowState?1:0)+1/48)), 0, 0, height/24,height/48,height/24,height/48);
+        }
+    }
+    private List<AvailableDecision> getAvailableDecisions(){
+        List<Decision> decisions = currentDecisions.getContents();
+        List<AvailableDecision> availableDecision = new ArrayList<>();
+
+        for(int i = 0; i< decisions.size(); i++){
+            Decision decision = decisions.get(i);
+            if(decision.getQuestRequirement() == null){
+                availableDecision.add(new AvailableDecision(decision,i));
+            }else{
+                String requiredQuestName = decision.getQuestRequirement().getQuestName();
+                QuestStatus requiredQuestStatus = decision.getQuestRequirement().getStatus();
+                if(Quest.quests.get(requiredQuestName).getStatus() == requiredQuestStatus){
+                    availableDecision.add(new AvailableDecision(decision, i));
+                }
             }
         }
+        return availableDecision;
     }
     private void renderDecisionBackground(DrawContext context, int mouseY){
         resetColors();
@@ -169,10 +192,10 @@ public class ConversationScreen extends Screen {
     private MouseArea getMouseArea(double mouseY){
         int iMax;
         // 선택지가 4개 이상
-        if(currentDecisions.getContents().size() >= MAX_DISPLAY_DC){
+        if(availableDecisions.size() >= MAX_DISPLAY_DC){
             iMax = MAX_DISPLAY_DC;
         }else{ // 선택지가 4개 미만
-            iMax = currentDecisions.getContents().size();
+            iMax = availableDecisions.size();
         }
         for(int i = 0; i< iMax; i++){
             if(mouseY >= height*(0.78+0.04*i) && mouseY<height*(0.82+0.04*i)){
@@ -205,21 +228,17 @@ public class ConversationScreen extends Screen {
                         }
                         case START_QUEST -> {
                             String questName = currentDialogues.getExecuteTarget();
-                            Quest quest = Quest.availableQuest.get(questName);
-                            Quest.onGoingQuest.put(questName, quest);
-                            Quest.availableQuest.remove(questName);
+                            Quest quest = Quest.quests.get(questName);
+                            quest.setStatus(QuestStatus.ONGOING);
                             GlobalVariables.player.sendMessage(Text.literal(String.format("시작: %s", questName)));
                             resetStageAfterRecieveQuest();
-                            //close();
                         }
                         case COMPLETE_QUEST -> {
                             String questName = currentDialogues.getExecuteTarget();
-                            Quest quest = Quest.onGoingQuest.get(questName);
-                            Quest.completedQuest.put(questName, quest);
-                            Quest.onGoingQuest.remove(questName);
+                            Quest quest = Quest.quests.get(questName);
+                            quest.setStatus(QuestStatus.COMPLETED);
                             GlobalVariables.player.sendMessage(Text.literal(String.format("완료: %s", questName)));
                             resetStageAfterRecieveQuest();
-                            //close();
                         }
                         case CLOSE -> {
                             close();
@@ -286,6 +305,23 @@ public class ConversationScreen extends Screen {
                 default:
                     return REST_AREA;
             }
+        }
+    }
+    private class AvailableDecision{
+        private Decision decision;
+        private int index;
+
+        public AvailableDecision(Decision decision, int index) {
+            this.decision = decision;
+            this.index = index;
+        }
+
+        public Decision getDecision() {
+            return decision;
+        }
+
+        public int getIndex() {
+            return index;
         }
     }
 }

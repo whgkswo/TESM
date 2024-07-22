@@ -1,6 +1,7 @@
 package net.whgkswo.tesm.conversation.dialogues;
 
 import net.whgkswo.tesm.conversation.*;
+import net.whgkswo.tesm.conversation.quest.QuestStatus;
 
 import java.util.HashMap;
 
@@ -26,7 +27,7 @@ public class IndurionDL extends NpcDialogues {
                 new Decision("당신에 대해 말해주시오"),
                 new Decision("아까 얘기로 돌아가서..."),
                 new Decision("(반복)"),
-                new Decision("퀘스트를 받겠습니다.")
+                new Decision("퀘스트를 받겠습니다.", new QuestRequirement("테스트 퀘스트", QuestStatus.AVAILABLE))
         ));
         return decisions;
     }
