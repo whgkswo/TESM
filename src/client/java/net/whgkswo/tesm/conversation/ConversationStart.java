@@ -43,13 +43,10 @@ public class ConversationStart {
     public static void checkCondition(){
         ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
             UseEntityCallback.EVENT.register((player, world, hand, target, entityHitResult) -> {
-
                 if (target instanceof LivingEntity && world.isClient() && CenterRaycast.interactOverlayOn) {
-
                     convPartner = (LivingEntity) target;
 
-
-                    // 스크린 열기
+                    // 타깃의 nbt태그 검사(서버로 패킷 보내기 - 응답을 받는 핸들러에서 조건에 맞으면 대화 시작 메서드 호출)
                     PacketByteBuf nbtRequest = PacketByteBufs.create();
                     nbtRequest.writeInt(convPartner.getId());
                     ClientPlayNetworking.send(ModMessages.GETNBT_BY_CONVERSATION, nbtRequest);

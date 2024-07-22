@@ -18,4 +18,10 @@ public class NpcDialogues {
         this.normalLines = normalLines;
         this.decisions = decisions;
     }
+    public static void registerDecisionLines(HashMap<String, NormalStage> normalLines, String sourceStage,
+                                             NormalStage... normalStage){
+        for(int i = 0; i< normalStage.length; i++){
+            normalLines.put(sourceStage + "-" + (i+1), normalStage[i]);
+        }
+    }
 }
