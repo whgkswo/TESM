@@ -150,7 +150,15 @@ public class ConversationScreen extends Screen {
             }else{
                 String requiredQuestName = decision.getQuestRequirement().getQuestName();
                 QuestStatus requiredQuestStatus = decision.getQuestRequirement().getStatus();
-                if(Quest.QUESTS.get(requiredQuestName).getStatus() == requiredQuestStatus){
+                // 조건에 맞는 선택지만 필터링
+                Quest requiredQuest = Quest.QUESTS.get(requiredQuestName);
+                if(requiredQuest.getStatus() == requiredQuestStatus){
+                    // 진행중인 퀘스트는 스테이지까지 검사
+                    if(requiredQuestStatus == QuestStatus.ONGOING){
+                        if(!requiredQuest.getCurrentStage().equals(decision.getQuestRequirement().getStage())){
+                            continue;
+                        }
+                    }
                     availableDecision.add(new AvailableDecision(decision, i));
                 }
             }

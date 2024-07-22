@@ -19,7 +19,7 @@ public class AthalionDL extends NpcDialogues {
     public static HashMap<String, DecisionStage> registerDecisions(){
         HashMap<String, DecisionStage> decisions = new HashMap<>();
         decisions.put("General", new DecisionStage(
-                new Decision("인두리온이 보내서 왔습니다.", new QuestRequirement("테스트 퀘스트", QuestStatus.ONGOING))
+                new Decision("인두리온이 보내서 왔습니다.", new QuestRequirement("테스트 퀘스트", QuestStatus.ONGOING, "1"))
         ));
         return decisions;
     }

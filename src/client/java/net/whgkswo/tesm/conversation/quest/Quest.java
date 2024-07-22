@@ -10,20 +10,24 @@ public class Quest {
     private String description;
     private QuestType questType;
     private String subType;
-    private List<QuestObjective> objectives;
+    // TODO: 선형적 퀘스트가 아니라 분기를 가진 퀘스트도 있어야 함. 이를 위해 objectiveStage 도입 필요
+    private Map<String,QuestObjective> objectives;
+    private String currentStage = "1";
     public static final Map<String, Quest> QUESTS = new HashMap<>();
-    public Quest(String name, String description, QuestType questType, String subType, QuestObjective... objectives){
+    public Quest(String name, String description, QuestType questType, String subType, HashMap<String,QuestObjective> objectives){
         status = QuestStatus.AVAILABLE;
         this.name = name;
         this.description = description;
         this.questType = questType;
         this.subType = subType;
-        this.objectives = new ArrayList<>(Arrays.asList(objectives));
+        this.objectives = objectives;
         QUESTS.put(name, this);
     }
     public static void registerQuests(){
         new Quest("테스트 퀘스트","테스트 퀘스트입니다.",QuestType.MISCELLANEOUS,"테스트",
-                new QuestObjective("아탈리온과 대화하기"));
+                new HashMap<>(){{
+                    put("1", new QuestObjective("아탈리온과 대화하기"));
+                }});
     }
 
     public QuestStatus getStatus() {
@@ -50,7 +54,15 @@ public class Quest {
         return subType;
     }
 
-    public List<QuestObjective> getObjectives() {
+    public Map<String, QuestObjective> getObjectives() {
         return objectives;
+    }
+
+    public String getCurrentStage() {
+        return currentStage;
+    }
+
+    public void setCurrentStage(String currentStage) {
+        this.currentStage = currentStage;
     }
 }
