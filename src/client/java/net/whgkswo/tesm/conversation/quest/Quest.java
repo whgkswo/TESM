@@ -23,13 +23,6 @@ public class Quest {
         this.objectives = objectives;
         QUESTS.put(name, this);
     }
-    public static void registerQuests(){
-        new Quest("테스트 퀘스트","테스트 퀘스트입니다.",QuestType.MISCELLANEOUS,"테스트",
-                new HashMap<>(){{
-                    put("1", new QuestObjective("아탈리온과 대화하기"));
-                }});
-    }
-
     public QuestStatus getStatus() {
         return status;
     }
@@ -64,5 +57,18 @@ public class Quest {
 
     public void setCurrentStage(String currentStage) {
         this.currentStage = currentStage;
+    }
+
+    public static void registerQuests(){
+        new Quest("테스트 퀘스트","테스트 퀘스트입니다.",QuestType.MISCELLANEOUS,"테스트",
+                new HashMap<>(){{
+                    put("1:1", new QuestObjective("아탈리온과 대화하기", "CLEAR"));
+                }});
+        new Quest("테스트 퀘스트 2", "테스트 퀘스트 2입니다.", QuestType.MISCELLANEOUS, "테스트",
+                new HashMap<>(){{
+                    put("1:1", new QuestObjective("아탈리온과 대화하기", "2"));
+                    put("1:2", new QuestObjective("또는 옥토 카마로와 대화하기", "2"));
+                    put("2:1", new QuestObjective("인두리온에게 돌아가기", "CLEAR"));
+                }});
     }
 }

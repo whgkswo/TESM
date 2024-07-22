@@ -6,7 +6,8 @@ public class QuestObjective {
     private String description;
     private DateTime dueDatetime;
     private ObjectiveType objectiveType;
-    private String objectTarget;
+    private String objectiveTarget;
+    private String nextStage;
     public enum ObjectiveType{
         TALK_TO,
         GO_TO,
@@ -14,17 +15,41 @@ public class QuestObjective {
         KILL
     }
 
-    public QuestObjective(String description, DateTime dueDatetime, ObjectiveType objectiveType, String objectTarget) {
+    public QuestObjective(String description, DateTime dueDatetime, ObjectiveType objectiveType, String objectiveTarget) {
         this.description = description;
         this.dueDatetime = dueDatetime;
         this.objectiveType = objectiveType;
+        this.objectiveTarget = objectiveTarget;
     }
 
-    public QuestObjective(String description, ObjectiveType objectiveType, String objectTarget) {
+    public QuestObjective(String description, ObjectiveType objectiveType, String objectiveTarget, String nextStage) {
         this.description = description;
         this.objectiveType = objectiveType;
+        this.objectiveTarget = objectiveTarget;
+        this.nextStage = nextStage;
     }
-    public QuestObjective(String description) {
+    public QuestObjective(String description, String nextStage) {
         this.description = description;
+        this.nextStage = nextStage;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public DateTime getDueDatetime() {
+        return dueDatetime;
+    }
+
+    public ObjectiveType getObjectiveType() {
+        return objectiveType;
+    }
+
+    public String getObjectiveTarget() {
+        return objectiveTarget;
+    }
+
+    public String getNextStage() {
+        return nextStage;
     }
 }

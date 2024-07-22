@@ -27,7 +27,8 @@ public class IndurionDL extends NpcDialogues {
                 new Decision("당신에 대해 말해주시오"),
                 new Decision("아까 얘기로 돌아가서..."),
                 new Decision("(반복)"),
-                new Decision("퀘스트를 받겠습니다.", new QuestRequirement("테스트 퀘스트", QuestStatus.AVAILABLE))
+                new Decision("테스트 퀘스트를 받겠습니다.", new QuestRequirement("테스트 퀘스트", QuestStatus.AVAILABLE)),
+                new Decision("테스트 퀘스트 2를 받겠습니다.", new QuestRequirement("테스트 퀘스트 2", QuestStatus.AVAILABLE))
         ));
         return decisions;
     }
@@ -59,7 +60,10 @@ public class IndurionDL extends NpcDialogues {
                         new NormalLine("[General-2]로 돌아갑니다.")),
                 new NormalStage(NormalStage.ExecuteAfter.START_QUEST, "테스트 퀘스트",
                         new NormalLine("퀘스트를 받겠습니까?"),
-                        new NormalLine("아탈리온과 이야기하세요."))
+                        new NormalLine("아탈리온과 이야기하세요.")),
+                new NormalStage(NormalStage.ExecuteAfter.START_QUEST, "테스트 퀘스트 2",
+                        new NormalLine("퀘스트를 받겠습니까?"),
+                        new NormalLine("아탈리온 또는 옥토 카마로와 이야기하세요."))
                 );
         return normalLines;
     }

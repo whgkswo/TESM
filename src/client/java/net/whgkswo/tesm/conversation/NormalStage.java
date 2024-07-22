@@ -9,6 +9,7 @@ public class NormalStage{
     private List<NormalLine> contents;
     private ExecuteAfter executeAfter;
     private String executeTarget;
+    private String executeSubTarget;
     public NormalStage(ExecuteAfter executeAfter, NormalLine... contents) {
         this.executeAfter = executeAfter;
         this.contents = new ArrayList<>(Arrays.asList(contents));
@@ -16,6 +17,12 @@ public class NormalStage{
     public NormalStage(ExecuteAfter executeAfter, String executeTarget, NormalLine... contents) {
         this.executeAfter = executeAfter;
         this.executeTarget = executeTarget;
+        this.contents = new ArrayList<>(Arrays.asList(contents));
+    }
+    public NormalStage(ExecuteAfter executeAfter, String executeTarget,String executeSubTarget, NormalLine... contents) {
+        this.executeAfter = executeAfter;
+        this.executeTarget = executeTarget;
+        this.executeSubTarget = executeSubTarget;
         this.contents = new ArrayList<>(Arrays.asList(contents));
     }
 
@@ -35,6 +42,7 @@ public class NormalStage{
         SHOW_DECISIONS,
         JUMP_TO,
         START_QUEST,
+        ADVANCE_QUEST,
         COMPLETE_QUEST,
         CLOSE
     }

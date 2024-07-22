@@ -13,6 +13,7 @@ import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
 import net.whgkswo.tesm.conversation.quest.Quest;
 import net.whgkswo.tesm.conversation.quest.QuestStatus;
+import net.whgkswo.tesm.conversation.quest.objective.QuestObjective;
 import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.general.GlobalVariablesClient;
 import net.whgkswo.tesm.gui.RenderUtil;
@@ -21,13 +22,14 @@ import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static net.whgkswo.tesm.general.GlobalVariablesClient.*;
 
 @Environment(EnvType.CLIENT)
 public class ConversationScreen extends Screen {
     private static final int MAX_DISPLAY_DC = 4;
-    private List<Integer> colors = new ArrayList<>(List.of(0xffffff, 0xffffff, 0xffffff, 0xffffff));
+    private List<Integer> colors = new ArrayList<>();
     private static final float LINE_SCALE = 0.8f;
     private Entity partner;
     private String stage = "General";
@@ -111,20 +113,26 @@ public class ConversationScreen extends Screen {
         RenderUtil.renderText(RenderUtil.Alignment.CENTER,context, LINE_SCALE,content,
                 (int) (width/2/ LINE_SCALE),(int) (height*0.7/ LINE_SCALE),0xffffff);
     }
-    private void renderDecisions(DrawContext context){
-        currentDecisions = partnerDL.getDecisions().get(stage);
-        availableDecisions = getAvailableDecisions();
+    private int getEndIndexOfDisplayDecisions(){
+        /*currentDecisions = partnerDL.getDecisions().get(stage);
+        availableDecisions = getAvailableDecisions();*/
         int endIndex;
         if(availableDecisions.size() >= MAX_DISPLAY_DC){
             endIndex = decisionOffset + MAX_DISPLAY_DC;
         }else{ // 선택지가 4개 미만
             endIndex = availableDecisions.size();
         }
+        return endIndex;
+    }
+    private void renderDecisions(DrawContext context){
+        // 출력할 선택지 끝 번호 구하기
+        int endIndex = getEndIndexOfDisplayDecisions();
         // 가용한 선택지가 하나도 없으면 대화 종료
         if(endIndex == 0){
             close();
         }
         // 출력
+        /*resetColors();*/
         for(int i = decisionOffset; i< endIndex; i++){
             RenderUtil.renderText(RenderUtil.Alignment.LEFT,context, LINE_SCALE,availableDecisions.get(i).getDecision().getLine(),
                     (int)(width*0.15/ LINE_SCALE),
@@ -155,7 +163,8 @@ public class ConversationScreen extends Screen {
                 if(requiredQuest.getStatus() == requiredQuestStatus){
                     // 진행중인 퀘스트는 스테이지까지 검사
                     if(requiredQuestStatus == QuestStatus.ONGOING){
-                        if(!requiredQuest.getCurrentStage().equals(decision.getQuestRequirement().getStage())){
+                        String requiredStage = requiredQuest.getCurrentStage();
+                        if(!requiredStage.equals(decision.getQuestRequirement().getStage())){
                             continue;
                         }
                     }
@@ -172,15 +181,20 @@ public class ConversationScreen extends Screen {
             int areaNumber = mouseArea.getNumber();
             if(currentDecisions.getContents().size() >= areaNumber){
                 RenderUtil.renderTexture(context, DECISION_BACKGROUND, (int) (width*0.12), (int) (height*(0.775+0.04*(areaNumber-1))),220,(int) (height*0.04));
-                colors.set(areaNumber-1,0xAAA685);
+                colors.set(decisionOffset + areaNumber-1,0xAAA685);
             }
         }
     }
     private void resetColors(){
-        int amount = Math.min(MAX_DISPLAY_DC, currentDecisions.getContents().size());
+        /*int amount = Math.min(MAX_DISPLAY_DC, availableDecisions.size());
         for(int i = decisionOffset; i< decisionOffset + amount; i++){
             boolean isChosen = currentDecisions.getContents().get(i).isChosen();
             colors.set(i, isChosen ? 0x9b9b9b : 0xffffff);
+        }*/
+        colors.clear();
+        for(int i = 0; i< availableDecisions.size(); i++){
+            boolean isChosen = availableDecisions.get(i).getDecision().isChosen();
+            colors.add(isChosen ? 0x9b9b9b : 0xffffff);
         }
     }
     private boolean upArrowOn() {
@@ -227,18 +241,27 @@ public class ConversationScreen extends Screen {
                     switch (currentDialogues.getExecuteAfter()){
                         case SHOW_DECISIONS -> {
                             lastLine = currentDialogues.getContents().get(currentDialogues.getContents().size()-1).getLine();
-                            decisionMakingOn = true;
+                            showDecisions();
                         }
                         case JUMP_TO -> {
                             lastLine = currentDialogues.getContents().get(currentDialogues.getContents().size()-1).getLine();
                             setStage(currentDialogues.getExecuteTarget());
-                            decisionMakingOn = true;
+                            showDecisions();
                         }
                         case START_QUEST -> {
                             String questName = currentDialogues.getExecuteTarget();
                             Quest quest = Quest.QUESTS.get(questName);
                             quest.setStatus(QuestStatus.ONGOING);
                             GlobalVariables.player.sendMessage(Text.literal(String.format("시작: %s", questName)));
+                            resetStageAfterRecieveQuest();
+                        }
+                        case ADVANCE_QUEST -> {
+                            String questName = currentDialogues.getExecuteTarget();
+                            Quest quest = Quest.QUESTS.get(questName);
+
+                            Map<String, QuestObjective> objectives = quest.getObjectives();
+                            String nextStage = objectives.get(quest.getCurrentStage()).getNextStage();
+                            quest.setCurrentStage(nextStage);
                             resetStageAfterRecieveQuest();
                         }
                         case COMPLETE_QUEST -> {
@@ -269,6 +292,12 @@ public class ConversationScreen extends Screen {
             }
         }
         return super.mouseClicked(mouseX,mouseY,button);
+    }
+    private void showDecisions(){
+        decisionMakingOn = true;
+        currentDecisions = partnerDL.getDecisions().get(stage);
+        availableDecisions = getAvailableDecisions();
+        resetColors();
     }
     private void setStage(String stage){
         this.stage = stage;

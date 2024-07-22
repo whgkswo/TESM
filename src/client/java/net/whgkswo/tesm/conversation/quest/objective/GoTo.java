@@ -10,7 +10,7 @@ public class GoTo extends QuestObjective{
         super(description, dueDatetime, objectiveType, objectTarget);
     }
 
-    public GoTo(String description, ObjectiveType objectiveType, String objectTarget) {
+    /*public GoTo(String description, ObjectiveType objectiveType, String objectTarget) {
         super(description, objectiveType, objectTarget);
-    }
+    }*/
 }

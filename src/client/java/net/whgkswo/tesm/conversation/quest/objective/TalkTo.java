@@ -9,7 +9,7 @@ public class TalkTo extends QuestObjective{
         super(description, dueDatetime, objectiveType, objectTarget);
     }
 
-    public TalkTo(String description, ObjectiveType objectiveType, String objectTarget) {
+    /*public TalkTo(String description, ObjectiveType objectiveType, String objectTarget) {
         super(description, objectiveType, objectTarget);
-    }
+    }*/
 }

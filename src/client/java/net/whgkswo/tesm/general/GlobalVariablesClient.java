@@ -6,6 +6,7 @@ import net.minecraft.client.util.Window;
 import net.whgkswo.tesm.conversation.NpcDialogues;
 import net.whgkswo.tesm.conversation.dialogues.AthalionDL;
 import net.whgkswo.tesm.conversation.dialogues.IndurionDL;
+import net.whgkswo.tesm.conversation.dialogues.OktoKamarroDL;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +19,7 @@ public class GlobalVariablesClient {
     public static final Map<String, NpcDialogues> NPC_DIALOGUES = new HashMap<>(){{
         put("인두리온", new IndurionDL());
         put("아탈리온", new AthalionDL());
+        put("옥토-카마로", new OktoKamarroDL());
     }};
     public static int screenWidth = MinecraftClient.getInstance().getWindow().getWidth();
     public static int screenHeight = MinecraftClient.getInstance().getWindow().getHeight();
