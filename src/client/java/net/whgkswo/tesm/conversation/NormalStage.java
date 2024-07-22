@@ -1,20 +1,22 @@
 package net.whgkswo.tesm.conversation;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class NormalStage{
     private List<NormalLine> contents;
     private ExecuteAfter executeAfter;
     private String executeTarget;
-    public NormalStage(List<NormalLine> contents, ExecuteAfter executeAfter) {
-        this.contents = contents;
+    public NormalStage(ExecuteAfter executeAfter, NormalLine... contents) {
         this.executeAfter = executeAfter;
+        this.contents = new ArrayList<>(Arrays.asList(contents));
     }
-    public NormalStage(List<NormalLine> contents, ExecuteAfter executeAfter, String executeTarget) {
-        this.contents = contents;
+    public NormalStage(ExecuteAfter executeAfter, String executeTarget, NormalLine... contents) {
         this.executeAfter = executeAfter;
         this.executeTarget = executeTarget;
+        this.contents = new ArrayList<>(Arrays.asList(contents));
     }
 
     public List<NormalLine> getContents() {

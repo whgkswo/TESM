@@ -12,11 +12,10 @@ public class IndurionDL extends NpcDialogues {
     }
     public static void registerGeneralLines(HashMap<String, NormalStage> normalLines){
         normalLines.put("General",
-                new NormalStage(new ArrayList<>(Arrays.asList(
+                new NormalStage(NormalStage.ExecuteAfter.SHOW_DECISIONS,
                         new NormalLine("테스트 대사입니다."),
                         new NormalLine("테스트 대사입니다.(2)"),
-                        new NormalLine("테스트 대사입니다.(3)"))),
-                        NormalStage.ExecuteAfter.SHOW_DECISIONS));
+                        new NormalLine("테스트 대사입니다.(3)")));
     }
     public static HashMap<String, NormalStage> registerNormalLines(){
         HashMap<String, NormalStage> normalLines = new HashMap<>();
@@ -24,35 +23,26 @@ public class IndurionDL extends NpcDialogues {
         registerGeneralLines(normalLines);
         // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 선택지에 따른 후속 대사 등록ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
         registerDecisionLines(normalLines,"General",
-                new NormalStage(new ArrayList<>(Arrays.asList(
+                new NormalStage(NormalStage.ExecuteAfter.JUMP_TO, "General",
                         new NormalLine("1번 선택지를 골랐습니다."),
-                        new NormalLine("[General]로 돌아갑니다."))),
-                        NormalStage.ExecuteAfter.JUMP_TO,
-                        "General"),
-                new NormalStage(new ArrayList<>(Arrays.asList(
+                        new NormalLine("[General]로 돌아갑니다.")),
+                new NormalStage(NormalStage.ExecuteAfter.SHOW_DECISIONS,
                         new NormalLine("2번 선택지를 골랐습니다."),
-                        new NormalLine("추가 선택지를 출력합니다."))),
-                        NormalStage.ExecuteAfter.SHOW_DECISIONS),
-                new NormalStage(new ArrayList<>(Arrays.asList(
+                        new NormalLine("추가 선택지를 출력합니다.")),
+                new NormalStage(NormalStage.ExecuteAfter.EXIT,
                         new NormalLine("3번 선택지를 골랐습니다."),
-                        new NormalLine("대화를 종료합니다."))),
-                        NormalStage.ExecuteAfter.EXIT)
+                        new NormalLine("대화를 종료합니다."))
                 );
         registerDecisionLines(normalLines, "General-2",
-                new NormalStage(new ArrayList<>(Arrays.asList(
+                new NormalStage(NormalStage.ExecuteAfter.JUMP_TO, "General-2",
                         new NormalLine("저는 인두리온입니다.", true),
-                        new NormalLine("저기 밑 부둣가 행정 사무소가 제 직장이죠.")
-                )), NormalStage.ExecuteAfter.JUMP_TO, "General-2"),
-                new NormalStage(new ArrayList<>(Arrays.asList(
+                        new NormalLine("저기 밑 부둣가 행정 사무소가 제 직장이죠.")),
+                new NormalStage(NormalStage.ExecuteAfter.JUMP_TO, "General",
                         new NormalLine("2번 선택지를 골랐습니다."),
-                        new NormalLine("[General]로 돌아갑니다."))),
-                        NormalStage.ExecuteAfter.JUMP_TO,
-                        "General"),
-                new NormalStage(new ArrayList<>(Arrays.asList(
+                        new NormalLine("[General]로 돌아갑니다.")),
+                new NormalStage(NormalStage.ExecuteAfter.JUMP_TO, "General-2",
                         new NormalLine("3번 선택지를 골랐습니다."),
-                        new NormalLine("[General-2]로 돌아갑니다."))),
-                        NormalStage.ExecuteAfter.JUMP_TO,
-                        "General-2")
+                        new NormalLine("[General-2]로 돌아갑니다."))
                 );
         return normalLines;
     }
