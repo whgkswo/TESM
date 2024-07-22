@@ -11,6 +11,8 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
+import net.whgkswo.tesm.conversation.quest.Quest;
+import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.general.GlobalVariablesClient;
 import net.whgkswo.tesm.gui.RenderUtil;
 import net.whgkswo.tesm.networking.ModMessages;
@@ -201,7 +203,25 @@ public class ConversationScreen extends Screen {
                             setStage(currentDialogues.getExecuteTarget());
                             decisionMakingOn = true;
                         }
-                        case EXIT -> {
+                        case START_QUEST -> {
+                            String questName = currentDialogues.getExecuteTarget();
+                            Quest quest = Quest.availableQuest.get(questName);
+                            Quest.onGoingQuest.put(questName, quest);
+                            Quest.availableQuest.remove(questName);
+                            GlobalVariables.player.sendMessage(Text.literal(String.format("시작: %s", questName)));
+                            resetStageAfterRecieveQuest();
+                            //close();
+                        }
+                        case COMPLETE_QUEST -> {
+                            String questName = currentDialogues.getExecuteTarget();
+                            Quest quest = Quest.onGoingQuest.get(questName);
+                            Quest.completedQuest.put(questName, quest);
+                            Quest.onGoingQuest.remove(questName);
+                            GlobalVariables.player.sendMessage(Text.literal(String.format("완료: %s", questName)));
+                            resetStageAfterRecieveQuest();
+                            //close();
+                        }
+                        case CLOSE -> {
                             close();
                         }
                         default -> {
@@ -226,6 +246,11 @@ public class ConversationScreen extends Screen {
     private void setStage(String stage){
         this.stage = stage;
         currentLineIndex = 0;
+    }
+    private void resetStageAfterRecieveQuest(){
+        lastLine = currentDialogues.getContents().get(currentDialogues.getContents().size()-1).getLine();
+        setStage(stage.substring(0, stage.length() - 2));
+        decisionMakingOn = true;
     }
     private void revealPartnerName(){
         partnerDisplayName = convPartnerName;

@@ -35,6 +35,7 @@ public class NormalStage{
         SHOW_DECISIONS,
         JUMP_TO,
         START_QUEST,
-        EXIT
+        COMPLETE_QUEST,
+        CLOSE
     }
 }

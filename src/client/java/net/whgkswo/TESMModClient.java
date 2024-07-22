@@ -6,6 +6,7 @@ import net.minecraft.client.color.world.BiomeColors;
 import net.minecraft.util.math.BlockPos;
 import net.whgkswo.tesm.TestClassClient;
 import net.whgkswo.tesm.conversation.ConversationStart;
+import net.whgkswo.tesm.conversation.quest.Quest;
 import net.whgkswo.tesm.events.UseBlockEvent;
 import net.whgkswo.tesm.general.OnClientTicks;
 import net.whgkswo.tesm.gui.overlay.Compass;
@@ -78,8 +79,8 @@ public class TESMModClient implements ClientModInitializer {
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 키바인딩 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 		KeyInputHandler.register();
 
-		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ NPC 대사 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-		/*NpcDialogues.npcDialoues();*/
+		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 퀘스트 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+		Quest.registerQuests();
 
 		TestClassClient.testClassClient(); // 테스트용!
 	}
