@@ -28,7 +28,7 @@ public class ModMessagesClient {
             GetNbtByConversationResponseHandler.handle(responseBuf);
         });
         ClientPlayNetworking.registerGlobalReceiver(RESET_QUESTS, ((client, handler, buf, responseSender) -> {
-            ResetQuestsHandler.handle(buf);
+            ResetQuestsHandler.handle();
         }));
     }
 }
