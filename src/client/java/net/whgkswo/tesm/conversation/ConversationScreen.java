@@ -42,6 +42,7 @@ public class ConversationScreen extends Screen {
     private NormalStage currentDialogues;
     private DecisionStage currentDecisions;
     private List<AvailableDecision> availableDecisions;
+    private Decision selectedDecision;
     private static final Identifier ARROW_UP = new Identifier(TESMMod.MODID, "textures/gui/uparrow.png");
     private static final Identifier ARROW_DOWN = new Identifier(TESMMod.MODID, "textures/gui/downarrow.png");
     private final Identifier DECISION_BACKGROUND = new Identifier(TESMMod.MODID, "textures/gui/decision.png");
@@ -87,7 +88,7 @@ public class ConversationScreen extends Screen {
             }
             // S키 (리스트 내리기)
         } else if (keyCode == GLFW.GLFW_KEY_S) {
-            if (decisionOffset < currentDecisions.getContents().size()-MAX_DISPLAY_DC){
+            if (decisionOffset < availableDecisions.size()-MAX_DISPLAY_DC){
                 decisionOffset++;
             }
         }
@@ -114,8 +115,6 @@ public class ConversationScreen extends Screen {
                 (int) (width/2/ LINE_SCALE),(int) (height*0.7/ LINE_SCALE),0xffffff);
     }
     private int getEndIndexOfDisplayDecisions(){
-        /*currentDecisions = partnerDL.getDecisions().get(stage);
-        availableDecisions = getAvailableDecisions();*/
         int endIndex;
         if(availableDecisions.size() >= MAX_DISPLAY_DC){
             endIndex = decisionOffset + MAX_DISPLAY_DC;
@@ -132,7 +131,6 @@ public class ConversationScreen extends Screen {
             close();
         }
         // 출력
-        /*resetColors();*/
         for(int i = decisionOffset; i< endIndex; i++){
             RenderUtil.renderText(RenderUtil.Alignment.LEFT,context, LINE_SCALE,availableDecisions.get(i).getDecision().getLine(),
                     (int)(width*0.15/ LINE_SCALE),
@@ -143,7 +141,7 @@ public class ConversationScreen extends Screen {
         if (upArrowOn()){
             context.drawTexture(ARROW_UP, (int)(width*0.2), (int)(height*(0.745-0.01*(arrowState?1:0))), 0, 0, height/24,height/48,height/24,height/48);
         }
-        if (downArrowOn(currentDecisions.getContents().size())) {
+        if (downArrowOn(availableDecisions.size())) {
             context.drawTexture(ARROW_DOWN, (int)(width*0.2), (int)(height*(0.94+0.01*(arrowState?1:0)+1/48)), 0, 0, height/24,height/48,height/24,height/48);
         }
     }
@@ -186,11 +184,6 @@ public class ConversationScreen extends Screen {
         }
     }
     private void resetColors(){
-        /*int amount = Math.min(MAX_DISPLAY_DC, availableDecisions.size());
-        for(int i = decisionOffset; i< decisionOffset + amount; i++){
-            boolean isChosen = currentDecisions.getContents().get(i).isChosen();
-            colors.set(i, isChosen ? 0x9b9b9b : 0xffffff);
-        }*/
         colors.clear();
         for(int i = 0; i< availableDecisions.size(); i++){
             boolean isChosen = availableDecisions.get(i).getDecision().isChosen();
@@ -260,7 +253,7 @@ public class ConversationScreen extends Screen {
                             Quest quest = Quest.QUESTS.get(questName);
 
                             Map<String, QuestObjective> objectives = quest.getObjectives();
-                            String nextStage = objectives.get(quest.getCurrentStage()).getNextStage();
+                            String nextStage = objectives.get(selectedDecision.getQuestObjectId()).getNextStage();
                             quest.setCurrentStage(nextStage);
                             resetStageAfterRecieveQuest();
                         }
@@ -282,12 +275,14 @@ public class ConversationScreen extends Screen {
             }else{ // 선택지 클릭
                 MouseArea mouseArea = getMouseArea(mouseY);
                 if(mouseArea != MouseArea.REST_AREA){
-                    int selectedDC = mouseArea.getNumber();
+                    int selectedDC = mouseArea.getNumber() + decisionOffset - 1;
+                    selectedDC = availableDecisions.get(selectedDC).getIndex();
                     decisionMakingOn = false;
                     // 선택지 선택 표시
-                    currentDecisions.getContents().get(selectedDC-1).setChosen(true);
+                    selectedDecision = currentDecisions.getContents().get(selectedDC);
+                    selectedDecision.setChosen(true);
                     // 클릭한 선택지에 해당하는 대사 출력 준비
-                    setStage(stage + "-" + selectedDC);
+                    setStage(stage + "-" + (selectedDC + 1));
                 }
             }
         }
@@ -297,6 +292,9 @@ public class ConversationScreen extends Screen {
         decisionMakingOn = true;
         currentDecisions = partnerDL.getDecisions().get(stage);
         availableDecisions = getAvailableDecisions();
+        if(decisionOffset > availableDecisions.size() - Math.min(MAX_DISPLAY_DC, availableDecisions.size())){
+            decisionOffset --;
+        }
         resetColors();
     }
     private void setStage(String stage){
@@ -306,7 +304,7 @@ public class ConversationScreen extends Screen {
     private void resetStageAfterRecieveQuest(){
         lastLine = currentDialogues.getContents().get(currentDialogues.getContents().size()-1).getLine();
         setStage(stage.substring(0, stage.length() - 2));
-        decisionMakingOn = true;
+        showDecisions();
     }
     private void revealPartnerName(){
         partnerDisplayName = convPartnerName;

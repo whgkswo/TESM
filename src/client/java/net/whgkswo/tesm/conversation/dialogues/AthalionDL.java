@@ -21,7 +21,7 @@ public class AthalionDL extends NpcDialogues {
         decisions.put("General", new DecisionStage(
                 new Decision("[테스트 퀘스트] 인두리온이 보내서 왔습니다.",
                         new QuestRequirement("테스트 퀘스트", QuestStatus.ONGOING, "1")),
-                new Decision("[테스트 퀘스트 2] 인두리온이 보내서 왔습니다.",
+                new Decision("[테스트 퀘스트 2] 인두리온이 보내서 왔습니다.","1:1",
                         new QuestRequirement("테스트 퀘스트 2", QuestStatus.ONGOING, "1"))
         ));
         return decisions;
@@ -33,7 +33,10 @@ public class AthalionDL extends NpcDialogues {
         // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 선택지에 따른 후속 대사 등록ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
         registerDecisionLines(normalLines,"General",
                 new NormalStage(NormalStage.ExecuteAfter.COMPLETE_QUEST, "테스트 퀘스트",
-                        new NormalLine("인두리온이 말한 사람이 당신이었군요."),
+                        new NormalLine("[테스트 퀘스트] 인두리온이 말한 사람이 당신이었군요."),
+                        new NormalLine("여기 보수입니다.")),
+                new NormalStage(NormalStage.ExecuteAfter.ADVANCE_QUEST, "테스트 퀘스트 2", "2",
+                        new NormalLine("[테스트 퀘스트 2] 인두리온이 말한 사람이 당신이었군요."),
                         new NormalLine("여기 보수입니다."))
         );
         return normalLines;

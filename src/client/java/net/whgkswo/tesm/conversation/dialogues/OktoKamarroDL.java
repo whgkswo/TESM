@@ -19,7 +19,7 @@ public class OktoKamarroDL extends NpcDialogues {
     public static HashMap<String, DecisionStage> registerDecisions(){
         HashMap<String, DecisionStage> decisions = new HashMap<>();
         decisions.put("General", new DecisionStage(
-                new Decision("[테스트 퀘스트 2] 인두리온이 보내서 왔습니다.",
+                new Decision("[테스트 퀘스트 2] 인두리온이 보내서 왔습니다.","1:2",
                         new QuestRequirement("테스트 퀘스트 2", QuestStatus.ONGOING, "1"))
         ));
         return decisions;

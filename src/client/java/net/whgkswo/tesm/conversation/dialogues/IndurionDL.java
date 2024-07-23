@@ -21,7 +21,8 @@ public class IndurionDL extends NpcDialogues {
         decisions.put("General", new DecisionStage(
                 new Decision("(반복)"),
                 new Decision("계속 말해보시오"),
-                new Decision("그럼 이만")
+                new Decision("그럼 이만"),
+                new Decision("이야기하고 왔습니다.", new QuestRequirement("테스트 퀘스트 2", QuestStatus.ONGOING, "2"))
         ));
         decisions.put("General-2", new DecisionStage(
                 new Decision("당신에 대해 말해주시오"),
@@ -46,8 +47,11 @@ public class IndurionDL extends NpcDialogues {
                         new NormalLine("추가 선택지를 출력합니다.")),
                 new NormalStage(NormalStage.ExecuteAfter.CLOSE,
                         new NormalLine("3번 선택지를 골랐습니다."),
-                        new NormalLine("대화를 종료합니다."))
-                );
+                        new NormalLine("대화를 종료합니다.")),
+                new NormalStage(NormalStage.ExecuteAfter.COMPLETE_QUEST,"테스트 퀘스트 2",
+                        new NormalLine("오셨군요!"),
+                        new NormalLine("여기 보수입니다.")
+                ));
         registerDecisionLines(normalLines, "General-2",
                 new NormalStage(NormalStage.ExecuteAfter.JUMP_TO, "General-2",
                         new NormalLine("저는 인두리온입니다.", true),
