@@ -223,70 +223,79 @@ public class ConversationScreen extends Screen {
         if(button == GLFW.GLFW_MOUSE_BUTTON_LEFT){
             if(!decisionMakingOn){ // 일반 대사 넘기기
                 if(currentLineIndex < currentDialogues.getContents().size()-1){
-                    // 이름을 밝히는 라인일 경우
-                    if(currentDialogues.getContents().get(currentLineIndex).isRevealName()){
-                        if(partnerDisplayName.equals(convPartnerTempName)){
-                            revealPartnerName();
-                        }
-                    }
-                    currentLineIndex++;
+                    getNextLine();
                 }else{ // 현재 스테이지를 종료하며
-                    switch (currentDialogues.getExecuteAfter()){
-                        case SHOW_DECISIONS -> {
-                            lastLine = currentDialogues.getContents().get(currentDialogues.getContents().size()-1).getLine();
-                            showDecisions();
-                        }
-                        case JUMP_TO -> {
-                            lastLine = currentDialogues.getContents().get(currentDialogues.getContents().size()-1).getLine();
-                            setStage(currentDialogues.getExecuteTarget());
-                            showDecisions();
-                        }
-                        case START_QUEST -> {
-                            String questName = currentDialogues.getExecuteTarget();
-                            Quest quest = Quest.QUESTS.get(questName);
-                            quest.setStatus(QuestStatus.ONGOING);
-                            GlobalVariables.player.sendMessage(Text.literal(String.format("시작: %s", questName)));
-                            resetStageAfterRecieveQuest();
-                        }
-                        case ADVANCE_QUEST -> {
-                            String questName = currentDialogues.getExecuteTarget();
-                            Quest quest = Quest.QUESTS.get(questName);
-
-                            Map<String, QuestObjective> objectives = quest.getObjectives();
-                            String nextStage = objectives.get(selectedDecision.getQuestObjectId()).getNextStage();
-                            quest.setCurrentStage(nextStage);
-                            resetStageAfterRecieveQuest();
-                        }
-                        case COMPLETE_QUEST -> {
-                            String questName = currentDialogues.getExecuteTarget();
-                            Quest quest = Quest.QUESTS.get(questName);
-                            quest.setStatus(QuestStatus.COMPLETED);
-                            GlobalVariables.player.sendMessage(Text.literal(String.format("완료: %s", questName)));
-                            resetStageAfterRecieveQuest();
-                        }
-                        case CLOSE -> {
-                            close();
-                        }
-                        default -> {
-                            close();
-                        }
-                    }
+                    executeAfter();
                 }
             }else{ // 선택지 클릭
-                MouseArea mouseArea = getMouseArea(mouseY);
-                if(mouseArea != MouseArea.REST_AREA){
-                    int selectedDC = mouseArea.getNumber() + decisionOffset - 1;
-                    selectedDC = availableDecisions.get(selectedDC).getIndex();
-                    decisionMakingOn = false;
-                    // 선택지 선택 표시
-                    selectedDecision = currentDecisions.getContents().get(selectedDC);
-                    selectedDecision.setChosen(true);
-                    // 클릭한 선택지에 해당하는 대사 출력 준비
-                    setStage(stage + "-" + (selectedDC + 1));
-                }
+                onClickDecision(mouseY);
             }
         }
         return super.mouseClicked(mouseX,mouseY,button);
+    }
+    private void getNextLine(){
+        // 이름을 밝히는 라인일 경우
+        if(currentDialogues.getContents().get(currentLineIndex).isRevealName()){
+            if(partnerDisplayName.equals(convPartnerTempName)){
+                revealPartnerName();
+            }
+        }
+        currentLineIndex++;
+    }
+    private void executeAfter(){
+        switch (currentDialogues.getExecuteAfter()){
+            case SHOW_DECISIONS -> {
+                lastLine = currentDialogues.getContents().get(currentDialogues.getContents().size()-1).getLine();
+                showDecisions();
+            }
+            case JUMP_TO -> {
+                lastLine = currentDialogues.getContents().get(currentDialogues.getContents().size()-1).getLine();
+                setStage(currentDialogues.getExecuteTarget());
+                showDecisions();
+            }
+            case START_QUEST -> {
+                String questName = currentDialogues.getExecuteTarget();
+                Quest quest = Quest.QUESTS.get(questName);
+                quest.setStatus(QuestStatus.ONGOING);
+                GlobalVariables.player.sendMessage(Text.literal(String.format("시작: %s", questName)));
+                resetStageAfterRecieveQuest();
+            }
+            case ADVANCE_QUEST -> {
+                String questName = currentDialogues.getExecuteTarget();
+                Quest quest = Quest.QUESTS.get(questName);
+
+                Map<String, QuestObjective> objectives = quest.getObjectives();
+                String nextStage = objectives.get(selectedDecision.getQuestObjectId()).getNextStage();
+                quest.setCurrentStage(nextStage);
+                resetStageAfterRecieveQuest();
+            }
+            case COMPLETE_QUEST -> {
+                String questName = currentDialogues.getExecuteTarget();
+                Quest quest = Quest.QUESTS.get(questName);
+                quest.setStatus(QuestStatus.COMPLETED);
+                GlobalVariables.player.sendMessage(Text.literal(String.format("완료: %s", questName)));
+                resetStageAfterRecieveQuest();
+            }
+            case CLOSE -> {
+                close();
+            }
+            default -> {
+                close();
+            }
+        }
+    }
+    private void onClickDecision(double mouseY){
+        MouseArea mouseArea = getMouseArea(mouseY);
+        if(mouseArea != MouseArea.REST_AREA){
+            int selectedDC = mouseArea.getNumber() + decisionOffset - 1;
+            selectedDC = availableDecisions.get(selectedDC).getIndex();
+            decisionMakingOn = false;
+            // 선택지 선택 표시
+            selectedDecision = currentDecisions.getContents().get(selectedDC);
+            selectedDecision.setChosen(true);
+            // 클릭한 선택지에 해당하는 대사 출력 준비
+            setStage(stage + "-" + (selectedDC + 1));
+        }
     }
     private void showDecisions(){
         decisionMakingOn = true;
