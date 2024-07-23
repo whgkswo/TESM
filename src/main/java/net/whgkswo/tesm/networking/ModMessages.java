@@ -17,6 +17,7 @@ public class ModMessages{
     public static final Identifier USE_BLOCK_ID = new Identifier(TESMMod.MODID, "use_block");
     public static final Identifier CHUNK_UPDATE_ID = new Identifier(TESMMod.MODID, "chunk_update");
     public static final Identifier UPDATE_NBT = new Identifier(TESMMod.MODID, "update_nbt");
+    public static final Identifier RESET_QUESTS = new Identifier(TESMMod.MODID, "reset_quests");
 
     // ID와 패킷 쌍 등록
     public static void registerC2SPackets(){
