@@ -1,18 +1,18 @@
 package net.whgkswo.tesm.gui.screen;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
-import net.whgkswo.tesm.general.GlobalVariablesClient;
 import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.networking.ModMessages;
-import net.whgkswo.tesm.npcs.quests.Quests;
 import org.lwjgl.glfw.GLFW;
 
 public class MenuScreen extends Screen {
@@ -23,7 +23,7 @@ public class MenuScreen extends Screen {
 
     @Override
     public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
-        RenderingHelper.renderTexture(context, MENU_BACKGROUND, 0.1,0.1,0.8,0.8);
+        /*RenderingHelper.renderTexture(context, MENU_BACKGROUND, 0.1,0.1,0.8,0.8);*/
     }
     @Override
     public boolean shouldPause() {
@@ -55,8 +55,5 @@ public class MenuScreen extends Screen {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta){
         super.render(context,mouseX,mouseY,delta);
-        context.drawHorizontalLine(0,1000,100,0xffffff);
-        context.drawHorizontalLine(RenderLayer.getGui(), 0,1000,200,0xffffff);
-        RenderingHelper.renderHorizontalLine(context, 0.0, 0.9, 0.2, 0xffffff);
     }
 }
