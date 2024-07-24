@@ -33,5 +33,6 @@ public class MenuScreen extends CustomScreen {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta){
         super.render(context,mouseX,mouseY,delta);
+        RenderingHelper.renderBlankedBox(context, BASE_AAA685, 0.25, 0.25, 0.5, 0.5, 1);
     }
 }

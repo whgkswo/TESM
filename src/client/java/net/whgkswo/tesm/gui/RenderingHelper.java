@@ -39,18 +39,45 @@ public class RenderingHelper {
         }
         context.getMatrices().pop();
     }
-    public static void renderTexture(DrawContext context, Identifier textureId, double xRatio, double yRatio,
+    public static void renderTexture(DrawContext context, Identifier texture, double xRatio, double yRatio,
                                      double widthRatio, double heightRatio){
         int screenWidth = context.getScaledWindowWidth();
         int screenHeight = context.getScaledWindowHeight();
         RenderSystem.enableBlend();
-        context.drawTexture(textureId, (int)(screenWidth * xRatio), (int)(screenHeight * yRatio),0,0,
+        context.drawTexture(texture, (int)(screenWidth * xRatio), (int)(screenHeight * yRatio),0,0,
                 (int)(screenWidth * widthRatio), (int)(screenHeight * heightRatio), (int)(screenWidth * widthRatio), (int)(screenHeight * heightRatio));
     }
-    public static void renderHorizontalLine(DrawContext context, double x1Ratio, double x2Ratio, double yRatio, int color){
+    /*public static void renderBlankedBox(DrawContext context, )*/
+    public static void renderFilledBox(DrawContext context, Identifier texture, double xRatio, double yRatio, double widthRatio, double heightRatio){
         int screenWidth = context.getScaledWindowWidth();
         int screenHeight = context.getScaledWindowHeight();
-        context.drawHorizontalLine((int)(screenWidth * x1Ratio), (int)(screenWidth * x2Ratio), (int)(screenHeight * yRatio), color);
+        context.drawTexture(texture, (int)(screenWidth * xRatio), (int)(screenHeight * yRatio), 0,0,(int)(screenWidth * widthRatio), (int)(screenHeight * heightRatio));
+    }
+    public static void renderHorizontalLine(DrawContext context, Identifier texture, double xRatio, double yRatio, double widthRatio, int thickness){
+        int screenWidth = context.getScaledWindowWidth();
+        int screenHeight = context.getScaledWindowHeight();
+        context.drawTexture(texture, (int)(screenWidth * xRatio), (int)(screenHeight * yRatio), 0,0,(int)(screenWidth * widthRatio), thickness);
+    }
+    public static void renderHorizontalLine(DrawContext context, Identifier texture, double xRatio, double yRatio, double widthRatio, int thickness, int yOffset){
+        int screenWidth = context.getScaledWindowWidth();
+        int screenHeight = context.getScaledWindowHeight();
+        context.drawTexture(texture, (int)(screenWidth * xRatio), (int)(screenHeight * yRatio) + yOffset, 0,0,(int)(screenWidth * widthRatio), thickness);
+    }
+    public static void renderVerticalLine(DrawContext context, Identifier texture, double xRatio, double yRatio, int thickness, double heightRatio){
+        int screenWidth = context.getScaledWindowWidth();
+        int screenHeight = context.getScaledWindowHeight();
+        context.drawTexture(texture, (int)(screenWidth * xRatio), (int)(screenHeight * yRatio), 0,0, thickness,(int)(screenHeight * heightRatio));
+    }
+    public static void renderVerticalLine(DrawContext context, Identifier texture, double xRatio, double yRatio, int thickness, double heightRatio, int xOffset){
+        int screenWidth = context.getScaledWindowWidth();
+        int screenHeight = context.getScaledWindowHeight();
+        context.drawTexture(texture, (int)(screenWidth * xRatio) + xOffset, (int)(screenHeight * yRatio), 0,0, thickness,(int)(screenHeight * heightRatio));
+    }
+    public static void renderBlankedBox(DrawContext context, Identifier texture, double xRatio, double yRatio, double widthRatio, double heightRatio, int thickness){
+        renderHorizontalLine(context, texture, xRatio, yRatio, widthRatio, thickness);
+        renderHorizontalLine(context, texture ,xRatio,yRatio + heightRatio, widthRatio, thickness, -thickness);
+        renderVerticalLine(context, texture, xRatio, yRatio, thickness, heightRatio);
+        renderVerticalLine(context, texture, xRatio + widthRatio, yRatio, thickness, heightRatio, -thickness);
     }
     public static int getXPos(DrawContext context, double positionRatio, float scale){
         return (int)(context.getScaledWindowWidth() * positionRatio / scale);
