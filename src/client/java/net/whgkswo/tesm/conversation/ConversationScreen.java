@@ -17,6 +17,8 @@ import net.whgkswo.tesm.conversation.quest.objective.QuestObjective;
 import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.general.GlobalVariablesClient;
 import net.whgkswo.tesm.gui.RenderingHelper;
+import net.whgkswo.tesm.gui.screen.templete.CustomScreen;
+import net.whgkswo.tesm.gui.screen.templete.CustomScreenWithoutFreeze;
 import net.whgkswo.tesm.networking.ModMessages;
 import org.lwjgl.glfw.GLFW;
 
@@ -27,7 +29,7 @@ import java.util.Map;
 import static net.whgkswo.tesm.general.GlobalVariablesClient.*;
 
 @Environment(EnvType.CLIENT)
-public class ConversationScreen extends Screen {
+public class ConversationScreen extends CustomScreenWithoutFreeze {
     private static final int MAX_DISPLAY_DC = 4;
     private List<Integer> colors = new ArrayList<>();
     private static final float LINE_SCALE = 0.8f;
@@ -47,7 +49,7 @@ public class ConversationScreen extends Screen {
     private static final Identifier ARROW_DOWN = new Identifier(TESMMod.MODID, "textures/gui/downarrow.png");
     private final Identifier DECISION_BACKGROUND = new Identifier(TESMMod.MODID, "textures/gui/decision.png");
     public ConversationScreen(Entity partner){
-        super(Text.literal("대화 시스템 GUI"));
+        super();
         this.partner = partner;
     }
     @Override
@@ -58,7 +60,8 @@ public class ConversationScreen extends Screen {
         return false;
     }
     @Override
-    protected void init(){
+    public void init(){
+        super.init();
         partnerDisplayName = convPartnerTempName.isEmpty() ? convPartnerName : convPartnerTempName;
         partnerDL = GlobalVariablesClient.NPC_DIALOGUES.get(convPartnerName);
     }
@@ -93,14 +96,6 @@ public class ConversationScreen extends Screen {
             }
         }
         return super.keyPressed(keyCode, scanCode, modifiers);
-    }
-    @Override
-    public void close(){
-        // 대화 상대 움직임 제한 해제 (서버에 패킷 전송)
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeInt(partner.getId());
-        ClientPlayNetworking.send(ModMessages.UNFREEZE_ENTITY_ID,buf);
-        super.close();
     }
     private void renderPartnerName(DrawContext context){
         final float nameScale = 1.5f;

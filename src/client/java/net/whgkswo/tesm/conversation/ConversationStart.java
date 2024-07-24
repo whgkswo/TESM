@@ -56,10 +56,6 @@ public class ConversationStart {
         });
     }
     public static void conversationStart(Entity player, MinecraftClient client){
-        // 대화 상대 움직임 제한 (서버에 패킷 전송)
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeInt(convPartner.getId());
-        ClientPlayNetworking.send(ModMessages.FREEZE_ENTITY_ID, buf);
         // 플레이어 시선 방향 조정
         player.setYaw(getYawAndPitch(convPartner.getPos(),player.getPos())[0]);
         player.setPitch(getYawAndPitch(convPartner.getPos(),player.getPos())[1]);
