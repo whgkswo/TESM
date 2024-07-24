@@ -21,6 +21,4 @@ public class GlobalVariablesClient {
         put("아탈리온", new AthalionDL());
         put("옥토-카마로", new OktoKamarroDL());
     }};
-    public static int screenWidth = MinecraftClient.getInstance().getWindow().getWidth();
-    public static int screenHeight = MinecraftClient.getInstance().getWindow().getHeight();
 }

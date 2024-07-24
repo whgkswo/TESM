@@ -13,10 +13,6 @@ public class OnClientTicks {
                 arrowState = !arrowState;
                 arrowCounter = 0;
             }
-
-            // 화면 사이즈 업데이트
-            GlobalVariablesClient.screenWidth = client.getWindow().getScaledWidth();
-            GlobalVariablesClient.screenHeight = client.getWindow().getScaledHeight();
         });
     }
 }

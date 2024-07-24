@@ -3,14 +3,10 @@ package net.whgkswo.tesm.gui.overlay;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
-import net.whgkswo.tesm.calendar.Time;
-import net.whgkswo.tesm.general.GlobalVariables;
-import net.whgkswo.tesm.gui.RenderUtil;
 
 import static net.whgkswo.tesm.general.OnServerTicks.*;
 

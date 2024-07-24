@@ -5,9 +5,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
-import net.whgkswo.tesm.general.GlobalVariablesClient;
 
-public class RenderUtil {
+public class RenderingHelper {
     public static final TextRenderer TEXT_RENDERER = MinecraftClient.getInstance().textRenderer;
     public static void renderText(Alignment alignment, DrawContext context, float scale, String str,
                                   int x, int y, int color){
@@ -22,8 +21,8 @@ public class RenderUtil {
     }
     public static void renderText(Alignment alignment, DrawContext context, float scale, String str,
                                   double xRatio, double yRatio, int color){
-        int xPos = getXPos(xRatio, scale);
-        int yPos = getYPos(yRatio, scale);
+        int xPos = getXPos(context, xRatio, scale);
+        int yPos = getYPos(context, yRatio, scale);
         context.getMatrices().push();
         context.getMatrices().scale(scale,scale,1);
         switch (alignment){
@@ -40,15 +39,24 @@ public class RenderUtil {
         }
         context.getMatrices().pop();
     }
-    public static void renderTexture(DrawContext context, Identifier id, int x, int y, int width, int height){
+    public static void renderTexture(DrawContext context, Identifier textureId, double xRatio, double yRatio,
+                                     double widthRatio, double heightRatio){
+        int screenWidth = context.getScaledWindowWidth();
+        int screenHeight = context.getScaledWindowHeight();
         RenderSystem.enableBlend();
-        context.drawTexture(id, x, y,0,0, width, height, width, height);
+        context.drawTexture(textureId, (int)(screenWidth * xRatio), (int)(screenHeight * yRatio),0,0,
+                (int)(screenWidth * widthRatio), (int)(screenHeight * heightRatio), (int)(screenWidth * widthRatio), (int)(screenHeight * heightRatio));
     }
-    public static int getXPos(double positionRatio, float scale){
-        return (int)(GlobalVariablesClient.screenWidth * positionRatio / scale);
+    public static void renderHorizontalLine(DrawContext context, double x1Ratio, double x2Ratio, double yRatio, int color){
+        int screenWidth = context.getScaledWindowWidth();
+        int screenHeight = context.getScaledWindowHeight();
+        context.drawHorizontalLine((int)(screenWidth * x1Ratio), (int)(screenWidth * x2Ratio), (int)(screenHeight * yRatio), color);
     }
-    public static int getYPos(double positionRatio, float scale){
-        return (int)(GlobalVariablesClient.screenHeight * positionRatio / scale);
+    public static int getXPos(DrawContext context, double positionRatio, float scale){
+        return (int)(context.getScaledWindowWidth() * positionRatio / scale);
+    }
+    public static int getYPos(DrawContext context, double positionRatio, float scale){
+        return (int)(context.getScaledWindowHeight() * positionRatio / scale);
     }
     public enum Alignment{
         LEFT,
