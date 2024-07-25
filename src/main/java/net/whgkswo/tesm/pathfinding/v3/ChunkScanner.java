@@ -53,13 +53,12 @@ public class ChunkScanner {
     public ChunkScanner(ScanMethod method){
         this.method = method;
         startTime = System.currentTimeMillis();
-        scan();
     }
     public ChunkScanner(ScanMethod method, ChunkPos refChunkPos, int chunkRadius){
         this.method = method;
         this.refChunkPos = refChunkPos;
         this.chunkRadius = chunkRadius;
-        scan();
+        startTime = System.currentTimeMillis();
     }
     public void scan(){
         if(method == ScanMethod.UPDATE){
@@ -82,16 +81,17 @@ public class ChunkScanner {
             return;
         }
         // 청크 리스트 순회하며 스캔
-        int i = 1;
+        int i = 1;  int totalScannedBlock = 0;
         for(ChunkPos chunkPos : targetChunkList){
-            scanChunk(chunkPos, i, targetChunkList.size());
+            totalScannedBlock += scanChunk(chunkPos, i, targetChunkList.size());
             // 업데이트 필요 청크 목록에 해당하는 청크였다면 목록에서 삭제
             updatedChunkSet.remove(new ChunkPosDto(chunkPos));
             i++;
+
         }
         long finishedTime = System.currentTimeMillis();
         double timeInterval = (double) (finishedTime - startTime) /1000;
-        player.sendMessage(Text.literal("스캔 완료 (" + timeInterval + "s)"));
+        player.sendMessage(Text.literal(String.format("총 %d 좌표 스캔 완료 (%fs)", totalScannedBlock, timeInterval)));
     }
     public Set<ChunkPos> getTargetChunkPosList(ScanMethod method, ChunkPos refChunkPos, int chunkRadius){
         Set<ChunkPos> targetChunkList = new HashSet<>();
@@ -114,7 +114,7 @@ public class ChunkScanner {
     }
 
 
-    private void scanChunk(ChunkPos chunkPos, int progress, int goal){
+    private int scanChunk(ChunkPos chunkPos, int progress, int goal){
         // 스캔 범위 정하기
         Box box = createBox(chunkPos);
         // 유효한 좌표를 찾기
@@ -139,6 +139,7 @@ public class ChunkScanner {
         player.sendMessage(Text.literal("[" + progress + "/" + goal + "] "
                 + chunkName.substring(1, chunkName.length()-5) + "청크에 대한 "
                 + validPosSet.size() + "좌표 스캔 데이터 저장 완료"));
+        return validPosSet.size();
     }
     private ScanDataOfBlockPos blockTest(BlockPos blockPos){
         ScanDataOfBlockPos blockData = new ScanDataOfBlockPos(new HashMap<>());

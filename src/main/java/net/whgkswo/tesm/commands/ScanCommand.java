@@ -45,7 +45,7 @@ public class ScanCommand {
         // 업데이트는 뒤의 다른 인자들을 받을 필요가 없음
         if(scanMethod == ChunkScanner.ScanMethod.UPDATE){
             // 스캐너 생성과 함께 스캔(생성자에서 호출)
-            new ChunkScanner(scanMethod);
+            new ChunkScanner(scanMethod).scan();
             // 스캔 후 업데이트 청크 목록 비우기
             GlobalVariables.updatedChunkSet.clear();
             return 1;
@@ -60,7 +60,7 @@ public class ScanCommand {
             chunkPos = player.getChunkPos();
         }
         // 스캐너 생성과 함께 스캔(생성자에서 호출)
-        new ChunkScanner(scanMethod,chunkPos,chunkRadius);
+        new ChunkScanner(scanMethod,chunkPos,chunkRadius).scan();
         return 1;
     }
 }

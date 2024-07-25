@@ -34,6 +34,7 @@ public class UseBlockC2SPacket {
             return;
         }
         try{
+            /*new PathfinderV2("인두리온", hitResultPos);*/
             new PathfinderV3("인두리온", hitResultPos);
         }catch (EntityNotFoundExeption e){
             // 아무것도 안함

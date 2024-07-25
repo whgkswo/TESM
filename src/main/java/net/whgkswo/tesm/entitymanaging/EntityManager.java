@@ -10,6 +10,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.whgkswo.tesm.exceptions.EntityNotFoundExeption;
+import net.whgkswo.tesm.nbt.NBTManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,8 +47,9 @@ public class EntityManager {
         List<VillagerEntity> entityList = world.getEntitiesByType(EntityType.VILLAGER,
                 new Box(-10000, -64, -10000, 10000, 1024, 10000), entity -> {
                     try{
-                        Text name = entity.getCustomName();
-                        return name != null && name.getString().equals(targetName);
+                        NbtCompound nbt = NBTManager.getCustomNbt(entity);
+                        String name = nbt.getString("Name");
+                        return name != null && name.equals(targetName);
                     }catch (NullPointerException e){
                         return false;
                     }
