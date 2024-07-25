@@ -74,7 +74,10 @@ public class BlockPosUtil {
         }
         if(isFluid(nextPos) || isFluid(nextPos.up())){
             // 액체
-            return false;
+            if(isSolid(nextPos.up()) && !isSolid(nextPos.up(2)) && !isSolid(nextPos.up(3))){
+            }else{
+                return false;
+            }
         }
         // 전방에 장애물이 없었고 대각선 방향일 경우 추가 검사
         if(direction.isDiagonal()){

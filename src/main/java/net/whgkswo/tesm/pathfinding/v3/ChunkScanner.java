@@ -87,7 +87,6 @@ public class ChunkScanner {
             // 업데이트 필요 청크 목록에 해당하는 청크였다면 목록에서 삭제
             updatedChunkSet.remove(new ChunkPosDto(chunkPos));
             i++;
-
         }
         long finishedTime = System.currentTimeMillis();
         double timeInterval = (double) (finishedTime - startTime) /1000;
@@ -112,8 +111,6 @@ public class ChunkScanner {
         }
         return targetChunkList;
     }
-
-
     private int scanChunk(ChunkPos chunkPos, int progress, int goal){
         // 스캔 범위 정하기
         Box box = createBox(chunkPos);
