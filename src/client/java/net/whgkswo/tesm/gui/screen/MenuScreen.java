@@ -3,6 +3,8 @@ package net.whgkswo.tesm.gui.screen;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
+import net.whgkswo.tesm.conversation.quest.Quest;
+import net.whgkswo.tesm.gui.Alignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.screen.templete.CustomScreen;
 import org.lwjgl.glfw.GLFW;
@@ -33,6 +35,19 @@ public class MenuScreen extends CustomScreen {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta){
         super.render(context,mouseX,mouseY,delta);
-        RenderingHelper.renderBlankedBox(context, BASE_AAA685, 0.25, 0.25, 0.5, 0.5, 1);
+        /*RenderingHelper.renderText(Alignment.LEFT, context, 0.7f, "abc", 0.15,0.15,0xffffff);*/
+        RenderingHelper.renderColoredComponent(context, BASE_AAA685, 0.1, 0.15, 0.2, 0.04,
+                0.7f, "abc 가나다 123", Alignment.LEFT, 0.1);
+        RenderingHelper.renderColoredComponent(context, BASE_AAA685, 0.1, 0.2, 0.2, 0.04,
+                0.7f, "abc 가나다 123", Alignment.CENTER, 0);
+        RenderingHelper.renderColoredComponent(context, BASE_AAA685, 0.1, 0.25, 0.2, 0.04,
+                0.7f, "abc 가나다 123", Alignment.RIGHT,0.1);
+
+        RenderingHelper.renderColoredComponent(context, BASE_AAA685, 0.5, 0.15, 0.2, 0.19,
+                0.7f, "abc 가나다 123", Alignment.LEFT, 0.1);
+        RenderingHelper.renderColoredComponent(context, BASE_AAA685, 0.5, 0.35, 0.2, 0.19,
+                0.7f, "abc 가나다 123", Alignment.CENTER, 0);
+        RenderingHelper.renderColoredComponent(context, BASE_AAA685, 0.5, 0.55, 0.2, 0.19,
+                0.7f, "abc 가나다 123", Alignment.RIGHT,0.1);
     }
 }

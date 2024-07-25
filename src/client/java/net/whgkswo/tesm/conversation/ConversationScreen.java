@@ -16,6 +16,7 @@ import net.whgkswo.tesm.conversation.quest.QuestStatus;
 import net.whgkswo.tesm.conversation.quest.objective.QuestObjective;
 import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.general.GlobalVariablesClient;
+import net.whgkswo.tesm.gui.Alignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.screen.templete.CustomScreen;
 import net.whgkswo.tesm.gui.screen.templete.CustomScreenWithoutFreeze;
@@ -99,14 +100,14 @@ public class ConversationScreen extends CustomScreenWithoutFreeze {
     }
     private void renderPartnerName(DrawContext context){
         final float nameScale = 1.5f;
-        RenderingHelper.renderText(RenderingHelper.Alignment.CENTER,context,nameScale, partnerDisplayName,(int)(width/2/nameScale),(int)(height*0.55/nameScale),0xffffff);
+        RenderingHelper.renderText(Alignment.CENTER,context,nameScale, partnerDisplayName,(int)(width/2/nameScale),(int)(height*0.55/nameScale),0xffffff);
     }
     private void renderLine(DrawContext context){
         currentDialogues = partnerDL.getNormalLines().get(stage);
         String content = decisionMakingOn ?
                 lastLine : currentDialogues.getContents().get(currentLineIndex).getLine();
 
-        RenderingHelper.renderText(RenderingHelper.Alignment.CENTER,context, LINE_SCALE,content,
+        RenderingHelper.renderText(Alignment.CENTER,context, LINE_SCALE,content,
                 (int) (width/2/ LINE_SCALE),(int) (height*0.7/ LINE_SCALE),0xffffff);
     }
     private int getEndIndexOfDisplayDecisions(){
@@ -127,7 +128,7 @@ public class ConversationScreen extends CustomScreenWithoutFreeze {
         }
         // 출력
         for(int i = decisionOffset; i< endIndex; i++){
-            RenderingHelper.renderText(RenderingHelper.Alignment.LEFT,context, LINE_SCALE,availableDecisions.get(i).getDecision().getLine(),
+            RenderingHelper.renderText(Alignment.LEFT,context, LINE_SCALE,availableDecisions.get(i).getDecision().getLine(),
                     (int)(width*0.15/ LINE_SCALE),
                     (int)(height*(0.78+0.04*(i-decisionOffset))/ LINE_SCALE),
                     colors.get(i));

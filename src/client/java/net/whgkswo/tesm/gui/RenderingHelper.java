@@ -8,6 +8,7 @@ import net.minecraft.util.Identifier;
 
 public class RenderingHelper {
     public static final TextRenderer TEXT_RENDERER = MinecraftClient.getInstance().textRenderer;
+    public static final double DEFAULT_TEXT_VERTICAL_WIDTH_RATIO = (double) 1 / 50;
     public static void renderText(Alignment alignment, DrawContext context, float scale, String str,
                                   int x, int y, int color){
         context.getMatrices().push();
@@ -79,15 +80,22 @@ public class RenderingHelper {
         renderVerticalLine(context, texture, xRatio, yRatio, thickness, heightRatio);
         renderVerticalLine(context, texture, xRatio + widthRatio, yRatio, thickness, heightRatio, -thickness);
     }
+    public static void renderColoredComponent(DrawContext context, Identifier texture, double xRatio, double yRatio, double widthRatio, double heightRatio,
+                                              float textScale, String content, Alignment textAlignment, double xMarginRatio){
+        renderFilledBox(context, texture, xRatio, yRatio, widthRatio, heightRatio);
+        double strRef = 0;
+        switch (textAlignment){
+            case LEFT -> strRef = xRatio + widthRatio * xMarginRatio;
+            case CENTER -> strRef = xRatio + widthRatio / 2;
+            case RIGHT -> strRef = xRatio + widthRatio - widthRatio * xMarginRatio;
+        }
+        double fixedYRatio = yRatio + heightRatio / 2 - textScale * DEFAULT_TEXT_VERTICAL_WIDTH_RATIO;
+        renderText(textAlignment,context,textScale,content,strRef,fixedYRatio,0xffffff);
+    }
     public static int getXPos(DrawContext context, double positionRatio, float scale){
         return (int)(context.getScaledWindowWidth() * positionRatio / scale);
     }
     public static int getYPos(DrawContext context, double positionRatio, float scale){
         return (int)(context.getScaledWindowHeight() * positionRatio / scale);
-    }
-    public enum Alignment{
-        LEFT,
-        CENTER,
-        RIGHT
     }
 }
