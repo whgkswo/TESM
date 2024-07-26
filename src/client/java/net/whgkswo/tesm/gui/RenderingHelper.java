@@ -48,7 +48,6 @@ public class RenderingHelper {
         context.drawTexture(texture, (int)(screenWidth * xRatio), (int)(screenHeight * yRatio),0,0,
                 (int)(screenWidth * widthRatio), (int)(screenHeight * heightRatio), (int)(screenWidth * widthRatio), (int)(screenHeight * heightRatio));
     }
-    /*public static void renderBlankedBox(DrawContext context, )*/
     public static void renderFilledBox(DrawContext context, Identifier texture, double xRatio, double yRatio, double widthRatio, double heightRatio){
         int screenWidth = context.getScaledWindowWidth();
         int screenHeight = context.getScaledWindowHeight();

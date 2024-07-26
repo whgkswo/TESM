@@ -7,6 +7,9 @@ import net.whgkswo.tesm.general.GeneralUtil;
 import net.whgkswo.tesm.gui.Alignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.colors.Colors;
+import net.whgkswo.tesm.gui.screen.component.LineDirection;
+import net.whgkswo.tesm.gui.screen.component.implementation.StraightLine;
+import net.whgkswo.tesm.gui.screen.component.implementation.TextBoxWIthBackground;
 import net.whgkswo.tesm.gui.screen.templete.CustomScreen;
 import org.lwjgl.glfw.GLFW;
 
@@ -20,18 +23,29 @@ public class MenuScreen extends CustomScreen {
     public void init(){
         super.init();
         GeneralUtil.repeatWithIndex(3, i -> {
-            createTextBoxWithBackground("testComponent" + i,
-                    Colors.COLORED_TEXTURES.get("aaa685"),
-                    "abc 가나다 123",
-                    0xffffff,
-                    0.7f,
-                    Alignment.LEFT,
-                    0.1,
-                    0.15 + 0.05 * i,
-                    0.2,
-                    0.04,
-                    0.1);
+            createComponent("testComponent" + i,
+                    new TextBoxWIthBackground(
+                            Colors.COLORED_TEXTURES.get("aaa685"),
+                            "abc 가나다 123",
+                            0xffffff,
+                            0.7f,
+                            Alignment.LEFT,
+                            0.1,
+                            0.15 + 0.05 * i,
+                            0.2,
+                            0.04,
+                            0.1));
         });
+        createComponent("testLine",
+                new StraightLine(
+                        LineDirection.HORIZONTAL,
+                        Colors.COLORED_TEXTURES.get("aaa685"),
+                        0.5,
+                        0.5,
+                        0.5,
+                        0.5,
+                        1
+                        ));
     }
     @Override
     public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {

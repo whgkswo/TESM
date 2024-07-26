@@ -1,11 +1,12 @@
-package net.whgkswo.tesm.gui.screen.component;
+package net.whgkswo.tesm.gui.screen.component.implementation;
 
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.gui.Alignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
+import net.whgkswo.tesm.gui.screen.component.GuiComponent;
 
-public class TextBoxWIthBackground extends GuiComponent{
+public class TextBoxWIthBackground extends GuiComponent {
     private Identifier background;
     private String content;
     private int textColor;
@@ -17,9 +18,8 @@ public class TextBoxWIthBackground extends GuiComponent{
     private double heightRatio;
     private double xMarginRatio;
 
-    public TextBoxWIthBackground(String name, Identifier background, String content, int textColor, float textScale, Alignment contentAlignment,
+    public TextBoxWIthBackground(Identifier background, String content, int textColor, float textScale, Alignment contentAlignment,
                                  double xRatio, double yRatio, double widthRatio, double heightRatio, double xMarginRatio) {
-        super(name);
         this.background = background;
         this.content = content;
         this.textColor = textColor;

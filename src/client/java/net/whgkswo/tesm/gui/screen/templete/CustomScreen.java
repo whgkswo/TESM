@@ -8,9 +8,10 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.gui.Alignment;
-import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.screen.component.GuiComponent;
-import net.whgkswo.tesm.gui.screen.component.TextBoxWIthBackground;
+import net.whgkswo.tesm.gui.screen.component.LineDirection;
+import net.whgkswo.tesm.gui.screen.component.implementation.StraightLine;
+import net.whgkswo.tesm.gui.screen.component.implementation.TextBoxWIthBackground;
 import net.whgkswo.tesm.networking.ModMessages;
 
 import java.util.HashMap;
@@ -51,10 +52,7 @@ public class CustomScreen extends Screen {
     public Map<String, GuiComponent> getGuiComponents() {
         return guiComponents;
     }
-    public void createTextBoxWithBackground(String name, Identifier background, String content, int textColor,float textScale, Alignment contentAlignment, double xRatio, double yRatio,
-                                            double widthRatio, double heightRatio, double xMarginRatio){
-        TextBoxWIthBackground component = new TextBoxWIthBackground(name, background, content, textColor, textScale, contentAlignment, xRatio, yRatio, widthRatio, heightRatio, xMarginRatio);
+    public void createComponent(String name, GuiComponent component){
         guiComponents.put(name, component);
-
     }
 }
