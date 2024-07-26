@@ -10,6 +10,7 @@ import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.gui.Alignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.screen.component.GuiComponent;
+import net.whgkswo.tesm.gui.screen.component.TextBoxWIthBackground;
 import net.whgkswo.tesm.networking.ModMessages;
 
 import java.util.HashMap;
@@ -44,16 +45,15 @@ public class CustomScreen extends Screen {
         super.render(context, mouseX, mouseY, delta);
 
         getGuiComponents().forEach((key, component) -> {
-            RenderingHelper.renderComponent(context, component);
+            component.render(context);
         });
     }
     public Map<String, GuiComponent> getGuiComponents() {
         return guiComponents;
     }
-
-    public void createComponent(String name, Identifier background, String content, float textScale, Alignment contentAlignment, double xRatio, double yRatio,
-                                       double widthRatio, double heightRatio, double xMarginRatio){
-        GuiComponent component = new GuiComponent(name, background, content, textScale, contentAlignment, xRatio, yRatio, widthRatio, heightRatio, xMarginRatio);
+    public void createTextBoxWithBackground(String name, Identifier background, String content, int textColor,float textScale, Alignment contentAlignment, double xRatio, double yRatio,
+                                            double widthRatio, double heightRatio, double xMarginRatio){
+        TextBoxWIthBackground component = new TextBoxWIthBackground(name, background, content, textColor, textScale, contentAlignment, xRatio, yRatio, widthRatio, heightRatio, xMarginRatio);
         guiComponents.put(name, component);
 
     }

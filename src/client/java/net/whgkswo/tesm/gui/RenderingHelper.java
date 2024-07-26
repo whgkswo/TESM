@@ -5,8 +5,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
-import net.whgkswo.tesm.gui.colors.Colors;
-import net.whgkswo.tesm.gui.screen.component.GuiComponent;
 
 public class RenderingHelper {
     public static final TextRenderer TEXT_RENDERER = MinecraftClient.getInstance().textRenderer;
@@ -81,36 +79,6 @@ public class RenderingHelper {
         renderHorizontalLine(context, texture ,xRatio,yRatio + heightRatio, widthRatio, thickness, -thickness);
         renderVerticalLine(context, texture, xRatio, yRatio, thickness, heightRatio);
         renderVerticalLine(context, texture, xRatio + widthRatio, yRatio, thickness, heightRatio, -thickness);
-    }
-    public static void renderColoredComponent(DrawContext context, Identifier texture, double xRatio, double yRatio, double widthRatio, double heightRatio,
-                                              float textScale, String content, Alignment textAlignment, double xMarginRatio){
-        renderFilledBox(context, texture, xRatio, yRatio, widthRatio, heightRatio);
-        double strRef = 0;
-        switch (textAlignment){
-            case LEFT -> strRef = xRatio + widthRatio * xMarginRatio;
-            case CENTER -> strRef = xRatio + widthRatio / 2;
-            case RIGHT -> strRef = xRatio + widthRatio - widthRatio * xMarginRatio;
-        }
-        double fixedYRatio = yRatio + heightRatio / 2 - textScale * DEFAULT_TEXT_VERTICAL_WIDTH_RATIO;
-        renderText(textAlignment,context,textScale,content,strRef,fixedYRatio,0xffffff);
-    }
-    public static void renderComponent(DrawContext context, GuiComponent component){
-        renderFilledBox(
-                context,
-                component.getBackground(),
-                component.getxRatio(),
-                component.getyRatio(),
-                component.getWidthRatio(),
-                component.getHeightRatio()
-                );
-        double strRef = 0;
-        switch (component.getContentAlignment()){
-            case LEFT -> strRef = component.getxRatio() + component.getWidthRatio() * component.getxMarginRatio();
-            case CENTER -> strRef = component.getxRatio() + component.getWidthRatio() / 2;
-            case RIGHT -> strRef = component.getxRatio() + component.getWidthRatio() - component.getWidthRatio() * component.getxMarginRatio();
-        }
-        double fixedYRatio = component.getyRatio() + component.getHeightRatio() / 2 - component.getTextScale() * DEFAULT_TEXT_VERTICAL_WIDTH_RATIO;
-        renderText(component.getContentAlignment(), context, component.getTextScale(), component.getContent(), strRef, fixedYRatio, 0xffffff);
     }
     public static int getXPos(DrawContext context, double positionRatio, float scale){
         return (int)(context.getScaledWindowWidth() * positionRatio / scale);
