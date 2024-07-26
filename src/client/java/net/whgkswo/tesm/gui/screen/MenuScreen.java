@@ -44,8 +44,7 @@ public class MenuScreen extends CustomScreen {
                 new StraightLine(
                         LineDirection.HORIZONTAL,
                         Colors.COLORED_TEXTURES.get("aaa685"),
-                        new LinearBox(0.5, 0.5, 0.5, 1),
-                        0
+                        new LinearBox(0.5, 0.5, 0.5, 1)
                         ));
         createComponent("testBox",
                 new BlankedBox(
