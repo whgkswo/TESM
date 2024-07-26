@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GuiComponent {
-    String name;
+    private String name;
     private Identifier background;
     private String content;
     private float textScale;

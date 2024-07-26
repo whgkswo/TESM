@@ -2,11 +2,13 @@ package net.whgkswo.tesm.gui.screen.templete;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.gui.Alignment;
+import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.screen.component.GuiComponent;
 import net.whgkswo.tesm.networking.ModMessages;
 
@@ -36,6 +38,14 @@ public class CustomScreen extends Screen {
         buf.writeBoolean(false); // freezeOn = false
         ClientPlayNetworking.send(ModMessages.TICK_FREEZE_TOGGLE_ID, buf);
         super.close();
+    }
+    @Override
+    public void render(DrawContext context, int mouseX, int mouseY, float delta){
+        super.render(context, mouseX, mouseY, delta);
+
+        getGuiComponents().forEach((key, component) -> {
+            RenderingHelper.renderComponent(context, component);
+        });
     }
     public Map<String, GuiComponent> getGuiComponents() {
         return guiComponents;

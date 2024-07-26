@@ -4,6 +4,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
 import net.whgkswo.tesm.conversation.quest.Quest;
+import net.whgkswo.tesm.general.GeneralUtil;
 import net.whgkswo.tesm.gui.Alignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.colors.Colors;
@@ -21,7 +22,8 @@ public class MenuScreen extends CustomScreen {
     @Override
     public void init(){
         super.init();
-        for(int i = 0; i< 3; i++){
+
+        GeneralUtil.repeatWithIndex(3, i -> {
             createComponent("testComponent" + i,
                     Colors.COLORED_TEXTURES.get("aaa685"),
                     "abc 가나다 123",
@@ -32,7 +34,7 @@ public class MenuScreen extends CustomScreen {
                     0.2,
                     0.04,
                     0.1);
-        }
+        });
     }
     @Override
     public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
@@ -49,27 +51,5 @@ public class MenuScreen extends CustomScreen {
             return true;
         }
         return super.keyPressed(keyCode, scanCode, modifiers);
-    }
-    @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta){
-        super.render(context,mouseX,mouseY,delta);
-        /*RenderingHelper.renderText(Alignment.LEFT, context, 0.7f, "abc", 0.15,0.15,0xffffff);*/
-
-        getGuiComponents().forEach((key, component) -> {
-            RenderingHelper.renderComponent(context, component);
-        });
-        /*RenderingHelper.renderColoredComponent(context, BASE_AAA685, 0.1, 0.15, 0.2, 0.04,
-                0.7f, "abc 가나다 123", Alignment.LEFT, 0.1);
-        RenderingHelper.renderColoredComponent(context, BASE_AAA685, 0.1, 0.2, 0.2, 0.04,
-                0.7f, "abc 가나다 123", Alignment.CENTER, 0);
-        RenderingHelper.renderColoredComponent(context, BASE_AAA685, 0.1, 0.25, 0.2, 0.04,
-                0.7f, "abc 가나다 123", Alignment.RIGHT,0.1);
-
-        RenderingHelper.renderColoredComponent(context, BASE_AAA685, 0.5, 0.15, 0.2, 0.19,
-                0.7f, "abc 가나다 123", Alignment.LEFT, 0.1);
-        RenderingHelper.renderColoredComponent(context, BASE_AAA685, 0.5, 0.35, 0.2, 0.19,
-                0.7f, "abc 가나다 123", Alignment.CENTER, 0);
-        RenderingHelper.renderColoredComponent(context, BASE_AAA685, 0.5, 0.55, 0.2, 0.19,
-                0.7f, "abc 가나다 123", Alignment.RIGHT,0.1);*/
     }
 }
