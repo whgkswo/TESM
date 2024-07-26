@@ -7,6 +7,7 @@ import net.whgkswo.tesm.general.GeneralUtil;
 import net.whgkswo.tesm.gui.Alignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.colors.Colors;
+import net.whgkswo.tesm.gui.component.Box;
 import net.whgkswo.tesm.gui.component.LineDirection;
 import net.whgkswo.tesm.gui.component.implementation.BlankedBox;
 import net.whgkswo.tesm.gui.component.implementation.StraightLine;
@@ -37,20 +38,17 @@ public class MenuScreen extends CustomScreen {
                             0.04,
                             0.1));
         });
-        /*createComponent("testLine",
+        createComponent("testLine",
                 new StraightLine(
                         LineDirection.HORIZONTAL,
                         Colors.COLORED_TEXTURES.get("aaa685"),
-                        0.5,
-                        0.5,
-                        0.5,
-                        0.5,
+                        new Box(0.5, 0.5, 0.5, 0.5),
                         1
-                        ));*/
+                        ));
         createComponent("testBox",
                 new BlankedBox(
                         Colors.COLORED_TEXTURES.get("aaa685"),
-                        0.25,0.25,0.5,0.5,1
+                        new Box(0.25,0.25,0.5,0.5),1
                 ));
     }
     @Override
