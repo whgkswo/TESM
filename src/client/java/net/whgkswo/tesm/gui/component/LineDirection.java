@@ -1,4 +1,4 @@
-package net.whgkswo.tesm.gui.screen.component;
+package net.whgkswo.tesm.gui.component;
 
 public enum LineDirection {
     HORIZONTAL,

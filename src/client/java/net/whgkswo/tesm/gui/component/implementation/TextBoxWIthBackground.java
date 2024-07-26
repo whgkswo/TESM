@@ -1,10 +1,10 @@
-package net.whgkswo.tesm.gui.screen.component.implementation;
+package net.whgkswo.tesm.gui.component.implementation;
 
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.gui.Alignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
-import net.whgkswo.tesm.gui.screen.component.GuiComponent;
+import net.whgkswo.tesm.gui.component.GuiComponent;
 
 public class TextBoxWIthBackground extends GuiComponent {
     private Identifier background;

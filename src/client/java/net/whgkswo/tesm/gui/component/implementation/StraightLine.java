@@ -1,9 +1,9 @@
-package net.whgkswo.tesm.gui.screen.component.implementation;
+package net.whgkswo.tesm.gui.component.implementation;
 
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
-import net.whgkswo.tesm.gui.screen.component.LineDirection;
-import net.whgkswo.tesm.gui.screen.component.SingleColorTexture;
+import net.whgkswo.tesm.gui.component.SingleColorTexture;
+import net.whgkswo.tesm.gui.component.LineDirection;
 
 public class StraightLine extends SingleColorTexture {
     private int thickness;

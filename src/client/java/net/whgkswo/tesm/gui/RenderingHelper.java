@@ -53,32 +53,6 @@ public class RenderingHelper {
         int screenHeight = context.getScaledWindowHeight();
         context.drawTexture(texture, (int)(screenWidth * xRatio), (int)(screenHeight * yRatio), 0,0,(int)(screenWidth * widthRatio), (int)(screenHeight * heightRatio));
     }
-    public static void renderHorizontalLine(DrawContext context, Identifier texture, double xRatio, double yRatio, double widthRatio, int thickness){
-        int screenWidth = context.getScaledWindowWidth();
-        int screenHeight = context.getScaledWindowHeight();
-        context.drawTexture(texture, (int)(screenWidth * xRatio), (int)(screenHeight * yRatio), 0,0,(int)(screenWidth * widthRatio), thickness);
-    }
-    public static void renderHorizontalLine(DrawContext context, Identifier texture, double xRatio, double yRatio, double widthRatio, int thickness, int yOffset){
-        int screenWidth = context.getScaledWindowWidth();
-        int screenHeight = context.getScaledWindowHeight();
-        context.drawTexture(texture, (int)(screenWidth * xRatio), (int)(screenHeight * yRatio) + yOffset, 0,0,(int)(screenWidth * widthRatio), thickness);
-    }
-    public static void renderVerticalLine(DrawContext context, Identifier texture, double xRatio, double yRatio, int thickness, double heightRatio){
-        int screenWidth = context.getScaledWindowWidth();
-        int screenHeight = context.getScaledWindowHeight();
-        context.drawTexture(texture, (int)(screenWidth * xRatio), (int)(screenHeight * yRatio), 0,0, thickness,(int)(screenHeight * heightRatio));
-    }
-    public static void renderVerticalLine(DrawContext context, Identifier texture, double xRatio, double yRatio, int thickness, double heightRatio, int xOffset){
-        int screenWidth = context.getScaledWindowWidth();
-        int screenHeight = context.getScaledWindowHeight();
-        context.drawTexture(texture, (int)(screenWidth * xRatio) + xOffset, (int)(screenHeight * yRatio), 0,0, thickness,(int)(screenHeight * heightRatio));
-    }
-    public static void renderBlankedBox(DrawContext context, Identifier texture, double xRatio, double yRatio, double widthRatio, double heightRatio, int thickness){
-        renderHorizontalLine(context, texture, xRatio, yRatio, widthRatio, thickness);
-        renderHorizontalLine(context, texture ,xRatio,yRatio + heightRatio, widthRatio, thickness, -thickness);
-        renderVerticalLine(context, texture, xRatio, yRatio, thickness, heightRatio);
-        renderVerticalLine(context, texture, xRatio + widthRatio, yRatio, thickness, heightRatio, -thickness);
-    }
     public static int getXPos(DrawContext context, double positionRatio, float scale){
         return (int)(context.getScaledWindowWidth() * positionRatio / scale);
     }

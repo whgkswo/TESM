@@ -6,12 +6,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.whgkswo.tesm.gui.Alignment;
-import net.whgkswo.tesm.gui.screen.component.GuiComponent;
-import net.whgkswo.tesm.gui.screen.component.LineDirection;
-import net.whgkswo.tesm.gui.screen.component.implementation.StraightLine;
-import net.whgkswo.tesm.gui.screen.component.implementation.TextBoxWIthBackground;
+import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.networking.ModMessages;
 
 import java.util.HashMap;
