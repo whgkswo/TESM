@@ -3,9 +3,11 @@ package net.whgkswo.tesm.gui.component.implementation;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.gui.colors.Colors;
-import net.whgkswo.tesm.gui.component.Box;
+import net.whgkswo.tesm.gui.component.box.Box;
 import net.whgkswo.tesm.gui.component.LineDirection;
 import net.whgkswo.tesm.gui.component.SingleColorTexture;
+import net.whgkswo.tesm.gui.component.box.LinearBox;
+import net.whgkswo.tesm.gui.component.box.RectangularBox;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +15,7 @@ import java.util.Map;
 public class BlankedBox extends SingleColorTexture {
     private Map<LineSide, StraightLine> lines = new HashMap<>();
 
-    public BlankedBox(Identifier texture, Box box, int thickness) {
+    public BlankedBox(Identifier texture, RectangularBox box, int thickness) {
         super(texture, box);
         double xRatio = box.getxRatio();
         double yRatio = box.getyRatio();
@@ -23,25 +25,25 @@ public class BlankedBox extends SingleColorTexture {
                 new StraightLine(
                         LineDirection.HORIZONTAL,
                         Colors.COLORED_TEXTURES.get("aaa685"),
-                        box, thickness
+                        new LinearBox(xRatio, yRatio, widthRatio, thickness)
                         ));
         lines.put(LineSide.DOWN,
                 new StraightLine(
                         LineDirection.HORIZONTAL,
                         Colors.COLORED_TEXTURES.get("aaa685"),
-                        new Box(xRatio, yRatio + heightRatio, widthRatio, heightRatio), thickness, -thickness
+                        new LinearBox(xRatio,yRatio + heightRatio, widthRatio, thickness), -thickness
                 ));
         lines.put(LineSide.LEFT,
                 new StraightLine(
                         LineDirection.VERTICAL,
                         Colors.COLORED_TEXTURES.get("aaa685"),
-                        new Box(xRatio, yRatio, widthRatio, heightRatio), thickness
+                        new LinearBox(xRatio, yRatio, heightRatio, thickness)
                 ));
         lines.put(LineSide.RIGHT,
                 new StraightLine(
                         LineDirection.VERTICAL,
                         Colors.COLORED_TEXTURES.get("aaa685"),
-                        new Box(xRatio + widthRatio, yRatio, widthRatio, heightRatio), thickness, -thickness
+                        new LinearBox(xRatio + widthRatio, yRatio, heightRatio, thickness), -thickness
                 ));
     }
 

@@ -7,8 +7,10 @@ import net.whgkswo.tesm.general.GeneralUtil;
 import net.whgkswo.tesm.gui.Alignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.colors.Colors;
-import net.whgkswo.tesm.gui.component.Box;
+import net.whgkswo.tesm.gui.component.box.Box;
 import net.whgkswo.tesm.gui.component.LineDirection;
+import net.whgkswo.tesm.gui.component.box.LinearBox;
+import net.whgkswo.tesm.gui.component.box.RectangularBox;
 import net.whgkswo.tesm.gui.component.implementation.BlankedBox;
 import net.whgkswo.tesm.gui.component.implementation.StraightLine;
 import net.whgkswo.tesm.gui.component.implementation.TextBoxWIthBackground;
@@ -42,13 +44,13 @@ public class MenuScreen extends CustomScreen {
                 new StraightLine(
                         LineDirection.HORIZONTAL,
                         Colors.COLORED_TEXTURES.get("aaa685"),
-                        new Box(0.5, 0.5, 0.5, 0.5),
-                        1
+                        new LinearBox(0.5, 0.5, 0.5, 1),
+                        0
                         ));
         createComponent("testBox",
                 new BlankedBox(
                         Colors.COLORED_TEXTURES.get("aaa685"),
-                        new Box(0.25,0.25,0.5,0.5),1
+                        new RectangularBox(0.25,0.25,0.5,0.5),1
                 ));
     }
     @Override
