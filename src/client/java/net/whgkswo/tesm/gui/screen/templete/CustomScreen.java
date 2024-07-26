@@ -5,9 +5,16 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
+import net.whgkswo.tesm.gui.Alignment;
+import net.whgkswo.tesm.gui.screen.component.GuiComponent;
 import net.whgkswo.tesm.networking.ModMessages;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CustomScreen extends Screen {
+    private Map<String, GuiComponent> guiComponents = new HashMap<>();
     public CustomScreen(){
         super(Text.literal("GUI 템플릿 (Freeze)"));
     }
@@ -29,5 +36,15 @@ public class CustomScreen extends Screen {
         buf.writeBoolean(false); // freezeOn = false
         ClientPlayNetworking.send(ModMessages.TICK_FREEZE_TOGGLE_ID, buf);
         super.close();
+    }
+    public Map<String, GuiComponent> getGuiComponents() {
+        return guiComponents;
+    }
+
+    public void createComponent(String name, Identifier background, String content, float textScale, Alignment contentAlignment, double xRatio, double yRatio,
+                                       double widthRatio, double heightRatio, double xMarginRatio){
+        GuiComponent component = new GuiComponent(name, background, content, textScale, contentAlignment, xRatio, yRatio, widthRatio, heightRatio, xMarginRatio);
+        guiComponents.put(name, component);
+
     }
 }
