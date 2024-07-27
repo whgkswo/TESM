@@ -24,16 +24,20 @@ public class CustomScreen extends Screen {
     @Override
     public void init(){
         // 틱 프리즈 (서버에 패킷 전송)
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeBoolean(true); // freezeOn = true
-        ClientPlayNetworking.send(ModMessages.TICK_FREEZE_TOGGLE_ID, buf);
+        if(shouldFreezeTicks()){
+            PacketByteBuf buf = PacketByteBufs.create();
+            buf.writeBoolean(true); // freezeOn = true
+            ClientPlayNetworking.send(ModMessages.TICK_FREEZE_TOGGLE_ID, buf);
+        }
     }
     @Override
     public void close(){
         // 틱 언프리즈 (서버에 패킷 전송)
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeBoolean(false); // freezeOn = false
-        ClientPlayNetworking.send(ModMessages.TICK_FREEZE_TOGGLE_ID, buf);
+        if(shouldFreezeTicks()){
+            PacketByteBuf buf = PacketByteBufs.create();
+            buf.writeBoolean(false); // freezeOn = false
+            ClientPlayNetworking.send(ModMessages.TICK_FREEZE_TOGGLE_ID, buf);
+        }
         super.close();
     }
     @Override
@@ -43,6 +47,9 @@ public class CustomScreen extends Screen {
         getGuiComponents().forEach((key, component) -> {
             component.render(context);
         });
+    }
+    public boolean shouldFreezeTicks(){
+        return false;
     }
     public Map<String, GuiComponent> getGuiComponents() {
         return guiComponents;

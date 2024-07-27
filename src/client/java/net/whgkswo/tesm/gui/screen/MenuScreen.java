@@ -33,7 +33,6 @@ public class MenuScreen extends CustomScreen {
             createComponent("testComponent" + i,
                     new TextBoxWIthBackground(
                             new CustomColor(200,160,130),
-                            Colors.COLORED_TEXTURES.get("aaa685"),
                             "abc 가나다 123",
                             0xffffff,
                             0.7f,
@@ -42,7 +41,7 @@ public class MenuScreen extends CustomScreen {
                             0.15 + 0.05 * i,
                             0.2,
                             0.04,
-                            0.1));
+                            0.05));
         });
         createComponent("testLine",
                 new StraightLine(
@@ -63,6 +62,10 @@ public class MenuScreen extends CustomScreen {
     @Override
     public boolean shouldPause() {
         return false;
+    }
+    @Override
+    public boolean shouldFreezeTicks(){
+        return true;
     }
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers){

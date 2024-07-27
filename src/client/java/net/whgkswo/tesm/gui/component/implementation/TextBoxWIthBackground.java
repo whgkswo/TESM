@@ -1,16 +1,12 @@
 package net.whgkswo.tesm.gui.component.implementation;
 
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.gui.Alignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.colors.CustomColor;
 import net.whgkswo.tesm.gui.component.GuiComponent;
 
-import java.awt.*;
-
 public class TextBoxWIthBackground extends GuiComponent {
-    private Identifier background;
     private String content;
     private int textColor;
     private float textScale;
@@ -19,12 +15,11 @@ public class TextBoxWIthBackground extends GuiComponent {
     private double yRatio;
     private double widthRatio;
     private double heightRatio;
-    private double xMarginRatio;
+    private double textMarginRatio;
 
-    public TextBoxWIthBackground(CustomColor color, Identifier background, String content, int textColor, float textScale, Alignment contentAlignment,
-                                 double xRatio, double yRatio, double widthRatio, double heightRatio, double xMarginRatio) {
+    public TextBoxWIthBackground(CustomColor color, String content, int textColor, float textScale, Alignment contentAlignment,
+                                 double xRatio, double yRatio, double widthRatio, double heightRatio, double textMarginRatio) {
         super(color);
-        this.background = background;
         this.content = content;
         this.textColor = textColor;
         this.textScale = textScale;
@@ -33,11 +28,7 @@ public class TextBoxWIthBackground extends GuiComponent {
         this.yRatio = yRatio;
         this.widthRatio = widthRatio;
         this.heightRatio = heightRatio;
-        this.xMarginRatio = xMarginRatio;
-    }
-
-    public Identifier getBackground() {
-        return background;
+        this.textMarginRatio = textMarginRatio;
     }
 
     public String getContent() {
@@ -72,14 +63,14 @@ public class TextBoxWIthBackground extends GuiComponent {
         return heightRatio;
     }
 
-    public double getxMarginRatio() {
-        return xMarginRatio;
+    public double getTextMarginRatio() {
+        return textMarginRatio;
     }
     @Override
     public void render(DrawContext context){
         RenderingHelper.renderFilledBox(
                 context,
-                background,
+                new CustomColor(170,166,133),
                 xRatio,
                 yRatio,
                 widthRatio,
@@ -87,9 +78,9 @@ public class TextBoxWIthBackground extends GuiComponent {
         );
         double strRef = 0;
         switch (contentAlignment){
-            case LEFT -> strRef = xRatio + widthRatio * xMarginRatio;
+            case LEFT -> strRef = xRatio + widthRatio * textMarginRatio;
             case CENTER -> strRef = xRatio + widthRatio / 2;
-            case RIGHT -> strRef = xRatio + widthRatio - widthRatio * xMarginRatio;
+            case RIGHT -> strRef = xRatio + widthRatio - widthRatio * textMarginRatio;
         }
         double fixedYRatio = yRatio + heightRatio / 2 - textScale * RenderingHelper.DEFAULT_TEXT_VERTICAL_WIDTH_RATIO;
         RenderingHelper.renderText(contentAlignment, context, textScale, content, strRef, fixedYRatio, textColor);

@@ -5,7 +5,6 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
@@ -19,7 +18,6 @@ import net.whgkswo.tesm.general.GlobalVariablesClient;
 import net.whgkswo.tesm.gui.Alignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.screen.templete.CustomScreen;
-import net.whgkswo.tesm.gui.screen.templete.CustomScreenWithoutFreeze;
 import net.whgkswo.tesm.networking.ModMessages;
 import org.lwjgl.glfw.GLFW;
 
@@ -30,7 +28,7 @@ import java.util.Map;
 import static net.whgkswo.tesm.general.GlobalVariablesClient.*;
 
 @Environment(EnvType.CLIENT)
-public class ConversationScreen extends CustomScreenWithoutFreeze {
+public class ConversationScreen extends CustomScreen {
     private static final int MAX_DISPLAY_DC = 4;
     private List<Integer> colors = new ArrayList<>();
     private static final float LINE_SCALE = 0.8f;
@@ -56,10 +54,7 @@ public class ConversationScreen extends CustomScreenWithoutFreeze {
     @Override
     public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta){
     }
-    @Override
-    public boolean shouldPause(){
-        return false;
-    }
+
     @Override
     public void init(){
         super.init();

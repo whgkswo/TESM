@@ -54,14 +54,25 @@ public class RenderingHelper {
     }
     public static void renderTextureWithColorFilter(DrawContext context,Identifier texture, int x, int y,
                                                     int width, int height, CustomColor color){
-        RenderSystem.enableBlend();
+        if(color.getA() != 255){
+            RenderSystem.enableBlend();
+        }
         context.setShaderColor(color.getFloatR(), color.getFloatG() ,color.getFloatB(), color.getFloatA());
         context.drawTexture(texture, x, y, 0, 0, width, height);
+        // 화면의 모든 요소 위에 그려지는 오버레이를 원한다면 아래 코드는 삭제
+        context.setShaderColor(1.0f,1.0f,1.0f,1.0f);
     }
-    public static void renderFilledBox(DrawContext context, Identifier texture, double xRatio, double yRatio, double widthRatio, double heightRatio){
+    public static void renderFilledBox(DrawContext context, CustomColor color, double xRatio, double yRatio, double widthRatio, double heightRatio){
         int screenWidth = context.getScaledWindowWidth();
         int screenHeight = context.getScaledWindowHeight();
-        context.drawTexture(texture, (int)(screenWidth * xRatio), (int)(screenHeight * yRatio), 0,0,(int)(screenWidth * widthRatio), (int)(screenHeight * heightRatio));
+
+        if(color.getA() != 255){
+            RenderSystem.enableBlend();
+        }
+        context.setShaderColor(color.getFloatR(), color.getFloatG(), color.getFloatB(), color.getFloatA());
+        context.drawTexture(Colors.BASE_TEXTURE, (int)(screenWidth * xRatio), (int)(screenHeight * yRatio), 0,0,(int)(screenWidth * widthRatio), (int)(screenHeight * heightRatio));
+        // 화면의 모든 요소 위에 그려지는 오버레이를 원한다면 아래 코드는 삭제
+        context.setShaderColor(1.0f,1.0f,1.0f,1.0f);
     }
     public static int getXPos(DrawContext context, double positionRatio, float scale){
         return (int)(context.getScaledWindowWidth() * positionRatio / scale);
