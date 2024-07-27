@@ -1,6 +1,8 @@
 package net.whgkswo.tesm.musics;
 
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.whgkswo.tesm.musics.soundEvents.MusicEvent;
@@ -20,13 +22,16 @@ public class MusicPlayer {
     private MusicEvent currentPlaying;
     private boolean isFirstTrackOfCycle;
 
-    public void onServerTick(){
-        ServerTickEvents.END_SERVER_TICK.register(server -> this.updateTick());
+    public void onClientTick(){
+        ClientTickEvents.END_CLIENT_TICK.register(client -> this.updateTick());
     }
     public void updateTick(){
+        if(MinecraftClient.getInstance().world == null){
+            return;
+        }
         tickCounter++;
         if(!musicPlaying && tickCounter == tickGoal){
-            TimePeriod timePeriod = TimePeriod.getPeriod(world.getTimeOfDay());
+            TimePeriod timePeriod = TimePeriod.getPeriod(MinecraftClient.getInstance().world.getTimeOfDay());
             if(timePeriod == TimePeriod.EXCEPTION){
                 tickCounter = 0;
                 tickGoal = 100;

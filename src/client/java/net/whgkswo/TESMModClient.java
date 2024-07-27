@@ -14,6 +14,7 @@ import net.whgkswo.tesm.gui.overlay.InteractOverlay;
 import net.whgkswo.tesm.gui.overlay.QuestStartAndClear;
 import net.whgkswo.tesm.gui.overlay.Watch;
 import net.whgkswo.tesm.keybinds.KeyInputHandler;
+import net.whgkswo.tesm.musics.MusicPlayer;
 import net.whgkswo.tesm.networking.ModMessages;
 import net.whgkswo.tesm.networking.ModMessagesClient;
 import net.whgkswo.tesm.raycast.CenterRaycast;
@@ -71,6 +72,7 @@ public class TESMModClient implements ClientModInitializer {
 		OnClientTicks.getArrowState();
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 클라이언트 사이드 이벤트 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 		UseBlockEvent.register();
+		new MusicPlayer().onClientTick();
 
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 서버 통신 패킷 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 		ModMessages.registerS2CPackets(); // 서버로 송신
