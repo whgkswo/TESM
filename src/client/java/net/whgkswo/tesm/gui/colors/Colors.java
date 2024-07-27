@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Colors {
+    public static final Identifier BASE_TEXTURE = new Identifier(TESMMod.MODID, "textures/gui/texture_white.png");
     public static final Map<String, Identifier> COLORED_TEXTURES = new HashMap<>(){{
         put("aaa685", new Identifier(TESMMod.MODID, "textures/gui/base_aaa685.png"));
     }};

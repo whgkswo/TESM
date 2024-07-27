@@ -7,6 +7,7 @@ import net.whgkswo.tesm.general.GeneralUtil;
 import net.whgkswo.tesm.gui.Alignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.colors.Colors;
+import net.whgkswo.tesm.gui.colors.CustomColor;
 import net.whgkswo.tesm.gui.component.box.Box;
 import net.whgkswo.tesm.gui.component.LineDirection;
 import net.whgkswo.tesm.gui.component.box.LinearBox;
@@ -16,6 +17,8 @@ import net.whgkswo.tesm.gui.component.implementation.StraightLine;
 import net.whgkswo.tesm.gui.component.implementation.TextBoxWIthBackground;
 import net.whgkswo.tesm.gui.screen.templete.CustomScreen;
 import org.lwjgl.glfw.GLFW;
+
+import java.awt.*;
 
 public class MenuScreen extends CustomScreen {
     public MenuScreen() {
@@ -29,6 +32,7 @@ public class MenuScreen extends CustomScreen {
         GeneralUtil.repeatWithIndex(3, i -> {
             createComponent("testComponent" + i,
                     new TextBoxWIthBackground(
+                            new CustomColor(200,160,130),
                             Colors.COLORED_TEXTURES.get("aaa685"),
                             "abc 가나다 123",
                             0xffffff,
@@ -42,13 +46,13 @@ public class MenuScreen extends CustomScreen {
         });
         createComponent("testLine",
                 new StraightLine(
+                        new CustomColor(200, 160, 130, 100),
                         LineDirection.HORIZONTAL,
-                        Colors.COLORED_TEXTURES.get("aaa685"),
                         new LinearBox(0.5, 0.5, 0.5, 1)
                         ));
         createComponent("testBox",
                 new BlankedBox(
-                        Colors.COLORED_TEXTURES.get("aaa685"),
+                        new CustomColor(200, 160, 130),
                         new RectangularBox(0.25,0.25,0.5,0.5),1
                 ));
     }

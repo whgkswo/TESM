@@ -4,7 +4,10 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.gui.Alignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
+import net.whgkswo.tesm.gui.colors.CustomColor;
 import net.whgkswo.tesm.gui.component.GuiComponent;
+
+import java.awt.*;
 
 public class TextBoxWIthBackground extends GuiComponent {
     private Identifier background;
@@ -18,8 +21,9 @@ public class TextBoxWIthBackground extends GuiComponent {
     private double heightRatio;
     private double xMarginRatio;
 
-    public TextBoxWIthBackground(Identifier background, String content, int textColor, float textScale, Alignment contentAlignment,
+    public TextBoxWIthBackground(CustomColor color, Identifier background, String content, int textColor, float textScale, Alignment contentAlignment,
                                  double xRatio, double yRatio, double widthRatio, double heightRatio, double xMarginRatio) {
+        super(color);
         this.background = background;
         this.content = content;
         this.textColor = textColor;

@@ -5,6 +5,10 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
+import net.whgkswo.tesm.gui.colors.Colors;
+import net.whgkswo.tesm.gui.colors.CustomColor;
+
+import java.awt.*;
 
 public class RenderingHelper {
     public static final TextRenderer TEXT_RENDERER = MinecraftClient.getInstance().textRenderer;
@@ -47,6 +51,12 @@ public class RenderingHelper {
         RenderSystem.enableBlend();
         context.drawTexture(texture, (int)(screenWidth * xRatio), (int)(screenHeight * yRatio),0,0,
                 (int)(screenWidth * widthRatio), (int)(screenHeight * heightRatio), (int)(screenWidth * widthRatio), (int)(screenHeight * heightRatio));
+    }
+    public static void renderTextureWithColorFilter(DrawContext context,Identifier texture, int x, int y,
+                                                    int width, int height, CustomColor color){
+        RenderSystem.enableBlend();
+        context.setShaderColor(color.getFloatR(), color.getFloatG() ,color.getFloatB(), color.getFloatA());
+        context.drawTexture(texture, x, y, 0, 0, width, height);
     }
     public static void renderFilledBox(DrawContext context, Identifier texture, double xRatio, double yRatio, double widthRatio, double heightRatio){
         int screenWidth = context.getScaledWindowWidth();
