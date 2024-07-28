@@ -17,4 +17,11 @@ public class RectangularBound extends Boundary {
     public double getHeightRatio() {
         return heightRatio;
     }
+
+    public int getRenderingPosX(int screenWidth){
+        return (int)(screenWidth * this.getxRatio());
+    }
+    public int getRenderingPosY(int screenHeight){
+        return (int)(screenHeight * this.getyRatio());
+    }
 }
