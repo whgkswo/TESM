@@ -5,12 +5,16 @@ import net.minecraft.client.gui.DrawContext;
 import net.whgkswo.tesm.general.GeneralUtil;
 import net.whgkswo.tesm.gui.Alignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
+import net.whgkswo.tesm.gui.colors.Colors;
 import net.whgkswo.tesm.gui.colors.CustomColor;
 import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.gui.component.bounds.RectangularBound;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class TextBox extends GuiComponent<RectangularBound> {
     private static final double LINE_GAP_RATIO = 1.2;
@@ -44,7 +48,7 @@ public class TextBox extends GuiComponent<RectangularBound> {
         double lineVerticalWidth = (double) textRenderer.fontHeight * fontScale / context.getScaledWindowHeight();
 
         GeneralUtil.repeatWithIndex(contentLines.size(), i -> {
-            RenderingHelper.renderText(textAlignment, context, fontScale, contentLines.get(i),
+            RenderingHelper.renderTextInBox(textAlignment, context, fontScale, contentLines.get(i),
                     bound.getxRatio() + xMarginRatio * bound.getWidthRatio(), bound.getyRatio() + yMarginRatio + lineVerticalWidth * LINE_GAP_RATIO * i ,
                     (1 - 2 * xMarginRatio) * bound.getWidthRatio(), 0xffffff);
         });

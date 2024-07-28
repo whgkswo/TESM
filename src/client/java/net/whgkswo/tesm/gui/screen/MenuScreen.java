@@ -38,12 +38,18 @@ public class MenuScreen extends CustomScreen {
                             new RectangularBound(Boundary.BoundType.FIXED,0.1, 0.15 + 0.05 * i, 0.2, 0.04),
                             0.05));
         });
-        createComponent("testLine",
+        /*createComponent("testLine",
                 new StraightLine(
-                        new CustomColor(200, 160, 130, 100),
-                        LineDirection.HORIZONTAL,
-                        new LinearBound(Boundary.BoundType.FIXED, 0.5, 0.5, 0.5, 1)
+                        CustomColor.ColorsPreset.RODEO_DUST.getColor(),
+                        LineDirection.VERTICAL,
+                        new LinearBound(Boundary.BoundType.FIXED, 0.27, 0.25, 0.9, 1)
                         ));
+        createComponent("testLine 2",
+                new StraightLine(
+                        CustomColor.ColorsPreset.RODEO_DUST.getColor(),
+                        LineDirection.VERTICAL,
+                        new LinearBound(Boundary.BoundType.FIXED, 0.73, 0.25, 0.9, 1)
+                ));*/
         createComponent("testBox",
                 new BlankedBox(
                         new CustomColor(200, 160, 130),
@@ -93,7 +99,7 @@ public class MenuScreen extends CustomScreen {
                                 "그녀의 죽음이 그 악명을 줄여주지는 못했다. 직접적인 증거는 거의 없지만, 일부 신학자들은 그녀의 영혼이 너무나 강하여, 죽은 뒤 데이드라가 되었고 필멸자들의 광적인 야망과 반역을 부추기고 있다고 주장한다. 또한 그녀의 광기가 솔리튜드 성 안에 깊이 스며있어 다음에 통치할 왕을 물들인다고 전해진다. 얄궂게도 그것은 매그너스의 아들이자 그녀의 18살 난 조카인 펠라기우스였다. 전설의 사실성이야 어떻든지 펠라기우스가 3E 145년에 솔리튜드를 떠나 황제 펠라기우스 3세가 되었을 때, 그는 곧 미친 펠라기우스로 알려지게 되었다. 심지어 그가 아버지를 살해했다는 소문도 널리 퍼져 있다.\n" +
                                 "\n" +
                                 "실로 늑대 여왕이 최후의 승리자이다.",
-                        0.6f, 0.04, 0.04, Alignment.CENTER
+                        0.6f, 0.04, 0.04, Alignment.LEFT
                 ));
     }
     @Override

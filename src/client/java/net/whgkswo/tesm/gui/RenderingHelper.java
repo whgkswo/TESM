@@ -44,15 +44,23 @@ public class RenderingHelper {
         }
         context.getMatrices().pop();
     }
-    public static void renderText(Alignment alignment, DrawContext context, float scale, String str,
+    public static void renderTextInBox(Alignment alignment, DrawContext context, float scale, String str,
                                   double xRatio, double yRatio, double widthRatio, int color){
+
         int yPos = getYPos(context, yRatio, scale);
+        int offset = (int) (TEXT_RENDERER.getWidth("가") * 0.4);
+
         context.getMatrices().push();
         context.getMatrices().scale(scale,scale,1);
+
+
         switch (alignment){
             case LEFT -> {
-                int xPos = getXPos(context, xRatio, scale);
+                int xPos = getXPos(context, xRatio, scale) + offset;
                 context.drawTextWithShadow(TEXT_RENDERER,str, xPos, yPos,color);
+
+                context.drawTextWithShadow(TEXT_RENDERER, "abc 가나다 123", 215, 10, 0xffffff);
+                context.drawTexture(Colors.BASE_TEXTURE, 581, 30, 0,0,5,5,5,5);
             }
             case CENTER -> {
                 int xPos = getXPos(context, xRatio + widthRatio / 2, scale);
@@ -60,7 +68,7 @@ public class RenderingHelper {
             }
             case RIGHT -> {
                 int textWidth = TEXT_RENDERER.getWidth(str);
-                int xPos = getXPos(context, xRatio + widthRatio, scale);
+                int xPos = getXPos(context, xRatio + widthRatio, scale) - offset;
                 context.drawTextWithShadow(TEXT_RENDERER, str, xPos - textWidth, yPos, color);
             }
         }

@@ -18,13 +18,13 @@ public class CustomColor{
         this.b = b;
         this.a = a;
     }
-    public CustomColor(String hex) throws InvalidHexcodeException {
+    public CustomColor(String hex){
         int[] rgb = hexToRGB(hex);
         r = rgb[0];
         g = rgb[1];
         b = rgb[2];
     }
-    public CustomColor(String hex, int a) throws InvalidHexcodeException {
+    public CustomColor(String hex, int a){
         int[] rgb = hexToRGB(hex);
         r = rgb[0];
         g = rgb[1];
@@ -98,6 +98,9 @@ public class CustomColor{
 
         public CustomColor getColor() {
             return color;
+        }
+        public CustomColor applyAlpha(int a){
+            return new CustomColor(color.r, color.g, color.b, a);
         }
     }
 }
