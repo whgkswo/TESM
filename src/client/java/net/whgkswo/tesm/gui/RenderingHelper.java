@@ -44,6 +44,28 @@ public class RenderingHelper {
         }
         context.getMatrices().pop();
     }
+    public static void renderText(Alignment alignment, DrawContext context, float scale, String str,
+                                  double xRatio, double yRatio, double widthRatio, int color){
+        int yPos = getYPos(context, yRatio, scale);
+        context.getMatrices().push();
+        context.getMatrices().scale(scale,scale,1);
+        switch (alignment){
+            case LEFT -> {
+                int xPos = getXPos(context, xRatio, scale);
+                context.drawTextWithShadow(TEXT_RENDERER,str, xPos, yPos,color);
+            }
+            case CENTER -> {
+                int xPos = getXPos(context, xRatio + widthRatio / 2, scale);
+                context.drawCenteredTextWithShadow(TEXT_RENDERER,str, xPos, yPos,color);
+            }
+            case RIGHT -> {
+                int textWidth = TEXT_RENDERER.getWidth(str);
+                int xPos = getXPos(context, xRatio + widthRatio, scale);
+                context.drawTextWithShadow(TEXT_RENDERER, str, xPos - textWidth, yPos, color);
+            }
+        }
+        context.getMatrices().pop();
+    }
     public static void renderTexture(DrawContext context, Identifier texture, double xRatio, double yRatio,
                                      double widthRatio, double heightRatio){
         int screenWidth = context.getScaledWindowWidth();
