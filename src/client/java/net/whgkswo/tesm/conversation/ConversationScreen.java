@@ -2,8 +2,8 @@ package net.whgkswo.tesm.conversation;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.Entity;
@@ -83,16 +83,24 @@ public class ConversationScreen extends CustomScreen {
             return true;
             // W키 (리스트 올리기)
         } else if (keyCode == GLFW.GLFW_KEY_W) {
-            if(decisionOffset > 0){
-                decisionOffset--;
-            }
+            onScrollUp();
             // S키 (리스트 내리기)
         } else if (keyCode == GLFW.GLFW_KEY_S) {
-            if (decisionOffset < availableDecisions.size()-MAX_DISPLAY_DC){
-                decisionOffset++;
-            }
+            onScrollDown();
         }
         return super.keyPressed(keyCode, scanCode, modifiers);
+    }
+    @Override
+    public void onScrollUp(){
+        if(decisionOffset > 0){
+            decisionOffset--;
+        }
+    }
+    @Override
+    public void onScrollDown(){
+        if (decisionOffset < availableDecisions.size()-MAX_DISPLAY_DC){
+            decisionOffset++;
+        }
     }
     private void renderPartnerName(DrawContext context){
         final float nameScale = 1.5f;

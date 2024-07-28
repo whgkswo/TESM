@@ -1,11 +1,13 @@
 package net.whgkswo.tesm.gui.screen.templete;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
+import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.networking.ModMessages;
 
@@ -29,6 +31,7 @@ public class CustomScreen extends Screen {
             buf.writeBoolean(true); // freezeOn = true
             ClientPlayNetworking.send(ModMessages.TICK_FREEZE_TOGGLE_ID, buf);
         }
+        registerMouseWheelEvent();
     }
     @Override
     public void close(){
@@ -48,6 +51,17 @@ public class CustomScreen extends Screen {
             component.render(context);
         });
     }
+    private void registerMouseWheelEvent(){
+        ScreenMouseEvents.afterMouseScroll(this).register((screen1, mouseX, mouseY, horizontalAmount, verticalAmount) -> {
+            if(verticalAmount > 0){
+                onScrollUp();
+            } else if (verticalAmount < 0) {
+                onScrollDown();
+            }
+        });
+    }
+    public void onScrollUp(){}
+    public void onScrollDown(){}
     public boolean shouldFreezeTicks(){
         return false;
     }
