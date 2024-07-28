@@ -6,19 +6,16 @@ import net.whgkswo.tesm.TESMMod;
 import net.whgkswo.tesm.general.GeneralUtil;
 import net.whgkswo.tesm.gui.Alignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
-import net.whgkswo.tesm.gui.colors.Colors;
 import net.whgkswo.tesm.gui.colors.CustomColor;
-import net.whgkswo.tesm.gui.component.box.Box;
 import net.whgkswo.tesm.gui.component.LineDirection;
-import net.whgkswo.tesm.gui.component.box.LinearBox;
-import net.whgkswo.tesm.gui.component.box.RectangularBox;
-import net.whgkswo.tesm.gui.component.implementation.BlankedBox;
-import net.whgkswo.tesm.gui.component.implementation.StraightLine;
-import net.whgkswo.tesm.gui.component.implementation.TextBoxWIthBackground;
+import net.whgkswo.tesm.gui.component.bounds.Boundary;
+import net.whgkswo.tesm.gui.component.bounds.LinearBound;
+import net.whgkswo.tesm.gui.component.bounds.RectangularBound;
+import net.whgkswo.tesm.gui.component.elements.BlankedBox;
+import net.whgkswo.tesm.gui.component.elements.StraightLine;
+import net.whgkswo.tesm.gui.component.elements.TextBoxWIthBackground;
 import net.whgkswo.tesm.gui.screen.templete.CustomScreen;
 import org.lwjgl.glfw.GLFW;
-
-import java.awt.*;
 
 public class MenuScreen extends CustomScreen {
     public MenuScreen() {
@@ -37,23 +34,25 @@ public class MenuScreen extends CustomScreen {
                             0xffffff,
                             0.7f,
                             Alignment.LEFT,
-                            0.1,
-                            0.15 + 0.05 * i,
-                            0.2,
-                            0.04,
+                            new RectangularBound(Boundary.BoundType.FIXED,0.1, 0.15 + 0.05 * i, 0.2, 0.04),
                             0.05));
         });
         createComponent("testLine",
                 new StraightLine(
                         new CustomColor(200, 160, 130, 100),
                         LineDirection.HORIZONTAL,
-                        new LinearBox(0.5, 0.5, 0.5, 1)
+                        new LinearBound(Boundary.BoundType.FIXED, 0.5, 0.5, 0.5, 1)
                         ));
         createComponent("testBox",
                 new BlankedBox(
                         new CustomColor(200, 160, 130),
-                        new RectangularBox(0.25,0.25,0.5,0.5),1
+                        new RectangularBound(Boundary.BoundType.FIXED, 0.25,0.25,0.5,0.5),1
                 ));
+        /*createComponent("testTextbox",
+                new TextBox(
+                        new CustomColor(255,255,255),
+                        0.25, 0.25, BoundType.FIXED,
+                ));*/
     }
     @Override
     public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {

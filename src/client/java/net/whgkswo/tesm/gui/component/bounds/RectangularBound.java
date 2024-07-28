@@ -1,11 +1,11 @@
-package net.whgkswo.tesm.gui.component.box;
+package net.whgkswo.tesm.gui.component.bounds;
 
-public class RectangularBox extends Box{
+public class RectangularBound extends Boundary {
     private double widthRatio;
     private double heightRatio;
 
-    public RectangularBox(double xRatio, double yRatio, double widthRatio, double heightRatio) {
-        super(xRatio, yRatio);
+    public RectangularBound(BoundType boundType, double xRatio, double yRatio, double widthRatio, double heightRatio) {
+        super(boundType, xRatio, yRatio);
         this.widthRatio = widthRatio;
         this.heightRatio = heightRatio;
     }

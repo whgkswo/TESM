@@ -1,11 +1,11 @@
-package net.whgkswo.tesm.gui.component.box;
+package net.whgkswo.tesm.gui.component.bounds;
 
-public class LinearBox extends Box{
+public class LinearBound extends Boundary {
     private double lengthRatio;
     private int thickness;
 
-    public LinearBox(double xRatio, double yRatio, double lengthRatio, int thickness) {
-        super(xRatio, yRatio);
+    public LinearBound(BoundType boundType, double xRatio, double yRatio, double lengthRatio, int thickness) {
+        super(boundType, xRatio, yRatio);
         this.lengthRatio = lengthRatio;
         this.thickness = thickness;
     }
