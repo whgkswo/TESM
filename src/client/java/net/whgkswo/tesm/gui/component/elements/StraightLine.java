@@ -2,7 +2,7 @@ package net.whgkswo.tesm.gui.component.elements;
 
 import net.minecraft.client.gui.DrawContext;
 import net.whgkswo.tesm.gui.RenderingHelper;
-import net.whgkswo.tesm.gui.colors.Colors;
+import net.whgkswo.tesm.gui.colors.BaseTexture;
 import net.whgkswo.tesm.gui.colors.CustomColor;
 import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.gui.component.LineDirection;
@@ -28,9 +28,9 @@ public class StraightLine extends GuiComponent<LinearBound> {
         int screenHeight = context.getScaledWindowHeight();
         LinearBound box = this.getRenderingBound();
         if(direction == LineDirection.HORIZONTAL){
-            RenderingHelper.renderTextureWithColorFilter(context, Colors.BASE_TEXTURE, (int)(screenWidth * box.getxRatio()), (int)(screenHeight * box.getyRatio()) + offset, (int)(screenWidth * box.getLengthRatio()), box.getThickness(), this.getColor());
+            RenderingHelper.renderTextureWithColorFilter(context, BaseTexture.BASE_TEXTURE, (int)(screenWidth * box.getxRatio()), (int)(screenHeight * box.getyRatio()) + offset, (int)(screenWidth * box.getLengthRatio()), box.getThickness(), this.getColor());
         }else{
-            RenderingHelper.renderTextureWithColorFilter(context, Colors.BASE_TEXTURE, (int)(screenWidth * box.getxRatio()) + offset, (int)(screenHeight * box.getyRatio()), box.getThickness(), (int)(screenHeight * box.getLengthRatio()), this.getColor());
+            RenderingHelper.renderTextureWithColorFilter(context, BaseTexture.BASE_TEXTURE, (int)(screenWidth * box.getxRatio()) + offset, (int)(screenHeight * box.getyRatio()), box.getThickness(), (int)(screenHeight * box.getLengthRatio()), this.getColor());
         }
     }
 }

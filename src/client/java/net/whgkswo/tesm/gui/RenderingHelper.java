@@ -5,10 +5,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
-import net.whgkswo.tesm.gui.colors.Colors;
+import net.whgkswo.tesm.gui.colors.BaseTexture;
 import net.whgkswo.tesm.gui.colors.CustomColor;
-
-import java.awt.*;
 
 public class RenderingHelper {
     public static final TextRenderer TEXT_RENDERER = MinecraftClient.getInstance().textRenderer;
@@ -58,9 +56,6 @@ public class RenderingHelper {
             case LEFT -> {
                 int xPos = getXPos(context, xRatio, scale) + offset;
                 context.drawTextWithShadow(TEXT_RENDERER,str, xPos, yPos,color);
-
-                context.drawTextWithShadow(TEXT_RENDERER, "abc 가나다 123", 215, 10, 0xffffff);
-                context.drawTexture(Colors.BASE_TEXTURE, 581, 30, 0,0,5,5,5,5);
             }
             case CENTER -> {
                 int xPos = getXPos(context, xRatio + widthRatio / 2, scale);
@@ -100,7 +95,7 @@ public class RenderingHelper {
             RenderSystem.enableBlend();
         }
         context.setShaderColor(color.getFloatR(), color.getFloatG(), color.getFloatB(), color.getFloatA());
-        context.drawTexture(Colors.BASE_TEXTURE, (int)(screenWidth * xRatio), (int)(screenHeight * yRatio), 0,0,(int)(screenWidth * widthRatio), (int)(screenHeight * heightRatio));
+        context.drawTexture(BaseTexture.BASE_TEXTURE, (int)(screenWidth * xRatio), (int)(screenHeight * yRatio), 0,0,(int)(screenWidth * widthRatio), (int)(screenHeight * heightRatio));
         // 화면의 모든 요소 위에 그려지는 오버레이를 원한다면 아래 코드는 삭제
         context.setShaderColor(1.0f,1.0f,1.0f,1.0f);
     }
