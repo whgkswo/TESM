@@ -7,15 +7,15 @@ import net.whgkswo.tesm.gui.colors.CustomColor;
 import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.gui.component.bounds.RectangularBound;
 
-public class TextBoxWIthBackground extends GuiComponent<RectangularBound> {
+public class TextLabel extends GuiComponent<RectangularBound> {
     private String content;
     private int textColor;
     private float textScale;
     private Alignment contentAlignment;
     private double textMarginRatio;
 
-    public TextBoxWIthBackground(CustomColor color, String content, int textColor, float textScale, Alignment contentAlignment,
-                                 RectangularBound bound, double textMarginRatio) {
+    public TextLabel(CustomColor color, String content, int textColor, float textScale, Alignment contentAlignment,
+                     RectangularBound bound, double textMarginRatio) {
         super(color, bound);
         this.content = content;
         this.textColor = textColor;
