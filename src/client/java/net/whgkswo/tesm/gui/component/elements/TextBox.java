@@ -42,15 +42,10 @@ public class TextBox extends GuiComponent<RectangularBound> {
         List<String> contentLines = splitContent(textRenderer, content, (int)(screenWidth * (1 - 2 * xMarginRatio) * bound.getWidthRatio() / fontScale));
         double lineVerticalWidth = (double) textRenderer.fontHeight * fontScale / context.getScaledWindowHeight();
 
-        /*GeneralUtil.repeatWithIndex(contentLines.size(), i -> {
-            RenderingHelper.renderTextInBox(textAlignment, context, fontScale, contentLines.get(i),
-                    bound.getxRatio() + xMarginRatio * bound.getWidthRatio(), bound.getyRatio() + yMarginRatio + lineVerticalWidth * LINE_GAP_RATIO * i ,
-                    (1 - 2 * xMarginRatio) * bound.getWidthRatio(), 0xffffff);
-        });*/
         double yRatio = bound.getyRatio() + yMarginRatio;
         double lineGap = lineVerticalWidth * LINE_GAP_RATIO;
         int i = 0;
-        while(yRatio < bound.getyRatio() + bound.getHeightRatio() - yMarginRatio/* - lineGap*/){
+        while(i < contentLines.size() && yRatio < bound.getyRatio() + bound.getHeightRatio() - yMarginRatio/* - lineGap*/){
             RenderingHelper.renderTextInBox(textAlignment, context, fontScale, contentLines.get(i),
                     bound.getxRatio() + xMarginRatio * bound.getWidthRatio(), bound.getyRatio() + yMarginRatio + lineGap * i ,
                     (1 - 2 * xMarginRatio) * bound.getWidthRatio(), 0xffffff);
