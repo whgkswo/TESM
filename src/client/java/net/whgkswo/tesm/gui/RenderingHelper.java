@@ -51,7 +51,6 @@ public class RenderingHelper {
         context.getMatrices().push();
         context.getMatrices().scale(scale,scale,1);
 
-
         switch (alignment){
             case LEFT -> {
                 int xPos = getXPos(context, xRatio, scale) + offset;

@@ -40,16 +40,22 @@ public class TextPopUp extends GuiComponent<Boundary> {
     public void render(DrawContext context) {
         Boundary bound = getRenderingBound();
         update();
-        RenderingHelper.renderText(Alignment.LEFT, context, textScale, content, bound.getxRatio(), bound.getyRatio(), getColor().getHexDecimalCode());
+        if(status != TransitionStatus.TERMINATED){
+            RenderingHelper.renderText(Alignment.LEFT, context, textScale, content, bound.getxRatio(), bound.getyRatio(), getColor().getHexDecimalCode());
+        }
         tick++;
     }
     private void update(){
         switch (status){
             case FADING_IN -> {
-                getColor().addA(255 / fadeInInterval);
+                if(fadeInInterval > 0){
+                    getColor().addA(255 / fadeInInterval);
+                }
             }
             case FADING_OUT -> {
-                getColor().addA(-255 / fadeOutInterval);
+                if(fadeOutInterval > 0){
+                    getColor().addA(-255 / fadeOutInterval);
+                }
             }
         }
         changeStatus();

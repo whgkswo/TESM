@@ -256,7 +256,7 @@ public class ConversationScreen extends CustomScreen {
                 Quest quest = Quest.QUESTS.get(questName);
                 quest.setStatus(QuestStatus.ONGOING);
                 // 퀘스트 시작 팝업 띄우기
-                QuestOverlay.setQuest(questName);
+                QuestOverlay.displayPopUp("시작", questName);
                 resetStageAfterRecieveQuest();
             }
             case ADVANCE_QUEST -> {
@@ -273,7 +273,7 @@ public class ConversationScreen extends CustomScreen {
                 Quest quest = Quest.QUESTS.get(questName);
                 quest.setStatus(QuestStatus.COMPLETED);
                 // 퀘스트 완료 팝업 띄우기
-                QuestOverlay.setQuest(questName);
+                QuestOverlay.displayPopUp("완료", questName);
                 resetStageAfterRecieveQuest();
             }
             case CLOSE -> {

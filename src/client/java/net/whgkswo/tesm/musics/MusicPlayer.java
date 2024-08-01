@@ -79,7 +79,7 @@ public class MusicPlayer {
         int trackNumber = selectTrackNumber(new MusicKey(region, timePeriod), musicList.size());
 
         MusicEvent music = musicList.get(trackNumber);
-        player.sendMessage(Text.literal(String.format("%d/%d번 트랙 %s 재생", trackNumber+1,musicList.size(),music.getSoundEvent().getId())));
+        /*player.sendMessage(Text.literal(String.format("%d/%d번 트랙 %s 재생", trackNumber+1,musicList.size(),music.getSoundEvent().getId())));*/
 
         world.playSound(null,player.getBlockPos(), music.getSoundEvent(),
                 SoundCategory.RECORDS,1f,1f);
