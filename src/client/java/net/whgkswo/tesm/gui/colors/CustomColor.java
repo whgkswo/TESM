@@ -1,10 +1,13 @@
 package net.whgkswo.tesm.gui.colors;
 
+import java.awt.*;
+import java.util.HexFormat;
+
 public class CustomColor{
     private int r;
     private int g;
     private int b;
-    private int a;
+    private double a;
     public CustomColor(int r, int g, int b) {
         this.r = r;
         this.g = g;
@@ -62,7 +65,7 @@ public class CustomColor{
     }
 
     public int getA() {
-        return a;
+        return (int) Math.round(a);
     }
     public float getFloatR(){
         return (float) r / 255;
@@ -80,8 +83,21 @@ public class CustomColor{
     public void setA(int a) {
         this.a = a;
     }
-    public String getHexCode(int r, int g, int b){
+    public void addA(int addition){
+        a += addition;
+        if(a > 255){
+            a = 255;
+        }
+        if(a < 0){
+            a = 0;
+        }
+    }
+    public String getHexCode(){
         return String.format("#%02x%02x%02x", r, g, b);
+    }
+    public int getHexDecimalCode() {
+        String hex = String.format("%02x%02x%02x%02x", Math.round(a), r, g, b);
+        return (int)Long.parseLong(hex, 16);
     }
 
     public enum ColorsPreset {

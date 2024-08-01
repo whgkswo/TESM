@@ -9,10 +9,7 @@ import net.whgkswo.tesm.conversation.ConversationStart;
 import net.whgkswo.tesm.conversation.quest.Quest;
 import net.whgkswo.tesm.events.UseBlockEvent;
 import net.whgkswo.tesm.general.OnClientTicks;
-import net.whgkswo.tesm.gui.overlay.Compass;
-import net.whgkswo.tesm.gui.overlay.InteractOverlay;
-import net.whgkswo.tesm.gui.overlay.QuestStartAndClear;
-import net.whgkswo.tesm.gui.overlay.Watch;
+import net.whgkswo.tesm.gui.overlay.*;
 import net.whgkswo.tesm.keybinds.KeyInputHandler;
 import net.whgkswo.tesm.musics.MusicPlayer;
 import net.whgkswo.tesm.networking.ModMessages;
@@ -65,6 +62,7 @@ public class TESMModClient implements ClientModInitializer {
 		HudRenderCallback.EVENT.register(new Compass());
 		HudRenderCallback.EVENT.register(new QuestStartAndClear());
 		HudRenderCallback.EVENT.register(new Watch());
+		HudRenderCallback.EVENT.register(new QuestOverlay());
 
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 클라이언트 사이드 메소드 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 		CenterRaycast.centerRaycast();

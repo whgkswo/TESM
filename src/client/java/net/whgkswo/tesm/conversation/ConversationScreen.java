@@ -3,21 +3,19 @@ package net.whgkswo.tesm.conversation;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
 import net.whgkswo.tesm.conversation.quest.Quest;
 import net.whgkswo.tesm.conversation.quest.QuestStatus;
 import net.whgkswo.tesm.conversation.quest.objective.QuestObjective;
-import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.general.GlobalVariablesClient;
 import net.whgkswo.tesm.gui.Alignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
+import net.whgkswo.tesm.gui.overlay.QuestOverlay;
 import net.whgkswo.tesm.gui.screen.templete.CustomScreen;
 import net.whgkswo.tesm.networking.ModMessages;
 import org.lwjgl.glfw.GLFW;
@@ -257,7 +255,8 @@ public class ConversationScreen extends CustomScreen {
                 String questName = currentDialogues.getExecuteTarget();
                 Quest quest = Quest.QUESTS.get(questName);
                 quest.setStatus(QuestStatus.ONGOING);
-                GlobalVariables.player.sendMessage(Text.literal(String.format("시작: %s", questName)));
+                // 퀘스트 시작 팝업 띄우기
+                QuestOverlay.setQuest(questName);
                 resetStageAfterRecieveQuest();
             }
             case ADVANCE_QUEST -> {
@@ -273,7 +272,8 @@ public class ConversationScreen extends CustomScreen {
                 String questName = currentDialogues.getExecuteTarget();
                 Quest quest = Quest.QUESTS.get(questName);
                 quest.setStatus(QuestStatus.COMPLETED);
-                GlobalVariables.player.sendMessage(Text.literal(String.format("완료: %s", questName)));
+                // 퀘스트 완료 팝업 띄우기
+                QuestOverlay.setQuest(questName);
                 resetStageAfterRecieveQuest();
             }
             case CLOSE -> {
