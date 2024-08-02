@@ -1,6 +1,9 @@
 package net.whgkswo.tesm.conversation.quest;
 
+import net.whgkswo.tesm.conversation.ConversationScreen;
+import net.whgkswo.tesm.conversation.Decision;
 import net.whgkswo.tesm.conversation.quest.objective.QuestObjective;
+import net.whgkswo.tesm.gui.overlay.QuestOverlay;
 
 import java.util.*;
 
@@ -57,6 +60,26 @@ public class Quest {
 
     public void setCurrentStage(String currentStage) {
         this.currentStage = currentStage;
+    }
+
+    public static void startQuest(String questName){
+        Quest quest = Quest.QUESTS.get(questName);
+        quest.setStatus(QuestStatus.ONGOING);
+        // 퀘스트 시작 팝업 띄우기
+        QuestOverlay.displayPopUp("시작", questName);
+    }
+    public static void advanceQuest(String questName, Decision selectedDecision){
+        Quest quest = Quest.QUESTS.get(questName);
+
+        Map<String, QuestObjective> objectives = quest.getObjectives();
+        String nextStage = objectives.get(selectedDecision.getQuestObjectId()).getNextStage();
+        quest.setCurrentStage(nextStage);
+    }
+    public static void completeQuest(String questName){
+        Quest quest = Quest.QUESTS.get(questName);
+        quest.setStatus(QuestStatus.COMPLETED);
+        // 퀘스트 완료 팝업 띄우기
+        QuestOverlay.displayPopUp("완료", questName);
     }
 
     public static void registerQuests(){

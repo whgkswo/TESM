@@ -252,28 +252,15 @@ public class ConversationScreen extends CustomScreen {
                 showDecisions();
             }
             case START_QUEST -> {
-                String questName = currentDialogues.getExecuteTarget();
-                Quest quest = Quest.QUESTS.get(questName);
-                quest.setStatus(QuestStatus.ONGOING);
-                // 퀘스트 시작 팝업 띄우기
-                QuestOverlay.displayPopUp("시작", questName);
+                Quest.startQuest(currentDialogues.getExecuteTarget());
                 resetStageAfterRecieveQuest();
             }
             case ADVANCE_QUEST -> {
-                String questName = currentDialogues.getExecuteTarget();
-                Quest quest = Quest.QUESTS.get(questName);
-
-                Map<String, QuestObjective> objectives = quest.getObjectives();
-                String nextStage = objectives.get(selectedDecision.getQuestObjectId()).getNextStage();
-                quest.setCurrentStage(nextStage);
+                Quest.advanceQuest(currentDialogues.getExecuteTarget(), selectedDecision);
                 resetStageAfterRecieveQuest();
             }
             case COMPLETE_QUEST -> {
-                String questName = currentDialogues.getExecuteTarget();
-                Quest quest = Quest.QUESTS.get(questName);
-                quest.setStatus(QuestStatus.COMPLETED);
-                // 퀘스트 완료 팝업 띄우기
-                QuestOverlay.displayPopUp("완료", questName);
+                Quest.completeQuest(currentDialogues.getExecuteTarget());
                 resetStageAfterRecieveQuest();
             }
             case CLOSE -> {

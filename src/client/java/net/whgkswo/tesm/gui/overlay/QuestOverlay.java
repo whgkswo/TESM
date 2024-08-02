@@ -8,24 +8,24 @@ import net.whgkswo.tesm.gui.component.bounds.Boundary;
 import net.whgkswo.tesm.gui.component.elements.TextPopUp;
 
 public class QuestOverlay implements HudRenderCallback {
-    private static TextPopUp eventName;
-    private static TextPopUp content;
+    private static TextPopUp eventType;
+    private static TextPopUp questName;
 
     @Override
     public void onHudRender(DrawContext drawContext, float tickDelta) {
-        if(eventName != null && eventName.getStatus() != TransitionStatus.TERMINATED){
-            eventName.render(drawContext);
+        if(eventType != null && eventType.getStatus() != TransitionStatus.TERMINATED){
+            eventType.render(drawContext);
         }
-        if(content != null && content.getStatus() != TransitionStatus.TERMINATED){
-            content.render(drawContext);
+        if(questName != null && questName.getStatus() != TransitionStatus.TERMINATED){
+            questName.render(drawContext);
         }
     }
     public static void displayPopUp(String type, String questName){
-        eventName = new TextPopUp(
+        eventType = new TextPopUp(
                 new Boundary(Boundary.BoundType.FIXED, 0.05, 0.45),
                 new CustomColor(255,255,255),
                 type, 1.2f, 198, 16, 19);
-        content = new TextPopUp(
+        QuestOverlay.questName = new TextPopUp(
                 new Boundary(Boundary.BoundType.FIXED, 0.05, 0.5),
                 new CustomColor(255,255,255),
                 questName, 1f, 140, 50,40);
