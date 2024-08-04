@@ -19,8 +19,8 @@ public class OktoKamarroDL extends NpcDialogues {
     public static HashMap<String, DecisionStage> registerDecisions(){
         HashMap<String, DecisionStage> decisions = new HashMap<>();
         decisions.put("General", new DecisionStage(
-                new Decision("[테스트 퀘스트 2] 인두리온이 보내서 왔습니다.","1:2",
-                        new QuestRequirement("테스트 퀘스트 2", QuestStatus.ONGOING, "1"))
+                new Decision("[테스트 퀘스트 2] 인두리온이 보내서 왔습니다.",
+                        new QuestRequirement("테스트 퀘스트 2", QuestStatus.ONGOING, "분기점 1"), "옥토 카마로 루트")
         ));
         return decisions;
     }
@@ -30,7 +30,7 @@ public class OktoKamarroDL extends NpcDialogues {
         registerGeneralLines(normalLines);
         // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 선택지에 따른 후속 대사 등록ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
         registerDecisionLines(normalLines,"General",
-                new NormalStage(NormalStage.ExecuteAfter.ADVANCE_QUEST, "테스트 퀘스트 2","2",
+                new NormalStage(NormalStage.ExecuteAfter.ADVANCE_QUEST, "테스트 퀘스트 2","결말",
                         new NormalLine("인두리온이 말했던 사람이 너구나!"),
                         new NormalLine("자, 여기 보수다."))
         );

@@ -20,9 +20,9 @@ public class AthalionDL extends NpcDialogues {
         HashMap<String, DecisionStage> decisions = new HashMap<>();
         decisions.put("General", new DecisionStage(
                 new Decision("[테스트 퀘스트] 인두리온이 보내서 왔습니다.",
-                        new QuestRequirement("테스트 퀘스트", QuestStatus.ONGOING, "1")),
-                new Decision("[테스트 퀘스트 2] 인두리온이 보내서 왔습니다.","1:1",
-                        new QuestRequirement("테스트 퀘스트 2", QuestStatus.ONGOING, "1"))
+                        new QuestRequirement("테스트 퀘스트", QuestStatus.ONGOING, "만남")),
+                new Decision("[테스트 퀘스트 2] 인두리온이 보내서 왔습니다.",
+                        new QuestRequirement("테스트 퀘스트 2", QuestStatus.ONGOING, "분기점 1"), "아탈리온 루트")
         ));
         return decisions;
     }
@@ -35,7 +35,7 @@ public class AthalionDL extends NpcDialogues {
                 new NormalStage(NormalStage.ExecuteAfter.COMPLETE_QUEST, "테스트 퀘스트",
                         new NormalLine("[테스트 퀘스트] 인두리온이 말한 사람이 당신이었군요."),
                         new NormalLine("여기 보수입니다.")),
-                new NormalStage(NormalStage.ExecuteAfter.ADVANCE_QUEST, "테스트 퀘스트 2", "2",
+                new NormalStage(NormalStage.ExecuteAfter.ADVANCE_QUEST, "테스트 퀘스트 2", "결말",
                         new NormalLine("[테스트 퀘스트 2] 인두리온이 말한 사람이 당신이었군요."),
                         new NormalLine("여기 보수입니다."))
         );

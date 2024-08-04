@@ -1,6 +1,5 @@
 package net.whgkswo.tesm.conversation.quest;
 
-import net.whgkswo.tesm.conversation.ConversationScreen;
 import net.whgkswo.tesm.conversation.Decision;
 import net.whgkswo.tesm.conversation.quest.objective.QuestObjective;
 import net.whgkswo.tesm.gui.overlay.QuestOverlay;
@@ -8,22 +7,26 @@ import net.whgkswo.tesm.gui.overlay.QuestOverlay;
 import java.util.*;
 
 public class Quest {
+    public static final String QUEST_ROUTE_BASE_KEY = "기본 키";
+    private String startingStage;
     private QuestStatus status;
     private String name;
     private String description;
     private QuestType questType;
     private String subType;
     // TODO: 선형적 퀘스트가 아니라 분기를 가진 퀘스트도 있어야 함. 이를 위해 objectiveStage 도입 필요
-    private Map<String,QuestObjective> objectives;
-    private String currentStage = "1";
+    private Map<String, QuestStage> objectives;
+    private String currentStage;
     public static final Map<String, Quest> QUESTS = new HashMap<>();
-    public Quest(String name, String description, QuestType questType, String subType, HashMap<String,QuestObjective> objectives){
+    public Quest(String name, String description, QuestType questType, String subType, String startingStage, HashMap<String,QuestStage> stages){
         status = QuestStatus.AVAILABLE;
         this.name = name;
         this.description = description;
         this.questType = questType;
         this.subType = subType;
-        this.objectives = objectives;
+        this.startingStage = startingStage;
+        this.objectives = stages;
+        currentStage = startingStage;
         QUESTS.put(name, this);
     }
     public QuestStatus getStatus() {
@@ -50,7 +53,11 @@ public class Quest {
         return subType;
     }
 
-    public Map<String, QuestObjective> getObjectives() {
+    public String getStartingStage() {
+        return startingStage;
+    }
+
+    public Map<String, QuestStage> getStages() {
         return objectives;
     }
 
@@ -65,33 +72,29 @@ public class Quest {
     public static void startQuest(String questName){
         Quest quest = Quest.QUESTS.get(questName);
         quest.setStatus(QuestStatus.ONGOING);
+
+        Map<String, QuestObjective> objectives = quest.getStages().get(quest.getStartingStage()).getObjectives();
         // 퀘스트 시작 팝업 띄우기
-        QuestOverlay.displayPopUp("시작", questName);
+        QuestOverlay.displayStartPopUp("시작", questName, objectives);
     }
     public static void advanceQuest(String questName, Decision selectedDecision){
         Quest quest = Quest.QUESTS.get(questName);
 
-        Map<String, QuestObjective> objectives = quest.getObjectives();
-        String nextStage = objectives.get(selectedDecision.getQuestObjectId()).getNextStage();
+        Map<String, QuestStage> stages = quest.getStages();
+        Map<String, QuestObjective> objectives = stages.get(quest.getCurrentStage()).getObjectives();
+        QuestObjective objective = objectives.get(selectedDecision.getTargetQuestRoute());
+
+        String nextStage = objective.getNextStage();
         quest.setCurrentStage(nextStage);
+        // 퀘스트 진행 상황 팝업 띄우기
+        String prevObjective = objectives.get(selectedDecision.getTargetQuestRoute()).getDescription();
+        Map<String, QuestObjective> nextObjectives = stages.get(nextStage).getObjectives();
+        QuestOverlay.displayAdvancePopUp(prevObjective, nextObjectives);
     }
     public static void completeQuest(String questName){
         Quest quest = Quest.QUESTS.get(questName);
         quest.setStatus(QuestStatus.COMPLETED);
         // 퀘스트 완료 팝업 띄우기
-        QuestOverlay.displayPopUp("완료", questName);
-    }
-
-    public static void registerQuests(){
-        new Quest("테스트 퀘스트","테스트 퀘스트입니다.",QuestType.MISCELLANEOUS,"테스트",
-                new HashMap<>(){{
-                    put("1:1", new QuestObjective("아탈리온과 대화하기", "CLEAR"));
-                }});
-        new Quest("테스트 퀘스트 2", "테스트 퀘스트 2입니다.", QuestType.MISCELLANEOUS, "테스트",
-                new HashMap<>(){{
-                    put("1:1", new QuestObjective("아탈리온과 대화하기", "2"));
-                    put("1:2", new QuestObjective("또는 옥토 카마로와 대화하기", "2"));
-                    put("2:1", new QuestObjective("인두리온에게 돌아가기", "CLEAR"));
-                }});
+        QuestOverlay.displayCompletePopUp("완료", questName);
     }
 }

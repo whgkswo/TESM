@@ -22,7 +22,7 @@ public class IndurionDL extends NpcDialogues {
                 new Decision("(반복)"),
                 new Decision("계속 말해보시오"),
                 new Decision("그럼 이만"),
-                new Decision("이야기하고 왔습니다.", new QuestRequirement("테스트 퀘스트 2", QuestStatus.ONGOING, "2"))
+                new Decision("이야기하고 왔습니다.", new QuestRequirement("테스트 퀘스트 2", QuestStatus.ONGOING, "결말"))
         ));
         decisions.put("General-2", new DecisionStage(
                 new Decision("당신에 대해 말해주시오"),

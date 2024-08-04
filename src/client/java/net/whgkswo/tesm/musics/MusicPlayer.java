@@ -25,7 +25,7 @@ public class MusicPlayer {
         ClientTickEvents.END_CLIENT_TICK.register(client -> this.updateTick());
     }
     public void updateTick(){
-        if(MinecraftClient.getInstance().world == null){
+        if(MinecraftClient.getInstance().world == null || MinecraftClient.getInstance().isPaused()){
             return;
         }
         tickCounter++;
@@ -75,6 +75,9 @@ public class MusicPlayer {
         TimePeriod timePeriod = TimePeriod.getPeriod(world.getTimeOfDay());
 
         List<MusicEvent> musicList = MUSICS.get(new MusicKey(region,timePeriod));
+        if(musicList.isEmpty()){
+            return;
+        }
         // 재생할 트랙 번호 생성
         int trackNumber = selectTrackNumber(new MusicKey(region, timePeriod), musicList.size());
 

@@ -2,32 +2,82 @@ package net.whgkswo.tesm.gui.overlay;
 
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.gui.DrawContext;
+import net.whgkswo.tesm.conversation.quest.objective.QuestObjective;
 import net.whgkswo.tesm.gui.colors.CustomColor;
+import net.whgkswo.tesm.gui.component.FadeSequence;
 import net.whgkswo.tesm.gui.component.TransitionStatus;
 import net.whgkswo.tesm.gui.component.bounds.Boundary;
 import net.whgkswo.tesm.gui.component.elements.TextPopUp;
 
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 public class QuestOverlay implements HudRenderCallback {
     private static TextPopUp eventType;
     private static TextPopUp questName;
+    private static Set<TextPopUp> objectiveSet = new HashSet<>();
 
     @Override
     public void onHudRender(DrawContext drawContext, float tickDelta) {
-        if(eventType != null && eventType.getStatus() != TransitionStatus.TERMINATED){
+        if(eventType != null){
             eventType.render(drawContext);
         }
-        if(questName != null && questName.getStatus() != TransitionStatus.TERMINATED){
+        if(questName != null){
             questName.render(drawContext);
         }
+        for(TextPopUp objective : objectiveSet){
+            objective.render(drawContext);
+        }
     }
-    public static void displayPopUp(String type, String questName){
+    public static void displayStartPopUp(String type, String questName, Map<String, QuestObjective> objectives){
+
         eventType = new TextPopUp(
                 new Boundary(Boundary.BoundType.FIXED, 0.05, 0.45),
                 new CustomColor(255,255,255),
-                type, 1.2f, 198, 16, 19);
+                type, 1.2f,
+                new FadeSequence(16,248,  19));
         QuestOverlay.questName = new TextPopUp(
                 new Boundary(Boundary.BoundType.FIXED, 0.05, 0.5),
                 new CustomColor(255,255,255),
-                questName, 1f, 140, 50,40);
+                questName, 1f,
+                new FadeSequence(50,186, 40));
+
+        int i = 0;
+        for(QuestObjective objective : objectives.values()){
+            objectiveSet.add(new TextPopUp(
+                    new Boundary(Boundary.BoundType.FIXED, 0.05, 0.55 + i * 0.04),
+                            CustomColor.ColorsPreset.RODEO_DUST.getColor(),
+                            i == 0 ? objective.getDescription() : "또는 " + objective.getDescription(),
+                    0.7f,
+                    new FadeSequence(20,252, 20)
+            ));
+            i++;
+        }
+    }
+    public static void displayAdvancePopUp(String object, Map<String, QuestObjective> nextObjectives){
+        int i = 0;
+        eventType = new TextPopUp(
+                new Boundary(Boundary.BoundType.FIXED, 0.05, 0.45),
+                CustomColor.ColorsPreset.WHITE.getColor(),
+                object, 0.7f, new FadeSequence(20, 160,20)
+        );
+        for(QuestObjective objective : nextObjectives.values()){
+            objectiveSet.add(new TextPopUp(new Boundary(Boundary.BoundType.FIXED, 0.05, 0.5 + i * 0.04),
+                    CustomColor.ColorsPreset.RODEO_DUST.getColor(),
+                    i == 0 ? objective.getDescription() : "또는 " + objective.getDescription(),
+                    0.7f, new FadeSequence(200, 20, 252,20)));
+            i++;
+        }
+    }
+    public static void displayCompletePopUp(String type, String questName){
+        eventType = new TextPopUp(
+                new Boundary(Boundary.BoundType.FIXED, 0.05, 0.45),
+                new CustomColor(255,255,255),
+                type, 1.2f, new FadeSequence(16, 235, 35));
+        QuestOverlay.questName = new TextPopUp(
+                new Boundary(Boundary.BoundType.FIXED, 0.05, 0.5),
+                new CustomColor(255,255,255),
+                questName, 1f, new FadeSequence(50,205,40));
     }
 }

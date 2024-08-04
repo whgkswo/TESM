@@ -4,6 +4,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.whgkswo.tesm.gui.Alignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.colors.CustomColor;
+import net.whgkswo.tesm.gui.component.FadeSequence;
 import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.gui.component.TransitionStatus;
 import net.whgkswo.tesm.gui.component.bounds.Boundary;
@@ -11,64 +12,68 @@ import net.whgkswo.tesm.gui.component.bounds.Boundary;
 public class TextPopUp extends GuiComponent<Boundary> {
     private String content;
     private float textScale;
-    private int fadeInInterval;
-    private int duration;
-    private int fadeOutInterval;
+    private FadeSequence fadeSequence;
     private int tick;
     private TransitionStatus status;
 
-    public TextPopUp(Boundary bound, CustomColor color, String content, float textScale, int duration, int fadeInterval) {
+    public TextPopUp(Boundary bound, CustomColor color, String content, float textScale, FadeSequence fadeSequence) {
         super(new CustomColor(color.getR(), color.getG(), color.getB(), 0), bound);
         this.content = content;
         this.textScale = textScale;
-        this.duration = duration;
-        this.fadeInInterval = fadeInterval;
-        this.fadeOutInterval = fadeInterval;
-        status = TransitionStatus.FADING_IN;
-    }
-    public TextPopUp(Boundary bound, CustomColor color, String content, float textScale, int duration, int fadeInInterval, int fadeOutInterval) {
-        super(new CustomColor(color.getR(), color.getG(), color.getB(), 0), bound);
-        this.content = content;
-        this.textScale = textScale;
-        this.duration = duration;
-        this.fadeInInterval = fadeInInterval;
-        this.fadeOutInterval = fadeOutInterval;
-        status = TransitionStatus.FADING_IN;
+        this.fadeSequence = fadeSequence;
+        status = fadeSequence.getDelay() == 0 ? TransitionStatus.FADING_IN : TransitionStatus.PENDING;
     }
 
     @Override
     public void render(DrawContext context) {
         Boundary bound = getRenderingBound();
         update();
-        if(status != TransitionStatus.TERMINATED){
-            RenderingHelper.renderText(Alignment.LEFT, context, textScale, content, bound.getxRatio(), bound.getyRatio(), getColor().getHexDecimalCode());
+        if(getColor().getA() == 0){
+            return;
         }
-        tick++;
+        RenderingHelper.renderText(Alignment.LEFT, context, textScale, content, bound.getxRatio(), bound.getyRatio(), getColor().getHexDecimalCode());
     }
     private void update(){
         switch (status){
             case FADING_IN -> {
-                if(fadeInInterval > 0){
-                    getColor().addA(255 / fadeInInterval);
+                if(fadeSequence.getFadeIn() > 0){
+                    getColor().addA(255 / fadeSequence.getFadeIn());
                 }
             }
             case FADING_OUT -> {
-                if(fadeOutInterval > 0){
-                    getColor().addA(-255 / fadeOutInterval);
+                if(fadeSequence.getFadeOut() > 0){
+                    getColor().addA(-255 / fadeSequence.getFadeOut());
                 }
             }
         }
+        tick++;
         changeStatus();
     }
     private void changeStatus(){
-        if(tick == fadeInInterval){
-            status = TransitionStatus.STABLE;
-        }
-        if(tick == fadeInInterval + duration){
-            status = TransitionStatus.FADING_OUT;
-        }
-        if(tick == fadeInInterval + duration + fadeOutInterval){
-            status = TransitionStatus.TERMINATED;
+        switch (status){
+            case PENDING -> {
+                if(tick == fadeSequence.getDelay()){
+                    status = TransitionStatus.FADING_IN;
+                    tick = 0;
+                }
+            }
+            case FADING_IN -> {
+                if(tick == fadeSequence.getFadeIn()){
+                    status = TransitionStatus.STABLE;
+                    tick = 0;
+                }
+            }
+            case STABLE -> {
+                if(tick == fadeSequence.getDuration()){
+                    status = TransitionStatus.FADING_OUT;
+                    tick = 0;
+                }
+            }
+            case FADING_OUT -> {
+                if(tick == fadeSequence.getFadeOut()){
+                    status = TransitionStatus.TERMINATED;
+                }
+            }
         }
     }
     public String getContent() {

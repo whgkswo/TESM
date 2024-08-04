@@ -46,6 +46,16 @@ public class MenuScreen extends CustomScreen {
                             new RectangularBound(Boundary.BoundType.FIXED,0.1, 0.25 + 0.05 * i, 0.2, 0.04),
                             0.05));
         });
+        if(!onGoingQuests.isEmpty()){
+            createComponent("questDescription",
+                    new TextBox(CustomColor.ColorsPreset.WHITE.getColor(),
+                            new RectangularBound(Boundary.BoundType.FLEXIBLE, 0.35, 0.25, 0.5, 0.3),
+                            textRenderer,
+                            onGoingQuests.get(0).getCurrentStage(),
+                            0.7f,
+                            0,0,Alignment.LEFT
+                    ));
+        }
     }
     @Override
     public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {

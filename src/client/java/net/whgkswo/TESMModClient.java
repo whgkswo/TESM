@@ -7,6 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.whgkswo.tesm.TestClassClient;
 import net.whgkswo.tesm.conversation.ConversationStart;
 import net.whgkswo.tesm.conversation.quest.Quest;
+import net.whgkswo.tesm.conversation.quest.QuestRegisterer;
 import net.whgkswo.tesm.events.UseBlockEvent;
 import net.whgkswo.tesm.general.OnClientTicks;
 import net.whgkswo.tesm.gui.overlay.*;
@@ -80,7 +81,7 @@ public class TESMModClient implements ClientModInitializer {
 		KeyInputHandler.register();
 
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 퀘스트 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-		Quest.registerQuests();
+		QuestRegisterer.register();
 
 		TestClassClient.testClassClient(); // 테스트용!
 	}

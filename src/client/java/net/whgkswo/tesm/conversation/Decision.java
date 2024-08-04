@@ -1,9 +1,11 @@
 package net.whgkswo.tesm.conversation;
 
+import net.whgkswo.tesm.conversation.quest.Quest;
+
 public class Decision extends DialogueLine{
     private boolean isChosen;
     private QuestRequirement questRequirement;
-    private String questObjectId;
+    private String targetQuestRoute;
 
     public Decision(String line) {
         super(line);
@@ -12,11 +14,12 @@ public class Decision extends DialogueLine{
     public Decision(String line, QuestRequirement questRequirement) {
         super(line);
         this.questRequirement = questRequirement;
+        targetQuestRoute = Quest.QUEST_ROUTE_BASE_KEY;
     }
-    public Decision(String line, String questObjectId,QuestRequirement questRequirement) {
+    public Decision(String line, QuestRequirement questRequirement, String targetQuestRoute) {
         super(line);
-        this.questObjectId = questObjectId;
         this.questRequirement = questRequirement;
+        this.targetQuestRoute = targetQuestRoute;
     }
 
     public boolean isChosen() {
@@ -27,8 +30,8 @@ public class Decision extends DialogueLine{
         isChosen = chosen;
     }
 
-    public String getQuestObjectId() {
-        return questObjectId;
+    public String getTargetQuestRoute() {
+        return targetQuestRoute;
     }
 
     public QuestRequirement getQuestRequirement() {
