@@ -1,6 +1,8 @@
 package net.whgkswo.tesm.gui.component.elements;
 
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
 import net.whgkswo.tesm.gui.Alignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.colors.CustomColor;
@@ -31,7 +33,10 @@ public class TextPopUp extends GuiComponent<Boundary> {
         if(getColor().getA() == 0){
             return;
         }
-        RenderingHelper.renderText(Alignment.LEFT, context, textScale, content, bound.getxRatio(), bound.getyRatio(), getColor().getHexDecimalCode());
+        /*RenderingHelper.renderText(Alignment.LEFT, context, textScale, content, bound.getxRatio(), bound.getyRatio(), getColor().getHexDecimalCode());*/
+        RenderingHelper.renderText(Alignment.LEFT, context, textScale,
+                Text.literal(content).styled(style -> style.withStrikethrough(true)),
+                bound.getxRatio(), bound.getyRatio(), getColor().getHexDecimalCode());
     }
     private void update(){
         switch (status){
@@ -75,12 +80,5 @@ public class TextPopUp extends GuiComponent<Boundary> {
                 }
             }
         }
-    }
-    public String getContent() {
-        return content;
-    }
-
-    public TransitionStatus getStatus() {
-        return status;
     }
 }

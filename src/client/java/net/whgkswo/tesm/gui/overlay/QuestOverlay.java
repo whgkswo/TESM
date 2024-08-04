@@ -2,6 +2,7 @@ package net.whgkswo.tesm.gui.overlay;
 
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.text.Text;
 import net.whgkswo.tesm.conversation.quest.objective.QuestObjective;
 import net.whgkswo.tesm.gui.colors.CustomColor;
 import net.whgkswo.tesm.gui.component.FadeSequence;
@@ -63,7 +64,7 @@ public class QuestOverlay implements HudRenderCallback {
                 object, 0.7f, new FadeSequence(20, 160,20)
         );
         for(QuestObjective objective : nextObjectives.values()){
-            objectiveSet.add(new TextPopUp(new Boundary(Boundary.BoundType.FIXED, 0.05, 0.5 + i * 0.04),
+            objectiveSet.add(new TextPopUp(new Boundary(Boundary.BoundType.FIXED, 0.05, 0.45 + i * 0.04),
                     CustomColor.ColorsPreset.RODEO_DUST.getColor(),
                     i == 0 ? objective.getDescription() : "또는 " + objective.getDescription(),
                     0.7f, new FadeSequence(200, 20, 252,20)));

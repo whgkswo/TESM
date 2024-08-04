@@ -10,6 +10,8 @@ import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.gui.colors.BaseTexture;
 import net.whgkswo.tesm.gui.colors.CustomColor;
 
+import java.util.Optional;
+
 public class RenderingHelper {
     public static final TextRenderer TEXT_RENDERER = MinecraftClient.getInstance().textRenderer;
     public static final double DEFAULT_TEXT_VERTICAL_WIDTH_RATIO = (double) 1 / 50;
@@ -40,6 +42,28 @@ public class RenderingHelper {
             case RIGHT -> {
                 int textWidth = TEXT_RENDERER.getWidth(str);
                 context.drawTextWithShadow(TEXT_RENDERER, str, xPos - textWidth, yPos, color);
+            }
+        }
+        context.getMatrices().pop();
+    }
+    public static void renderText(Alignment alignment, DrawContext context, float scale, Text text,
+                                  double xRatio, double yRatio, int color){
+        int xPos = getXPos(context, xRatio, scale);
+        int yPos = getYPos(context, yRatio, scale);
+
+        context.getMatrices().push();
+        context.getMatrices().scale(scale,scale,1);
+
+        switch (alignment){
+            case LEFT -> {
+                context.drawTextWithShadow(TEXT_RENDERER, text, xPos, yPos, color);
+            }
+            case CENTER -> {
+                context.drawCenteredTextWithShadow(TEXT_RENDERER,text, xPos, yPos ,color);
+            }
+            case RIGHT -> {
+                int textWidth = TEXT_RENDERER.getWidth(text.getString());
+                context.drawTextWithShadow(TEXT_RENDERER, text, xPos - textWidth, yPos, color);
             }
         }
         context.getMatrices().pop();
