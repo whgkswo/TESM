@@ -8,16 +8,12 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
-import net.whgkswo.tesm.general.GlobalVariablesClient;
-import net.whgkswo.tesm.general.OnClientTicks;
 import net.whgkswo.tesm.networking.ModMessages;
 import net.whgkswo.tesm.npcs.quests.Quests;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.*;
 import java.util.Arrays;
 
-import static net.whgkswo.tesm.conversation.ConversationStart.convPartner;
 import static net.whgkswo.tesm.general.GlobalVariablesClient.arrowState;
 
 public class JournalScreen extends Screen {

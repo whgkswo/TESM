@@ -1,4 +1,4 @@
-package net.whgkswo.tesm.musics;
+package net.whgkswo.tesm.sounds.musics;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -6,13 +6,12 @@ import net.minecraft.client.color.world.BiomeColors;
 import net.minecraft.util.math.BlockPos;
 import net.whgkswo.tesm.TestClassClient;
 import net.whgkswo.tesm.conversation.ConversationStart;
-import net.whgkswo.tesm.conversation.quest.Quest;
 import net.whgkswo.tesm.conversation.quest.QuestRegisterer;
 import net.whgkswo.tesm.events.UseBlockEvent;
-import net.whgkswo.tesm.general.OnClientTicks;
+import net.whgkswo.tesm.general.ClientEvents;
 import net.whgkswo.tesm.gui.overlay.*;
 import net.whgkswo.tesm.keybinds.KeyInputHandler;
-import net.whgkswo.tesm.musics.MusicPlayer;
+import net.whgkswo.tesm.sounds.musics.MusicPlayer;
 import net.whgkswo.tesm.networking.ModMessages;
 import net.whgkswo.tesm.networking.ModMessagesClient;
 import net.whgkswo.tesm.raycast.CenterRaycast;
@@ -68,10 +67,10 @@ public class TESMModClient implements ClientModInitializer {
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 클라이언트 사이드 메소드 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 		CenterRaycast.centerRaycast();
 		ConversationStart.checkCondition();
-		OnClientTicks.getArrowState();
+		ClientEvents.getArrowState();
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 클라이언트 사이드 이벤트 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 		UseBlockEvent.register();
-		new MusicPlayer().onClientTick();
+		ClientEvents.onGameStart();
 
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 서버 통신 패킷 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 		ModMessages.registerS2CPackets(); // 서버로 송신

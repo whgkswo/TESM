@@ -1,11 +1,13 @@
-package net.whgkswo.tesm.musics;
+package net.whgkswo.tesm.sounds.musics;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
-import net.whgkswo.tesm.musics.soundEvents.MusicEvent;
-import net.whgkswo.tesm.musics.soundEvents.MusicKey;
+import net.whgkswo.tesm.general.GlobalVariables;
+import net.whgkswo.tesm.sounds.SoundHelper;
+import net.whgkswo.tesm.sounds.musics.soundEvents.MusicEvent;
+import net.whgkswo.tesm.sounds.musics.soundEvents.MusicKey;
 
 import java.util.*;
 
@@ -17,19 +19,24 @@ public class MusicPlayer {
     private Map<MusicKey, PlayedMusicPool> playedMusicMap = new HashMap<>();
     private int tickCounter;
     private int tickGoal = 100;
-    private boolean musicPlaying;
     private MusicEvent currentPlaying;
     private boolean isFirstTrackOfCycle;
+
+    public void reset(){
+        tickCounter = 0;
+        tickGoal = 100;
+        currentPlaying = null;
+    }
 
     public void onClientTick(){
         ClientTickEvents.END_CLIENT_TICK.register(client -> this.updateTick());
     }
-    public void updateTick(){
+    private void updateTick(){
         if(MinecraftClient.getInstance().world == null || MinecraftClient.getInstance().isPaused()){
             return;
         }
         tickCounter++;
-        if(!musicPlaying && tickCounter == tickGoal){
+        if(currentPlaying == null && tickCounter == tickGoal){
             TimePeriod timePeriod = TimePeriod.getPeriod(MinecraftClient.getInstance().world.getTimeOfDay());
             if(timePeriod == TimePeriod.EXCEPTION){
                 tickCounter = 0;
@@ -38,11 +45,11 @@ public class MusicPlayer {
             }
             playMusic();
         }
-        /*if(GlobalVariables.player != null){
+        if(GlobalVariables.player != null){
             GlobalVariables.player.sendMessage(Text.literal(tickCounter + "/" + tickGoal + " - " + currentPlaying));
-        }*/
+        }
     }
-    public int selectTrackNumber(MusicKey musicKey, int maxTracks){
+    private int selectTrackNumber(MusicKey musicKey, int maxTracks){
         // NPE를 방지하기 위한 코드
         if(!playedMusicMap.containsKey(musicKey)){
             playedMusicMap.put(musicKey, new PlayedMusicPool());
@@ -70,7 +77,7 @@ public class MusicPlayer {
 
         return availableMusicPool.get(trackNumber);
     }
-    public void playMusic(){
+    private void playMusic(){
         Region region = Region.getRegion();
         TimePeriod timePeriod = TimePeriod.getPeriod(world.getTimeOfDay());
 
@@ -84,8 +91,7 @@ public class MusicPlayer {
         MusicEvent music = musicList.get(trackNumber);
         /*player.sendMessage(Text.literal(String.format("%d/%d번 트랙 %s 재생", trackNumber+1,musicList.size(),music.getSoundEvent().getId())));*/
 
-        world.playSound(null,player.getBlockPos(), music.getSoundEvent(),
-                SoundCategory.RECORDS,1f,1f);
+        SoundHelper.playSound(music.getSoundEvent(), SoundCategory.RECORDS);
         currentPlaying = music;
         tickCounter = 0;
         tickGoal = music.getLength();

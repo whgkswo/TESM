@@ -1,7 +1,7 @@
-package net.whgkswo.tesm.musics.soundEvents;
+package net.whgkswo.tesm.sounds.musics.soundEvents;
 
-import net.whgkswo.tesm.musics.Region;
-import net.whgkswo.tesm.musics.TimePeriod;
+import net.whgkswo.tesm.sounds.musics.Region;
+import net.whgkswo.tesm.sounds.musics.TimePeriod;
 
 import java.util.Objects;
 

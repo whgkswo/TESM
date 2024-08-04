@@ -1,10 +1,10 @@
-package net.whgkswo.tesm.musics.soundEvents;
+package net.whgkswo.tesm.sounds.musics.soundEvents;
 
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
-import net.whgkswo.tesm.musics.Region;
-import net.whgkswo.tesm.musics.TimePeriod;
+import net.whgkswo.tesm.sounds.musics.Region;
+import net.whgkswo.tesm.sounds.musics.TimePeriod;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public enum MusicEvent {
-    ASSALTO_04_FINAL(Region.CYRODIIL,TimePeriod.MORNING,"assalto_04_final",3500),
+    ASSALTO_04_FINAL(Region.CYRODIIL, TimePeriod.MORNING,"assalto_04_final",3500),
     KING_AND_COUNTRY(Region.CYRODIIL,TimePeriod.MORNING,"king_and_country",4920),
     THESE_VERDANT_FIELDS(Region.CYRODIIL,TimePeriod.MORNING,"these_verdant_fields",6600),
     THROUGH_THE_VALLEY(Region.CYRODIIL,TimePeriod.MORNING,"through_the_valley",5220),

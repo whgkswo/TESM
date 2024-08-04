@@ -3,6 +3,7 @@ package net.whgkswo.tesm.conversation.quest;
 import net.whgkswo.tesm.conversation.Decision;
 import net.whgkswo.tesm.conversation.quest.objective.QuestObjective;
 import net.whgkswo.tesm.gui.overlay.QuestOverlay;
+import net.whgkswo.tesm.sounds.SoundHelper;
 
 import java.util.*;
 
@@ -76,6 +77,8 @@ public class Quest {
         Map<String, QuestObjective> objectives = quest.getStages().get(quest.getStartingStage()).getObjectives();
         // 퀘스트 시작 팝업 띄우기
         QuestOverlay.displayStartPopUp("시작", questName, objectives);
+        // 퀘스트 시작 사운드 재생
+        /*SoundHelper.playSound();*/
     }
     public static void advanceQuest(String questName, Decision selectedDecision){
         Quest quest = Quest.QUESTS.get(questName);

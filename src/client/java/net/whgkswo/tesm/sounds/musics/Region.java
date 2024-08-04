@@ -1,4 +1,4 @@
-package net.whgkswo.tesm.musics;
+package net.whgkswo.tesm.sounds.musics;
 
 public enum Region {
     ALINOR,
