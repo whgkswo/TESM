@@ -36,12 +36,12 @@ public class QuestOverlay implements HudRenderCallback {
         eventType = new TextPopUp(
                 new Boundary(Boundary.BoundType.FIXED, 0.05, 0.45),
                 new CustomColor(255,255,255),
-                type, 1.2f,
+                Text.literal(type), 1.2f,
                 new FadeSequence(16,248,  19));
         QuestOverlay.questName = new TextPopUp(
                 new Boundary(Boundary.BoundType.FIXED, 0.05, 0.5),
                 new CustomColor(255,255,255),
-                questName, 1f,
+                Text.literal(questName), 1f,
                 new FadeSequence(50,186, 40));
 
         int i = 0;
@@ -49,7 +49,7 @@ public class QuestOverlay implements HudRenderCallback {
             objectiveSet.add(new TextPopUp(
                     new Boundary(Boundary.BoundType.FIXED, 0.05, 0.55 + i * 0.04),
                             CustomColor.ColorsPreset.RODEO_DUST.getColor(),
-                            i == 0 ? objective.getDescription() : "또는 " + objective.getDescription(),
+                            Text.literal(i == 0 ? objective.getDescription() : "또는 " + objective.getDescription()),
                     0.7f,
                     new FadeSequence(20,252, 20)
             ));
@@ -61,12 +61,13 @@ public class QuestOverlay implements HudRenderCallback {
         eventType = new TextPopUp(
                 new Boundary(Boundary.BoundType.FIXED, 0.05, 0.45),
                 CustomColor.ColorsPreset.WHITE.getColor(),
-                object, 0.7f, new FadeSequence(20, 160,20)
+                Text.literal(object).styled(style -> style.withStrikethrough(true)),
+                0.7f, new FadeSequence(20, 160,20)
         );
         for(QuestObjective objective : nextObjectives.values()){
             objectiveSet.add(new TextPopUp(new Boundary(Boundary.BoundType.FIXED, 0.05, 0.45 + i * 0.04),
                     CustomColor.ColorsPreset.RODEO_DUST.getColor(),
-                    i == 0 ? objective.getDescription() : "또는 " + objective.getDescription(),
+                    Text.literal(i == 0 ? objective.getDescription() : "또는 " + objective.getDescription()),
                     0.7f, new FadeSequence(200, 20, 252,20)));
             i++;
         }
@@ -75,10 +76,10 @@ public class QuestOverlay implements HudRenderCallback {
         eventType = new TextPopUp(
                 new Boundary(Boundary.BoundType.FIXED, 0.05, 0.45),
                 new CustomColor(255,255,255),
-                type, 1.2f, new FadeSequence(16, 235, 35));
+                Text.literal(type), 1.2f, new FadeSequence(16, 235, 35));
         QuestOverlay.questName = new TextPopUp(
                 new Boundary(Boundary.BoundType.FIXED, 0.05, 0.5),
                 new CustomColor(255,255,255),
-                questName, 1f, new FadeSequence(50,205,40));
+                Text.literal(questName), 1f, new FadeSequence(50,205,40));
     }
 }

@@ -1,8 +1,13 @@
 package net.whgkswo.tesm.conversation.quest;
 
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.Identifier;
+import net.whgkswo.tesm.TESMMod;
 import net.whgkswo.tesm.conversation.Decision;
 import net.whgkswo.tesm.conversation.quest.objective.QuestObjective;
 import net.whgkswo.tesm.gui.overlay.QuestOverlay;
+import net.whgkswo.tesm.sounds.SoundEffects;
 import net.whgkswo.tesm.sounds.SoundHelper;
 
 import java.util.*;
@@ -78,7 +83,7 @@ public class Quest {
         // 퀘스트 시작 팝업 띄우기
         QuestOverlay.displayStartPopUp("시작", questName, objectives);
         // 퀘스트 시작 사운드 재생
-        /*SoundHelper.playSound();*/
+        SoundHelper.playSound(SoundEffects.QUEST_START, SoundCategory.RECORDS);
     }
     public static void advanceQuest(String questName, Decision selectedDecision){
         Quest quest = Quest.QUESTS.get(questName);
@@ -93,11 +98,15 @@ public class Quest {
         String prevObjective = objectives.get(selectedDecision.getTargetQuestRoute()).getDescription();
         Map<String, QuestObjective> nextObjectives = stages.get(nextStage).getObjectives();
         QuestOverlay.displayAdvancePopUp(prevObjective, nextObjectives);
+        // 퀘스트 진행 사운드 재생
+        SoundHelper.playSound(SoundEffects.NEW_OBJECTIVE, SoundCategory.RECORDS);
     }
     public static void completeQuest(String questName){
         Quest quest = Quest.QUESTS.get(questName);
         quest.setStatus(QuestStatus.COMPLETED);
         // 퀘스트 완료 팝업 띄우기
         QuestOverlay.displayCompletePopUp("완료", questName);
+        // 퀘스트 완료 사운드 재생
+        SoundHelper.playSound(SoundEffects.QUEST_COMPLETED, SoundCategory.RECORDS);
     }
 }

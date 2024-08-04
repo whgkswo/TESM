@@ -12,13 +12,13 @@ import net.whgkswo.tesm.gui.component.TransitionStatus;
 import net.whgkswo.tesm.gui.component.bounds.Boundary;
 
 public class TextPopUp extends GuiComponent<Boundary> {
-    private String content;
+    private Text content;
     private float textScale;
     private FadeSequence fadeSequence;
     private int tick;
     private TransitionStatus status;
 
-    public TextPopUp(Boundary bound, CustomColor color, String content, float textScale, FadeSequence fadeSequence) {
+    public TextPopUp(Boundary bound, CustomColor color, Text content, float textScale, FadeSequence fadeSequence) {
         super(new CustomColor(color.getR(), color.getG(), color.getB(), 0), bound);
         this.content = content;
         this.textScale = textScale;
@@ -30,13 +30,13 @@ public class TextPopUp extends GuiComponent<Boundary> {
     public void render(DrawContext context) {
         Boundary bound = getRenderingBound();
         update();
-        if(getColor().getA() == 0){
+        if(getColor().getA() < 4){
             return;
         }
+        int color = getColor().getHexDecimalCode();
         /*RenderingHelper.renderText(Alignment.LEFT, context, textScale, content, bound.getxRatio(), bound.getyRatio(), getColor().getHexDecimalCode());*/
         RenderingHelper.renderText(Alignment.LEFT, context, textScale,
-                Text.literal(content).styled(style -> style.withStrikethrough(true)),
-                bound.getxRatio(), bound.getyRatio(), getColor().getHexDecimalCode());
+                content, bound.getxRatio(), bound.getyRatio(), color);
     }
     private void update(){
         switch (status){
