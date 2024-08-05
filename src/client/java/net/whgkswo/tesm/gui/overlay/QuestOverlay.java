@@ -60,7 +60,7 @@ public class QuestOverlay implements HudRenderCallback {
         int i = 0;
         eventType = new TextPopUp(
                 new Boundary(Boundary.BoundType.FIXED, 0.05, 0.45),
-                CustomColor.ColorsPreset.WHITE.getColor(),
+                new CustomColor(150,150,150),
                 Text.literal(object).styled(style -> style.withStrikethrough(true)),
                 0.7f, new FadeSequence(20, 160,20)
         );

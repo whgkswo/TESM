@@ -34,6 +34,7 @@ public class TextPopUp extends GuiComponent<Boundary> {
             return;
         }
         int color = getColor().getHexDecimalCode();
+
         /*RenderingHelper.renderText(Alignment.LEFT, context, textScale, content, bound.getxRatio(), bound.getyRatio(), getColor().getHexDecimalCode());*/
         RenderingHelper.renderText(Alignment.LEFT, context, textScale,
                 content, bound.getxRatio(), bound.getyRatio(), color);
