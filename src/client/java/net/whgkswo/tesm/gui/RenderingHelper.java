@@ -4,13 +4,10 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.gui.colors.BaseTexture;
 import net.whgkswo.tesm.gui.colors.CustomColor;
-
-import java.util.Optional;
 
 public class RenderingHelper {
     public static final TextRenderer TEXT_RENDERER = MinecraftClient.getInstance().textRenderer;
@@ -112,7 +109,7 @@ public class RenderingHelper {
         // 화면의 모든 요소 위에 그려지는 오버레이를 원한다면 아래 코드는 삭제
         context.setShaderColor(1.0f,1.0f,1.0f,1.0f);
     }
-    public static void renderFilledBox(DrawContext context, CustomColor color, double xRatio, double yRatio, double widthRatio, double heightRatio){
+    public static void renderColoredBox(DrawContext context, CustomColor color, double xRatio, double yRatio, double widthRatio, double heightRatio){
         int screenWidth = context.getScaledWindowWidth();
         int screenHeight = context.getScaledWindowHeight();
 

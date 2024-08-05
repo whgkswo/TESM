@@ -1,6 +1,7 @@
 package net.whgkswo.tesm.gui.screen;
 
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
 import net.whgkswo.tesm.conversation.quest.Quest;
@@ -39,8 +40,7 @@ public class MenuScreen extends CustomScreen {
             createComponent("testComponent" + i,
                     new TextLabel(
                             new CustomColor(200,160,130),
-                            onGoingQuests.get(i).getName(),
-                            0xffffff,
+                            Text.literal(onGoingQuests.get(i).getName()),
                             0.7f,
                             Alignment.LEFT,
                             new RectangularBound(Boundary.BoundType.FIXED,0.1, 0.25 + 0.05 * i, 0.2, 0.04),
@@ -51,7 +51,7 @@ public class MenuScreen extends CustomScreen {
                     new TextBox(CustomColor.ColorsPreset.WHITE.getColor(),
                             new RectangularBound(Boundary.BoundType.FLEXIBLE, 0.35, 0.25, 0.5, 0.3),
                             textRenderer,
-                            onGoingQuests.get(0).getCurrentStage(),
+                            Text.literal(onGoingQuests.get(0).getCurrentStage()),
                             0.7f,
                             0,0,Alignment.LEFT
                     ));

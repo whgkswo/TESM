@@ -2,6 +2,7 @@ package net.whgkswo.tesm.gui.component.elements;
 
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.text.Text;
 import net.whgkswo.tesm.gui.Alignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.colors.CustomColor;
@@ -13,14 +14,14 @@ import java.util.List;
 
 public class TextBox extends GuiComponent<RectangularBound> {
     private static final double LINE_GAP_RATIO = 1.2;
-    TextRenderer textRenderer;
-    private String content;
+    private TextRenderer textRenderer;
+    private Text content;
     private float fontScale;
     private double xMarginRatio;
     private double yMarginRatio;
     private Alignment textAlignment;
 
-    public TextBox(CustomColor color, RectangularBound bound, TextRenderer textRenderer, String content, float fontScale,
+    public TextBox(CustomColor color, RectangularBound bound, TextRenderer textRenderer, Text content, float fontScale,
                    double xMarginRatio, double yMarginRatio, Alignment textAlignment) {
         super(color, bound);
         this.textRenderer = textRenderer;
@@ -30,6 +31,15 @@ public class TextBox extends GuiComponent<RectangularBound> {
         this.yMarginRatio = yMarginRatio;
         this.textAlignment = textAlignment;
     }
+
+    public float getFontScale() {
+        return fontScale;
+    }
+
+    public Text getContent() {
+        return content;
+    }
+
     @Override
     public void render(DrawContext context) {
         render(context, textRenderer);
@@ -39,7 +49,7 @@ public class TextBox extends GuiComponent<RectangularBound> {
         RectangularBound bound = this.getRenderingBound();
         int screenWidth = context.getScaledWindowWidth();
 
-        List<String> contentLines = splitContent(textRenderer, content, (int)(screenWidth * (1 - 2 * xMarginRatio) * bound.getWidthRatio() / fontScale));
+        List<String> contentLines = splitContent(textRenderer, content.getString(), (int)(screenWidth * (1 - 2 * xMarginRatio) * bound.getWidthRatio() / fontScale));
         double lineVerticalWidth = (double) textRenderer.fontHeight * fontScale / context.getScaledWindowHeight();
 
         double yRatio = bound.getyRatio() + yMarginRatio;
