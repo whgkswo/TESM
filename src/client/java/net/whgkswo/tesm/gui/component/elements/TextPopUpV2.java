@@ -33,7 +33,7 @@ public class TextPopUpV2 extends TextLabel{
         int color = getColor().getHexDecimalCode();
 
         /*RenderingHelper.renderText(Alignment.LEFT, context, textScale, content, bound.getxRatio(), bound.getyRatio(), getColor().getHexDecimalCode());*/
-        RenderingHelper.renderText(Alignment.LEFT, context, getTextScale(),
+        RenderingHelper.renderText(this.getContentAlignment(), context, getTextScale(),
                 getContent(), bound.getxRatio(), bound.getyRatio(), color);
     }
     private void update(){
@@ -78,5 +78,8 @@ public class TextPopUpV2 extends TextLabel{
                 }
             }
         }
+    }
+    public TransitionStatus getStatus() {
+        return status;
     }
 }
