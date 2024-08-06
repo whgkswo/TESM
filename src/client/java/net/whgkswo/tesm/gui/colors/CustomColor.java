@@ -103,6 +103,8 @@ public class CustomColor{
     public enum ColorsPreset {
         WHITE(new CustomColor(255,255,255)),
         BLACK(new CustomColor(0,0,0)),
+        CREAM(new CustomColor(250,240,215)),
+        MINT_JULEP(new CustomColor(227,215,180)),
         NEUTRAL_GOLD(new CustomColor(170,166,133)),
         RODEO_DUST(new CustomColor(200,160,130))
         ;
