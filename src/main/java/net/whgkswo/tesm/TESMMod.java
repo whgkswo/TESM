@@ -12,10 +12,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.blocks.ModBlocks;
-import net.whgkswo.tesm.commands.ResetQuests;
-import net.whgkswo.tesm.commands.ScanCommand;
-import net.whgkswo.tesm.commands.SummonNpc;
-import net.whgkswo.tesm.commands.ToggleTimeflow;
+import net.whgkswo.tesm.commands.*;
 import net.whgkswo.tesm.general.InitializeTasks;
 import net.whgkswo.tesm.general.OnServerTicks;
 import net.whgkswo.tesm.general.OnPlayerLeaves;
@@ -69,6 +66,7 @@ public class TESMMod implements ModInitializer {
 		SummonNpc.register();
 		ScanCommand.register();
 		ResetQuests.register();
+		Maze.register();
 
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 이벤트 및 메소드 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
