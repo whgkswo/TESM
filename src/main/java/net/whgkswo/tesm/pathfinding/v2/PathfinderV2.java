@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
 import static net.whgkswo.tesm.general.GlobalVariables.player;
+import static net.whgkswo.tesm.general.GlobalVariables.world;
 
 public class PathfinderV2 {
     private static final int MAX_SEARCH_RADIUS = 1;
@@ -35,7 +36,7 @@ public class PathfinderV2 {
         try{
             CompletableFuture.runAsync(this::pathfind);
         }catch (EmptyOpenListExeption e){
-            player.sendMessage(Text.literal(String.format("탐색 실패, 갈 수 없는 곳입니다. (%s)", e.getClass().getSimpleName())));
+            player.sendMessage(Text.literal(String.format("탐색 실패, 갈 수 없는 곳입니다. (%s)", e.getClass().getSimpleName())), true);
         }
     }
 
@@ -45,7 +46,7 @@ public class PathfinderV2 {
 
     public void pathfind(){
         // 이전 탐색에서 사용된 갑옷 거치대와 알레이, 닭 ,벌 없애기
-        GlobalVariables.pathfindEntityList.forEach(Entity::kill);
+        GlobalVariables.pathfindEntityList.forEach(entity -> entity.kill(world));
         GlobalVariables.pathfindEntityList.clear();
         //EntityManager.killEntities(EntityType.ALLAY, EntityType.ARMOR_STAND, EntityType.CHICKEN, EntityType.BEE, EntityType.FROG);
         // 시작점, 끝점 표시
@@ -67,13 +68,13 @@ public class PathfinderV2 {
 
                 int distance = backtrack(result.getLargeRefPos());
                 player.sendMessage(Text.literal("목적지 탐색 완료 ("+ (distance + 1) + "m - "
-                        + duration / 1000 + "s)"));
+                        + duration / 1000 + "s)"), true);
                 return;
             }
             searchCount++;
         }
         // 끝까지 길을 찾지 못했다면
-        player.sendMessage(Text.literal("탐색 실패, 너무 멀거나 갈 수 없는 곳입니다."));
+        player.sendMessage(Text.literal("탐색 실패, 너무 멀거나 갈 수 없는 곳입니다."), true);
     }
     private int backtrack(BlockPos lastRefPos){
         BlockPos refPos = lastRefPos; // 마지막 원점 필요

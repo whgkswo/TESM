@@ -1,23 +1,11 @@
 package net.whgkswo.tesm;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemGroups;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.whgkswo.tesm.blocks.ModBlocks;
 import net.whgkswo.tesm.commands.*;
 import net.whgkswo.tesm.general.InitializeTasks;
 import net.whgkswo.tesm.general.OnServerTicks;
 import net.whgkswo.tesm.general.OnPlayerLeaves;
-import net.whgkswo.tesm.items.TestItem;
-import net.whgkswo.tesm.networking.ModMessages;
+import net.whgkswo.tesm.networking.ServerNetworkManager;
 import net.whgkswo.tesm.pathfinding.v1.PathFinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,10 +18,14 @@ public class TESMMod implements ModInitializer {
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final String MODID = "tesm";
 	public static final Logger LOGGER = LoggerFactory.getLogger(TESMMod.MODID);
-	public static final TestItem TEST_ITEM =
-			Registry.register(Registries.ITEM, new Identifier(TESMMod.MODID,"test_item"),
-					new TestItem(new FabricItemSettings()));
-	private static final ItemGroup TESASSETS = FabricItemGroup.builder()
+
+	// TODO: 포팅
+	/*public static final TestItem TEST_ITEM =
+			Registry.register(Registries.ITEM, Identifier.of(TESMMod.MODID,"test_item"),
+					new TestItem(new FabricItemSettings()));*/
+
+	// TODO: 포팅
+	/*private static final ItemGroup TESASSETS = FabricItemGroup.builder()
 			.icon(() -> new ItemStack(TEST_ITEM))
 			.displayName(Text.translatable("TESAssets"))
 			.entries((context, entries) -> {
@@ -43,7 +35,7 @@ public class TESMMod implements ModInitializer {
 				entries.add(ModBlocks.SNOWY_TUNDRA_GRASS);
 				entries.add(ModBlocks.STONE_ROAD);
 			})
-			.build();
+			.build();*/
 	@Override
 	public void onInitialize() {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
@@ -51,14 +43,17 @@ public class TESMMod implements ModInitializer {
 		// Proceed with mild caution.
 
 		LOGGER.info("Hello Fabric world!");
-		ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(content -> {
+
+		// TODO: 포팅
+		/*ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(content -> {
 			content.add(TEST_ITEM);
-		});
+		});*/
 
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 레지스트리 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
-		Registry.register(Registries.ITEM_GROUP,
-				new Identifier(TESMMod.MODID, "tesassets"), TESASSETS);
+		// TODO: 포팅
+		/*Registry.register(Registries.ITEM_GROUP,
+				Identifier.of(TESMMod.MODID, "tesassets"), TESASSETS);*/
 
         //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 커스텀 커맨드 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
@@ -70,7 +65,8 @@ public class TESMMod implements ModInitializer {
 
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 이벤트 및 메소드 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
-		ModBlocks.registerModBlocks();
+		// TODO: 포팅
+		//ModBlocks.registerModBlocks();
 		InitializeTasks.registerPlayer();
 		InitializeTasks.onServerStarted();
 		OnServerTicks.onServerTick();
@@ -79,8 +75,11 @@ public class TESMMod implements ModInitializer {
 		pathfindingManager.onServerTicks();*/
 		OnPlayerLeaves.onPlayerLeaves();
 
-		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 클라이언트 통신 패킷 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-		ModMessages.registerC2SPackets();
+		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 네트워킹 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+		ServerNetworkManager.registerC2SCodecs(); // 코덱 등록
+		// 주의: 리시버는 항상 코덱이 먼저 등록된 후에 등록되어야 함
+		ServerNetworkManager.registerC2SReceivers();
+
 
 		//TestClass.testClass(); // 테스트용!
 	}

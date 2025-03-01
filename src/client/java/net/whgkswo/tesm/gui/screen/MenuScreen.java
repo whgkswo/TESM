@@ -26,7 +26,7 @@ public class MenuScreen extends CustomScreen {
     public MenuScreen() {
         super();
     }
-    private final Identifier MENU_BACKGROUND = new Identifier(TESMMod.MODID, "textures/gui/menu_background.png");
+    private final Identifier MENU_BACKGROUND = Identifier.of(TESMMod.MODID, "textures/gui/menu_background.png");
 
     @Override
     public void init(){

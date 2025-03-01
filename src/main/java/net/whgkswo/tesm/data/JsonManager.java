@@ -31,7 +31,7 @@ public class JsonManager {
             objectMapper.writeValue(file, data);
         }catch(IOException e){
             //아무것도 안함
-            player.sendMessage(Text.literal(e.getClass().getSimpleName() + " 발생"));
+            player.sendMessage(Text.literal(e.getClass().getSimpleName() + " 발생"), true);
         }
     }
     public static<T> void createJson(T data, String filePath){
@@ -43,7 +43,7 @@ public class JsonManager {
             objectMapper.writeValue(file, data);
         }catch(IOException e){
             //아무것도 안함
-            player.sendMessage(Text.literal(e.getClass().getSimpleName() + " 발생"));
+            player.sendMessage(Text.literal(e.getClass().getSimpleName() + " 발생"), true);
         }
     }
     public static ScanDataOfChunk readJson(String filePath){
@@ -57,7 +57,7 @@ public class JsonManager {
             return objectMapper.readValue(file, ScanDataOfChunk.class);
         }catch(IOException e){
             //아무것도 안함
-            player.sendMessage(Text.literal(e.getClass().getSimpleName() + " 발생"));
+            player.sendMessage(Text.literal(e.getClass().getSimpleName() + " 발생"), true);
             e.printStackTrace();
             return null;
         }
@@ -71,7 +71,7 @@ public class JsonManager {
             return chunkPosDtos;
         }catch(IOException e){
             //아무것도 안함
-            player.sendMessage(Text.literal(e.getClass().getSimpleName() + " 발생"));
+            player.sendMessage(Text.literal(e.getClass().getSimpleName() + " 발생"), true);
             e.printStackTrace();
             return new HashSet<>();
         }

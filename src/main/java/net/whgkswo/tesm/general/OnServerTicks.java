@@ -120,7 +120,7 @@ public class OnServerTicks {
 
                     previousBiomeID = currentBiomeID;
                     previousRegionTag = getCurrentRegion(world,player.getBlockPos()); //previousRegionTag 초기화
-                    player.sendMessage(Text.literal("현재 지역: "+previousRegionTag));
+                    player.sendMessage(Text.literal("현재 지역: "+previousRegionTag), true);
 
                 } else if (runTimeCounter > INITIALIZE_POINT) {
                     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 플레이어 좌표 및 바이옴 정보 갱신 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
@@ -152,7 +152,7 @@ public class OnServerTicks {
 
                         if(!Objects.equals(previousRegionTag,currentRegionTag)){
 
-                            player.sendMessage(Text.literal("지역 이동 감지 ("+previousRegionTag+" -> "+currentRegionTag+")"));
+                            player.sendMessage(Text.literal("지역 이동 감지 ("+previousRegionTag+" -> "+currentRegionTag+")"), true);
                             previousRegionTag = currentRegionTag;
                         }
                     }

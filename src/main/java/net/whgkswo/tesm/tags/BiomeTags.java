@@ -8,8 +8,8 @@ import net.whgkswo.tesm.TESMMod;
 
 public class BiomeTags {
 
-    public static final TagKey<Biome> TEST_TAG = TagKey.of(RegistryKeys.BIOME, new Identifier(TESMMod.MODID,"test_tag"));
-    public static final TagKey<Biome> CYR_EXTERIORS = TagKey.of(RegistryKeys.BIOME, new Identifier(TESMMod.MODID,"cyr_exteriors"));
-    public static final TagKey<Biome> MW_EXTERIORS = TagKey.of(RegistryKeys.BIOME, new Identifier(TESMMod.MODID,"mw_exteriors"));
-    public static final TagKey<Biome> SKY_EXTERIORS = TagKey.of(RegistryKeys.BIOME, new Identifier(TESMMod.MODID,"sky_exteriors"));
+    public static final TagKey<Biome> TEST_TAG = TagKey.of(RegistryKeys.BIOME, Identifier.of(TESMMod.MODID,"test_tag"));
+    public static final TagKey<Biome> CYR_EXTERIORS = TagKey.of(RegistryKeys.BIOME, Identifier.of(TESMMod.MODID,"cyr_exteriors"));
+    public static final TagKey<Biome> MW_EXTERIORS = TagKey.of(RegistryKeys.BIOME, Identifier.of(TESMMod.MODID,"mw_exteriors"));
+    public static final TagKey<Biome> SKY_EXTERIORS = TagKey.of(RegistryKeys.BIOME, Identifier.of(TESMMod.MODID,"sky_exteriors"));
 }

@@ -26,7 +26,8 @@ import static net.whgkswo.tesm.general.GlobalVariables.*;
 @Mixin(WorldChunk.class)
 public class WorldMixin {
     @Shadow @Final private World world;
-    @Inject(method = "setBlockState", at = @At("HEAD"))
+    // TODO: 포팅
+    //@Inject(method = "setBlockState", at = @At("HEAD"))
     private void onBlockStateChange(BlockPos pos, BlockState state, boolean moved, CallbackInfoReturnable<BlockState> cir) {
         if(GlobalVariables.world == null || world.isClient){
             return;
@@ -40,7 +41,7 @@ public class WorldMixin {
                 return;
             }
 
-            GlobalVariables.player.sendMessage(Text.literal("Block changed at " + pos));
+            GlobalVariables.player.sendMessage(Text.literal("Block changed at " + pos), true);
             GlobalVariables.updatedChunkSet.add(new ChunkPosDto(world.getChunk(pos).getPos()));
 
             // 청크 업데이트 목록 저장

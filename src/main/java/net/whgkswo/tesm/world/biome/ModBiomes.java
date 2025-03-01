@@ -1,14 +1,9 @@
 package net.whgkswo.tesm.world.biome;
 
-import net.minecraft.client.sound.MusicType;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnGroup;
 import net.minecraft.registry.Registerable;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.sound.BiomeMoodSound;
-import net.minecraft.sound.MusicSound;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;
@@ -21,7 +16,7 @@ import net.whgkswo.tesm.TESMMod;
 
 public class ModBiomes {
     public static final RegistryKey<Biome> TEST_BIOME = RegistryKey.of(RegistryKeys.BIOME,
-            new Identifier(TESMMod.MODID, "test_biome"));
+            Identifier.of(TESMMod.MODID, "test_biome"));
 
     public static void  boostrap(Registerable<Biome> context) {
         context.register(TEST_BIOME, testBiome(context));
@@ -72,7 +67,8 @@ public class ModBiomes {
                         .foliageColor(0xd203fc)
                         .fogColor(0x22a1e6)
                         .moodSound(null)
-                        .music(MusicType.createIngameMusic(RegistryEntry.of(null))).build())
+                        //.music(MusicType.createIngameMusic(RegistryEntry.of(null)))
+                        .build())
                 .build();
     }
 }

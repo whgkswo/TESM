@@ -60,7 +60,7 @@ public class SummonNpc {
         customData.putString("TempName", tempName);
 
         customData.putString("custom_key", "Custom Value");
-        customData.putBoolean("interactable",true);
+        customData.putBoolean("Interactable",true);
         ((IEntityDataSaver)entity).getPersistentData().put("EntityData",customData);
 
 
@@ -69,9 +69,9 @@ public class SummonNpc {
 
         String data = String.valueOf(nbt);
         String data2 = nbt.getCompound("EntityData").getString("custom_key");
-        Boolean data3 = nbt.getCompound("EntityData").getBoolean("interactable");
+        Boolean data3 = nbt.getCompound("EntityData").getBoolean("Interactable");
 
-        GlobalVariables.player.sendMessage(Text.literal(data));
+        GlobalVariables.player.sendMessage(Text.literal(data), true);
         //player.sendMessage(Text.literal(data2));
         //player.sendMessage(Text.literal(String.valueOf(data3)));
 

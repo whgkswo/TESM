@@ -3,26 +3,20 @@ package net.whgkswo.tesm.conversation;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.Entity;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
 import net.whgkswo.tesm.conversation.quest.Quest;
 import net.whgkswo.tesm.conversation.quest.QuestStatus;
-import net.whgkswo.tesm.conversation.quest.objective.QuestObjective;
 import net.whgkswo.tesm.general.GlobalVariablesClient;
 import net.whgkswo.tesm.gui.Alignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
-import net.whgkswo.tesm.gui.overlay.QuestOverlay;
 import net.whgkswo.tesm.gui.screen.templete.CustomScreen;
-import net.whgkswo.tesm.networking.ModMessages;
+import net.whgkswo.tesm.networking.payload.c2s_req.SetNbtReq;
 import org.lwjgl.glfw.GLFW;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static net.whgkswo.tesm.general.GlobalVariablesClient.*;
 
@@ -43,9 +37,9 @@ public class ConversationScreen extends CustomScreen {
     private DecisionStage currentDecisions;
     private List<AvailableDecision> availableDecisions;
     private Decision selectedDecision;
-    private static final Identifier ARROW_UP = new Identifier(TESMMod.MODID, "textures/gui/uparrow.png");
-    private static final Identifier ARROW_DOWN = new Identifier(TESMMod.MODID, "textures/gui/downarrow.png");
-    private final Identifier DECISION_BACKGROUND = new Identifier(TESMMod.MODID, "textures/gui/decision.png");
+    private static final Identifier ARROW_UP = Identifier.of(TESMMod.MODID, "textures/gui/uparrow.png");
+    private static final Identifier ARROW_DOWN = Identifier.of(TESMMod.MODID, "textures/gui/downarrow.png");
+    private final Identifier DECISION_BACKGROUND = Identifier.of(TESMMod.MODID, "textures/gui/decision.png");
     public ConversationScreen(Entity partner){
         super();
         this.partner = partner;
@@ -137,10 +131,12 @@ public class ConversationScreen extends CustomScreen {
         }
         // 선택지 화살표 출력
         if (upArrowOn()){
-            context.drawTexture(ARROW_UP, (int)(width*0.2), (int)(height*(0.745-0.01*(arrowState?1:0))), 0, 0, height/24,height/48,height/24,height/48);
+            // TODO: 포팅
+            //context.drawTexture(ARROW_UP, (int)(width*0.2), (int)(height*(0.745-0.01*(arrowState?1:0))), 0, 0, height/24,height/48,height/24,height/48);
         }
         if (downArrowOn(availableDecisions.size())) {
-            context.drawTexture(ARROW_DOWN, (int)(width*0.2), (int)(height*(0.94+0.01*(arrowState?1:0)+1/48)), 0, 0, height/24,height/48,height/24,height/48);
+            // TODO: 포팅
+            //context.drawTexture(ARROW_DOWN, (int)(width*0.2), (int)(height*(0.94+0.01*(arrowState?1:0)+1/48)), 0, 0, height/24,height/48,height/24,height/48);
         }
     }
     private List<AvailableDecision> getAvailableDecisions(){
@@ -304,9 +300,11 @@ public class ConversationScreen extends CustomScreen {
     }
     private void revealPartnerName(){
         partnerDisplayName = convPartnerName;
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeInt(partner.getId());
-        ClientPlayNetworking.send(ModMessages.UPDATE_NBT, buf);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("TempName", "");
+
+        ClientPlayNetworking.send(new SetNbtReq(partner.getId(), data));
     }
 
     private enum MouseArea {

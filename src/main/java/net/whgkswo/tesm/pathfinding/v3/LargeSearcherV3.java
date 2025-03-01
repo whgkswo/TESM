@@ -52,7 +52,7 @@ public class LargeSearcherV3 {
         ArrayList<Direction> directions = DirectionSetter.setSearchDirections(startPos, nextJumpPoint);
         // 대탐색 정보 채팅창에 출력
         GlobalVariables.player.sendMessage(Text.of(String.format("(%d) (%s)를 기준으로 탐색, %s", searchCount,
-                refPos.toShortString(), directions)));
+                refPos.toShortString(), directions)), true);
 
         SearchResult result = new SearchResult(false, null);
         // 대탐색 시작 위치에 닭 소환

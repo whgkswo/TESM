@@ -2,6 +2,7 @@ package net.whgkswo.tesm.gui.overlay;
 
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.text.Text;
 import net.whgkswo.tesm.conversation.quest.objective.QuestObjective;
 import net.whgkswo.tesm.gui.Alignment;
@@ -21,7 +22,8 @@ public class QuestOverlay implements HudRenderCallback {
     private static TextPopUpV2 eventName;
     private static Set<TextPopUpV2> objectiveSet = new HashSet<>();
 
-    @Override
+    // TODO: 포팅
+    //@Override
     public void onHudRender(DrawContext drawContext, float tickDelta) {
         if(eventType != null){
             eventType.render(drawContext);
@@ -92,5 +94,10 @@ public class QuestOverlay implements HudRenderCallback {
                 new RectangularBound(Boundary.BoundType.FIXED, 0.05, 0.5, 0.1, 0.05),
                 0, new FadeSequence(50, 205, 40)
                 );
+    }
+
+    @Override
+    public void onHudRender(DrawContext drawContext, RenderTickCounter tickCounter) {
+
     }
 }

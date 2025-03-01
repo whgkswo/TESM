@@ -8,7 +8,6 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.whgkswo.tesm.networking.ModMessages;
 import net.whgkswo.tesm.util.IEntityDataSaver;
 
 public class GetNbtByRaycastingC2SPacket {
@@ -29,7 +28,8 @@ public class GetNbtByRaycastingC2SPacket {
             responseBuf.writeBoolean(isInteractable);
             responseBuf.writeString(tempName);
             responseBuf.writeString(name);
-            responseSender.sendPacket(ModMessages.GETNBT_BY_RAYCASTING_RESPONSE, responseBuf);
+            // TODO: 포팅
+            //responseSender.sendPacket(ModMessages.GETNBT_BY_RAYCASTING_RESPONSE, responseBuf);
 
         }catch (NullPointerException e){
             // 아무것도 안함

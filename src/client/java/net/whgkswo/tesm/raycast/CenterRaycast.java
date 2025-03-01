@@ -12,7 +12,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
-import net.whgkswo.tesm.networking.ModMessages;
+import net.whgkswo.tesm.networking.payload.c2s_req.RaycastingNbtReq;
 
 
 public class CenterRaycast {
@@ -56,19 +56,11 @@ public class CenterRaycast {
                         return;
                     }
                     // 서버로 패킷 전송 (엔티티 NBT 데이터 읽어오기)
-                    PacketByteBuf buf = PacketByteBufs.create();
-                    buf.writeInt(entity.getId());
-                    ClientPlayNetworking.send(ModMessages.GETNBT_BY_RAYCASTING, buf);
+                    ClientPlayNetworking.send(new RaycastingNbtReq(entity.getId()));
 
                     // 실행 결과는 결과 반환 패킷 내에서 처리되어 interactOverlayOn의 t/f를 결정함
                     if(interactOverlayOn){
                         interactType = "대화하기";
-                        /*try{
-                            //interactTarget = entity.getCustomName().getString();
-
-                        }catch (NullPointerException e){
-                            interactTarget = "";
-                        }*/
                     }else{
                         interactType = "";
                         interactTarget = "";

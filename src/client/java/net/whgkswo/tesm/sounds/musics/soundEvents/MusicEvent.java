@@ -70,7 +70,7 @@ public enum MusicEvent {
     MusicEvent(Region region, TimePeriod timePeriod, String id, int length){
         this.region = region;
         this.timePeriod = timePeriod;
-        this.soundEvent = SoundEvent.of(new Identifier(TESMMod.MODID, id));
+        this.soundEvent = SoundEvent.of(Identifier.of(TESMMod.MODID, id));
         this.length = length;
     }
     public static SoundEvent getMusic(TimePeriod timePeriod, int number){

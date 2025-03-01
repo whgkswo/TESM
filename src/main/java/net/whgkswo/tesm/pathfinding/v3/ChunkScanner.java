@@ -74,9 +74,9 @@ public class ChunkScanner {
 
         if(targetChunkList.isEmpty()){
             if(method == ScanMethod.UPDATE) {
-                player.sendMessage(Text.literal("청크 스캔 데이터가 최신 상태입니다."));
+                player.sendMessage(Text.literal("청크 스캔 데이터가 최신 상태입니다."), true);
             }else{
-                player.sendMessage(Text.literal("누락된 청크 스캔 데이터가 없습니다."));
+                player.sendMessage(Text.literal("누락된 청크 스캔 데이터가 없습니다."), true);
             }
             return;
         }
@@ -90,7 +90,7 @@ public class ChunkScanner {
         }
         long finishedTime = System.currentTimeMillis();
         double timeInterval = (double) (finishedTime - startTime) /1000;
-        player.sendMessage(Text.literal(String.format("총 %d 좌표 스캔 완료 (%fs)", totalScannedBlock, timeInterval)));
+        player.sendMessage(Text.literal(String.format("총 %d 좌표 스캔 완료 (%fs)", totalScannedBlock, timeInterval)), true);
     }
     public Set<ChunkPos> getTargetChunkPosList(ScanMethod method, ChunkPos refChunkPos, int chunkRadius){
         Set<ChunkPos> targetChunkList = new HashSet<>();
@@ -135,7 +135,7 @@ public class ChunkScanner {
         }
         player.sendMessage(Text.literal("[" + progress + "/" + goal + "] "
                 + chunkName.substring(1, chunkName.length()-5) + "청크에 대한 "
-                + validPosSet.size() + "좌표 스캔 데이터 저장 완료"));
+                + validPosSet.size() + "좌표 스캔 데이터 저장 완료"), true);
         return validPosSet.size();
     }
     private ScanDataOfBlockPos blockTest(BlockPos blockPos){

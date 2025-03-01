@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
 
@@ -19,16 +20,19 @@ public class Compass implements HudRenderCallback {
     private static final int TEXTURE_W = 208;
     private static final int TEXTURE_H = 19;
     private static final float HUD_MAG = 0.7f;
-    private final Identifier COMPASS_BLACK = new Identifier(TESMMod.MODID, "textures/gui/compass_black.png");
-    private final Identifier COMPASS_WHITE = new Identifier(TESMMod.MODID, "textures/gui/compass_white.png");
-    @Override
+    private final Identifier COMPASS_BLACK = Identifier.of(TESMMod.MODID, "textures/gui/compass_black.png");
+    private final Identifier COMPASS_WHITE = Identifier.of(TESMMod.MODID, "textures/gui/compass_white.png");
+
+    // TODO: 포팅
+    //@Override
     public void onHudRender(DrawContext drawContext, float tickDelta) {
         if(client!=null){
             screenWidth = client.getWindow().getScaledWidth();
             screenHeight = client.getWindow().getScaledHeight();
         }
 
-        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+        // TODO: 포팅
+        //RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1.0F,1.0F,1.0F,1.0F);
         //RenderSystem.setShaderTexture(0, INTERACT_HUD);
 
@@ -36,8 +40,8 @@ public class Compass implements HudRenderCallback {
 
         drawContext.getMatrices().push(); // 현재 매트릭스 배율을 저장
         drawContext.getMatrices().scale(HUD_MAG,HUD_MAG,1);
-        drawContext.drawTexture(COMPASS_BLACK, (int) ((screenWidth-TEXTURE_W*HUD_MAG)/2/HUD_MAG), (int) (screenHeight *0.03/HUD_MAG),0,0,TEXTURE_W,TEXTURE_H,TEXTURE_W,TEXTURE_H);
-        //drawContext.drawTexture(COMPASS_WHITE, (int) ((screenWidth-TEXTURE_W*HUD_MAG)/2/HUD_MAG), (int) (screenHeight *0.13/HUD_MAG),0,0,TEXTURE_W,TEXTURE_H,TEXTURE_W,TEXTURE_H);
+        // TODO: 포팅
+        //drawContext.drawTexture(COMPASS_BLACK, (int) ((screenWidth-TEXTURE_W*HUD_MAG)/2/HUD_MAG), (int) (screenHeight *0.03/HUD_MAG),0,0,TEXTURE_W,TEXTURE_H,TEXTURE_W,TEXTURE_H);
         if(northCompassOn){
             drawContext.drawText(client.textRenderer,"N",(int) ((screenWidth+northCompassPos*(TEXTURE_W*HUD_MAG/45))/2/HUD_MAG),(int) (screenHeight *0.01/HUD_MAG),0xFFFFFF,false);
         }
@@ -51,5 +55,10 @@ public class Compass implements HudRenderCallback {
             drawContext.drawText(client.textRenderer,"E",(int) ((screenWidth+eastCompassPos*(TEXTURE_W*HUD_MAG/45))/2/HUD_MAG),(int) (screenHeight *0.01/HUD_MAG),0xFFFFFF,false);
         }
         drawContext.getMatrices().pop();
+    }
+
+    @Override
+    public void onHudRender(DrawContext drawContext, RenderTickCounter tickCounter) {
+
     }
 }

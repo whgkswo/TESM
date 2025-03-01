@@ -1,6 +1,5 @@
 package net.whgkswo.tesm.gui.screen;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
@@ -8,31 +7,28 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
-import net.whgkswo.tesm.networking.ModMessages;
 import net.whgkswo.tesm.npcs.quests.Quests;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.Arrays;
-
-import static net.whgkswo.tesm.general.GlobalVariablesClient.arrowState;
 
 public class JournalScreen extends Screen {
     public JournalScreen() {
         super(Text.literal("저널 메뉴입니다."));
     }
 
-    private final Identifier MENU_BACKGROUND = new Identifier(TESMMod.MODID, "textures/gui/menu_background.png");
-    private final Identifier TEXTURE_AAA685 = new Identifier(TESMMod.MODID, "textures/gui/texture_aaa685.png");
-    private final Identifier HOR_AAA685 = new Identifier(TESMMod.MODID, "textures/gui/horizental_aaa685.png");
-    private final Identifier VER_AAA685 = new Identifier(TESMMod.MODID,"textures/gui/vertical_aaa685.png");
-    private final Identifier Q_KEY_ICON = new Identifier(TESMMod.MODID,"textures/gui/q_key.png");
-    private final Identifier E_KEY_ICON = new Identifier(TESMMod.MODID,"textures/gui/e_key.png");
-    private final Identifier QUESTBAR_SIDE = new Identifier(TESMMod.MODID, "textures/gui/questbar_side.png");
-    private final Identifier VER_LINE_AA9682 = new Identifier(TESMMod.MODID,"textures/gui/vertical_line_aa9682.png");
-    private final Identifier QUESTLIST_TAB = new Identifier(TESMMod.MODID,"textures/gui/questlist_tab.png");
-    private final Identifier SELECTED_QUEST = new Identifier(TESMMod.MODID,"textures/gui/selected_quest.png");
-    private final Identifier UP_ARROW = new Identifier(TESMMod.MODID,"textures/gui/uparrow.png");
-    private final Identifier DOWN_ARROW = new Identifier(TESMMod.MODID, "textures/gui/downarrow.png");
+    private final Identifier MENU_BACKGROUND = Identifier.of(TESMMod.MODID, "textures/gui/menu_background.png");
+    private final Identifier TEXTURE_AAA685 = Identifier.of(TESMMod.MODID, "textures/gui/texture_aaa685.png");
+    private final Identifier HOR_AAA685 = Identifier.of(TESMMod.MODID, "textures/gui/horizental_aaa685.png");
+    private final Identifier VER_AAA685 = Identifier.of(TESMMod.MODID,"textures/gui/vertical_aaa685.png");
+    private final Identifier Q_KEY_ICON = Identifier.of(TESMMod.MODID,"textures/gui/q_key.png");
+    private final Identifier E_KEY_ICON = Identifier.of(TESMMod.MODID,"textures/gui/e_key.png");
+    private final Identifier QUESTBAR_SIDE = Identifier.of(TESMMod.MODID, "textures/gui/questbar_side.png");
+    private final Identifier VER_LINE_AA9682 = Identifier.of(TESMMod.MODID,"textures/gui/vertical_line_aa9682.png");
+    private final Identifier QUESTLIST_TAB = Identifier.of(TESMMod.MODID,"textures/gui/questlist_tab.png");
+    private final Identifier SELECTED_QUEST = Identifier.of(TESMMod.MODID,"textures/gui/selected_quest.png");
+    private final Identifier UP_ARROW = Identifier.of(TESMMod.MODID,"textures/gui/uparrow.png");
+    private final Identifier DOWN_ARROW = Identifier.of(TESMMod.MODID, "textures/gui/downarrow.png");
     public static boolean journalMenuOn = false;
     static int selectedQuest;
     static int[] color = new int[16];
@@ -65,7 +61,8 @@ public class JournalScreen extends Screen {
             // 틱 프리즈 (서버에 패킷 전송)
             PacketByteBuf buf = PacketByteBufs.create();
             buf.writeBoolean(true); // freezeOn = true
-            ClientPlayNetworking.send(ModMessages.TICK_FREEZE_TOGGLE_ID, buf);
+            // TODO: 포팅
+            //ClientPlayNetworking.send(ModMessages.TICK_FREEZE_TOGGLE_ID, buf);
         } // 해상도 변경 시에도 초기화
         questListW = (int)(width*((0.2025+0.145/2)-0.1)-(height*QUESTLIST_SEPERATOR_W/2));
         if(questListW % 2 == 1){
@@ -79,7 +76,8 @@ public class JournalScreen extends Screen {
         // 틱 언프리즈 (서버에 패킷 전송)
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeBoolean(false); // freezeOn = false
-        ClientPlayNetworking.send(ModMessages.TICK_FREEZE_TOGGLE_ID, buf);
+        // TODO: 포팅
+        //ClientPlayNetworking.send(ModMessages.TICK_FREEZE_TOGGLE_ID, buf);
         super.close();
     }
     @Override
@@ -146,38 +144,44 @@ public class JournalScreen extends Screen {
         // 마우스 위치 및 관련 변수 업데이트
         getMouseRegion(mouseX,mouseY,0.25, questListW);
         // GUI 배경 출력
-        context.drawTexture(MENU_BACKGROUND,(int)(width*0.1),(int)(height*0.1),0,0,(int)(width*0.8),(int)(height*0.8) ,(int)(width*0.8),(int)(height*0.8));
+        // TODO: 포팅
+        //context.drawTexture(MENU_BACKGROUND,(int)(width*0.1),(int)(height*0.1),0,0,(int)(width*0.8),(int)(height*0.8) ,(int)(width*0.8),(int)(height*0.8));
         // 메뉴 탭 이름
         final String[] MENU_NAME = new String[]{"일지","기술","가방","지도"};
         for(int i=0; i<4; i++){
             // 메뉴 탭 밑줄
-            context.drawTexture(VER_LINE_AA9682,(int)(width*(0.2025+(0.15*i))),(int)(height*0.155),0,0,(int)(width*0.145),(int)(height* MENU_UNDERLINE_H), (int)(width*0.145),(int)(height* MENU_UNDERLINE_H));
+            // TODO: 포팅
+            //context.drawTexture(VER_LINE_AA9682,(int)(width*(0.2025+(0.15*i))),(int)(height*0.155),0,0,(int)(width*0.145),(int)(height* MENU_UNDERLINE_H), (int)(width*0.145),(int)(height* MENU_UNDERLINE_H));
             context.drawCenteredTextWithShadow(textRenderer, MENU_NAME[i],(int)(width*(0.2025+0.145/2 + 0.15*i)), (int)(height*0.115),0xffffff);
             // 메뉴 탭 - 내용 분리 칸막이
-            context.drawTexture(HOR_AAA685,(int)(width*0.1),(int)(height*(0.165-MENU_SEPERATOR_H/2)),0,0,(int)(width*0.8),(int)(height* MENU_SEPERATOR_H),(int)(width*0.8),(int)(height* MENU_SEPERATOR_H));
+            // TODO: 포팅
+            //context.drawTexture(HOR_AAA685,(int)(width*0.1),(int)(height*(0.165-MENU_SEPERATOR_H/2)),0,0,(int)(width*0.8),(int)(height* MENU_SEPERATOR_H),(int)(width*0.8),(int)(height* MENU_SEPERATOR_H));
         }
-        // 키 도움말 아이콘
+        // TODO: 포팅
+        /*// 키 도움말 아이콘
         context.drawTexture(Q_KEY_ICON,(int)(width*(0.20-0.015)-(height*0.02)),(int)(height*0.115),0,0,(int)(height*0.04),(int)(height*0.04),(int)(height*0.04),(int)(height*0.04));
         context.drawTexture(E_KEY_ICON,(int)(width*(0.80+0.015)-(height*0.02)),(int)(height*0.115),0,0,(int)(height*0.04),(int)(height*0.04),(int)(height*0.04),(int)(height*0.04));
         // 퀘스트 목록 탭 색칠
         context.drawTexture(QUESTLIST_TAB,(int)(width*0.1+(journalTabState?1:0)*(questListW/2)),(int)(height*(0.165+MENU_SEPERATOR_H/2)),0,0,(int)(questListW/2),(int)(height*(0.235-0.165-MENU_SEPERATOR_H)),(int)(questListW/2),(int)(height*(0.235-0.165-MENU_SEPERATOR_H)));
         // 퀘스트 탭 - 목록 칸막이
-        context.drawTexture(HOR_AAA685,(int)(width*0.1),(int)(height*(0.235-MENU_SEPERATOR_H/2)),0,0, questListW,(int)(height* MENU_SEPERATOR_H), questListW,(int)(height* MENU_SEPERATOR_H));
+        context.drawTexture(HOR_AAA685,(int)(width*0.1),(int)(height*(0.235-MENU_SEPERATOR_H/2)),0,0, questListW,(int)(height* MENU_SEPERATOR_H), questListW,(int)(height* MENU_SEPERATOR_H));*/
 
         if(journalTabState&&!Quests.completedQuests.isEmpty() || !journalTabState&&!Quests.currentQuests.isEmpty()){
 
             // 퀘스트 목록 - 선택된 퀘스트 배경
             if(selectedQuest>selectedQuestPlus && selectedQuest<=selectedQuestPlus+16){
-                context.drawTexture(TEXTURE_AAA685, (int)(width*0.1), getRenderingY(height*0.25,height*0.04,selectedQuest-1-selectedQuestPlus),0,0, questListW,(int)(height*0.04), questListW,(int)(height*0.04));
-                context.drawTexture(SELECTED_QUEST, (int)(width*(0.1+QUESTLIST_SEPERATOR_W/2))+questListW, getRenderingY(height*(0.25+(0.04/15)),height*0.04,selectedQuest-1-selectedQuestPlus),0,0,(int)(height*0.02*13/15),(int)(height*0.04*13/15),(int)(height*0.02*13/15),(int)(height*0.04*13/15));
+                // TODO: 포팅
+                /*context.drawTexture(TEXTURE_AAA685, (int)(width*0.1), getRenderingY(height*0.25,height*0.04,selectedQuest-1-selectedQuestPlus),0,0, questListW,(int)(height*0.04), questListW,(int)(height*0.04));
+                context.drawTexture(SELECTED_QUEST, (int)(width*(0.1+QUESTLIST_SEPERATOR_W/2))+questListW, getRenderingY(height*(0.25+(0.04/15)),height*0.04,selectedQuest-1-selectedQuestPlus),0,0,(int)(height*0.02*13/15),(int)(height*0.04*13/15),(int)(height*0.02*13/15),(int)(height*0.04*13/15));*/
             }
-            // 퀘스트 목록 - 화살표
+            // TODO: 포팅
+            /*// 퀘스트 목록 - 화살표
             if(upArrowOn()){
                 context.drawTexture(UP_ARROW, (int)(width*0.1+(questListW -height/24)/2),(int)(height*(0.22-0.01*(arrowState?1:0))),0,0,height/24,height/48,height/24,height/48);
             }
             if(downArrowOn()){
                 context.drawTexture(DOWN_ARROW, (int)(width*0.1+(questListW -height/24)/2),(int)(height*(0.9+0.01*(arrowState?1:0))),0,0,height/24,height/48,height/24,height/48);
-            }
+            }*/
             // 퀘스트 목록 - 퀘스트 제목 출력 준비
             context.getMatrices().push();
             final float QUESTLIST_MAG = 0.7f;
@@ -206,14 +210,16 @@ public class JournalScreen extends Screen {
             context.getMatrices().pop();
             // 퀘스트 제목
             context.drawCenteredTextWithShadow(textRenderer, getSelectedQuestName(),(int)(width*0.58), (int)(height*0.19), 0xffffff);
-            context.drawTexture(HOR_AAA685,(int)(width*0.36),(int)(height*(0.235-0.0025)),0,0,(int)(width*0.44),(int)(height*0.005),(int)(width*0.44),(int)(height*0.005));
+            // TODO: 포팅
+            /*context.drawTexture(HOR_AAA685,(int)(width*0.36),(int)(height*(0.235-0.0025)),0,0,(int)(width*0.44),(int)(height*0.005),(int)(width*0.44),(int)(height*0.005));
             // 퀘스트 제목 양 옆 장식
             context.drawTexture(QUESTBAR_SIDE,(int)(width*0.36-(height*0.015)),(int)(height*(0.235-0.015)),0,0,(int)(height*0.03),(int)(height*0.03),(int)(height*0.03),(int)(height*0.03));
-            context.drawTexture(QUESTBAR_SIDE,(int)(width*0.8-(height*0.015)),(int)(height*(0.235-0.015)),0,0,(int)(height*0.03),(int)(height*0.03),(int)(height*0.03),(int)(height*0.03));
+            context.drawTexture(QUESTBAR_SIDE,(int)(width*0.8-(height*0.015)),(int)(height*(0.235-0.015)),0,0,(int)(height*0.03),(int)(height*0.03),(int)(height*0.03),(int)(height*0.03));*/
         }
 
         // 퀘스트 목록 - 내용 칸막이
-        context.drawTexture(VER_AAA685,(int)(width*0.1 + questListW),(int)(height*(0.165+MENU_SEPERATOR_H/4)),0,0,(int)(height*QUESTLIST_SEPERATOR_W),(int)(height*(0.735-MENU_SEPERATOR_H)),(int)(height*QUESTLIST_SEPERATOR_W),(int)(height*(0.735-MENU_SEPERATOR_H)));
+        // TODO: 포팅
+        //context.drawTexture(VER_AAA685,(int)(width*0.1 + questListW),(int)(height*(0.165+MENU_SEPERATOR_H/4)),0,0,(int)(height*QUESTLIST_SEPERATOR_W),(int)(height*(0.735-MENU_SEPERATOR_H)),(int)(height*QUESTLIST_SEPERATOR_W),(int)(height*(0.735-MENU_SEPERATOR_H)));
         // 퀘스트 목록 탭
         context.getMatrices().push();
         final float QUESTLIST_TAB_MAG = 0.85f;

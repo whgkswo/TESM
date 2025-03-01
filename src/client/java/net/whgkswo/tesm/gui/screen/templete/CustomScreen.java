@@ -1,15 +1,12 @@
 package net.whgkswo.tesm.gui.screen.templete;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
-import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.gui.component.GuiComponent;
-import net.whgkswo.tesm.networking.ModMessages;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +26,8 @@ public class CustomScreen extends Screen {
         if(shouldFreezeTicks()){
             PacketByteBuf buf = PacketByteBufs.create();
             buf.writeBoolean(true); // freezeOn = true
-            ClientPlayNetworking.send(ModMessages.TICK_FREEZE_TOGGLE_ID, buf);
+            // TODO: 포팅
+            //ClientPlayNetworking.send(ModMessages.TICK_FREEZE_TOGGLE_ID, buf);
         }
         registerMouseWheelEvent();
     }
@@ -39,7 +37,8 @@ public class CustomScreen extends Screen {
         if(shouldFreezeTicks()){
             PacketByteBuf buf = PacketByteBufs.create();
             buf.writeBoolean(false); // freezeOn = false
-            ClientPlayNetworking.send(ModMessages.TICK_FREEZE_TOGGLE_ID, buf);
+            // TODO: 포팅
+            //ClientPlayNetworking.send(ModMessages.TICK_FREEZE_TOGGLE_ID, buf);
         }
         super.close();
     }

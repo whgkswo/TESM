@@ -260,17 +260,20 @@ public class PathFinder {
             }
         }
         // 주어진 방향으로 이동
-        targetEntity.teleport(movingRefX + (movingCounter%MOVING_DIVIDER+1)* movingVecX +0.5, targetEntity.getBlockY(), movingRefZ + (movingCounter%MOVING_DIVIDER+1)* movingVecZ +0.5);
+        // TODO: 포팅
+        //targetEntity.teleport(movingRefX + (movingCounter%MOVING_DIVIDER+1)* movingVecX +0.5, targetEntity.getBlockY(), movingRefZ + (movingCounter%MOVING_DIVIDER+1)* movingVecZ +0.5);
 
         /*world2.getPlayers().forEach(player -> {
             player.sendMessage(Text.literal("이동 ("+movingCounter+")"));
         });*/
         // 올라가기
         if(world2.getBlockState(targetEntity.getBlockPos()).isSolidBlock(world2,targetEntity.getBlockPos())){
-            targetEntity.teleport(targetEntity.getBlockX()+0.5,targetEntity.getBlockY()+1,targetEntity.getBlockZ()+0.5);
+            // TODO: 포팅
+            //targetEntity.teleport(targetEntity.getBlockX()+0.5,targetEntity.getBlockY()+1,targetEntity.getBlockZ()+0.5);
             // 내려가기
         }else if(!world2.getBlockState(targetEntity.getBlockPos().down(1)).isSolidBlock(world2, targetEntity.getBlockPos().down(1))){
-            targetEntity.teleport(targetEntity.getBlockX()+0.5,targetEntity.getBlockY()-1,targetEntity.getBlockZ()+0.5);
+            // TODO: 포팅
+            //targetEntity.teleport(targetEntity.getBlockX()+0.5,targetEntity.getBlockY()-1,targetEntity.getBlockZ()+0.5);
         }
         movingCounter++;
         if(movingCounter >= movingList.get(movingStage)[2]*MOVING_DIVIDER){
@@ -287,9 +290,9 @@ public class PathFinder {
             world2.getPlayers().forEach(player -> {
                 player.sendMessage(Text.literal("목적지 도착"));
                 List<AllayEntity> alleyList = world2.getEntitiesByType(EntityType.ALLAY,new Box(-1000,-64,-1000,1000,1024,1000), AllayEntity -> true);
-                alleyList.forEach(AllayEntity::kill);
+                alleyList.forEach(allay -> allay.kill(world2));
                 List<ArmorStandEntity> armorStandList = world2.getEntitiesByType(EntityType.ARMOR_STAND,new Box(-1000,-64,-1000,1000,1024,1000), ArmorStandEntity -> true);
-                armorStandList.forEach(ArmorStandEntity::kill);
+                armorStandList.forEach(armorStand -> armorStand.kill(world2));
             });
         }
     }
@@ -654,7 +657,8 @@ public class PathFinder {
 
         // 엔티티 이동 준비 (초기 위치로 딱 맞추기)
         if(movingTimer == 0){
-            targetEntity.teleport(startX + 0.5, startY, startZ +0.5);
+            // TODO: 포팅
+            //targetEntity.teleport(startX + 0.5, startY, startZ +0.5);
         }
         // 엔티티 이동 시작
         entityMoving(); // 딜레이 없이 첫 번째 이동

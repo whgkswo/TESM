@@ -36,18 +36,19 @@ public class MusicPlayer {
             return;
         }
         tickCounter++;
-        if(currentPlaying == null && tickCounter == tickGoal){
-            TimePeriod timePeriod = TimePeriod.getPeriod(MinecraftClient.getInstance().world.getTimeOfDay());
-            if(timePeriod == TimePeriod.EXCEPTION){
+
+        if (tickCounter >= tickGoal) {
+            if(currentPlaying == null) { // 음악 재생 준비
+                playMusic();
+            }else{ // 음악 종료 준비
                 tickCounter = 0;
                 tickGoal = 100;
-                return;
+                currentPlaying = null;
             }
-            playMusic();
         }
-        /*if(GlobalVariables.player != null){
-            GlobalVariables.player.sendMessage(Text.literal(tickCounter + "/" + tickGoal + " - " + currentPlaying));
-        }*/
+        if(GlobalVariables.player != null){
+            GlobalVariables.player.sendMessage(Text.literal(tickCounter + "/" + tickGoal + " - " + currentPlaying), true);
+        }
     }
     private int selectTrackNumber(MusicKey musicKey, int maxTracks){
         // NPE를 방지하기 위한 코드
@@ -80,6 +81,11 @@ public class MusicPlayer {
     private void playMusic(){
         Region region = Region.getRegion();
         TimePeriod timePeriod = TimePeriod.getPeriod(world.getTimeOfDay());
+
+        if(timePeriod.equals(TimePeriod.EXCEPTION)){
+            tickCounter = 0;
+            return;
+        }
 
         List<MusicEvent> musicList = MUSICS.get(new MusicKey(region,timePeriod));
         if(musicList.isEmpty()){

@@ -3,14 +3,13 @@ package net.whgkswo.tesm.conversation;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
-import net.whgkswo.tesm.networking.ModMessages;
+import net.whgkswo.tesm.networking.payload.c2s_req.ConversationNbtReq;
 import net.whgkswo.tesm.raycast.CenterRaycast;
 
 public class ConversationStart {
@@ -43,13 +42,12 @@ public class ConversationStart {
     public static void checkCondition(){
         ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
             UseEntityCallback.EVENT.register((player, world, hand, target, entityHitResult) -> {
-                if (target instanceof LivingEntity && world.isClient() && CenterRaycast.interactOverlayOn) {
+                if (target instanceof LivingEntity && world.isClient() && hand == Hand.MAIN_HAND && CenterRaycast.interactOverlayOn) {
                     convPartner = (LivingEntity) target;
 
                     // 타깃의 nbt태그 검사(서버로 패킷 보내기 - 응답을 받는 핸들러에서 조건에 맞으면 대화 시작 메서드 호출)
-                    PacketByteBuf nbtRequest = PacketByteBufs.create();
-                    nbtRequest.writeInt(convPartner.getId());
-                    ClientPlayNetworking.send(ModMessages.GETNBT_BY_CONVERSATION, nbtRequest);
+                    ConversationNbtReq req = new ConversationNbtReq(convPartner.getId());
+                    ClientPlayNetworking.send(req);
                 }
                 return ActionResult.PASS;
             });

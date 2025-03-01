@@ -1,6 +1,5 @@
-package net.whgkswo.tesm.networking.response_handlers;
+package net.whgkswo.tesm.networking.receivers;
 
-import net.minecraft.network.PacketByteBuf;
 import net.whgkswo.tesm.conversation.quest.Quest;
 import net.whgkswo.tesm.conversation.quest.QuestStatus;
 

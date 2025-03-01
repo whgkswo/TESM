@@ -2,13 +2,15 @@ package net.whgkswo.tesm.gui.overlay;
 
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.RenderTickCounter;
 import net.whgkswo.tesm.calendar.Time;
 import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.gui.Alignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
 
 public class Watch implements HudRenderCallback {
-    @Override
+    // TODO: 포팅
+    //@Override
     public void onHudRender(DrawContext drawContext, float tickDelta) {
         renderTime(drawContext);
     }
@@ -23,5 +25,10 @@ public class Watch implements HudRenderCallback {
         String date = GlobalVariables.currentDate.toString();
         RenderingHelper.renderText(Alignment.RIGHT, drawContext,scale,
                 date, 0.95,0.91,0xffffff);
+    }
+
+    @Override
+    public void onHudRender(DrawContext drawContext, RenderTickCounter tickCounter) {
+
     }
 }

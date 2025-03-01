@@ -25,9 +25,9 @@ public class Quests {
     public static HashMap<String,String[]> completedQuestsMap = new LinkedHashMap<>();
     public static int questNameOLState = 0;
     public static boolean questObjectiveOLOn = false;
-    public static final SoundEvent NEW_QUEST_SOUND = SoundEvent.of(new Identifier(TESMMod.MODID,"new_quest"));
-    public static final SoundEvent QUEST_OBJECTIVE_SOUND = SoundEvent.of(new Identifier(TESMMod.MODID,"new_objective_2"));
-    public static final SoundEvent QUEST_CLEAR_SOUND = SoundEvent.of(new Identifier(TESMMod.MODID,"quest_completed"));
+    public static final SoundEvent NEW_QUEST_SOUND = SoundEvent.of(Identifier.of(TESMMod.MODID,"new_quest"));
+    public static final SoundEvent QUEST_OBJECTIVE_SOUND = SoundEvent.of(Identifier.of(TESMMod.MODID,"new_objective_2"));
+    public static final SoundEvent QUEST_CLEAR_SOUND = SoundEvent.of(Identifier.of(TESMMod.MODID,"quest_completed"));
     static PlayerEntity player = MinecraftClient.getInstance().player;
     static World world = MinecraftClient.getInstance().world;
     public static String updatingQuestName;

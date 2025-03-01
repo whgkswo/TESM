@@ -1,11 +1,9 @@
 package net.whgkswo.tesm.events;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.ActionResult;
-import net.whgkswo.tesm.networking.ModMessages;
 
 public class UseBlockEvent {
     public static void register(){
@@ -15,7 +13,8 @@ public class UseBlockEvent {
                 if(player.getMainHandStack().isEmpty()){
                     PacketByteBuf buf = PacketByteBufs.create();
                     buf.writeBlockHitResult(hitResult);
-                    ClientPlayNetworking.send(ModMessages.USE_BLOCK_ID, buf);
+                    // TODO: 포팅
+                    //ClientPlayNetworking.send(ModMessages.USE_BLOCK_ID, buf);
                 }
             }
             return ActionResult.PASS;

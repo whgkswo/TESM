@@ -11,16 +11,14 @@ import net.whgkswo.tesm.events.UseBlockEvent;
 import net.whgkswo.tesm.general.ClientEvents;
 import net.whgkswo.tesm.gui.overlay.*;
 import net.whgkswo.tesm.keybinds.KeyInputHandler;
-import net.whgkswo.tesm.sounds.musics.MusicPlayer;
-import net.whgkswo.tesm.networking.ModMessages;
-import net.whgkswo.tesm.networking.ModMessagesClient;
+import net.whgkswo.tesm.networking.ClientNetworkManager;
 import net.whgkswo.tesm.raycast.CenterRaycast;
 
 
 
 public class TESMModClient implements ClientModInitializer {
 
-	//private static final Identifier FREEZE_ENTITY_PACKET_ID = new Identifier(TESMMod.MODID,"freeze_entity");
+	//private static final Identifier FREEZE_ENTITY_PACKET_ID = Identifier.of(TESMMod.MODID,"freeze_entity");
 
 	private static int getColorForGrassyBlock(net.minecraft.world.BlockRenderView world, BlockPos pos) {
 		// 예시: 기본적으로 잔디 블록의 색상 틴트를 사용합니다.
@@ -72,15 +70,17 @@ public class TESMModClient implements ClientModInitializer {
 		UseBlockEvent.register();
 		ClientEvents.onGameStart();
 
-		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 서버 통신 패킷 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-		ModMessages.registerS2CPackets(); // 서버로 송신
-		ModMessagesClient.registerS2CPackets(); // 결과값 처리
+		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 네트워킹 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+		ClientNetworkManager.registerS2CCodecs(); // 코덱 등록
+		// 주의: 리시버는 항상 코덱이 등록된 후에 등록돼야 함
+		ClientNetworkManager.registerS2CReceivers(); // 리시버 등록
 
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 키바인딩 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 		KeyInputHandler.register();
 
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 퀘스트 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 		QuestRegisterer.register();
+
 
 		TestClassClient.testClassClient(); // 테스트용!
 	}
