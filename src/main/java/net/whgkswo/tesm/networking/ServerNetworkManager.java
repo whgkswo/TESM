@@ -4,27 +4,14 @@ import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
-import net.whgkswo.tesm.networking.payload.c2s_req.ConversationNbtReq;
-import net.whgkswo.tesm.networking.payload.c2s_req.RaycastingNbtReq;
-import net.whgkswo.tesm.networking.payload.c2s_req.SetNbtReq;
+import net.whgkswo.tesm.networking.payload.data.c2s_req.ConversationNbtReq;
+import net.whgkswo.tesm.networking.payload.data.c2s_req.RaycastingNbtReq;
+import net.whgkswo.tesm.networking.payload.data.c2s_req.SetNbtReq;
 import net.whgkswo.tesm.networking.receivers.ConversationNbtC2SReceiver;
 import net.whgkswo.tesm.networking.receivers.RaycastingNbtC2SReceiver;
 import net.whgkswo.tesm.networking.receivers.SetNbtReceiver;
 
 public class ServerNetworkManager {
-    public static final Identifier EXAMPLE_ID = Identifier.of(TESMMod.MODID, "example");
-    public static final Identifier FREEZE_ENTITY_ID = Identifier.of(TESMMod.MODID, "freeze_entity");
-    public static final Identifier UNFREEZE_ENTITY_ID = Identifier.of(TESMMod.MODID,"unfreeze_entity");
-    public static final Identifier GETNBT_BY_RAYCASTING = Identifier.of(TESMMod.MODID,"getnbt_raycasting");
-    public static final Identifier GETNBT_BY_RAYCASTING_RESPONSE = Identifier.of(TESMMod.MODID,"getnbt_raycasting_response");
-    public static final Identifier GETNBT_BY_CONVERSATION = Identifier.of(TESMMod.MODID, "getnbt_conversation");
-    public static final Identifier GETNBT_BY_CONVERSATION_RESPONSE = Identifier.of(TESMMod.MODID, "getnbt_conversation_response");
-    public static final Identifier TICK_FREEZE_TOGGLE_ID = Identifier.of(TESMMod.MODID, "tick_freeze_toggle");
-    public static final Identifier USE_BLOCK_ID = Identifier.of(TESMMod.MODID, "use_block");
-    public static final Identifier CHUNK_UPDATE_ID = Identifier.of(TESMMod.MODID, "chunk_update");
-    public static final Identifier UPDATE_NBT = Identifier.of(TESMMod.MODID, "update_nbt");
-    public static final Identifier RESET_QUESTS = Identifier.of(TESMMod.MODID, "reset_quests");
-
     // C2S 리시버 등록
     public static void registerC2SReceivers(){
         // TODO: 포팅

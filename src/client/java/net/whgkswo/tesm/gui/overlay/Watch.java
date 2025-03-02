@@ -9,9 +9,8 @@ import net.whgkswo.tesm.gui.Alignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
 
 public class Watch implements HudRenderCallback {
-    // TODO: 포팅
-    //@Override
-    public void onHudRender(DrawContext drawContext, float tickDelta) {
+    @Override
+    public void onHudRender(DrawContext drawContext, RenderTickCounter tickCounter) {
         renderTime(drawContext);
     }
     private void renderTime(DrawContext drawContext){
@@ -25,10 +24,5 @@ public class Watch implements HudRenderCallback {
         String date = GlobalVariables.currentDate.toString();
         RenderingHelper.renderText(Alignment.RIGHT, drawContext,scale,
                 date, 0.95,0.91,0xffffff);
-    }
-
-    @Override
-    public void onHudRender(DrawContext drawContext, RenderTickCounter tickCounter) {
-
     }
 }

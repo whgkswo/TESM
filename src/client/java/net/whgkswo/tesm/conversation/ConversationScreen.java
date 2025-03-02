@@ -1,5 +1,6 @@
 package net.whgkswo.tesm.conversation;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -12,8 +13,9 @@ import net.whgkswo.tesm.conversation.quest.QuestStatus;
 import net.whgkswo.tesm.general.GlobalVariablesClient;
 import net.whgkswo.tesm.gui.Alignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
+import net.whgkswo.tesm.gui.helpers.GuiHelper;
 import net.whgkswo.tesm.gui.screen.templete.CustomScreen;
-import net.whgkswo.tesm.networking.payload.c2s_req.SetNbtReq;
+import net.whgkswo.tesm.networking.payload.data.c2s_req.SetNbtReq;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.*;
@@ -43,6 +45,7 @@ public class ConversationScreen extends CustomScreen {
     public ConversationScreen(Entity partner){
         super();
         this.partner = partner;
+        ConversationStart.convOn = true;
     }
     @Override
     public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta){
@@ -53,6 +56,12 @@ public class ConversationScreen extends CustomScreen {
         super.init();
         partnerDisplayName = convPartnerTempName.isEmpty() ? convPartnerName : convPartnerTempName;
         partnerDL = GlobalVariablesClient.NPC_DIALOGUES.get(convPartnerName);
+    }
+
+    @Override
+    public void close(){
+        super.close();
+        ConversationStart.convOn = false;
     }
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta){
@@ -131,12 +140,10 @@ public class ConversationScreen extends CustomScreen {
         }
         // 선택지 화살표 출력
         if (upArrowOn()){
-            // TODO: 포팅
-            //context.drawTexture(ARROW_UP, (int)(width*0.2), (int)(height*(0.745-0.01*(arrowState?1:0))), 0, 0, height/24,height/48,height/24,height/48);
+            context.drawTexture(GuiHelper::getLayer, ARROW_UP, (int)(width*0.2), (int)(height*(0.745-0.01*(arrowState?1:0))), 0, 0, height/24,height/48,height/24,height/48);
         }
         if (downArrowOn(availableDecisions.size())) {
-            // TODO: 포팅
-            //context.drawTexture(ARROW_DOWN, (int)(width*0.2), (int)(height*(0.94+0.01*(arrowState?1:0)+1/48)), 0, 0, height/24,height/48,height/24,height/48);
+            context.drawTexture(GuiHelper::getLayer, ARROW_DOWN, (int)(width*0.2), (int)(height*(0.94+0.01*(arrowState?1:0)+1/48)), 0, 0, height/24,height/48,height/24,height/48);
         }
     }
     private List<AvailableDecision> getAvailableDecisions(){

@@ -4,10 +4,8 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
 import net.whgkswo.tesm.general.GlobalVariables;
-import net.whgkswo.tesm.networking.payload.c2s_req.ConversationNbtReq;
-import net.whgkswo.tesm.networking.payload.c2s_req.RaycastingNbtReq;
-import net.whgkswo.tesm.networking.payload.s2c_res.ConversationNbtRes;
-import net.whgkswo.tesm.networking.payload.s2c_res.RaycastingNbtRes;
+import net.whgkswo.tesm.networking.payload.data.c2s_req.RaycastingNbtReq;
+import net.whgkswo.tesm.networking.payload.data.s2c_res.RaycastingNbtRes;
 import net.whgkswo.tesm.util.IEntityDataSaver;
 
 public class RaycastingNbtC2SReceiver {

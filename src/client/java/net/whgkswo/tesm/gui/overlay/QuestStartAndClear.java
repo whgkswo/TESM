@@ -15,9 +15,8 @@ public class QuestStartAndClear implements HudRenderCallback {
     int height;
     public static int alpha;
 
-    // TODO: 포팅
-    //@Override
-    public void onHudRender(DrawContext drawContext, float tickDelta) {
+    @Override
+    public void onHudRender(DrawContext drawContext, RenderTickCounter tickCounter) {
         int color = new Color(255,255,255,alpha).hashCode();
         if(client!=null){
             width = client.getWindow().getScaledWidth();
@@ -39,10 +38,5 @@ public class QuestStartAndClear implements HudRenderCallback {
         if(Quests.questObjectiveOLOn){
             drawContext.drawCenteredTextWithShadow(client.textRenderer,Quests.updatingObjective,width/2,(int)(height*0.24),0xaa9682);
         }
-    }
-
-    @Override
-    public void onHudRender(DrawContext drawContext, RenderTickCounter tickCounter) {
-
     }
 }

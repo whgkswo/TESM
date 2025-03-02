@@ -4,7 +4,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.nbt.NBTManager;
-import net.whgkswo.tesm.networking.payload.c2s_req.SetNbtReq;
+import net.whgkswo.tesm.networking.payload.data.c2s_req.SetNbtReq;
 
 import java.util.Map;
 

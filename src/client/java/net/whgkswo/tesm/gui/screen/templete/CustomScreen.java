@@ -1,5 +1,6 @@
 package net.whgkswo.tesm.gui.screen.templete;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
@@ -12,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CustomScreen extends Screen {
-    private Map<String, GuiComponent> guiComponents = new HashMap<>();
+    private final Map<String, GuiComponent> guiComponents = new HashMap<>();
     public CustomScreen(){
         super(Text.literal("GUI 템플릿 (Freeze)"));
     }
@@ -40,6 +41,8 @@ public class CustomScreen extends Screen {
             // TODO: 포팅
             //ClientPlayNetworking.send(ModMessages.TICK_FREEZE_TOGGLE_ID, buf);
         }
+        // 다른 Gui들을 위해 셰이더 색상 초기화
+        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         super.close();
     }
     @Override

@@ -1,5 +1,6 @@
 package net.whgkswo.tesm.conversation;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
@@ -9,7 +10,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
-import net.whgkswo.tesm.networking.payload.c2s_req.ConversationNbtReq;
+import net.whgkswo.tesm.networking.payload.data.c2s_req.ConversationNbtReq;
 import net.whgkswo.tesm.raycast.CenterRaycast;
 
 public class ConversationStart {
@@ -59,5 +60,6 @@ public class ConversationStart {
         player.setPitch(getYawAndPitch(convPartner.getPos(),player.getPos())[1]);
         // 스크린 열기
         client.setScreen(new ConversationScreen(convPartner));
+        convOn = true;
     }
 }

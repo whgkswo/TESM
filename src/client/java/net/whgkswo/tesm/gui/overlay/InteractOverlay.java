@@ -1,19 +1,14 @@
 package net.whgkswo.tesm.gui.overlay;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
+import net.whgkswo.tesm.gui.helpers.GuiHelper;
 import net.whgkswo.tesm.raycast.CenterRaycast;
 
-import java.util.function.Function;
-
-import static net.whgkswo.tesm.conversation.ConversationStart.convOn;
 import static net.whgkswo.tesm.raycast.CenterRaycast.interactTarget;
 import static net.whgkswo.tesm.raycast.CenterRaycast.interactType;
 
@@ -26,9 +21,6 @@ public class InteractOverlay implements HudRenderCallback{
     static final int HUD_H = 33;
     private final Identifier INTERACT_HUD = Identifier.of(TESMMod.MODID, "textures/gui/interact_hud.png");
 
-    private final Function<Identifier, RenderLayer> renderLayerFunction =
-            identifier -> RenderLayer.getGuiTexturedOverlay(INTERACT_HUD);
-
     @Override
     public void onHudRender(DrawContext drawContext, RenderTickCounter tickCounter) {
         if(client!=null){
@@ -36,7 +28,7 @@ public class InteractOverlay implements HudRenderCallback{
             screenHeight = client.getWindow().getScaledHeight();
         }
 
-        if(CenterRaycast.interactOverlayOn&&!convOn){
+        if(CenterRaycast.interactOverlayOn){
             final float HUD_MAG = 0.6f;
             final float TEXT_MAG = 0.8f;
 
@@ -44,7 +36,7 @@ public class InteractOverlay implements HudRenderCallback{
             drawContext.getMatrices().scale(HUD_MAG,HUD_MAG,1);
 
             drawContext.drawTexture(
-                    renderLayerFunction,
+                    GuiHelper::getLayer,
                     INTERACT_HUD,
                     (int) (screenWidth *0.6/HUD_MAG),
                     (int) (screenHeight *0.4/HUD_MAG),

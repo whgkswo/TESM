@@ -22,9 +22,8 @@ public class QuestOverlay implements HudRenderCallback {
     private static TextPopUpV2 eventName;
     private static Set<TextPopUpV2> objectiveSet = new HashSet<>();
 
-    // TODO: 포팅
-    //@Override
-    public void onHudRender(DrawContext drawContext, float tickDelta) {
+    @Override
+    public void onHudRender(DrawContext drawContext, RenderTickCounter tickCounter) {
         if(eventType != null){
             eventType.render(drawContext);
             if(eventType.getStatus() == TransitionStatus.TERMINATED){
@@ -94,10 +93,5 @@ public class QuestOverlay implements HudRenderCallback {
                 new RectangularBound(Boundary.BoundType.FIXED, 0.05, 0.5, 0.1, 0.05),
                 0, new FadeSequence(50, 205, 40)
                 );
-    }
-
-    @Override
-    public void onHudRender(DrawContext drawContext, RenderTickCounter tickCounter) {
-
     }
 }

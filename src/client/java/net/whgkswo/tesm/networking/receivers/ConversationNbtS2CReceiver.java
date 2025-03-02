@@ -5,7 +5,7 @@ import net.minecraft.client.MinecraftClient;
 import net.whgkswo.tesm.conversation.ConversationStart;
 import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.general.GlobalVariablesClient;
-import net.whgkswo.tesm.networking.payload.s2c_res.ConversationNbtRes;
+import net.whgkswo.tesm.networking.payload.data.s2c_res.ConversationNbtRes;
 
 public class ConversationNbtS2CReceiver {
     /*public static void handle(PacketByteBuf response){
