@@ -14,9 +14,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CustomScreen extends Screen {
+    private boolean shouldFreezeTicks = true;
     private final Map<String, GuiComponent> guiComponents = new HashMap<>();
+
     public CustomScreen(){
-        super(Text.literal("GUI 템플릿 (Freeze)"));
+        super(Text.literal(""));
+    }
+
+    public CustomScreen(boolean shouldFreezeTicks){
+        super(Text.literal(""));
+        this.shouldFreezeTicks = shouldFreezeTicks;
     }
     @Override
     public boolean shouldPause() {
@@ -56,7 +63,7 @@ public class CustomScreen extends Screen {
     public void onScrollUp(){}
     public void onScrollDown(){}
     public boolean shouldFreezeTicks(){
-        return false;
+        return shouldFreezeTicks;
     }
     public Map<String, GuiComponent> getGuiComponents() {
         return guiComponents;

@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
+import net.whgkswo.tesm.gui.screen.JournalScreen;
 import net.whgkswo.tesm.gui.screen.MenuScreen;
 import org.lwjgl.glfw.GLFW;
 
@@ -20,14 +21,9 @@ public class KeyInputHandler {
 
     public static void registerKeyInputs(){
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            /*if(convOn){
-                if(testKey.wasPressed()){
-                    client.player.sendMessage(Text.literal("키 입력 감지됨"));
-                }
-            }
             if(openJournal.wasPressed()){
                 client.setScreen(new JournalScreen());
-            }*/
+            }
             if(openMenu.wasPressed()){
                 client.setScreen(new MenuScreen());
             }
