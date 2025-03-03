@@ -36,7 +36,7 @@ public class InteractOverlay implements HudRenderCallback{
             drawContext.getMatrices().scale(HUD_MAG,HUD_MAG,1);
 
             drawContext.drawTexture(
-                    GuiHelper::getLayer,
+                    GuiHelper::getGuiTexturedLayer,
                     INTERACT_HUD,
                     (int) (screenWidth *0.6/HUD_MAG),
                     (int) (screenHeight *0.4/HUD_MAG),

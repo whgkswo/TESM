@@ -6,7 +6,7 @@ import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
-import net.whgkswo.tesm.networking.codec.MixedMapCodecs;
+import net.whgkswo.tesm.networking.codec.MixedMapCodec;
 import net.whgkswo.tesm.networking.payload.id.PayloadId;
 
 import java.util.HashMap;
@@ -21,7 +21,7 @@ public record SetNbtReq(int entityId, Map<String, Object> data) implements Custo
     public static final PacketCodec<RegistryByteBuf, SetNbtReq> PACKET_CODEC =
             PacketCodec.tuple(
                     PacketCodecs.VAR_INT, SetNbtReq::entityId,
-                    MixedMapCodecs.mixedMap(HashMap::new), SetNbtReq::data,
+                    MixedMapCodec.mixedMap(HashMap::new), SetNbtReq::data,
                     SetNbtReq::new
             ).cast();
 

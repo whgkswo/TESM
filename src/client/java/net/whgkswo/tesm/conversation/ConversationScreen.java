@@ -1,6 +1,5 @@
 package net.whgkswo.tesm.conversation;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -140,10 +139,10 @@ public class ConversationScreen extends CustomScreen {
         }
         // 선택지 화살표 출력
         if (upArrowOn()){
-            context.drawTexture(GuiHelper::getLayer, ARROW_UP, (int)(width*0.2), (int)(height*(0.745-0.01*(arrowState?1:0))), 0, 0, height/24,height/48,height/24,height/48);
+            context.drawTexture(GuiHelper::getGuiTexturedLayer, ARROW_UP, (int)(width*0.2), (int)(height*(0.745-0.01*(arrowState?1:0))), 0, 0, height/24,height/48,height/24,height/48);
         }
         if (downArrowOn(availableDecisions.size())) {
-            context.drawTexture(GuiHelper::getLayer, ARROW_DOWN, (int)(width*0.2), (int)(height*(0.94+0.01*(arrowState?1:0)+1/48)), 0, 0, height/24,height/48,height/24,height/48);
+            context.drawTexture(GuiHelper::getGuiTexturedLayer, ARROW_DOWN, (int)(width*0.2), (int)(height*(0.94+0.01*(arrowState?1:0)+1/48)), 0, 0, height/24,height/48,height/24,height/48);
         }
     }
     private List<AvailableDecision> getAvailableDecisions(){

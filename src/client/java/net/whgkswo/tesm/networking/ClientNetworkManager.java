@@ -2,14 +2,12 @@ package net.whgkswo.tesm.networking;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.minecraft.util.Identifier;
-import net.whgkswo.tesm.TESMMod;
 import net.whgkswo.tesm.networking.payload.data.GeneralReq;
 import net.whgkswo.tesm.networking.payload.data.s2c_res.ConversationNbtRes;
 import net.whgkswo.tesm.networking.payload.data.s2c_res.RaycastingNbtRes;
-import net.whgkswo.tesm.networking.receivers.ConversationNbtS2CReceiver;
-import net.whgkswo.tesm.networking.receivers.RaycastingNbtS2CReceiver;
-import net.whgkswo.tesm.networking.receivers.s2c_req.GeneralReqReceiver;
+import net.whgkswo.tesm.networking.receivers.s2c_req.ConversationNbtS2CReceiver;
+import net.whgkswo.tesm.networking.receivers.s2c_req.RaycastingNbtS2CReceiver;
+import net.whgkswo.tesm.networking.receivers.s2c_req.general.GeneralS2CReqReceiver;
 
 public class ClientNetworkManager {
 
@@ -25,7 +23,7 @@ public class ClientNetworkManager {
         ClientPlayNetworking.registerGlobalReceiver(RaycastingNbtRes.PACKET_ID, RaycastingNbtS2CReceiver::handle);
 
         // S2C 서버 요청 패킷
-        ClientPlayNetworking.registerGlobalReceiver(GeneralReq.PACKET_ID, GeneralReqReceiver::handle);
+        ClientPlayNetworking.registerGlobalReceiver(GeneralReq.PACKET_ID, GeneralS2CReqReceiver::handle);
     }
 
     // S2C 코덱 등록

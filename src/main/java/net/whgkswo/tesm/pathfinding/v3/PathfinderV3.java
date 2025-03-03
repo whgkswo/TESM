@@ -45,18 +45,21 @@ public class PathfinderV3 {
     }
     private void handleException(Throwable e) {
         if (e.getCause() instanceof EmptyOpenListExeption) {
-            player.sendMessage(Text.literal(String.format("탐색 실패, 갈 수 없는 곳입니다. (%s)", e.getClass().getSimpleName())), true);
+            player.sendMessage(Text.literal(String.format("탐색 실패, 갈 수 없는 곳입니다. (%s)", e.getClass().getSimpleName())), false);
         } else if (e.getCause() instanceof ChunkDataNotFoundExeption e2) {
-            player.sendMessage(Text.literal(String.format("탐색 실패, %s 청크의 스캔 데이터가 누락되었습니다.", e2.getChunkPos())), true);
+            player.sendMessage(Text.literal(String.format("탐색 실패, %s 청크의 스캔 데이터가 누락되었습니다.", e2.getChunkPos())), false);
         } else if (e.getCause() instanceof BlockDataNotFoundExeption e3){
             BlockPos blockPos = e3.getBlockPos();
             String blockPosStr = blockPos.toShortString();
             player.sendMessage(Text.literal(String.format("탐색 실패, (%s) 좌표에서 문제 발생\n" +
                             "%s 청크의 데이터가 실제 지형과 다릅니다. 스캔 데이터를 업데이트하세요.",
-                    blockPosStr, world.getChunk(blockPos).getPos())), true);
+                    blockPosStr, world.getChunk(blockPos).getPos())), false);
         } else{
-            player.sendMessage(Text.literal("기타 오류 발생"), true);
+            player.sendMessage(Text.literal("기타 오류 발생"), false);
         }
+        // 엔티티 없애기
+        GlobalVariables.pathfindEntityList.forEach(entity -> entity.kill(world));
+        GlobalVariables.pathfindEntityList.clear();
     }
 
     public PriorityQueue<JumpPoint> getOpenList() {
@@ -87,13 +90,13 @@ public class PathfinderV3 {
 
                 int distance = backtrack(result.getLargeRefPos());
                 player.sendMessage(Text.literal("목적지 탐색 완료 ("+ (distance + 1) + "m -> "
-                        + duration / 1000 + "s)"), true);
+                        + duration / 1000 + "s)"), false);
                 return;
             }
             searchCount++;
         }
         // 끝까지 길을 찾지 못했다면
-        player.sendMessage(Text.literal("탐색 실패, 너무 멀거나 갈 수 없는 곳입니다."), true);
+        player.sendMessage(Text.literal("탐색 실패, 너무 멀거나 갈 수 없는 곳입니다."), false);
     }
     private int backtrack(BlockPos lastRefPos){
         BlockPos refPos = lastRefPos; // 마지막 원점 필요

@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.function.Supplier;
 
-public class MixedMapCodecs {
+public class MixedMapCodec {
     /**
      * Object 값을 가진 맵을 위한 코덱을 만드는 메서드
      * @param mapFactory 맵을 생성하는 공급자 함수

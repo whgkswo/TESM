@@ -1,4 +1,4 @@
-package net.whgkswo.tesm.networking.receivers;
+package net.whgkswo.tesm.networking.receivers.c2s_req;
 
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;

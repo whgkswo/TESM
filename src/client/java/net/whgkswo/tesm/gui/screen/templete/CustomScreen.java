@@ -1,13 +1,14 @@
 package net.whgkswo.tesm.gui.screen.templete;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.whgkswo.tesm.gui.component.GuiComponent;
+import net.whgkswo.tesm.networking.payload.data.GeneralReq;
+import net.whgkswo.tesm.networking.payload.id.GeneralTask;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,23 +25,13 @@ public class CustomScreen extends Screen {
     @Override
     public void init(){
         // 틱 프리즈 (서버에 패킷 전송)
-        if(shouldFreezeTicks()){
-            PacketByteBuf buf = PacketByteBufs.create();
-            buf.writeBoolean(true); // freezeOn = true
-            // TODO: 포팅
-            //ClientPlayNetworking.send(ModMessages.TICK_FREEZE_TOGGLE_ID, buf);
-        }
+        if(shouldFreezeTicks()) ClientPlayNetworking.send(new GeneralReq(GeneralTask.TICK_FREEZE));
         registerMouseWheelEvent();
     }
     @Override
     public void close(){
         // 틱 언프리즈 (서버에 패킷 전송)
-        if(shouldFreezeTicks()){
-            PacketByteBuf buf = PacketByteBufs.create();
-            buf.writeBoolean(false); // freezeOn = false
-            // TODO: 포팅
-            //ClientPlayNetworking.send(ModMessages.TICK_FREEZE_TOGGLE_ID, buf);
-        }
+        if(shouldFreezeTicks()) ClientPlayNetworking.send(new GeneralReq(GeneralTask.TICK_UNFREEZE));
         // 다른 Gui들을 위해 셰이더 색상 초기화
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         super.close();

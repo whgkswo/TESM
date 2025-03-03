@@ -1,4 +1,4 @@
-package net.whgkswo.tesm.networking.receivers.s2c_req.handlers;
+package net.whgkswo.tesm.networking.receivers.s2c_req.general.handlers;
 
 import net.whgkswo.tesm.conversation.quest.Quest;
 import net.whgkswo.tesm.conversation.quest.QuestStatus;

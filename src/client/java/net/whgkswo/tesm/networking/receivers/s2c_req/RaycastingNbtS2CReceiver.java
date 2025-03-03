@@ -1,4 +1,4 @@
-package net.whgkswo.tesm.networking.receivers;
+package net.whgkswo.tesm.networking.receivers.s2c_req;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.whgkswo.tesm.networking.payload.data.s2c_res.RaycastingNbtRes;

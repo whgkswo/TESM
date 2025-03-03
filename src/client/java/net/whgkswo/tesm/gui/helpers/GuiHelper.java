@@ -15,7 +15,11 @@ public class GuiHelper {
             default -> RenderLayer.getGui();
         };
     }*/
-    public static RenderLayer getLayer(Identifier id){
+    public static RenderLayer getGuiTexturedLayer(Identifier id){
         return RenderLayer.getGuiTexturedOverlay(id);
+    }
+
+    public static RenderLayer getGuiLayer(Identifier id){
+        return RenderLayer.getGuiOverlay();
     }
 }

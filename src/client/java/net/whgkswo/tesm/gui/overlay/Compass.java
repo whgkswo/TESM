@@ -4,7 +4,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
@@ -38,7 +37,7 @@ public class Compass implements HudRenderCallback {
         drawContext.getMatrices().push(); // 현재 매트릭스 배율을 저장
         drawContext.getMatrices().scale(HUD_MAG,HUD_MAG,1);
 
-        drawContext.drawTexture(GuiHelper::getLayer, COMPASS_BLACK, (int) ((screenWidth-TEXTURE_W*HUD_MAG)/2/HUD_MAG), (int) (screenHeight *0.03/HUD_MAG),0,0,TEXTURE_W,TEXTURE_H,TEXTURE_W,TEXTURE_H);
+        drawContext.drawTexture(GuiHelper::getGuiTexturedLayer, COMPASS_BLACK, (int) ((screenWidth-TEXTURE_W*HUD_MAG)/2/HUD_MAG), (int) (screenHeight *0.03/HUD_MAG),0,0,TEXTURE_W,TEXTURE_H,TEXTURE_W,TEXTURE_H);
         if(northCompassOn){
             drawContext.drawText(client.textRenderer,"N",(int) ((screenWidth+northCompassPos*(TEXTURE_W*HUD_MAG/45))/2/HUD_MAG),(int) (screenHeight *0.01/HUD_MAG),0xFFFFFF,false);
         }
