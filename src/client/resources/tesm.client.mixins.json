@@ -3,8 +3,9 @@
 	"package": "net.whgkswo.tesm.mixin.client",
 	"compatibilityLevel": "JAVA_21",
 	"client": [
-		"TESMClientMixin",
-		"InGameHudMixin"
+		"FogMixin",
+		"InGameHudMixin",
+		"TESMClientMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

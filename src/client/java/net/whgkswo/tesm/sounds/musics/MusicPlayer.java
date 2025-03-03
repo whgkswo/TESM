@@ -3,15 +3,13 @@ package net.whgkswo.tesm.sounds.musics;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.text.Text;
-import net.whgkswo.tesm.general.GlobalVariables;
+import net.whgkswo.tesm.calendar.TimePeriod;
 import net.whgkswo.tesm.sounds.SoundHelper;
 import net.whgkswo.tesm.sounds.musics.soundEvents.MusicEvent;
 import net.whgkswo.tesm.sounds.musics.soundEvents.MusicKey;
 
 import java.util.*;
 
-import static net.whgkswo.tesm.general.GlobalVariables.player;
 import static net.whgkswo.tesm.general.GlobalVariables.world;
 
 public class MusicPlayer {
@@ -80,7 +78,7 @@ public class MusicPlayer {
         Region region = Region.getRegion();
         TimePeriod timePeriod = TimePeriod.getPeriod(world.getTimeOfDay());
 
-        if(timePeriod.equals(TimePeriod.EXCEPTION)){
+        if(timePeriod == TimePeriod.DUMMY){
             tickCounter = 0;
             return;
         }

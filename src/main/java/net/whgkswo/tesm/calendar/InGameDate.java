@@ -1,12 +1,12 @@
 package net.whgkswo.tesm.calendar;
 
-public class Date {
+public class InGameDate {
     private int year;
     private Month month;
     private int day;
     private DayOfTheWeek dayOfTheWeek;
 
-    public Date(int year, Month month, int day, DayOfTheWeek dayOfTheWeek) {
+    public InGameDate(int year, Month month, int day, DayOfTheWeek dayOfTheWeek) {
         this.year = year;
         this.month = month;
         this.day = day;

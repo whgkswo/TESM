@@ -4,14 +4,13 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.tag.TagKey;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.whgkswo.tesm.calendar.Time;
+import net.whgkswo.tesm.calendar.InGameTime;
 import net.whgkswo.tesm.data.JsonManager;
 import net.whgkswo.tesm.tags.BiomeTags;
 
@@ -169,10 +168,10 @@ public class OnServerTicks {
                     addTimeCounter = 0;
                     world.setTimeOfDay(world.getTimeOfDay() + 1);
                 }
-                int previousHour = currentTime.getHour();
-                currentTime = Time.getTime();
-                if(previousHour == 23 && currentTime.getHour() == 0){
-                    currentDate.addDate();
+                int previousHour = currentInGameTime.getHour();
+                currentInGameTime = new InGameTime(world.getTimeOfDay());
+                if(previousHour == 23 && currentInGameTime.getHour() == 0){
+                    currentInGameDate.addDate();
                 }
             }
         });

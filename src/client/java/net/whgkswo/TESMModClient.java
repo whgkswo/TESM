@@ -1,8 +1,12 @@
 package net.whgkswo;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.color.world.BiomeColors;
+import net.minecraft.client.render.Fog;
+import net.minecraft.client.render.FogShape;
 import net.minecraft.util.math.BlockPos;
 import net.whgkswo.tesm.TestClassClient;
 import net.whgkswo.tesm.conversation.ConversationStart;
@@ -80,7 +84,6 @@ public class TESMModClient implements ClientModInitializer {
 
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 퀘스트 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 		QuestRegisterer.register();
-
 
 		TestClassClient.testClassClient(); // 테스트용!
 	}

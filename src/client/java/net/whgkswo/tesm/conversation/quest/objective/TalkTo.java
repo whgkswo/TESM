@@ -1,11 +1,11 @@
 package net.whgkswo.tesm.conversation.quest.objective;
 
-import net.whgkswo.tesm.calendar.DateTime;
+import net.whgkswo.tesm.calendar.InGameDateTime;
 
 public class TalkTo extends QuestObjective{
     private String targetName;
 
-    public TalkTo(String description, DateTime dueDatetime, ObjectiveType objectiveType, String objectTarget) {
+    public TalkTo(String description, InGameDateTime dueDatetime, ObjectiveType objectiveType, String objectTarget) {
         super(description, dueDatetime, objectiveType, objectTarget);
     }
 

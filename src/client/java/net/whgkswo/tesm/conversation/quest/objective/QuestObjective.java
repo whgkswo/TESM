@@ -1,10 +1,10 @@
 package net.whgkswo.tesm.conversation.quest.objective;
 
-import net.whgkswo.tesm.calendar.DateTime;
+import net.whgkswo.tesm.calendar.InGameDateTime;
 
 public class QuestObjective {
     private String description;
-    private DateTime dueDatetime;
+    private InGameDateTime dueDatetime;
     private ObjectiveType objectiveType;
     private String objectiveTarget;
     private String nextStage;
@@ -15,7 +15,7 @@ public class QuestObjective {
         KILL
     }
 
-    public QuestObjective(String description, DateTime dueDatetime, ObjectiveType objectiveType, String objectiveTarget) {
+    public QuestObjective(String description, InGameDateTime dueDatetime, ObjectiveType objectiveType, String objectiveTarget) {
         this.description = description;
         this.dueDatetime = dueDatetime;
         this.objectiveType = objectiveType;
@@ -37,7 +37,7 @@ public class QuestObjective {
         return description;
     }
 
-    public DateTime getDueDatetime() {
+    public InGameDateTime getDueDatetime() {
         return dueDatetime;
     }
 
