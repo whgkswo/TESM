@@ -82,5 +82,12 @@ public class TESMMod implements ModInitializer {
 
 
 		//TestClass.testClass(); // 테스트용!
+		// TODO: 은신 시스템
+		// TODO: 문 오버레이
+		// TODO: 마법봉
+		// TODO: 디버깅 메시지
+		// TODO: 매드 다이스, 매드 포커
+		// TODO: 대화 시스템 UI 리디자인
+		// TODO: 대화 시스템 JSON 리뉴얼
 	}
 }
