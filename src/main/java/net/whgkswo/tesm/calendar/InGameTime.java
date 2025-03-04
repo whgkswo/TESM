@@ -162,26 +162,26 @@ public class InGameTime {
         return (int)Math.round((totalSeconds * 24000) / 86400);
     }
 
-    public InGameTime plusHours(int addition){
-        int newHour = customModulo(hour + addition, 24);
+    public InGameTime adjustHours(int addition){
+        int newHour = timeModulo(hour + addition, 24);
         return new InGameTime(newHour, minute, second);
     }
-    public InGameTime plusMinutes(int addition){
+    public InGameTime adjustMinutes(int addition){
         int totalMinutes = minute + addition;
-        int newHour = customModulo (hour + totalMinutes / 60, 24);
-        int newMinute = customModulo(totalMinutes, 60);
+        int newHour = timeModulo(hour + totalMinutes / 60, 24);
+        int newMinute = timeModulo(totalMinutes, 60);
         return new InGameTime(newHour, newMinute, second);
     }
-    public InGameTime plusSeconds(int addition){
+    public InGameTime adjustSeconds(int addition){
         int totalSeconds = second + addition;
         int totalMinutes = minute + totalSeconds / 60;
-        int newHour = customModulo(hour + totalMinutes / 60, 24);
-        int newSecond = customModulo(totalSeconds, 60);
-        int newMinute = customModulo(totalMinutes, 60);
+        int newHour = timeModulo(hour + totalMinutes / 60, 24);
+        int newSecond = timeModulo(totalSeconds, 60);
+        int newMinute = timeModulo(totalMinutes, 60);
         return new InGameTime(newHour, newMinute, newSecond);
     }
     // -29시 -> -5시 -> 19시, -48분 -> 12분
-    public int customModulo(int num, int size){
+    public int timeModulo(int num, int size){
         if(num >= 0){
             return num % size;
         }else{

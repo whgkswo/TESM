@@ -40,7 +40,10 @@ replay_*.log
 *.jfr
 
 # Resources
-src/main/resources/assets
+src/main/resources/assets/minecraft
+src/main/resources/assets/tesm/sounds
+src/main/resources/assets/tesm/textures
+src/main/resources/assets/tesm/icon.png
 src/main/resources/data
 
 # Test Class

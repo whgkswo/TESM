@@ -1,0 +1,12 @@
+{
+  "block.tesm.grassy_soil": "Grassy Soil",
+  "block.tesm.snowy_grass": "Snowy Grass",
+  "block.tesm.snowy_grass_light": "Snowy Grass Light",
+  "block.tesm.snowy_tundra_grass": "Snowy Tundra Grass",
+  "block.tesm.stone_road": "Stone Road",
+  "item.tesm.magic_tool": "만능 마법봉",
+  "key.category.tesm.tesm": "엘더스크롤M",
+  "key.tesm.next_line": "대사 넘기기",
+  "key.tesm.open_journal": "저널",
+  "key.tesm.open_menu": "메뉴 열기/닫기"
+}
