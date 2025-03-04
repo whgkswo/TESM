@@ -1,0 +1,45 @@
+{
+	"schemaVersion": 1,
+	"id": "tesm",
+	"version": "1.0.0",
+	"name": "TESM",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"Me!"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/modid/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.whgkswo.tesm.TESMMod"
+		],
+		"client": [
+			"net.whgkswo.TESMModClient"
+		],
+		"terrablender": [
+			"net.whgkswo.tesm.world.biome.ModTerrablenderAPI"
+		]
+	},
+	"mixins": [
+		"tesm.mixins.json",
+		"tesm.client.mixins.json"
+	],
+	"client": {
+		"config": "tesm.client.mixins.json",
+		"environment": "client"
+	},
+	"depends": {
+		"fabricloader": ">=0.15.0",
+		"minecraft": "1.21.4",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

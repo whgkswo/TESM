@@ -1,5 +1,6 @@
 package net.whgkswo.tesm.calendar;
 
+// 불변 객체임! 값을 수정할 때는 항상 새로운 객체 생성
 public class InGameDate {
     private int year;
     private Month month;
@@ -13,6 +14,7 @@ public class InGameDate {
         this.dayOfTheWeek = dayOfTheWeek;
     }
 
+    // TODO: 새로운 객체 반환하도록 수정 필요, plusDays() 등의 메서드 구현 고려
     public void addDate(){
         day++;
         addDayOfTheWeek();

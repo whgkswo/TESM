@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.whgkswo.tesm.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "ModEntityDataSaverMixin",
+    "TESMMixin"
+  ],
+  "client": [
+  ],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+	}
+}
