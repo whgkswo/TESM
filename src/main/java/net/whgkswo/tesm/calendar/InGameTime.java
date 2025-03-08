@@ -19,15 +19,6 @@ public class InGameTime {
         this.second = (int) second;
     }
     public InGameTime(long tickTime){
-        /*double time = (double) GlobalVariables.world.getTimeOfDay() % 24000;
-        double hour = time/1000;
-        time -= (int) hour * 1000;
-        double minute = time / (1000.0/60);
-        time -= (int) minute * (1000.0/60);
-        double second = time / (1000.0/3600);
-        hour = (hour+6) % 24;
-        return new InGameTime(hour,minute,second);*/
-
         double ticks = (double) tickTime % 24000;
 
         // 틱을 초로 변환 (24000틱 = 86400초)
@@ -79,17 +70,8 @@ public class InGameTime {
         }
     }
 
-    public static InGameTime getCurrentTime(){
-        /*double time = (double) GlobalVariables.world.getTimeOfDay() % 24000;
-        double hour = time/1000;
-        time -= (int) hour * 1000;
-        double minute = time / (1000.0/60);
-        time -= (int) minute * (1000.0/60);
-        double second = time / (1000.0/3600);
-        hour = (hour+6) % 24;
-        return new InGameTime(hour,minute,second);*/
-
-        // 현재 틱 시간 가져오기
+    public static InGameTime now(){
+         // 현재 틱 시간 가져오기
         double ticks = (double) GlobalVariables.world.getTimeOfDay() % 24000;
 
         // 틱을 초로 변환 (24000틱 = 86400초)
@@ -178,6 +160,34 @@ public class InGameTime {
         // 초를 틱으로 변환 (1일 = 86400초 = 24000틱)
         // 따라서 1초 = 24000/86400 = 5/18 틱
         return (int)Math.round((totalSeconds * 24000) / 86400);
+    }
+
+    public InGameTime adjustHours(int addition){
+        int newHour = timeModulo(hour + addition, 24);
+        return new InGameTime(newHour, minute, second);
+    }
+    public InGameTime adjustMinutes(int addition){
+        int totalMinutes = minute + addition;
+        int newHour = timeModulo(hour + totalMinutes / 60, 24);
+        int newMinute = timeModulo(totalMinutes, 60);
+        return new InGameTime(newHour, newMinute, second);
+    }
+    public InGameTime adjustSeconds(int addition){
+        int totalSeconds = second + addition;
+        int totalMinutes = minute + totalSeconds / 60;
+        int newHour = timeModulo(hour + totalMinutes / 60, 24);
+        int newSecond = timeModulo(totalSeconds, 60);
+        int newMinute = timeModulo(totalMinutes, 60);
+        return new InGameTime(newHour, newMinute, newSecond);
+    }
+    // -29시 -> -5시 -> 19시, -48분 -> 12분
+    public int timeModulo(int num, int size){
+        if(num >= 0){
+            return num % size;
+        }else{
+            int rest = num % size;
+            return size + rest;
+        }
     }
 
     public enum TimeFormat{

@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "tesm:block/test_block" }
+  }
+}

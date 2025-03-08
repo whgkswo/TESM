@@ -1,0 +1,2345 @@
+{
+  "argonian_m_aha": {
+    "category": "voice",
+    "sounds": [
+      {
+        "name": "tesm:aha",
+        "stream": false
+      }
+    ]
+  },
+  "argonian_f_hmm_down": {
+    "category": "voice",
+    "sounds": [
+      {
+        "name": "tesm:argonian_female_hmm_down",
+        "stream": false
+      }
+    ]
+  },
+  "argonian_f_hmm_up": {
+    "category": "voice",
+    "sounds": [
+      {
+        "name": "tesm:argonian_female_hmm_up",
+        "stream": false
+      }
+    ]
+  },
+  "argonian_m_yes_up": {
+    "category": "voice",
+    "sounds": [
+      {
+        "name": "tesm:yes_up",
+        "stream": false
+      }
+    ]
+  },
+  "argonian_m_hmm_down": {
+    "category": "voice",
+    "sounds": [
+      {
+        "name": "tesm:hmm_down",
+        "stream": false
+      }
+    ]
+  },
+  "argonian_m_hmm_up": {
+    "category": "voice",
+    "sounds": [
+      {
+        "name": "tesm:hmm_up",
+        "stream": false
+      }
+    ]
+  },
+  "argonian_m_hmm_up2": {
+    "category": "voice",
+    "sounds": [
+      {
+        "name": "tesm:hmm_up-_2_",
+        "stream": false
+      }
+    ]
+  },
+  "khajiit_m_what_is_it": {
+    "category": "voice",
+    "sounds": [
+      {
+        "name": "tesm:what-is-it",
+        "stream": false
+      }
+    ]
+  },
+  "khajiit_m_of_course": {
+    "category": "voice",
+    "sounds": [
+      {
+        "name": "tesm:of-course",
+        "stream": false
+      }
+    ]
+  },
+  "khajiit_m_ayo": {
+    "category": "voice",
+    "sounds": [
+      {
+        "name": "tesm:ayo",
+        "stream": false
+      }
+    ]
+  },
+  "khajiit_m_yes_up": {
+    "category": "voice",
+    "sounds": [
+      {
+        "name": "tesm:yes_up",
+        "stream": false
+      }
+    ]
+  },
+  "khajiit_m_hmm_up2": {
+    "category": "voice",
+    "sounds": [
+      {
+        "name": "tesm:hmm_up-_2_",
+        "stream": false
+      }
+    ]
+  },
+  "khajiit_m_hmm_up": {
+    "category": "voice",
+    "sounds": [
+      {
+        "name": "tesm:hmm_up",
+        "stream": false
+      }
+    ]
+  },
+  "khajiit_m_uh_huh": {
+    "category": "voice",
+    "sounds": [
+      {
+        "name": "tesm:un-huh",
+        "stream": false
+      }
+    ]
+  },
+  "a_machine_of_wealth": {
+    "category": "record",
+    "subtitle": "subtitles.a_machine_of_wealth",
+    "sounds": [
+      {
+        "name": "tesm:musics/a_machine_of_wealth_anvil_b",
+        "stream": true
+      }
+    ]
+  },
+  "akatosh_bring_you_home": {
+    "category": "record",
+    "subtitle": "subtitles.akatosh_bring_you_home",
+    "sounds": [
+      {
+        "name": "tesm:musics/22._epilogue___akatosh_bring_you_home",
+        "stream": true
+      }
+    ]
+  },
+  "alleyway_pavane": {
+    "category": "record",
+    "subtitle": "subtitles.alleyway_pavane",
+    "sounds": [
+      {
+        "name": "tesm:musics/alleyway_pavane_skingrad_d",
+        "stream": true
+      }
+    ]
+  },
+  "ancient_vessel": {
+    "category": "record",
+    "subtitle": "subtitles.ancient_vessel",
+    "sounds": [
+      {
+        "name": "tesm:musics/ancient_vessel_skingrad_a",
+        "stream": true
+      }
+    ]
+  },
+  "apparitions": {
+    "category": "record",
+    "subtitle": "subtitles.apparitions",
+    "sounds": [
+      {
+        "name": "tesm:musics/apparitions",
+        "stream": true
+      }
+    ]
+  },
+  "arch_henchman": {
+    "category": "record",
+    "subtitle": "subtitles.arch_henchman",
+    "sounds": [
+      {
+        "name": "tesm:musics/arch_henchman",
+        "stream": true
+      }
+    ]
+  },
+  "aurora": {
+    "category": "record",
+    "subtitle": "subtitles.aurora",
+    "sounds": [
+      {
+        "name": "tesm:musics/the_elder_scrolls_v_skyrim_ost_-_aurora",
+        "stream": true
+      }
+    ]
+  },
+  "awake": {
+    "category": "record",
+    "subtitle": "subtitles.awake",
+    "sounds": [
+      {
+        "name": "tesm:musics/02_jeremy_soule_-_awake",
+        "stream": true
+      }
+    ]
+  },
+  "azuras_cry": {
+    "category": "record",
+    "subtitle": "subtitles.azuras_cry",
+    "sounds": [
+      {
+        "name": "tesm:musics/azuras_cry",
+        "stream": true
+      }
+    ]
+  },
+  "ballad_of_dusk": {
+    "category": "record",
+    "subtitle": "subtitles.ballad_of_dusk",
+    "sounds": [
+      {
+        "name": "tesm:musics/ballad-of-dusk-_journey-a_",
+        "stream": true
+      }
+    ]
+  },
+  "beneath_our_feet": {
+    "category": "record",
+    "subtitle": "subtitles.beneath_our_feet",
+    "sounds": [
+      {
+        "name": "tesm:musics/beneath_our_feet",
+        "stream": true
+      }
+    ]
+  },
+  "blood_and_steel": {
+    "category": "record",
+    "subtitle": "subtitles.blood_and_steel",
+    "sounds": [
+      {
+        "name": "tesm:musics/blood-and-steel",
+        "stream": true
+      }
+    ]
+  },
+  "blood_frenzy": {
+    "category": "record",
+    "subtitle": "subtitles.blood_frenzy",
+    "sounds": [
+      {
+        "name": "tesm:musics/blood_frenzy",
+        "stream": true
+      }
+    ]
+  },
+  "castle_gemini": {
+    "category": "record",
+    "subtitle": "subtitles.castle_gemini",
+    "sounds": [
+      {
+        "name": "tesm:musics/castle-gemini-_skingrad-e_",
+        "stream": true
+      }
+    ]
+  },
+  "caught_off_guard": {
+    "category": "record",
+    "subtitle": "subtitles.caught_off_guard",
+    "sounds": [
+      {
+        "name": "tesm:musics/caught-off-guard",
+        "stream": true
+      }
+    ]
+  },
+  "death_or_sovngarde": {
+    "category": "record",
+    "subtitle": "subtitles.death_or_sovngarde",
+    "sounds": [
+      {
+        "name": "tesm:musics/tes-v-skyrim-soundtrack-death-or-sovngarde",
+        "stream": true
+      }
+    ]
+  },
+  "diaspora_nenalata": {
+    "category": "record",
+    "subtitle": "subtitles.diaspora_nenalata",
+    "sounds": [
+      {
+        "name": "tesm:musics/beyond-skyrim-bruma-diaspora-nenalata",
+        "stream": true
+      }
+    ]
+  },
+  "distant_horizons": {
+    "category": "record",
+    "subtitle": "subtitles.distant_horizons",
+    "sounds": [
+      {
+        "name": "tesm:musics/jeremy_soule_-_distant_horizons",
+        "stream": true
+      }
+    ]
+  },
+  "far_horizons": {
+    "category": "record",
+    "subtitle": "subtitles.far_horizons",
+    "sounds": [
+      {
+        "name": "tesm:musics/far-horizons",
+        "stream": true
+      }
+    ]
+  },
+  "fated_lands": {
+    "category": "record",
+    "subtitle": "subtitles.fated_lands",
+    "sounds": [
+      {
+        "name": "tesm:musics/fated_lands",
+        "stream": true
+      }
+    ]
+  },
+  "foreign_foe": {
+    "category": "record",
+    "subtitle": "subtitles.foreign_foe",
+    "sounds": [
+      {
+        "name": "tesm:musics/foreign_foe",
+        "stream": true
+      }
+    ]
+  },
+  "from_past_to_present": {
+    "category": "record",
+    "subtitle": "subtitles.from_past_to_present",
+    "sounds": [
+      {
+        "name": "tesm:musics/the-elder-scrolls-v-skyrim-from-past-to-present",
+        "stream": true
+      }
+    ]
+  },
+  "frostfall_a": {
+    "category": "record",
+    "subtitle": "subtitles.frostfall_a",
+    "sounds": [
+      {
+        "name": "tesm:musics/jeremy_soule_-_frostfall",
+        "stream": true
+      }
+    ]
+  },
+  "golden_sails": {
+    "category": "record",
+    "subtitle": "subtitles.golden_sails",
+    "sounds": [
+      {
+        "name": "tesm:musics/golden_sails_anvil_d",
+        "stream": true
+      }
+    ]
+  },
+  "haven": {
+    "category": "record",
+    "subtitle": "subtitles.haven",
+    "sounds": [
+      {
+        "name": "tesm:musics/haven-_chorrol-a_",
+        "stream": true
+      }
+    ]
+  },
+  "heartlands_sigh": {
+    "category": "record",
+    "subtitle": "subtitles.heartlands_sigh",
+    "sounds": [
+      {
+        "name": "tesm:musics/heartlands_sigh",
+        "stream": true
+      }
+    ]
+  },
+  "hold_fast": {
+    "category": "record",
+    "subtitle": "subtitles.hold_fast",
+    "sounds": [
+      {
+        "name": "tesm:musics/hold_fast_be_brave_dont_die",
+        "stream": true
+      }
+    ]
+  },
+  "icewake": {
+    "category": "record",
+    "subtitle": "subtitles.icewake",
+    "sounds": [
+      {
+        "name": "tesm:musics/icewake___beyond_skyrim_-_roscrea",
+        "stream": true
+      }
+    ]
+  },
+  "isles": {
+    "category": "record",
+    "subtitle": "subtitles.isles",
+    "sounds": [
+      {
+        "name": "tesm:musics/11._isles",
+        "stream": true
+      }
+    ]
+  },
+  "journeys_end": {
+    "category": "record",
+    "subtitle": "subtitles.journeys_end",
+    "sounds": [
+      {
+        "name": "tesm:musics/journeys_end",
+        "stream": true
+      }
+    ]
+  },
+  "lineage": {
+    "category": "record",
+    "subtitle": "subtitles.lineage",
+    "sounds": [
+      {
+        "name": "tesm:musics/lineage_chorrol_e",
+        "stream": true
+      }
+    ]
+  },
+  "maiden_voyage": {
+    "category": "record",
+    "subtitle": "subtitles.maiden_voyage",
+    "sounds": [
+      {
+        "name": "tesm:musics/maiden-voyage-_anvil-c_",
+        "stream": true
+      }
+    ]
+  },
+  "meyuvon_falls": {
+    "category": "record",
+    "subtitle": "subtitles.meyuvon_falls",
+    "sounds": [
+      {
+        "name": "tesm:musics/meyuvon_falls",
+        "stream": true
+      }
+    ]
+  },
+  "missing_moments": {
+    "category": "record",
+    "subtitle": "subtitles.missing_moments",
+    "sounds": [
+      {
+        "name": "tesm:musics/missing-moments-_kvatch-b_",
+        "stream": true
+      }
+    ]
+  },
+  "moon_and_scars": {
+    "category": "record",
+    "subtitle": "subtitles.moon_and_scars",
+    "sounds": [
+      {
+        "name": "tesm:musics/moon_and_scars",
+        "stream": true
+      }
+    ]
+  },
+  "mortal_wound": {
+    "category": "record",
+    "subtitle": "subtitles.mortal_wound",
+    "sounds": [
+      {
+        "name": "tesm:musics/mortal_wound",
+        "stream": true
+      }
+    ]
+  },
+  "night_beacon": {
+    "category": "record",
+    "subtitle": "subtitles.night_beacon",
+    "sounds": [
+      {
+        "name": "tesm:musics/night-beacon-_anvil-e_",
+        "stream": true
+      }
+    ]
+  },
+  "northern_cry": {
+    "category": "record",
+    "subtitle": "subtitles.northern_cry",
+    "sounds": [
+      {
+        "name": "tesm:musics/northern_cry",
+        "stream": true
+      }
+    ]
+  },
+  "nox_atra": {
+    "category": "record",
+    "subtitle": "subtitles.nox_atra",
+    "sounds": [
+      {
+        "name": "tesm:musics/nox_atra",
+        "stream": true
+      }
+    ]
+  },
+  "once_in_embers": {
+    "category": "record",
+    "subtitle": "subtitles.once_in_embers",
+    "sounds": [
+      {
+        "name": "tesm:musics/once_in_embers_kvatch_d",
+        "stream": true
+      }
+    ]
+  },
+  "restless_secrets": {
+    "category": "record",
+    "subtitle": "subtitles.restless_secrets",
+    "sounds": [
+      {
+        "name": "tesm:musics/restless-secrets-_arcane-a_",
+        "stream": true
+      }
+    ]
+  },
+  "reverence": {
+    "category": "record",
+    "subtitle": "subtitles.reverence",
+    "sounds": [
+      {
+        "name": "tesm:musics/reverence",
+        "stream": true
+      }
+    ]
+  },
+  "ruins_of_the_wolf_cult": {
+    "category": "record",
+    "subtitle": "subtitles.ruins_of_the_wolf_cult",
+    "sounds": [
+      {
+        "name": "tesm:musics/ruins_of_the_wolf_cult___beyond_skyrim_-_roscrea",
+        "stream": true
+      }
+    ]
+  },
+  "secunda": {
+    "category": "record",
+    "subtitle": "subtitles.secunda",
+    "sounds": [
+      {
+        "name": "tesm:musics/jeremy_soule_-_secunda",
+        "stream": true
+      }
+    ]
+  },
+  "shapeless": {
+    "category": "record",
+    "subtitle": "subtitles.shapeless",
+    "sounds": [
+      {
+        "name": "tesm:musics/shapeless",
+        "stream": true
+      }
+    ]
+  },
+  "steel_on_steel": {
+    "category": "record",
+    "subtitle": "subtitles.steel_on_steel",
+    "sounds": [
+      {
+        "name": "tesm:musics/steel-on-steel",
+        "stream": true
+      }
+    ]
+  },
+  "streetside_respite": {
+    "category": "record",
+    "subtitle": "subtitles.streetside_respite",
+    "sounds": [
+      {
+        "name": "tesm:musics/streetside-respite-_chorrol-c_",
+        "stream": true
+      }
+    ]
+  },
+  "the_brigands_of_blackwood": {
+    "category": "record",
+    "subtitle": "subtitles.the_brigands_of_blackwood",
+    "sounds": [
+      {
+        "name": "tesm:musics/beyond-skyrim-bruma-the-brigands-of-blackwood",
+        "stream": true
+      }
+    ]
+  },
+  "the_endless_tale": {
+    "category": "record",
+    "subtitle": "subtitles.the_endless_tale",
+    "sounds": [
+      {
+        "name": "tesm:musics/the_endless_tale___beyond_skyrim_-_roscrea",
+        "stream": true
+      }
+    ]
+  },
+  "the_frozen_path": {
+    "category": "record",
+    "subtitle": "subtitles.the_frozen_path",
+    "sounds": [
+      {
+        "name": "tesm:musics/the_frozen_path",
+        "stream": true
+      }
+    ]
+  },
+  "the_jerall_mountains": {
+    "category": "record",
+    "subtitle": "subtitles.the_jerall_mountains",
+    "sounds": [
+      {
+        "name": "tesm:musics/15_jeremy_soule_-_the_jerall_mountains",
+        "stream": true
+      }
+    ]
+  },
+  "the_sleeping_sky": {
+    "category": "record",
+    "subtitle": "subtitles.the_sleeping_sky",
+    "sounds": [
+      {
+        "name": "tesm:musics/the_sleeping_sky",
+        "stream": true
+      }
+    ]
+  },
+  "the_white_river": {
+    "category": "record",
+    "subtitle": "subtitles.the_white_river",
+    "sounds": [
+      {
+        "name": "tesm:musics/tes_v_skyrim_soundtrack_-_the_white_river",
+        "stream": true
+      }
+    ]
+  },
+  "these_verdant_fields": {
+    "category": "record",
+    "subtitle": "subtitles.these_verdant_fields",
+    "sounds": [
+      {
+        "name": "tesm:musics/these_verdant_fields",
+        "stream": true
+      }
+    ]
+  },
+  "to_fell_an_ogre": {
+    "category": "record",
+    "subtitle": "subtitles.to_fell_an_ogre",
+    "sounds": [
+      {
+        "name": "tesm:musics/beyond_skyrim_bruma_-_to_fell_an_ogre",
+        "stream": true
+      }
+    ]
+  },
+  "tooth_and_claw": {
+    "category": "record",
+    "subtitle": "subtitles.tooth_and_claw",
+    "sounds": [
+      {
+        "name": "tesm:musics/tooth-and-claw",
+        "stream": true
+      }
+    ]
+  },
+  "tsaescis_teeth": {
+    "category": "record",
+    "subtitle": "subtitles.tsaescis_teeth",
+    "sounds": [
+      {
+        "name": "tesm:musics/tsaescis_teeth_mp3cut.net",
+        "stream": true
+      }
+    ]
+  },
+  "unbound": {
+    "category": "record",
+    "subtitle": "subtitles.unbound",
+    "sounds": [
+      {
+        "name": "tesm:musics/unbound_-_jeremy_soule_-_elder_scrolls",
+        "stream": true
+      }
+    ]
+  },
+  "unbroken_road": {
+    "category": "record",
+    "subtitle": "subtitles.unbroken_road",
+    "sounds": [
+      {
+        "name": "tesm:musics/04_jeremy_soule_-_unbroken_road",
+        "stream": true
+      }
+    ]
+  },
+  "vigilance": {
+    "category": "record",
+    "subtitle": "subtitles.vigilance",
+    "sounds": [
+      {
+        "name": "tesm:musics/vigilance_chorrol_d",
+        "stream": true
+      }
+    ]
+  },
+  "vision_of_nirn": {
+    "category": "record",
+    "subtitle": "subtitles.vision_of_nirn",
+    "sounds": [
+      {
+        "name": "tesm:musics/09._vision_of_nirn",
+        "stream": true
+      }
+    ]
+  },
+  "walls_divide_us": {
+    "category": "record",
+    "subtitle": "subtitles.walls_divide_us",
+    "sounds": [
+      {
+        "name": "tesm:musics/walls-divide-us-_skingrad-b_",
+        "stream": true
+      }
+    ]
+  },
+  "where_giants_walked": {
+    "category": "record",
+    "subtitle": "subtitles.where_giants_walked",
+    "sounds": [
+      {
+        "name": "tesm:musics/where_giants_walked_mixed",
+        "stream": true
+      }
+    ]
+  },
+  "wilder_hearts": {
+    "category": "record",
+    "subtitle": "subtitles.wilder_hearts",
+    "sounds": [
+      {
+        "name": "tesm:musics/wilder_hearts",
+        "stream": true
+      }
+    ]
+  },
+  "winter_is_coming": {
+    "category": "record",
+    "subtitle": "subtitles.winter_is_coming",
+    "sounds": [
+      {
+        "name": "tesm:musics/14._winter_is_coming",
+        "stream": true
+      }
+    ]
+  },
+  "withering_pines": {
+    "category": "record",
+    "subtitle": "subtitles.withering_pines",
+    "sounds": [
+      {
+        "name": "tesm:musics/withering_pines___beyond_skyrim_-_roscrea",
+        "stream": true
+      }
+    ]
+  },
+  "colovian_dreamer": {
+    "category": "record",
+    "subtitle": "subtitles.colovian_dreamer",
+    "sounds": [
+      {
+        "name": "tesm:musics/cyrodiil-colovian-dreamer",
+        "stream": true
+      }
+    ]
+  },
+  "midnight_over_colovia": {
+    "category": "record",
+    "subtitle": "subtitles.midnight_over_colovia",
+    "sounds": [
+      {
+        "name": "tesm:musics/cyrodiil-midnight-over-colovia",
+        "stream": true
+      }
+    ]
+  },
+  "remembering_the_last_great_dynasty": {
+    "category": "record",
+    "subtitle": "subtitles.remembering_the_last_great_dynasty",
+    "sounds": [
+      {
+        "name": "tesm:musics/cyrodiil-remembering-the-last-great-dynasty",
+        "stream": true
+      }
+    ]
+  },
+  "survival_of_the_fittest": {
+    "category": "record",
+    "subtitle": "subtitles.survival_of_the_fittest",
+    "sounds": [
+      {
+        "name": "tesm:musics/cyrodiil-survival-of-the-fittest",
+        "stream": true
+      }
+    ]
+  },
+  "the_moonlight_wanderer": {
+    "category": "record",
+    "subtitle": "subtitles.the_moonlight_wanderer",
+    "sounds": [
+      {
+        "name": "tesm:musics/cyrodiil-the-moonlight-wanderer",
+        "stream": true
+      }
+    ]
+  },
+  "heartlands_dawn": {
+    "category": "record",
+    "subtitle": "subtitles.heartlands_dawn",
+    "sounds": [
+      {
+        "name": "tesm:musics/heartland_s-dawn",
+        "stream": true
+      }
+    ]
+  },
+  "masser_and_secundas_duet": {
+    "category": "record",
+    "subtitle": "subtitles.masser_and_secundas_duet",
+    "sounds": [
+      {
+        "name": "tesm:musics/masser-and-secunda_s-duet",
+        "stream": true
+      }
+    ]
+  },
+  "through_the_valley": {
+    "category": "record",
+    "subtitle": "subtitles.through_the_valley",
+    "sounds": [
+      {
+        "name": "tesm:musics/jeremy_soule_-_02_-_through_the_valleys",
+        "stream": true
+      }
+    ]
+  },
+  "the_nibenese_trails": {
+    "category": "record",
+    "subtitle": "subtitles.the_nibenese_trails",
+    "sounds": [
+      {
+        "name": "tesm:musics/cyrodiil_-_the_nibenese_trails",
+        "stream": true
+      }
+    ]
+  },
+  "glory_of_cyrodiil": {
+    "category": "record",
+    "subtitle": "subtitles.glory_of_cyrodiil",
+    "sounds": [
+      {
+        "name": "tesm:musics/jeremy_soule_-_13_-_glory_of_cyrodiil",
+        "stream": true
+      }
+    ]
+  },
+  "rising_hope_during_sundown": {
+    "category": "record",
+    "subtitle": "subtitles.rising_hope_during_sundown",
+    "sounds": [
+      {
+        "name": "tesm:musics/cyrodiil_-_rising_hope_during_sundown",
+        "stream": true
+      }
+    ]
+  },
+  "daedra_in_flight": {
+    "category": "record",
+    "subtitle": "subtitles.daedra_in_flight",
+    "sounds": [
+      {
+        "name": "tesm:musics/jeremy_soule_-_19_-_daedra_in_flight",
+        "stream": true
+      }
+    ]
+  },
+  "bloody_blades": {
+    "category": "record",
+    "subtitle": "subtitles.bloody_blades",
+    "sounds": [
+      {
+        "name": "tesm:musics/jeremy_soule_-_15_-_bloody_blades",
+        "stream": true
+      }
+    ]
+  },
+  "watchers_calm": {
+    "category": "record",
+    "subtitle": "subtitles.watchers_calm",
+    "sounds": [
+      {
+        "name": "tesm:musics/watchers_calm",
+        "stream": true
+      }
+    ]
+  },
+  "rolling_county_of_the_west_weald": {
+    "category": "record",
+    "subtitle": "subtitles.rolling_county_of_the_west_weald",
+    "sounds": [
+      {
+        "name": "tesm:musics/cyrodiil_-_rolling_country_of_the_west_weald",
+        "stream": true
+      }
+    ]
+  },
+  "times_of_change_for_the_restless": {
+    "category": "record",
+    "subtitle": "subtitles.times_of_change_for_the_restless",
+    "sounds": [
+      {
+        "name": "tesm:musics/cyrodiil_-_times_of_change_for_the_restless",
+        "stream": true
+      }
+    ]
+  },
+  "the_sunlight_wanderer": {
+    "category": "record",
+    "subtitle": "subtitles.the_sunlight_wanderer",
+    "sounds": [
+      {
+        "name": "tesm:musics/cyrodiil_-_the_sunlight_wanderer",
+        "stream": true
+      }
+    ]
+  },
+  "embers_of_cheydinhal": {
+    "category": "record",
+    "subtitle": "subtitles.embers_of_cheydinhal",
+    "sounds": [
+      {
+        "name": "tesm:musics/cyrodiil_-_embers_of_cheydinhal",
+        "stream": true
+      }
+    ]
+  },
+  "brumas_frozen_sorrow": {
+    "category": "record",
+    "subtitle": "subtitles.brumas_frozen_sorrow",
+    "sounds": [
+      {
+        "name": "tesm:musics/brumas_frozen_sorrow",
+        "stream": true
+      }
+    ]
+  },
+  "imperial_city_still_stands": {
+    "category": "record",
+    "subtitle": "subtitles.imperial_city_still_stands",
+    "sounds": [
+      {
+        "name": "tesm:musics/cyrodiil_-_imperial_city_still_stands",
+        "stream": true
+      }
+    ]
+  },
+  "dusk_at_the_market": {
+    "category": "record",
+    "subtitle": "subtitles.dusk_at_the_market",
+    "sounds": [
+      {
+        "name": "tesm:musics/jeremy_soule_-_25_-_dusk_at_the_market",
+        "stream": true
+      }
+    ]
+  },
+  "sunrise_of_flutes": {
+    "category": "record",
+    "subtitle": "subtitles.sunrise_of_flutes",
+    "sounds": [
+      {
+        "name": "tesm:musics/jeremy_soule_-_22_-_sunrise_of_flutes",
+        "stream": true
+      }
+    ]
+  },
+  "auriels_ascension": {
+    "category": "record",
+    "subtitle": "subtitles.auriels_ascension",
+    "sounds": [
+      {
+        "name": "tesm:musics/auriels_ascension",
+        "stream": true
+      }
+    ]
+  },
+  "minstrels_lament": {
+    "category": "record",
+    "subtitle": "subtitles.minstrels_lament",
+    "sounds": [
+      {
+        "name": "tesm:musics/minstrels_lament",
+        "stream": true
+      }
+    ]
+  },
+  "defending_the_gate": {
+    "category": "record",
+    "subtitle": "subtitles.defending_the_gate",
+    "sounds": [
+      {
+        "name": "tesm:musics/jeremy_soule_-_14_-_defending_the_gate",
+        "stream": true
+      }
+    ]
+  },
+  "king_and_country": {
+    "category": "record",
+    "subtitle": "subtitles.king_and_country",
+    "sounds": [
+      {
+        "name": "tesm:musics/jeremy_soule_-_06_-_king_and_country",
+        "stream": true
+      }
+    ]
+  },
+  "fall_of_the_hammer": {
+    "category": "record",
+    "subtitle": "subtitles.fall_of_the_hammer",
+    "sounds": [
+      {
+        "name": "tesm:musics/jeremy_soule_-_07_-_fall_of_the_hammer",
+        "stream": true
+      }
+    ]
+  },
+  "alls_well": {
+    "category": "record",
+    "subtitle": "subtitles.alls_well",
+    "sounds": [
+      {
+        "name": "tesm:musics/jeremy_soule_-_09_-_alls_well",
+        "stream": true
+      }
+    ]
+  },
+  "march_of_the_marauders": {
+    "category": "record",
+    "subtitle": "subtitles.march_of_the_marauders",
+    "sounds": [
+      {
+        "name": "tesm:musics/jeremy_soule_-_11_-_march_of_the_marauders",
+        "stream": true
+      }
+    ]
+  },
+  "watchmans_ease": {
+    "category": "record",
+    "subtitle": "subtitles.watchmans_ease",
+    "sounds": [
+      {
+        "name": "tesm:musics/watchmans_ease",
+        "stream": true
+      }
+    ]
+  },
+  "assalto_04_final": {
+    "category": "record",
+    "subtitle": "subtitles.assalto_04_final",
+    "sounds": [
+      {
+        "name": "tesm:musics/assalto-04-final",
+        "stream": true
+      }
+    ]
+  },
+  "arcana_magicae": {
+    "category": "record",
+    "subtitle": "subtitles.arcana_magicae",
+    "sounds": [
+      {
+        "name": "tesm:musics/beyond-skyrim-bruma-arcana-magicae",
+        "stream": true
+      }
+    ]
+  },
+  "so_blind_and_in_terror": {
+    "category": "record",
+    "subtitle": "subtitles.so_blind_and_in_terror",
+    "sounds": [
+      {
+        "name": "tesm:musics/beyond-skyrim-bruma-so-blind-and-in-terror",
+        "stream": true
+      }
+    ]
+  },
+  "lorkhans_footsteps": {
+    "category": "record",
+    "subtitle": "subtitles.lorkhans_footsteps",
+    "sounds": [
+      {
+        "name": "tesm:musics/beyond-skyrim-bruma-lorkhan_s-footsteps",
+        "stream": true
+      }
+    ]
+  },
+  "watchmans_legacy": {
+    "category": "record",
+    "subtitle": "subtitles.watchmans_legacy",
+    "sounds": [
+      {
+        "name": "tesm:musics/beyond-skyrim-bruma-watchman_s-legacy",
+        "stream": true
+      }
+    ]
+  },
+  "the_concordat_effect": {
+    "category": "record",
+    "subtitle": "subtitles.the_concordat_effect",
+    "sounds": [
+      {
+        "name": "tesm:musics/beyond-skyrim-bruma-the-concordat-effect",
+        "stream": true
+      }
+    ]
+  },
+  "one_more_day": {
+    "category": "record",
+    "subtitle": "subtitles.one_more_day",
+    "sounds": [
+      {
+        "name": "tesm:musics/beyond-skyrim-bruma-one-more-day",
+        "stream": true
+      }
+    ]
+  },
+  "harvest_dawn": {
+    "category": "record",
+    "subtitle": "subtitles.harvest_dawn",
+    "sounds": [
+      {
+        "name": "tesm:musics/jeremy-soule-04-harvest-dawn",
+        "stream": true
+      }
+    ]
+  },
+  "dignity": {
+    "category": "record",
+    "subtitle": "subtitles.dignity",
+    "sounds": [
+      {
+        "name": "tesm:musics/beyond-skyrim-bruma-dignity",
+        "stream": true
+      }
+    ]
+  },
+  "freeport_fanfare": {
+    "category": "record",
+    "subtitle": "subtitles.freeport_fanfare",
+    "sounds": [
+      {
+        "name": "tesm:musics/freeport-fanfare-_mp3cut.net_",
+        "stream": true
+      }
+    ]
+  },
+  "bloodlines": {
+    "category": "record",
+    "subtitle": "subtitles.bloodlines",
+    "sounds": [
+      {
+        "name": "tesm:musics/bloodlines",
+        "stream": true
+      }
+    ]
+  },
+  "a_great_war_prologue": {
+    "category": "record",
+    "subtitle": "subtitles.a_great_war_prologue",
+    "sounds": [
+      {
+        "name": "tesm:musics/a_great_war_prologue",
+        "stream": true
+      }
+    ]
+  },
+  "a_taste_of_chorrol": {
+    "category": "record",
+    "subtitle": "subtitles.a_taste_of_chorrol",
+    "sounds": [
+      {
+        "name": "tesm:musics/a-taste-of-chorrol",
+        "stream": true
+      }
+    ]
+  },
+  "kynareths_wish": {
+    "category": "record",
+    "subtitle": "subtitles.kynareths_wish",
+    "sounds": [
+      {
+        "name": "tesm:musics/kynareths_wish",
+        "stream": true
+      }
+    ]
+  },
+  "lost_glory": {
+    "category": "record",
+    "subtitle": "subtitles.lost_glory",
+    "sounds": [
+      {
+        "name": "tesm:musics/lost-glory",
+        "stream": true
+      }
+    ]
+  },
+  "maker_of_worlds": {
+    "category": "record",
+    "subtitle": "subtitles.maker_of_worlds",
+    "sounds": [
+      {
+        "name": "tesm:musics/maker-of-worlds",
+        "stream": true
+      }
+    ]
+  },
+  "of_storms_and_half_light": {
+    "category": "record",
+    "subtitle": "subtitles.of_storms_and_half_light",
+    "sounds": [
+      {
+        "name": "tesm:musics/of_storms_and_half-light",
+        "stream": true
+      }
+    ]
+  },
+  "ode_to_a_dynasty": {
+    "category": "record",
+    "subtitle": "subtitles.ode_to_a_dynasty",
+    "sounds": [
+      {
+        "name": "tesm:musics/ode-to-a-dynasty",
+        "stream": true
+      }
+    ]
+  },
+  "widows_lament": {
+    "category": "record",
+    "subtitle": "subtitles.widows_lament",
+    "sounds": [
+      {
+        "name": "tesm:musics/widow_s-lament",
+        "stream": true
+      }
+    ]
+  },
+  "ancient_stones": {
+    "category": "record",
+    "subtitle": "subtitles.ancient_stones",
+    "sounds": [
+      {
+        "name": "tesm:musics/ancient_stones",
+        "stream": true
+      }
+    ]
+  },
+  "the_city_gates": {
+    "category": "record",
+    "subtitle": "subtitles.the_city_gates",
+    "sounds": [
+      {
+        "name": "tesm:musics/the_city_gates",
+        "stream": true
+      }
+    ]
+  },
+  "dragonsreach": {
+    "category": "record",
+    "subtitle": "subtitles.dragonsreach",
+    "sounds": [
+      {
+        "name": "tesm:musics/dragonsreach",
+        "stream": true
+      }
+    ]
+  },
+  "imperial_throne": {
+    "category": "record",
+    "subtitle": "subtitles.imperial_throne",
+    "sounds": [
+      {
+        "name": "tesm:musics/imperial_throne",
+        "stream": true
+      }
+    ]
+  },
+  "the_streets_of_whiterun": {
+    "category": "record",
+    "subtitle": "subtitles.the_streets_of_whiterun",
+    "sounds": [
+      {
+        "name": "tesm:musics/the_streets_of_whiterun",
+        "stream": true
+      }
+    ]
+  },
+  "tundra": {
+    "category": "record",
+    "subtitle": "subtitles.tundra",
+    "sounds": [
+      {
+        "name": "tesm:musics/tundra",
+        "stream": true
+      }
+    ]
+  },
+  "letter_to_the_gods_i": {
+    "category": "record",
+    "subtitle": "subtitles.letter_to_the_gods_i",
+    "sounds": [
+      {
+        "name": "tesm:musics/letter_to_the_gods_i_three_scapes__the_god_who_went_insane_ost",
+        "stream": true
+      }
+    ]
+  },
+  "magic_and_bastards": {
+    "category": "record",
+    "subtitle": "subtitles.magic_and_bastards",
+    "sounds": [
+      {
+        "name": "tesm:musics/magic__bastards_three_scapes__the_god_who_went_insane_ost",
+        "stream": true
+      }
+    ]
+  },
+  "island_ghost_story": {
+    "category": "record",
+    "subtitle": "subtitles.island_ghost_story",
+    "sounds": [
+      {
+        "name": "tesm:musics/island_ghost_story_three_scapes__the_god_who_went_insane_ost",
+        "stream": true
+      }
+    ]
+  },
+  "remembering_daventry": {
+    "category": "record",
+    "subtitle": "subtitles.remembering_daventry",
+    "sounds": [
+      {
+        "name": "tesm:musics/remembering_daventry_naked",
+        "stream": true
+      }
+    ]
+  },
+  "scrying_stone": {
+    "category": "record",
+    "subtitle": "subtitles.scrying_stone",
+    "sounds": [
+      {
+        "name": "tesm:musics/scrying_stone_naked",
+        "stream": true
+      }
+    ]
+  },
+  "home_of_the_blessed": {
+    "category": "record",
+    "subtitle": "subtitles.home_of_the_blessed",
+    "sounds": [
+      {
+        "name": "tesm:musics/home-of-the-blessed-_mp3cut.net_",
+        "stream": true
+      }
+    ]
+  },
+  "overcome_the_beast_inside": {
+    "category": "record",
+    "subtitle": "subtitles.overcome_the_beast_inside",
+    "sounds": [
+      {
+        "name": "tesm:musics/overcome_the_beast_inside_-_die_bestie_ueberwunden",
+        "stream": true
+      }
+    ]
+  },
+  "far_horizons_opening": {
+    "category": "record",
+    "subtitle": "subtitles.far_horizons_opening",
+    "sounds": [
+      {
+        "name": "tesm:musics/far-horizons-opening",
+        "stream": true
+      }
+    ]
+  },
+  "disembarking_at_crane_shore": {
+    "category": "record",
+    "subtitle": "subtitles.disembarking_at_crane_shore",
+    "sounds": [
+      {
+        "name": "tesm:musics/disembarking_at_crane_shore_-25",
+        "stream": true
+      }
+    ]
+  },
+  "dawn": {
+    "category": "record",
+    "subtitle": "subtitles.dawn",
+    "sounds": [
+      {
+        "name": "tesm:musics/dawn_30",
+        "stream": true
+      }
+    ]
+  },
+  "islehearth": {
+    "category": "record",
+    "subtitle": "subtitles.islehearth",
+    "sounds": [
+      {
+        "name": "tesm:musics/islehearth___beyond_skyrim_-_roscrea_40",
+        "stream": true
+      }
+    ]
+  },
+  "mountains_memory": {
+    "category": "record",
+    "subtitle": "subtitles.mountains_memory",
+    "sounds": [
+      {
+        "name": "tesm:musics/mountains_memory_25",
+        "stream": true
+      }
+    ]
+  },
+  "remnant_of_ionith": {
+    "category": "record",
+    "subtitle": "subtitles.remnant_of_ionith",
+    "sounds": [
+      {
+        "name": "tesm:musics/remnant-of-ionith_-15",
+        "stream": true
+      }
+    ]
+  },
+  "wind_guide_you": {
+    "category": "record",
+    "subtitle": "subtitles.wind_guide_you",
+    "sounds": [
+      {
+        "name": "tesm:musics/wind_guide_you_mix",
+        "stream": true
+      }
+    ]
+  },
+  "winters_grace": {
+    "category": "record",
+    "subtitle": "subtitles.winters_grace",
+    "sounds": [
+      {
+        "name": "tesm:musics/winters_grace_15",
+        "stream": true
+      }
+    ]
+  },
+  "beyond_the_mountain": {
+    "category": "record",
+    "subtitle": "subtitles.beyond_the_mountain",
+    "sounds": [
+      {
+        "name": "tesm:musics/beyond_the_mountain_30",
+        "stream": true
+      }
+    ]
+  },
+  "healing_poison": {
+    "category": "record",
+    "subtitle": "subtitles.healing_poison",
+    "sounds": [
+      {
+        "name": "tesm:musics/healing_poison_50",
+        "stream": true
+      }
+    ]
+  },
+  "frostfall_b": {
+    "category": "record",
+    "subtitle": "subtitles.frostfall_b",
+    "sounds": [
+      {
+        "name": "tesm:musics/frostfall-b-mix",
+        "stream": true
+      }
+    ]
+  },
+  "kynes_peace": {
+    "category": "record",
+    "subtitle": "subtitles.kynes_peace",
+    "sounds": [
+      {
+        "name": "tesm:musics/kynes_peace_30",
+        "stream": true
+      }
+    ]
+  },
+  "night_sky": {
+    "category": "record",
+    "subtitle": "subtitles.night_sky",
+    "sounds": [
+      {
+        "name": "tesm:musics/night_sky_-20",
+        "stream": true
+      }
+    ]
+  },
+  "sky_above_voice_within": {
+    "category": "record",
+    "subtitle": "subtitles.sky_above_voice_within",
+    "sounds": [
+      {
+        "name": "tesm:musics/sky_above_voice_within_25",
+        "stream": true
+      }
+    ]
+  },
+  "solitude": {
+    "category": "record",
+    "subtitle": "subtitles.solitude",
+    "sounds": [
+      {
+        "name": "tesm:musics/solitude_-20",
+        "stream": true
+      }
+    ]
+  },
+  "e3_teaser_music": {
+    "category": "record",
+    "sounds": [
+      {
+        "name": "tesm:musics/beyond_skyrim_cyrodiil_-_e3_teaser_music",
+        "stream": true
+      }
+    ]
+  },
+  "discover_general": {
+    "category": "record",
+    "sounds": [
+      {
+        "name": "tesm:musics/the_elder_scrolls_v_skyrim__new_location_discovered_1_sound_effect",
+        "stream": true
+      }
+    ]
+  },
+  "discover_dungeon": {
+    "category": "record",
+    "sounds": [
+      {
+        "name": "tesm:musics/skyrim_sound_effects_-_discover_new_dungeon-_mp3cut.net_",
+        "stream": true
+      }
+    ]
+  },
+  "disembarking_in_seyda_neen": {
+    "category": "record",
+    "subtitle": "subtitles.disembarking_in_seyda_neen",
+    "sounds": [
+      {
+        "name": "tesm:musics/disembarking-in-seyda-neen2",
+        "stream": true
+      }
+    ]
+  },
+  "undertow": {
+    "category": "record",
+    "subtitle": "subtitles.undertow",
+    "sounds": [
+      {
+        "name": "tesm:musics/undertow_cc-by",
+        "stream": true
+      }
+    ]
+  },
+  "beyond_the_hills": {
+    "category": "record",
+    "subtitle": "subtitles.beyond_the_hills",
+    "sounds": [
+      {
+        "name": "tesm:musics/morrowind_rebirth_-_beyond_the_hills",
+        "stream": true
+      }
+    ]
+  },
+  "caldera": {
+    "category": "record",
+    "subtitle": "subtitles.caldera",
+    "sounds": [
+      {
+        "name": "tesm:musics/caldera_mp3cut.net",
+        "stream": true
+      }
+    ]
+  },
+  "house_of_troubles": {
+    "category": "record",
+    "subtitle": "subtitles.house_of_troubles",
+    "sounds": [
+      {
+        "name": "tesm:musics/house-of-troubles",
+        "stream": true
+      }
+    ]
+  },
+  "a_land_of_opportunity": {
+    "category": "record",
+    "subtitle": "subtitles.a_land_of_opportunity",
+    "sounds": [
+      {
+        "name": "tesm:musics/a-land-of-opportunity",
+        "stream": true
+      }
+    ]
+  },
+  "merciful_and_benevolent": {
+    "category": "record",
+    "subtitle": "subtitles.merciful_and_benevolent",
+    "sounds": [
+      {
+        "name": "tesm:musics/merciful_and_benevolent_feat._sharm",
+        "stream": true
+      }
+    ]
+  },
+  "recollection": {
+    "category": "record",
+    "subtitle": "subtitles.recollection",
+    "sounds": [
+      {
+        "name": "tesm:musics/recollection",
+        "stream": true
+      }
+    ]
+  },
+  "over_the_next_hill": {
+    "category": "record",
+    "subtitle": "subtitles.over_the_next_hill",
+    "sounds": [
+      {
+        "name": "tesm:musics/over_the_next_hill",
+        "stream": true
+      }
+    ]
+  },
+  "silt_sunrise": {
+    "category": "record",
+    "subtitle": "subtitles.silt_sunrise",
+    "sounds": [
+      {
+        "name": "tesm:musics/silt_sunrise",
+        "stream": true
+      }
+    ]
+  },
+  "the_twilight_star": {
+    "category": "record",
+    "subtitle": "subtitles.the_twilight_star",
+    "sounds": [
+      {
+        "name": "tesm:musics/the_twilight_star___skywind",
+        "stream": true
+      }
+    ]
+  },
+  "an_ashen_dawn": {
+    "category": "record",
+    "subtitle": "subtitles.an_ashen_dawn",
+    "sounds": [
+      {
+        "name": "tesm:musics/an_ashen_dawn_mp3cut.net",
+        "stream": true
+      }
+    ]
+  },
+  "blackened_skies": {
+    "category": "record",
+    "subtitle": "subtitles.blackened_skies",
+    "sounds": [
+      {
+        "name": "tesm:musics/blackened_skies",
+        "stream": true
+      }
+    ]
+  },
+  "blessing_of_vivec": {
+    "category": "record",
+    "subtitle": "subtitles.blessing_of_vivec",
+    "sounds": [
+      {
+        "name": "tesm:musics/blessing_of_vivec",
+        "stream": true
+      }
+    ]
+  },
+  "familiar_shores_and_the_road_most_travelled": {
+    "category": "record",
+    "subtitle": "subtitles.familiar_shores_and_the_road_most_travelled",
+    "sounds": [
+      {
+        "name": "tesm:musics/familiar_shores_and_the_road_most_travelled",
+        "stream": true
+      }
+    ]
+  },
+  "from_seyda_neen_to_balmora": {
+    "category": "record",
+    "subtitle": "subtitles.from_seyda_neen_to_balmora",
+    "sounds": [
+      {
+        "name": "tesm:musics/from_seyda_neen_to_balmora_the_road_most_travelled_-_skywind_exploration",
+        "stream": true
+      }
+    ]
+  },
+  "heart_of_lorkhan": {
+    "category": "record",
+    "subtitle": "subtitles.heart_of_lorkhan",
+    "sounds": [
+      {
+        "name": "tesm:musics/heart_of_lorkhan",
+        "stream": true
+      }
+    ]
+  },
+  "the_holy_tribunal": {
+    "category": "record",
+    "subtitle": "subtitles.the_holy_tribunal",
+    "sounds": [
+      {
+        "name": "tesm:musics/the_holy_tribunal",
+        "stream": true
+      }
+    ]
+  },
+  "nerevar_rising": {
+    "category": "record",
+    "subtitle": "subtitles.nerevar_rising",
+    "sounds": [
+      {
+        "name": "tesm:musics/nerevar_rising_morrowind_titl",
+        "stream": true
+      }
+    ]
+  },
+  "of_storms_and_half_light_b": {
+    "category": "record",
+    "subtitle": "subtitles.of_storms_and_half_light_b",
+    "sounds": [
+      {
+        "name": "tesm:musics/of_storms_and_half-light_arranged_by_eric_gordon_berg",
+        "stream": true
+      }
+    ]
+  },
+  "old_resdayn": {
+    "category": "record",
+    "subtitle": "subtitles.old_resdayn",
+    "sounds": [
+      {
+        "name": "tesm:musics/old_resdayn",
+        "stream": true
+      }
+    ]
+  },
+  "peaceful_waters": {
+    "category": "record",
+    "subtitle": "subtitles.peaceful_waters",
+    "sounds": [
+      {
+        "name": "tesm:musics/peaceful_waters",
+        "stream": true
+      }
+    ]
+  },
+  "shed_your_travails": {
+    "category": "record",
+    "subtitle": "subtitles.shed_your_travails",
+    "sounds": [
+      {
+        "name": "tesm:musics/shed_your_travails",
+        "stream": true
+      }
+    ]
+  },
+  "skywind_test_01": {
+    "category": "record",
+    "subtitle": "subtitles.skywind_test_01",
+    "sounds": [
+      {
+        "name": "tesm:musics/skywind_test-01",
+        "stream": true
+      }
+    ]
+  },
+  "the_road_most_travelled": {
+    "category": "record",
+    "subtitle": "subtitles.the_road_most_travelled",
+    "sounds": [
+      {
+        "name": "tesm:musics/the_road_most_travelled",
+        "stream": true
+      }
+    ]
+  },
+  "ash_and_dust": {
+    "category": "record",
+    "subtitle": "subtitles.ash_and_dust",
+    "sounds": [
+      {
+        "name": "tesm:musics/ash_and_dust",
+        "stream": true
+      }
+    ]
+  },
+  "azura_s_coast": {
+    "category": "record",
+    "subtitle": "subtitles.azura_s_coast",
+    "sounds": [
+      {
+        "name": "tesm:musics/azuras_coast_-_skywind_-_devin_polaski",
+        "stream": true
+      }
+    ]
+  },
+  "gray_horizons": {
+    "category": "record",
+    "subtitle": "subtitles.gray_horizons",
+    "sounds": [
+      {
+        "name": "tesm:musics/gray_horizons",
+        "stream": true
+      }
+    ]
+  },
+  "mother_morrowind": {
+    "category": "record",
+    "subtitle": "subtitles.mother_morrowind",
+    "sounds": [
+      {
+        "name": "tesm:musics/mother-morrowind-_feat.-vela-farquharson_",
+        "stream": true
+      }
+    ]
+  },
+  "a_once_great_house": {
+    "category": "record",
+    "subtitle": "subtitles.a_once_great_house",
+    "sounds": [
+      {
+        "name": "tesm:musics/a-once-great-house",
+        "stream": true
+      }
+    ]
+  },
+  "pelagiad": {
+    "category": "record",
+    "subtitle": "subtitles.pelagiad",
+    "sounds": [
+      {
+        "name": "tesm:musics/pelagiad",
+        "stream": true
+      }
+    ]
+  },
+  "wayfarer": {
+    "category": "record",
+    "subtitle": "subtitles.wayfarer",
+    "sounds": [
+      {
+        "name": "tesm:musics/wayfarer",
+        "stream": true
+      }
+    ]
+  },
+  "ancestral_dogma": {
+    "category": "record",
+    "subtitle": "subtitles.ancestral_dogma",
+    "sounds": [
+      {
+        "name": "tesm:musics/ancestral_dogma",
+        "stream": true
+      }
+    ]
+  },
+  "an_architect_of_time": {
+    "category": "record",
+    "subtitle": "subtitles.an_architect_of_time",
+    "sounds": [
+      {
+        "name": "tesm:musics/an-architect-of-time",
+        "stream": true
+      }
+    ]
+  },
+  "the_cartographer": {
+    "category": "record",
+    "subtitle": "subtitles.the_cartographer",
+    "sounds": [
+      {
+        "name": "tesm:musics/the_cartographer",
+        "stream": true
+      }
+    ]
+  },
+  "consecration": {
+    "category": "record",
+    "subtitle": "subtitles.consecration",
+    "sounds": [
+      {
+        "name": "tesm:musics/enderal_soundtrack_hq_consecration_-_die_weihe",
+        "stream": true
+      }
+    ]
+  },
+  "daglin_s_footsteps": {
+    "category": "record",
+    "subtitle": "subtitles.daglin_s_footsteps",
+    "sounds": [
+      {
+        "name": "tesm:musics/daglins_footsteps",
+        "stream": true
+      }
+    ]
+  },
+  "duty_gravity_and_piety": {
+    "category": "record",
+    "subtitle": "subtitles.duty_gravity_and_piety",
+    "sounds": [
+      {
+        "name": "tesm:musics/duty_gravity_and_piety",
+        "stream": true
+      }
+    ]
+  },
+  "from_past_to_present_b": {
+    "category": "record",
+    "subtitle": "subtitles.from_past_to_present_b",
+    "sounds": [
+      {
+        "name": "tesm:musics/from_past_to_present_arranged_by_eric_gordon_berg",
+        "stream": true
+      }
+    ]
+  },
+  "grazelands": {
+    "category": "record",
+    "subtitle": "subtitles.grazelands",
+    "sounds": [
+      {
+        "name": "tesm:musics/grazelands_-_skywind_-_devin_polaski",
+        "stream": true
+      }
+    ]
+  },
+  "hall_of_valor": {
+    "category": "record",
+    "subtitle": "subtitles.hall_of_valor",
+    "sounds": [
+      {
+        "name": "tesm:musics/hall_of_valor_-_new_north_atmosphere",
+        "stream": true
+      }
+    ]
+  },
+  "handmainden_of_kyne": {
+    "category": "record",
+    "subtitle": "subtitles.handmainden_of_kyne",
+    "sounds": [
+      {
+        "name": "tesm:musics/handmaiden_of_kyne_-_new_north_atmosphere",
+        "stream": true
+      }
+    ]
+  },
+  "lessons_of_vivec": {
+    "category": "record",
+    "subtitle": "subtitles.lessons_of_vivec",
+    "sounds": [
+      {
+        "name": "tesm:musics/lessons_of_vivec",
+        "stream": true
+      }
+    ]
+  },
+  "light_of_aetherius": {
+    "category": "record",
+    "subtitle": "subtitles.light_of_aetherius",
+    "sounds": [
+      {
+        "name": "tesm:musics/light_of_aetherius",
+        "stream": true
+      }
+    ]
+  },
+  "memories_of_ur": {
+    "category": "record",
+    "subtitle": "subtitles.memories_of_ur",
+    "sounds": [
+      {
+        "name": "tesm:musics/memories_of_ur",
+        "stream": true
+      }
+    ]
+  },
+  "the_secrets_of_sotha-sil": {
+    "category": "record",
+    "subtitle": "subtitles.the_secrets_of_sotha-sil",
+    "sounds": [
+      {
+        "name": "tesm:musics/the_secrets_of_sotha_sil",
+        "stream": true
+      }
+    ]
+  },
+  "secunda_b": {
+    "category": "record",
+    "subtitle": "subtitles.secunda_b",
+    "sounds": [
+      {
+        "name": "tesm:musics/secunda_arranged_by_eric_gordon_berg",
+        "stream": true
+      }
+    ]
+  },
+  "through_mud_and_marsh": {
+    "category": "record",
+    "subtitle": "subtitles.through_mud_and_marsh",
+    "sounds": [
+      {
+        "name": "tesm:musics/through_mud_and_marsh",
+        "stream": true
+      }
+    ]
+  },
+  "canton_commerce": {
+    "category": "record",
+    "subtitle": "subtitles.canton_commerce",
+    "sounds": [
+      {
+        "name": "tesm:musics/canton_commerce",
+        "stream": true
+      }
+    ]
+  },
+  "caprice": {
+    "category": "record",
+    "subtitle": "subtitles.caprice",
+    "sounds": [
+      {
+        "name": "tesm:musics/caprice",
+        "stream": true
+      }
+    ]
+  },
+  "choosing_wisely": {
+    "category": "record",
+    "subtitle": "subtitles.choosing_wisely",
+    "sounds": [
+      {
+        "name": "tesm:musics/speedscoring__choosing_wisely",
+        "stream": true
+      }
+    ]
+  },
+  "dawn_b": {
+    "category": "record",
+    "subtitle": "subtitles.dawn_b",
+    "sounds": [
+      {
+        "name": "tesm:musics/dawn",
+        "stream": true
+      }
+    ]
+  },
+  "the_great_bay": {
+    "category": "record",
+    "subtitle": "subtitles.the_great_bay",
+    "sounds": [
+      {
+        "name": "tesm:musics/_the_great_bay__-_iliac_bay__tower_of_dawn",
+        "stream": true
+      }
+    ]
+  },
+  "the_north_road": {
+    "category": "record",
+    "subtitle": "subtitles.the_north_road",
+    "sounds": [
+      {
+        "name": "tesm:musics/speedscoring_the_north_road",
+        "stream": true
+      }
+    ]
+  },
+  "outskirts_of_beleriand": {
+    "category": "record",
+    "subtitle": "subtitles.outskirts_of_beleriand",
+    "sounds": [
+      {
+        "name": "tesm:musics/speedscoring___outskirts_of_beleriand_",
+        "stream": true
+      }
+    ]
+  },
+  "stonewall_district": {
+    "category": "record",
+    "subtitle": "subtitles.stonewall_district",
+    "sounds": [
+      {
+        "name": "tesm:musics/nir_shor_-_stonewall_district",
+        "stream": true
+      }
+    ]
+  },
+  "in_the_twilight": {
+    "category": "record",
+    "subtitle": "subtitles.in_the_twilight",
+    "sounds": [
+      {
+        "name": "tesm:musics/enderal_soundtrack_hq_in_the_twilight_-_im_zwielicht",
+        "stream": true
+      }
+    ]
+  },
+  "ascadian_isles": {
+    "category": "record",
+    "subtitle": "subtitles.ascadian_isles",
+    "sounds": [
+      {
+        "name": "tesm:musics/arcadian_isles_-_skywind_-_devin_polaski",
+        "stream": true
+      }
+    ]
+  },
+  "ashlander": {
+    "category": "record",
+    "subtitle": "subtitles.ashlander",
+    "sounds": [
+      {
+        "name": "tesm:musics/ashlander_mp3cut.net",
+        "stream": true
+      }
+    ]
+  },
+  "a_bitter_betrayal": {
+    "category": "record",
+    "subtitle": "subtitles.a_bitter_betrayal",
+    "sounds": [
+      {
+        "name": "tesm:musics/a_bitter_betrayal",
+        "stream": true
+      }
+    ]
+  },
+  "the_call_of_boethia": {
+    "category": "record",
+    "subtitle": "subtitles.the_call_of_boethia",
+    "sounds": [
+      {
+        "name": "tesm:musics/the_call_of_boethia",
+        "stream": true
+      }
+    ]
+  },
+  "the_hope_of_the_redoran": {
+    "category": "record",
+    "subtitle": "subtitles.the_hope_of_the_redoran",
+    "sounds": [
+      {
+        "name": "tesm:musics/the_hope_of_the_redoran",
+        "stream": true
+      }
+    ]
+  },
+  "hunter_s_persuit": {
+    "category": "record",
+    "subtitle": "subtitles.hunter_s_persuit",
+    "sounds": [
+      {
+        "name": "tesm:musics/hunters_pursuit",
+        "stream": true
+      }
+    ]
+  },
+  "not_our_ancestors": {
+    "category": "record",
+    "subtitle": "subtitles.not_our_ancestors",
+    "sounds": [
+      {
+        "name": "tesm:musics/not_our_ancestors",
+        "stream": true
+      }
+    ]
+  },
+  "sunder_and_keening": {
+    "category": "record",
+    "subtitle": "subtitles.sunder_and_keening",
+    "sounds": [
+      {
+        "name": "tesm:musics/sunder_and_keening",
+        "stream": true
+      }
+    ]
+  },
+  "standing_stones": {
+    "category": "record",
+    "subtitle": "subtitles.standing_stones",
+    "sounds": [
+      {
+        "name": "tesm:musics/standing-stones-_short-ver_",
+        "stream": true
+      }
+    ]
+  },
+  "magnus_smiles_on_suran": {
+    "category": "record",
+    "subtitle": "subtitles.magnus_smiles_on_suran",
+    "sounds": [
+      {
+        "name": "tesm:musics/magnus-smiles-on-suran",
+        "stream": true
+      }
+    ]
+  },
+  "lockpicking_door_unlocked": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "tesm:door_unlocked",
+        "stream": false
+      }
+    ]
+  },
+  "lockpicking_door_locked": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "tesm:locked_door_50",
+        "stream": false
+      }
+    ]
+  },
+  "lockpicking_sucessed": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "tesm:lockpicking_success",
+        "stream": false
+      }
+    ]
+  },
+  "lockpicking_lockpick_break": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "tesm:skyrim_lockpick_break_mp3cut.net",
+        "stream": false
+      }
+    ]
+  },
+  "lockpicking_failed": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "tesm:lockpicking_failed",
+        "stream": false
+      }
+    ]
+  },
+  "new_quest": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "tesm:new_quest_sound_effect_100",
+        "stream": false
+      }
+    ]
+  },
+  "new_objective_2": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "tesm:new_objective_2_sound_effect_200_100_pitch-100",
+        "stream": false
+      }
+    ]
+  },
+  "quest_completed": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "tesm:quest_completed_sound_effect_50_100",
+        "stream": false
+      }
+    ]
+  },
+  "new_objective_1": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "tesm:new_objective_1_sound_effect_200_100",
+        "stream": false
+      }
+    ]
+  },
+  "bless_me_oh_fallen_one_mono": {
+    "category": "record",
+    "sounds": [
+      {
+        "name": "tesm:musics/beyond_skyrim_bruma_-_bless_me_oh_fallen_one_bard_song",
+        "stream": true
+      }
+    ]
+  }
+}

@@ -1,10 +1,23 @@
 package net.whgkswo.tesm;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemGroups;
+import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
+import net.whgkswo.tesm.blocks.ModBlocks;
 import net.whgkswo.tesm.commands.*;
 import net.whgkswo.tesm.general.InitializeTasks;
 import net.whgkswo.tesm.general.OnServerTicks;
 import net.whgkswo.tesm.general.OnPlayerLeaves;
+import net.whgkswo.tesm.items.ModItems;
+import net.whgkswo.tesm.items.TestItem;
 import net.whgkswo.tesm.networking.ServerNetworkManager;
 import net.whgkswo.tesm.pathfinding.v1.PathFinder;
 import org.slf4j.Logger;
@@ -22,10 +35,10 @@ public class TESMMod implements ModInitializer {
 	// TODO: 포팅
 	/*public static final TestItem TEST_ITEM =
 			Registry.register(Registries.ITEM, Identifier.of(TESMMod.MODID,"test_item"),
-					new TestItem(new FabricItemSettings()));*/
+					new TestItem(new Item.Settings()));
 
 	// TODO: 포팅
-	/*private static final ItemGroup TESASSETS = FabricItemGroup.builder()
+	private static final ItemGroup TESASSETS = FabricItemGroup.builder()
 			.icon(() -> new ItemStack(TEST_ITEM))
 			.displayName(Text.translatable("TESAssets"))
 			.entries((context, entries) -> {
@@ -44,16 +57,17 @@ public class TESMMod implements ModInitializer {
 
 		LOGGER.info("Hello Fabric world!");
 
-		// TODO: 포팅
 		/*ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(content -> {
 			content.add(TEST_ITEM);
 		});*/
 
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 레지스트리 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
-		// TODO: 포팅
 		/*Registry.register(Registries.ITEM_GROUP,
 				Identifier.of(TESMMod.MODID, "tesassets"), TESASSETS);*/
+
+		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 아이템 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+		ModItems.initialize();
 
         //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 커스텀 커맨드 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
@@ -65,7 +79,6 @@ public class TESMMod implements ModInitializer {
 
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 이벤트 및 메소드 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
-		// TODO: 포팅
 		//ModBlocks.registerModBlocks();
 		InitializeTasks.registerPlayer();
 		InitializeTasks.onServerStarted();
