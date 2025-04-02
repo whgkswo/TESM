@@ -5,13 +5,10 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.render.BackgroundRenderer;
-import net.minecraft.client.render.Fog;
-import net.minecraft.client.render.FogShape;
 import net.minecraft.text.Text;
 import net.whgkswo.tesm.gui.component.GuiComponent;
-import net.whgkswo.tesm.networking.payload.data.GeneralReq;
-import net.whgkswo.tesm.networking.payload.id.GeneralTask;
+import net.whgkswo.tesm.networking.payload.data.SimpleReq;
+import net.whgkswo.tesm.networking.payload.id.SimpleTask;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,13 +32,13 @@ public class CustomScreen extends Screen {
     @Override
     public void init(){
         // 틱 프리즈 (서버에 패킷 전송)
-        if(shouldFreezeTicks()) ClientPlayNetworking.send(new GeneralReq(GeneralTask.TICK_FREEZE));
+        if(shouldFreezeTicks()) ClientPlayNetworking.send(new SimpleReq(SimpleTask.TICK_FREEZE));
         registerMouseWheelEvent();
     }
     @Override
     public void close(){
         // 틱 언프리즈 (서버에 패킷 전송)
-        if(shouldFreezeTicks()) ClientPlayNetworking.send(new GeneralReq(GeneralTask.TICK_UNFREEZE));
+        if(shouldFreezeTicks()) ClientPlayNetworking.send(new SimpleReq(SimpleTask.TICK_UNFREEZE));
         // 다른 Gui들을 위해 셰이더 색상 초기화
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         super.close();

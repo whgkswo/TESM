@@ -1,25 +1,23 @@
-package net.whgkswo.tesm.entitymanaging;
+package net.whgkswo.tesm.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.whgkswo.tesm.exceptions.EntityNotFoundExeption;
-import net.whgkswo.tesm.nbt.NBTManager;
+import net.whgkswo.tesm.nbt.NBTHelper;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
 import static net.whgkswo.tesm.general.GlobalVariables.world;
 
-public class EntityManager {
+public class EntityHelper {
     public static Entity summonEntity(EntityType entityType, BlockPos blockPos){
         Entity entity = entityType.spawn(world, blockPos.up(1), SpawnReason.TRIGGERED);
         NbtCompound entityNbt = entity.writeNbt(new NbtCompound());
@@ -47,7 +45,7 @@ public class EntityManager {
         List<VillagerEntity> entityList = world.getEntitiesByType(EntityType.VILLAGER,
                 new Box(-10000, -64, -10000, 10000, 1024, 10000), entity -> {
                     try{
-                        NbtCompound nbt = NBTManager.getCustomNbt(entity);
+                        NbtCompound nbt = NBTHelper.getEntityNbt(entity);
                         String name = nbt.getString("Name");
                         return name != null && name.equals(targetName);
                     }catch (NullPointerException e){

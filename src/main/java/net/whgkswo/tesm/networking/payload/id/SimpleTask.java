@@ -1,6 +1,6 @@
 package net.whgkswo.tesm.networking.payload.id;
 
-public enum GeneralTask {
+public enum SimpleTask {
     // C2S
     TICK_FREEZE,
     TICK_UNFREEZE,
@@ -8,5 +8,5 @@ public enum GeneralTask {
     RESET_QUESTS
     ;
 
-    GeneralTask(){}
+    SimpleTask(){}
 }

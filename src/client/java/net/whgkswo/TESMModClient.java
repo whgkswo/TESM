@@ -1,20 +1,20 @@
 package net.whgkswo;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.color.world.BiomeColors;
-import net.minecraft.client.render.Fog;
-import net.minecraft.client.render.FogShape;
+import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.util.math.BlockPos;
+import net.whgkswo.tesm.TESMMod;
 import net.whgkswo.tesm.TestClassClient;
 import net.whgkswo.tesm.conversation.ConversationStart;
 import net.whgkswo.tesm.conversation.quest.QuestRegisterer;
 import net.whgkswo.tesm.events.UseBlockEvent;
 import net.whgkswo.tesm.general.ClientEvents;
+import net.whgkswo.tesm.gui.libgui.server_side.ExampleGuiScreen;
 import net.whgkswo.tesm.gui.overlay.*;
 import net.whgkswo.tesm.keybinds.KeyInputHandler;
+import net.whgkswo.tesm.libgui.ExampleGuiDesc;
 import net.whgkswo.tesm.networking.ClientNetworkManager;
 import net.whgkswo.tesm.raycast.CenterRaycast;
 
@@ -65,6 +65,11 @@ public class TESMModClient implements ClientModInitializer {
 		HudRenderCallback.EVENT.register(new QuestStartAndClear());
 		HudRenderCallback.EVENT.register(new Watch());
 		HudRenderCallback.EVENT.register(new QuestOverlay());
+
+		HandledScreens.<ExampleGuiDesc, ExampleGuiScreen>register(
+				TESMMod.SCREEN_HANDLER_TYPE,  // 서버 측에서 등록한 타입
+				(gui, inventory, title) -> new ExampleGuiScreen(gui, inventory.player, title)  // 화면 팩토리
+		);
 
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 클라이언트 사이드 메소드 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 		CenterRaycast.centerRaycast();

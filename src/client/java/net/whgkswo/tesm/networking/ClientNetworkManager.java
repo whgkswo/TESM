@@ -2,12 +2,14 @@ package net.whgkswo.tesm.networking;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.whgkswo.tesm.networking.payload.data.GeneralReq;
+import net.whgkswo.tesm.networking.payload.data.SimpleReq;
+import net.whgkswo.tesm.networking.payload.data.s2c_req.DoorNaming;
 import net.whgkswo.tesm.networking.payload.data.s2c_res.ConversationNbtRes;
 import net.whgkswo.tesm.networking.payload.data.s2c_res.RaycastingNbtRes;
 import net.whgkswo.tesm.networking.receivers.s2c_req.ConversationNbtS2CReceiver;
+import net.whgkswo.tesm.networking.receivers.s2c_req.DoorNamingS2CReceiver;
 import net.whgkswo.tesm.networking.receivers.s2c_req.RaycastingNbtS2CReceiver;
-import net.whgkswo.tesm.networking.receivers.s2c_req.general.GeneralS2CReqReceiver;
+import net.whgkswo.tesm.networking.receivers.s2c_req.simple_tasks.GeneralS2CReqReceiver;
 
 public class ClientNetworkManager {
 
@@ -23,7 +25,8 @@ public class ClientNetworkManager {
         ClientPlayNetworking.registerGlobalReceiver(RaycastingNbtRes.PACKET_ID, RaycastingNbtS2CReceiver::handle);
 
         // S2C 서버 요청 패킷
-        ClientPlayNetworking.registerGlobalReceiver(GeneralReq.PACKET_ID, GeneralS2CReqReceiver::handle);
+        ClientPlayNetworking.registerGlobalReceiver(DoorNaming.PACKET_ID, DoorNamingS2CReceiver::handle);
+        ClientPlayNetworking.registerGlobalReceiver(SimpleReq.PACKET_ID, GeneralS2CReqReceiver::handle);
     }
 
     // S2C 코덱 등록
@@ -33,6 +36,7 @@ public class ClientNetworkManager {
         PayloadTypeRegistry.playS2C().register(RaycastingNbtRes.PACKET_ID, RaycastingNbtRes.PACKET_CODEC);
 
         // S2C 서버 요청 코덱
-        PayloadTypeRegistry.playS2C().register(GeneralReq.PACKET_ID, GeneralReq.PACKET_CODEC);
+        PayloadTypeRegistry.playS2C().register(DoorNaming.PACKET_ID, DoorNaming.PACKET_CODEC);
+        PayloadTypeRegistry.playS2C().register(SimpleReq.PACKET_ID, SimpleReq.PACKET_CODEC);
     }
 }

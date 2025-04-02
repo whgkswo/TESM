@@ -5,9 +5,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.entity.Entity;
-import net.minecraft.text.Text;
 import net.whgkswo.tesm.conversation.ConversationStart;
-import net.whgkswo.tesm.general.GlobalVariables;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,8 +31,6 @@ public abstract class InGameHudMixin {
             if(this.client.player != null){
                 // 비네팅은 수동으로 다시 그리기
                 this.renderVignetteOverlay(context, this.client.player);
-                // 시계 다시 그리기
-
             }
         }
     }

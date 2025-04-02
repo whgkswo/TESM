@@ -34,16 +34,6 @@ public class OnServerTicks {
     static String previousRegionTag = "";
     static final List<TagKey<Biome>> REGION_TAGS = Arrays.asList(BiomeTags.CYR_EXTERIORS,BiomeTags.MW_EXTERIORS,BiomeTags.SKY_EXTERIORS,BiomeTags.TEST_TAG);
 
-    static float playerYaw;
-    public static float northCompassPos;
-    public static float westCompassPos;
-    public static float southCompassPos;
-    public static float eastCompassPos;
-
-    public static boolean northCompassOn;
-    public static boolean westCompassOn;
-    public static boolean southCompassOn;
-    public static boolean eastCompassOn;
 
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 플레이어 현재 지역 검사 메소드 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     private static String getCurrentRegion(World world, BlockPos playerPos){
@@ -54,42 +44,6 @@ public class OnServerTicks {
             }
         }
         return "Unidentified";
-    }
-    //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 플레이어 방향과 동서남북 차이 검사 메소드 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-    public static void getCompassPos(PlayerEntity player){
-
-        playerYaw = player.getYaw();
-
-        if(playerYaw>=135){
-            northCompassPos = 180-playerYaw;
-            northCompassOn = true;
-        } else if (playerYaw<=-135) {
-            northCompassPos = (180+playerYaw)*-1;
-            northCompassOn = true;
-        }else{
-            northCompassOn = false;
-        }
-
-        if(45<=playerYaw && playerYaw<=135){
-            westCompassPos = 90-playerYaw;
-            westCompassOn = true;
-        }else{
-            westCompassOn = false;
-        }
-
-        if(-45<=playerYaw && playerYaw<=45){
-            southCompassPos = -playerYaw;
-            southCompassOn = true;
-        }else {
-            southCompassOn = false;
-        }
-
-        if(-135<=playerYaw && playerYaw<=-45){
-            eastCompassPos = -90-playerYaw;
-            eastCompassOn = true;
-        }else {
-            eastCompassOn = false;
-        }
     }
 
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ OnServerTicks 본체 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
@@ -132,10 +86,6 @@ public class OnServerTicks {
                     currentBiomeID=biomeID.toString();
 
                     //player.sendMessage(Text.literal(playerPos.getX()+","+playerPos.getY()+","+playerPos.getZ()+" "+ currentBiomeID));
-
-
-                    //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 내부 메소드 호출 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-                    getCompassPos(player);
 
                     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 외부 메소드 호출 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
                     /*TESMusicsMain.tesMusicsMain(player,world,commandManager,commandSource);*/

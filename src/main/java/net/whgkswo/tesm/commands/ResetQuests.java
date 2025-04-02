@@ -7,8 +7,8 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.whgkswo.tesm.general.GlobalVariables;
-import net.whgkswo.tesm.networking.payload.data.GeneralReq;
-import net.whgkswo.tesm.networking.payload.id.GeneralTask;
+import net.whgkswo.tesm.networking.payload.data.SimpleReq;
+import net.whgkswo.tesm.networking.payload.id.SimpleTask;
 
 import static net.minecraft.server.command.CommandManager.literal;
 
@@ -21,7 +21,7 @@ public class ResetQuests {
         });
     }
     private static int execute(CommandContext<ServerCommandSource> context){
-        ServerPlayNetworking.send((ServerPlayerEntity) GlobalVariables.player, new GeneralReq(GeneralTask.RESET_QUESTS));
+        ServerPlayNetworking.send((ServerPlayerEntity) GlobalVariables.player, new SimpleReq(SimpleTask.RESET_QUESTS));
         return 1;
     }
 }

@@ -4,7 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
-import net.whgkswo.tesm.entitymanaging.EntityManager;
+import net.whgkswo.tesm.entity.EntityHelper;
 import net.whgkswo.tesm.exceptions.EmptyOpenListExeption;
 import net.whgkswo.tesm.general.GlobalVariables;
 
@@ -26,7 +26,7 @@ public class PathfinderV2 {
 
 
     public PathfinderV2(String targetName, BlockPos endPos){
-        targetEntity = EntityManager.findEntityByName(targetName);
+        targetEntity = EntityHelper.findEntityByName(targetName);
 
         startPos = targetEntity.getBlockPos().down(1);
         this.endPos = endPos;
@@ -52,7 +52,7 @@ public class PathfinderV2 {
         // 시작점, 끝점 표시
         BlockPos startPos = targetEntity.getBlockPos().down(1);
         /*EntityManager.summonEntity(EntityType.ARMOR_STAND, startPos);*/
-        GlobalVariables.pathfindEntityList.add(EntityManager.summonEntity(EntityType.ALLAY, endPos));
+        GlobalVariables.pathfindEntityList.add(EntityHelper.summonEntity(EntityType.ALLAY, endPos));
         // 시작점을 오픈리스트에 추가
         getOpenList().add(new JumpPoint(startPos,startPos, null, endPos, -1, false, false));
         // 탐색 - 탐색 결과 초기화
@@ -82,7 +82,7 @@ public class PathfinderV2 {
         ArrayList pathList = new ArrayList();
         while(!refPos.equals(startPos)){
             pathList.add(0, refPos);
-            GlobalVariables.pathfindEntityList.add(EntityManager.summonEntity(EntityType.FROG, refPos));
+            GlobalVariables.pathfindEntityList.add(EntityHelper.summonEntity(EntityType.FROG, refPos));
             refPos = closedList.get(refPos);
             backtrackCount++;
         }

@@ -3,7 +3,7 @@ package net.whgkswo.tesm.networking.receivers.c2s_req;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.whgkswo.tesm.general.GlobalVariables;
-import net.whgkswo.tesm.nbt.NBTManager;
+import net.whgkswo.tesm.nbt.NBTHelper;
 import net.whgkswo.tesm.networking.payload.data.c2s_req.SetNbtReq;
 
 import java.util.Map;
@@ -23,13 +23,13 @@ public class SetNbtReceiver {
                 Object value = entry.getValue();
                 switch (value){
                     case String s -> {
-                        NBTManager.getCustomNbt(entity).putString(key, (String) value);
+                        NBTHelper.getEntityNbt(entity).putString(key, (String) value);
                     }
                     case Integer i -> {
-                        NBTManager.getCustomNbt(entity).putInt(key, (int) value);
+                        NBTHelper.getEntityNbt(entity).putInt(key, (int) value);
                     }
                     case Boolean b -> {
-                        NBTManager.getCustomNbt(entity).putBoolean(key, (boolean) value);
+                        NBTHelper.getEntityNbt(entity).putBoolean(key, (boolean) value);
                     }
                     default -> {
 

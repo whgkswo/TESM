@@ -5,17 +5,14 @@ import com.mojang.brigadier.context.CommandContext;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
-import net.whgkswo.tesm.entitymanaging.EntityManager;
+import net.whgkswo.tesm.entity.EntityHelper;
 import net.whgkswo.tesm.general.GlobalVariables;
-import net.whgkswo.tesm.util.IEntityDataSaver;
+import net.whgkswo.tesm.nbt.IEntityDataSaver;
 
 public class SummonNpc {
     public static void register() {
@@ -35,7 +32,7 @@ public class SummonNpc {
         //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 필요한 인스턴스 정의 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
         BlockPos playerPos = GlobalVariables.player.getBlockPos();
-        Entity entity = EntityManager.summonEntity(EntityType.VILLAGER, playerPos.down());
+        Entity entity = EntityHelper.summonEntity(EntityType.VILLAGER, playerPos.down());
 
         //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 엔티티 스폰 및 속성 설정 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
         GlobalVariables.world.spawnEntity(entity);
@@ -64,7 +61,7 @@ public class SummonNpc {
         ((IEntityDataSaver)entity).getPersistentData().put("EntityData",customData);
 
 
-        // 이건 전체 nbt가 아니라 내가 추가한 TESMData안의 요소들만 가져옴
+        // 이건 전체 nbt가 아니라 내가 추가한 tesm 안의 요소들만 가져옴
         NbtCompound nbt = ((IEntityDataSaver)entity).getPersistentData();
 
         String data = String.valueOf(nbt);

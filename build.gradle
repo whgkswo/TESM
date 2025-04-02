@@ -18,6 +18,12 @@ repositories {
 	// for more information about repositories.
 
 	maven { url = 'https://maven.minecraftforge.net/' }
+
+	// LibGui
+	maven {
+		name = "CottonMC"
+		url = "https://server.bbkr.space/artifactory/libs-release"
+	}
 }
 
 loom {
@@ -42,13 +48,18 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	modImplementation 'com.github.glitchfiend:TerraBlender-fabric:1.21.4-4.3.0.2'
 
-	implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.0'
-
-
-	// Uncomment the following line to enable the deprecated Fabric API modules. 
+	// Uncomment the following line to enable the deprecated Fabric API modules.
 	// These are included in the Fabric API production distribution and allow you to update your mod to the latest modules at a later more convenient time.
 
 	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
+
+	// Jackson 라이브러리
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.0'
+
+	// LibGui
+	dependencies {
+		modImplementation include("io.github.cottonmc:LibGui:12.0.1+1.21.2")
+	}
 }
 
 processResources {

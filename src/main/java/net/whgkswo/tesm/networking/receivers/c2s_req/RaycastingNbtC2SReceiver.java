@@ -6,7 +6,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.networking.payload.data.c2s_req.RaycastingNbtReq;
 import net.whgkswo.tesm.networking.payload.data.s2c_res.RaycastingNbtRes;
-import net.whgkswo.tesm.util.IEntityDataSaver;
+import net.whgkswo.tesm.nbt.IEntityDataSaver;
 
 public class RaycastingNbtC2SReceiver {
     public static void handle(RaycastingNbtReq payload, ServerPlayNetworking.Context context){

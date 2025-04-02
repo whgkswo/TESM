@@ -5,8 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum TimePeriod {
-    MORNING(new InGameTimePeriod(4, 30, 6, 30)),
-    DAY(new InGameTimePeriod(6, 50, 14, 40)),
+    MORNING(new InGameTimePeriod(4, 30, 6, 20)),
+    DAY(new InGameTimePeriod(6, 40, 14, 40)),
     EVENING(new InGameTimePeriod(16, 40, 18, 40)),
     NIGHT(new InGameTimePeriod(19, 10, 3, 30)),
     MORNING_FOG(new InGameTimePeriod(4, 0, 6, 0)),

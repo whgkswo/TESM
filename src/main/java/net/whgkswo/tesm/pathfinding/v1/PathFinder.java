@@ -6,18 +6,15 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.passive.AllayEntity;
-import net.minecraft.entity.passive.BeeEntity;
-import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
-import net.whgkswo.tesm.util.IEntityDataSaver;
+import net.whgkswo.tesm.nbt.IEntityDataSaver;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class PathFinder {

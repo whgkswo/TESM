@@ -1,23 +1,21 @@
 package net.whgkswo.tesm;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemGroups;
-import net.minecraft.item.ItemStack;
+import net.minecraft.block.DoorBlock;
+import net.minecraft.component.ComponentType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.minecraft.text.Text;
+import net.minecraft.resource.featuretoggle.FeatureFlags;
+import net.minecraft.screen.ScreenHandlerContext;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
-import net.whgkswo.tesm.blocks.ModBlocks;
+import net.whgkswo.tesm.blocks.blockentity.ModBlockEntityTypes;
 import net.whgkswo.tesm.commands.*;
 import net.whgkswo.tesm.general.InitializeTasks;
 import net.whgkswo.tesm.general.OnServerTicks;
 import net.whgkswo.tesm.general.OnPlayerLeaves;
 import net.whgkswo.tesm.items.ModItems;
-import net.whgkswo.tesm.items.TestItem;
+import net.whgkswo.tesm.libgui.ExampleGuiDesc;
 import net.whgkswo.tesm.networking.ServerNetworkManager;
 import net.whgkswo.tesm.pathfinding.v1.PathFinder;
 import org.slf4j.Logger;
@@ -31,12 +29,9 @@ public class TESMMod implements ModInitializer {
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final String MODID = "tesm";
 	public static final Logger LOGGER = LoggerFactory.getLogger(TESMMod.MODID);
+	public static ScreenHandlerType<ExampleGuiDesc> SCREEN_HANDLER_TYPE;
 
-	// TODO: 포팅
-	/*public static final TestItem TEST_ITEM =
-			Registry.register(Registries.ITEM, Identifier.of(TESMMod.MODID,"test_item"),
-					new TestItem(new Item.Settings()));
-
+	/*
 	// TODO: 포팅
 	private static final ItemGroup TESASSETS = FabricItemGroup.builder()
 			.icon(() -> new ItemStack(TEST_ITEM))
@@ -55,19 +50,22 @@ public class TESMMod implements ModInitializer {
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
 
-		LOGGER.info("Hello Fabric world!");
+		SCREEN_HANDLER_TYPE = Registry.register(Registries.SCREEN_HANDLER, Identifier.of(TESMMod.MODID, "example_gui"),
+				new ScreenHandlerType<>((syncId, inventory) -> new ExampleGuiDesc(syncId, inventory, ScreenHandlerContext.EMPTY),
+						FeatureFlags.VANILLA_FEATURES));
 
-		/*ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(content -> {
-			content.add(TEST_ITEM);
-		});*/
+		LOGGER.info("Hello Fabric world!");
 
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 레지스트리 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
 		/*Registry.register(Registries.ITEM_GROUP,
 				Identifier.of(TESMMod.MODID, "tesassets"), TESASSETS);*/
 
+		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 블록 엔티티 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+		ModBlockEntityTypes.initialize();
+
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 아이템 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-		ModItems.initialize();
+		ModItems.registerItems();
 
         //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 커스텀 커맨드 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
@@ -102,5 +100,9 @@ public class TESMMod implements ModInitializer {
 		// TODO: 매드 다이스, 매드 포커
 		// TODO: 대화 시스템 UI 리디자인
 		// TODO: 대화 시스템 JSON 리뉴얼
+		// TODO: 커스텀 메인화면
+		// TODO: 블록 페인팅
+		// TODO: 월드맵
+		// TODO: 나무 심기 툴
 	}
 }
