@@ -42,10 +42,10 @@ public class DoorHelper {
         int dy = doorData.half().equals(DoubleBlockHalf.LOWER) ? 1 : -1;
 
         Set<BlockPos> set = new HashSet<>();
-        if(doorPosRange.equals(DoorPosRange.ALL)) addToSet(doorData, set, blockPos); // 기준좌표
-        addToSet(doorData, set, blockPos.add(dx, 0, dz)); // 옆 좌표
-        if(!doorPosRange.equals(DoorPosRange.OPPOSITE_ONLY)) addToSet(doorData, set, blockPos.add(0, dy, 0)); // 위/아래 좌표
-        addToSet(doorData, set, blockPos.add(dx, dy, dz)); // 대각선 좌표
+        if(doorPosRange.equals(DoorPosRange.ALL)) addToSet(doorData, set, blockPos, false); // 기준좌표
+        addToSet(doorData, set, blockPos.add(dx, 0, dz), true); // 옆 좌표
+        if(!doorPosRange.equals(DoorPosRange.OPPOSITE_ONLY)) addToSet(doorData, set, blockPos.add(0, dy, 0), false); // 위/아래 좌표
+        addToSet(doorData, set, blockPos.add(dx, dy, dz), true); // 대각선 좌표
 
         return set;
     }
@@ -54,18 +54,23 @@ public class DoorHelper {
         return getDoorPositions(blockPos, DoorPosRange.ALL);
     }
 
-    private static void addToSet(DoorData doorData, Set<BlockPos> set, BlockPos blockPos){
-        if(isValidPos(doorData, blockPos)) set.add(blockPos);
+    private static void addToSet(DoorData doorData, Set<BlockPos> set, BlockPos blockPos, boolean isOpposite){
+        if(isValidPos(doorData, blockPos, isOpposite)) set.add(blockPos);
     }
 
-    private static boolean isValidPos(DoorData refData, BlockPos blockPos){
+    private static boolean isValidPos(DoorData refData, BlockPos blockPos, boolean isOpposite){
         BlockEntity blockEntity = GlobalVariables.world.getBlockEntity(blockPos);
 
         if (!(blockEntity instanceof DoorBlockEntity)) return false;
 
         DoorData doorData = BlockEntityHelper.getDoorData(blockPos);
 
-        return doorData.facing().equals(refData.facing());
+        if(isOpposite){
+            // 반대쪽 문은 힌지 방향도 일치해야 함
+            return doorData.facing().equals(refData.facing()) && !doorData.hinge().equals(refData.hinge());
+        }else{
+            return doorData.facing().equals(refData.facing());
+        }
     }
 
     public static void registerDoorUseEvent(){
