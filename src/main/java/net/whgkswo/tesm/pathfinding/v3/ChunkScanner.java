@@ -9,13 +9,11 @@ import net.whgkswo.tesm.data.JsonManager;
 import net.whgkswo.tesm.data.SizedStack;
 import net.whgkswo.tesm.data.dto.ChunkPosDto;
 import net.whgkswo.tesm.general.GlobalVariables;
-import net.whgkswo.tesm.pathfinding.v2.Direction;
+import net.whgkswo.tesm.pathfinding.v2.PathfindDirection;
 import net.whgkswo.tesm.pathfinding.v2.JumpPointTestResult;
 import net.whgkswo.tesm.pathfinding.v2.LinearSearcher;
 import net.whgkswo.tesm.util.BlockPosUtil;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -141,7 +139,7 @@ public class ChunkScanner {
     private ScanDataOfBlockPos blockTest(BlockPos blockPos){
         ScanDataOfBlockPos blockData = new ScanDataOfBlockPos(new HashMap<>());
         // 8방향에 대해서
-        for(Direction direction : Direction.getAllDirections()){
+        for(PathfindDirection direction : PathfindDirection.getAllDirections()){
             boolean obstacleFound = LinearSearcher.isObstacleFound(blockPos, direction);
 
             ScanDataOfDirection directionData;

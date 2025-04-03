@@ -9,7 +9,10 @@ public record DoorData(
         DoubleBlockHalf half,
         DoorHinge hinge,
         boolean open,
-        boolean powered
+        boolean powered,
+        String insideName,
+        String outsideName,
+        boolean pushToOutside
 ) {
 
 }

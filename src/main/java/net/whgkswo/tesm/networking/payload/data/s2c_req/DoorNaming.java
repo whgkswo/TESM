@@ -13,7 +13,7 @@ import net.whgkswo.tesm.networking.payload.id.PayloadId;
 public record DoorNaming(BlockPos blockPos, String insideName, String outsideName, boolean pushToOutside) implements CustomPayload {
     // 패킷 식별자
     public static final CustomPayload.Id<DoorNaming> PACKET_ID =
-            new CustomPayload.Id<>(Identifier.of(TESMMod.MODID, PayloadId.DOOR_NAMING.getId()));
+            new CustomPayload.Id<>(Identifier.of(TESMMod.MODID, PayloadId.DOOR_NAMING.getLowercaseName()));
 
     // 파라미터 -> 타입,밸류,타입,밸류, ... ,new 패턴으로 가야 함
     public static final PacketCodec<RegistryByteBuf, DoorNaming> PACKET_CODEC =

@@ -11,7 +11,7 @@ import static net.whgkswo.tesm.util.BlockPosUtil.getNextBlock;
 
 public class LinearSearcher {
     private int cursorX;    private int cursorY;    private int cursorZ;
-    private Direction direction;
+    private PathfindDirection direction;
     private final BlockPos refPos;  private final BlockPos endPos;
     private final int maxRepeatCount;
 
@@ -19,7 +19,7 @@ public class LinearSearcher {
         return maxRepeatCount;
     }
 
-    public LinearSearcher(BlockPos refPos, BlockPos endPos, Direction direction, int maxRepeatCount){
+    public LinearSearcher(BlockPos refPos, BlockPos endPos, PathfindDirection direction, int maxRepeatCount){
         this.direction = direction;
         this.refPos = BlockPosUtil.getCopyPos(refPos);    this.endPos = endPos;
         this.maxRepeatCount = maxRepeatCount;
@@ -65,12 +65,12 @@ public class LinearSearcher {
             if(direction.isDiagonal() && maxRepeatCount-i > 0){
                 DiagSearchState currentDiagSearchState = new DiagSearchState(i, direction);
                 // x방향 탐색
-                LinearSearcher xSearcher = new LinearSearcher(nextPos, endPos, Direction.getDirectionByComponent(direction.getX(), 0), branchLength);
+                LinearSearcher xSearcher = new LinearSearcher(nextPos, endPos, PathfindDirection.getDirectionByComponent(direction.getX(), 0), branchLength);
                 SearchResult xBranchResult = xSearcher.linearSearch(largeRefPos,openList, closedList,currentDiagSearchState,trailedDistance);
                 if(xBranchResult.hasFoundDestination()){
                     return xBranchResult;
                 }else { // 목적지를 찾지 못했다면
-                    LinearSearcher zSearcher = new LinearSearcher(nextPos, endPos, Direction.getDirectionByComponent(0, direction.getZ()),branchLength);
+                    LinearSearcher zSearcher = new LinearSearcher(nextPos, endPos, PathfindDirection.getDirectionByComponent(0, direction.getZ()),branchLength);
                     // z방향 탐색
                     SearchResult zBranchResult = zSearcher.linearSearch(largeRefPos,openList, closedList,currentDiagSearchState,trailedDistance);
                     if(zBranchResult.hasFoundDestination()){
@@ -87,7 +87,7 @@ public class LinearSearcher {
         // 결과 반환
         return new SearchResult(false, null);
     }
-    public static JumpPointTestResult jumpPointTest(BlockPos blockPos, BlockPos nextPos, Direction direction){
+    public static JumpPointTestResult jumpPointTest(BlockPos blockPos, BlockPos nextPos, PathfindDirection direction){
         boolean leftBlocked = false;    boolean rightBlocked = false;
         if(!direction.isDiagonal()){
             TriangleTestResult leftTestResult = new TriangleTestResult(blockPos, direction, RelativeDirection.LEFT);
@@ -113,7 +113,7 @@ public class LinearSearcher {
         }
         return new JumpPointTestResult(leftBlocked, rightBlocked);
     }
-    public static boolean isObstacleFound(BlockPos prevPos, Direction direction){
+    public static boolean isObstacleFound(BlockPos prevPos, PathfindDirection direction){
         // 다음 칸에 장애물과 낭떠러지가 있으면
         if(!BlockPosUtil.isReachable(prevPos, direction)){
             return true;
@@ -148,8 +148,8 @@ public class LinearSearcher {
         }
         return !duplicatedInOL && !duplicatedInCL;
     }
-    private JumpPoint createAndRegisterJumpPoint(BlockPos largeRefPos, BlockPos currentPos, Direction direction, int trailedDistance,DiagSearchState diagSearchState, BlockPos endPos, boolean leftBlocked, boolean rightBlocked,
-                                                ArrayList<JumpPoint> openList, HashMap<BlockPos, BlockPos> closedList){
+    private JumpPoint createAndRegisterJumpPoint(BlockPos largeRefPos, BlockPos currentPos, PathfindDirection direction, int trailedDistance, DiagSearchState diagSearchState, BlockPos endPos, boolean leftBlocked, boolean rightBlocked,
+                                                 ArrayList<JumpPoint> openList, HashMap<BlockPos, BlockPos> closedList){
 
         int nextTrailedDistance = trailedDistance + diagSearchState.getSearchedCount()*14 + this.getMaxRepeatCount()*10;
         // 점프 포인트 생성

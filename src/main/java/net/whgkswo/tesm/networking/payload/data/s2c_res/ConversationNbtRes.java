@@ -11,7 +11,7 @@ import net.whgkswo.tesm.networking.payload.id.PayloadId;
 public record ConversationNbtRes(String tempName, String name) implements CustomPayload {
     // 패킷 식별자
     public static final CustomPayload.Id<ConversationNbtRes> PACKET_ID =
-            new CustomPayload.Id<>(Identifier.of(TESMMod.MODID, PayloadId.CONVERSATION_NBT_RES.getId()));
+            new CustomPayload.Id<>(Identifier.of(TESMMod.MODID, PayloadId.CONVERSATION_NBT_RES.getLowercaseName()));
 
     // 패킷 코덱
     public static final PacketCodec<RegistryByteBuf, ConversationNbtRes> PACKET_CODEC =

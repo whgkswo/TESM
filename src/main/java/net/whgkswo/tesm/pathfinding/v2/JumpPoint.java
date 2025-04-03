@@ -6,7 +6,7 @@ import net.whgkswo.tesm.util.BlockPosUtil;
 public class JumpPoint {
     private BlockPos largeRefPos;
     private BlockPos blockPos;
-    private Direction prevDirection;
+    private PathfindDirection prevDirection;
     private int fValue;
     private int hValue;
     private boolean leftBlocked;
@@ -23,7 +23,7 @@ public class JumpPoint {
         return rightBlocked;
     }
 
-    public Direction getPrevDirection() {
+    public PathfindDirection getPrevDirection() {
         return prevDirection;
     }
 
@@ -41,7 +41,7 @@ public class JumpPoint {
         return largeRefPos;
     }
 
-    public JumpPoint(BlockPos largeRefPos, BlockPos blockPos, Direction prevDirection, BlockPos destPos, int hValue, boolean leftBlocked, boolean rightBlocked){
+    public JumpPoint(BlockPos largeRefPos, BlockPos blockPos, PathfindDirection prevDirection, BlockPos destPos, int hValue, boolean leftBlocked, boolean rightBlocked){
         this.largeRefPos = BlockPosUtil.getCopyPos(largeRefPos);
         this.blockPos = BlockPosUtil.getCopyPos(blockPos);
         this.prevDirection = prevDirection;

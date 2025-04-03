@@ -11,6 +11,8 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.blocks.blockentity.ModBlockEntityTypes;
 import net.whgkswo.tesm.commands.*;
+import net.whgkswo.tesm.door.DoorHelper;
+import net.whgkswo.tesm.executions.ExecutionHelper;
 import net.whgkswo.tesm.general.InitializeTasks;
 import net.whgkswo.tesm.general.OnServerTicks;
 import net.whgkswo.tesm.general.OnPlayerLeaves;
@@ -85,6 +87,8 @@ public class TESMMod implements ModInitializer {
 		/*PathfindingManager pathfindingManager = new PathfindingManager();
 		pathfindingManager.onServerTicks();*/
 		OnPlayerLeaves.onPlayerLeaves();
+		DoorHelper.registerDoorUseEvent();
+		ExecutionHelper.registerExecutioner();
 
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 네트워킹 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 		ServerNetworkManager.registerC2SCodecs(); // 코덱 등록

@@ -12,6 +12,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
+import net.whgkswo.tesm.gui.libgui.widgets.WTextFieldWithReset;
 import net.whgkswo.tesm.networking.payload.data.s2c_req.DoorNaming;
 
 public class DoorNamingDesc extends LightweightGuiDescription {
@@ -35,19 +36,19 @@ public class DoorNamingDesc extends LightweightGuiDescription {
         root.add(innerContainer);
 
         // 라벨/입력창 추가
-        WLabel outsideNameLabel = new WLabel(Text.literal("바깥쪽 공간 이름:"));
-        innerContainer.add(outsideNameLabel, 120, 1);
-
-        WTextField outsideNameField = new WTextField();
-        outsideNameField.setText(outsideName);
-        innerContainer.add(outsideNameField, 120, 1);
-
         WLabel insideNameLabel = new WLabel(Text.literal("안쪽 공간 이름:"));
         innerContainer.add(insideNameLabel, 120, 1);
 
-        WTextField insideNameField = new WTextField();
+        WTextFieldWithReset insideNameField = new WTextFieldWithReset(Axis.HORIZONTAL);
         insideNameField.setText(insideName);
-        innerContainer.add(insideNameField, 120, 1);
+        innerContainer.add(insideNameField);
+
+        WLabel outsideNameLabel = new WLabel(Text.literal("바깥쪽 공간 이름:"));
+        innerContainer.add(outsideNameLabel, 120, 1);
+
+        WTextFieldWithReset outsideNameField = new WTextFieldWithReset(Axis.HORIZONTAL);
+        outsideNameField.setText(outsideName);
+        innerContainer.add(outsideNameField);
 
         // 버튼들을 가로로 묶기 위한 패널
         WBox buttonBox = new WBox(Axis.HORIZONTAL);
@@ -55,15 +56,15 @@ public class DoorNamingDesc extends LightweightGuiDescription {
         buttonBox.setSize(160, 20);
         innerContainer.add(buttonBox); // 중앙에 위치하도록 배치
 
-        // 확인 버튼 추가
-        WButton confirmButton = new WButton(Text.literal("확인"));
-        confirmButton.setAlignment(HorizontalAlignment.CENTER);
-        buttonBox.add(confirmButton,80, 20);
-
         // 취소 버튼 추가
         WButton cancelButton = new WButton(Text.literal("취소").formatted(Formatting.RED));
         cancelButton.setOnClick(this::close);
         buttonBox.add(cancelButton, 80, 20);
+
+        // 확인 버튼 추가
+        WButton confirmButton = new WButton(Text.literal("확인"));
+        confirmButton.setAlignment(HorizontalAlignment.CENTER);
+        buttonBox.add(confirmButton,80, 20);
 
         // 서브 컨테이너
         WBox subContainer = new WBox(Axis.VERTICAL);
@@ -82,7 +83,7 @@ public class DoorNamingDesc extends LightweightGuiDescription {
         toggle.setOnToggle(state -> onToggle(toggle));
         subContainer.add(toggle);
 
-        confirmButton.setOnClick(() -> onConfirm(blockPos, insideNameField.getText(), outsideNameField.getText(), toggle.getToggle()));
+        confirmButton.setOnClick(() -> onConfirm(blockPos, insideNameField.getTextString(), outsideNameField.getTextString(), toggle.getToggle()));
 
         root.validate(this);
     }
@@ -93,10 +94,10 @@ public class DoorNamingDesc extends LightweightGuiDescription {
         toggle.setLabel(Text.literal(newState + "으로 열림"));
     }
 
-    private void onSwitch(WTextField insideNameField, WTextField outsideNameField){
-        String outsideName = outsideNameField.getText();
+    private void onSwitch(WTextFieldWithReset insideNameField, WTextFieldWithReset outsideNameField){
+        String outsideName = outsideNameField.getTextString();
 
-        outsideNameField.setText(insideNameField.getText());
+        outsideNameField.setText(insideNameField.getTextString());
         insideNameField.setText(outsideName);
     }
 

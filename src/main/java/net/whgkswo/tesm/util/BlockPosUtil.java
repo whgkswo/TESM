@@ -2,7 +2,7 @@ package net.whgkswo.tesm.util;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
-import net.whgkswo.tesm.pathfinding.v2.Direction;
+import net.whgkswo.tesm.pathfinding.v2.PathfindDirection;
 import net.whgkswo.tesm.tags.BlockTags;
 
 import static net.whgkswo.tesm.general.GlobalVariables.LOW_BLOCKHEIGHT_REF;
@@ -17,7 +17,7 @@ public class BlockPosUtil {
     public static BlockPos getCopyPos(BlockPos targetPos){
         return new BlockPos(targetPos.getX(), targetPos.getY(), targetPos.getZ());
     }
-    public static BlockPos getNextBlock(BlockPos refPos, Direction direction) {
+    public static BlockPos getNextBlock(BlockPos refPos, PathfindDirection direction) {
         // 탐색 방향으로 한 칸 가기
         int cursorX = refPos.getX() + direction.getX();
         int cursorY = refPos.getY();
@@ -49,7 +49,7 @@ public class BlockPosUtil {
         }
 
     }
-    public static boolean isReachable(BlockPos refPos, Direction direction){
+    public static boolean isReachable(BlockPos refPos, PathfindDirection direction){
         int cursorX = refPos.getX();
         int cursorY = refPos.getY();
         int cursorZ = refPos.getZ();

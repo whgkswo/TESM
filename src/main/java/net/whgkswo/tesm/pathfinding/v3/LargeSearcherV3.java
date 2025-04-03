@@ -10,7 +10,6 @@ import net.whgkswo.tesm.exceptions.EmptyOpenListExeption;
 import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.pathfinding.v2.*;
 import net.whgkswo.tesm.util.BlockPosUtil;
-import net.whgkswo.tesm.util.OpenListManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,7 +48,7 @@ public class LargeSearcherV3 {
         // 해당 좌표를 클로즈 리스트에 추가
         closedList.put(refPos,nextJumpPoint.getLargeRefPos());
         // 소탐색 방향 선정
-        ArrayList<Direction> directions = DirectionSetter.setSearchDirections(startPos, nextJumpPoint);
+        ArrayList<PathfindDirection> directions = DirectionSetter.setSearchDirections(startPos, nextJumpPoint);
         // 대탐색 정보 채팅창에 출력
         GlobalVariables.player.sendMessage(Text.of(String.format("(%d) (%s)를 기준으로 탐색, %s", searchCount,
                 refPos.toShortString(), directions)), true);
@@ -65,7 +64,7 @@ public class LargeSearcherV3 {
             throw new BlockDataNotFoundExeption(refPos);
         }
         // 다음 방향들에 대해 소탐색 시작
-        for(Direction direction : directions){
+        for(PathfindDirection direction : directions){
             // 이전 소탐색에서 사용된 갑옷 거치대와 알레이, 닭, 벌 없애기
             /*EntityManager.killEntities(EntityType.ARMOR_STAND, EntityType.CHICKEN, EntityType.BEE);*/
             // 탐색 실시
@@ -77,7 +76,7 @@ public class LargeSearcherV3 {
         }
         return new LargeSearchResult();
     }
-    public SearchResult search(BlockPos largeRefPos, Direction direction, int hValue, ScanDataOfBlockPos scanData){
+    public SearchResult search(BlockPos largeRefPos, PathfindDirection direction, int hValue, ScanDataOfBlockPos scanData){
         LinearSearcherV3 searcher = new LinearSearcherV3(largeRefPos, endPos, direction, MAX_SEARCH_RADIUS, scanData, openSet);
         // 주어진 방향에 대해 탐색 실행
         DiagSearchState diagSearchState = new DiagSearchState(0,direction);

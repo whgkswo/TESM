@@ -36,7 +36,7 @@ public class LargeSearcher {
         // 대탐색 시작 위치 선정
         BlockPos refPos = nextJumpPoint.getBlockPos();
         // 소탐색 방향 선정
-        ArrayList<Direction> directions = DirectionSetter.setSearchDirections(startPos, nextJumpPoint);
+        ArrayList<PathfindDirection> directions = DirectionSetter.setSearchDirections(startPos, nextJumpPoint);
         // 대탐색 정보 채팅창에 출력
         GlobalVariables.player.sendMessage(Text.of(String.format("(%d) (%d, %d, %d)를 기준으로 탐색, %s", searchCount,
                 refPos.getX(), refPos.getY(), refPos.getZ(), directions)), true);
@@ -48,7 +48,7 @@ public class LargeSearcher {
         closedList.put(refPos,nextJumpPoint.getLargeRefPos());
         openList.remove(nextIndex);
         // 다음 방향들에 대해 소탐색 시작
-        for(Direction direction : directions){
+        for(PathfindDirection direction : directions){
             // 이전 소탐색에서 사용된 갑옷 거치대와 알레이, 닭, 벌 없애기
             /*EntityManager.killEntities(EntityType.ARMOR_STAND, EntityType.CHICKEN, EntityType.BEE);*/
             // 탐색 실시
@@ -60,7 +60,7 @@ public class LargeSearcher {
         }
         return new LargeSearchResult();
     }
-    public SearchResult search(BlockPos largeRefPos, Direction direction, int hValue){
+    public SearchResult search(BlockPos largeRefPos, PathfindDirection direction, int hValue){
         LinearSearcher searcher = new LinearSearcher(largeRefPos, endPos, direction, MAX_SEARCH_RADIUS);
         // 주어진 방향에 대해 탐색 실행
         DiagSearchState diagSearchState = new DiagSearchState(0,direction);

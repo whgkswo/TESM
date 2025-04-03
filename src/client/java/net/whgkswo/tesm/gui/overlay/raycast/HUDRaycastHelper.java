@@ -1,19 +1,18 @@
-package net.whgkswo.tesm.raycast;
+package net.whgkswo.tesm.gui.overlay.raycast;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
+import net.whgkswo.tesm.networking.payload.data.c2s_req.BlockDataReq;
 import net.whgkswo.tesm.networking.payload.data.c2s_req.RaycastingNbtReq;
 
 
-public class CenterRaycast {
+public class HUDRaycastHelper {
     public static boolean interactOverlayOn = false;
     public static String interactType;
     public static String interactTarget;
@@ -35,14 +34,12 @@ public class CenterRaycast {
                 case BLOCK:
                     BlockHitResult blockHit = (BlockHitResult) hitResult;
                     BlockPos blockPos = blockHit.getBlockPos();
-                    BlockState blockState = client.world.getBlockState(blockPos);
-                    Block block = blockState.getBlock();
+
+                    handleBlockEntity(blockPos);
 
                     //player.sendMessage(Text.literal(block.getName().getString()));
 
-                    if(interactOverlayOn){
-                        interactOverlayOn = false;
-                    }
+
                     break;
 
                 case ENTITY:
@@ -66,5 +63,9 @@ public class CenterRaycast {
                     break;
             }
         });
+    }
+
+    private static void handleBlockEntity(BlockPos blockPos){
+        ClientPlayNetworking.send(new BlockDataReq(blockPos));
     }
 }

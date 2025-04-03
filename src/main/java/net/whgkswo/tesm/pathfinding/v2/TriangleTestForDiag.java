@@ -14,16 +14,16 @@ public class TriangleTestForDiag {
     public boolean isNextPosToNeighborPos() {
         return nextPosToNeighborPos;
     }
-    public TriangleTestForDiag(BlockPos refPos, BlockPos nextPos, Direction direction, RelativeDirection testDirection){
+    public TriangleTestForDiag(BlockPos refPos, BlockPos nextPos, PathfindDirection direction, RelativeDirection testDirection){
         triangleTest(refPos, nextPos, direction, testDirection);
     }
-    private void triangleTest(BlockPos refPos, BlockPos nextPos, Direction direction, RelativeDirection testDirection){
+    private void triangleTest(BlockPos refPos, BlockPos nextPos, PathfindDirection direction, RelativeDirection testDirection){
 
-        Direction refPosToNeighborDirection =
+        PathfindDirection refPosToNeighborDirection =
                 testDirection == RelativeDirection.LEFT ? direction.getLeftDiagDirection() : direction.getRightDiagDirection();
         refPosToNeighborPos = BlockPosUtil.isReachable(refPos, refPosToNeighborDirection);
 
-        Direction nextPosToNeighborDirection =
+        PathfindDirection nextPosToNeighborDirection =
                 testDirection == RelativeDirection.LEFT ? refPosToNeighborDirection.getLeftDirection() : refPosToNeighborDirection.getRightDirection();
         nextPosToNeighborPos = BlockPosUtil.isReachable(nextPos, nextPosToNeighborDirection);
     }

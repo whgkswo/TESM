@@ -1,26 +1,18 @@
 package net.whgkswo.tesm.pathfinding.v3;
 
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.whgkswo.tesm.data.JsonManager;
-import net.whgkswo.tesm.exceptions.ChunkDataNotFoundExeption;
-import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.pathfinding.v2.*;
 import net.whgkswo.tesm.util.BlockPosUtil;
-import net.whgkswo.tesm.util.JumpPointTester;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.PriorityQueue;
 
-import static net.whgkswo.tesm.general.GlobalVariables.scanDataMap;
-import static net.whgkswo.tesm.general.GlobalVariables.world;
 import static net.whgkswo.tesm.util.BlockPosUtil.getNextBlock;
 
 public class LinearSearcherV3 {
     private int cursorX;    private int cursorY;    private int cursorZ;
-    private Direction direction;
+    private PathfindDirection direction;
     private final BlockPos refPos;  private final BlockPos endPos;
     private final int maxRepeatCount;
     private final ScanDataOfBlockPos scanData;
@@ -30,7 +22,7 @@ public class LinearSearcherV3 {
         return maxRepeatCount;
     }
 
-    public LinearSearcherV3(BlockPos refPos, BlockPos endPos, Direction direction, int maxRepeatCount, ScanDataOfBlockPos scanData,
+    public LinearSearcherV3(BlockPos refPos, BlockPos endPos, PathfindDirection direction, int maxRepeatCount, ScanDataOfBlockPos scanData,
                             HashSet<BlockPos> openSet){
         this.direction = direction;
         this.refPos = BlockPosUtil.getCopyPos(refPos);    this.endPos = endPos;
@@ -78,13 +70,13 @@ public class LinearSearcherV3 {
             if(direction.isDiagonal() && maxRepeatCount-i > 0){
                 DiagSearchState currentDiagSearchState = new DiagSearchState(i, direction);
                 // x방향 탐색
-                Direction xDirection = Direction.getDirectionByComponent(direction.getX(), 0);
+                PathfindDirection xDirection = PathfindDirection.getDirectionByComponent(direction.getX(), 0);
                 LinearSearcherV3 xSearcher = new LinearSearcherV3(nextPos, endPos, xDirection, branchLength, scanData, openSet);
                 SearchResult xBranchResult = xSearcher.linearSearch(largeRefPos,openList, closedList,currentDiagSearchState,trailedDistance);
                 if(xBranchResult.hasFoundDestination()){
                     return xBranchResult;
                 }else { // 목적지를 찾지 못했다면
-                    LinearSearcherV3 zSearcher = new LinearSearcherV3(nextPos, endPos, Direction.getDirectionByComponent(0, direction.getZ()),branchLength, scanData, openSet);
+                    LinearSearcherV3 zSearcher = new LinearSearcherV3(nextPos, endPos, PathfindDirection.getDirectionByComponent(0, direction.getZ()),branchLength, scanData, openSet);
                     // z방향 탐색
                     SearchResult zBranchResult = zSearcher.linearSearch(largeRefPos,openList, closedList,currentDiagSearchState,trailedDistance);
                     if(zBranchResult.hasFoundDestination()){
@@ -105,7 +97,7 @@ public class LinearSearcherV3 {
     private static boolean isValidCoordForJumpPoint(BlockPos targetPos, HashSet<BlockPos> openSet, HashMap<BlockPos, BlockPos> closedList){
         return !openSet.contains(targetPos) && !closedList.containsKey(targetPos);
     }
-    private JumpPoint createAndRegisterJumpPoint(BlockPos largeRefPos, BlockPos currentPos, Direction direction, int trailedDistance,DiagSearchState diagSearchState, BlockPos endPos, boolean leftBlocked, boolean rightBlocked,
+    private JumpPoint createAndRegisterJumpPoint(BlockPos largeRefPos, BlockPos currentPos, PathfindDirection direction, int trailedDistance, DiagSearchState diagSearchState, BlockPos endPos, boolean leftBlocked, boolean rightBlocked,
                                                  PriorityQueue<JumpPoint> openList, HashSet<BlockPos> openSet, HashMap<BlockPos, BlockPos> closedList){
 
         int nextTrailedDistance = trailedDistance + diagSearchState.getSearchedCount()*14 + this.getMaxRepeatCount()*10;

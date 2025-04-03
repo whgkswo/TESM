@@ -7,10 +7,10 @@ import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
 import net.whgkswo.tesm.gui.helpers.GuiHelper;
-import net.whgkswo.tesm.raycast.CenterRaycast;
+import net.whgkswo.tesm.gui.overlay.raycast.HUDRaycastHelper;
 
-import static net.whgkswo.tesm.raycast.CenterRaycast.interactTarget;
-import static net.whgkswo.tesm.raycast.CenterRaycast.interactType;
+import static net.whgkswo.tesm.gui.overlay.raycast.HUDRaycastHelper.interactTarget;
+import static net.whgkswo.tesm.gui.overlay.raycast.HUDRaycastHelper.interactType;
 
 public class InteractOverlay implements HudRenderCallback{
     MinecraftClient client = MinecraftClient.getInstance();
@@ -28,7 +28,7 @@ public class InteractOverlay implements HudRenderCallback{
             screenHeight = client.getWindow().getScaledHeight();
         }
 
-        if(CenterRaycast.interactOverlayOn){
+        if(HUDRaycastHelper.interactOverlayOn){
             final float HUD_MAG = 0.6f;
             final float TEXT_MAG = 0.8f;
 

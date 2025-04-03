@@ -11,7 +11,7 @@ import net.whgkswo.tesm.networking.payload.id.PayloadId;
 public record RaycastingNbtReq(int entityId) implements CustomPayload {
     // 패킷 식별자
     public static final CustomPayload.Id<RaycastingNbtReq> PACKET_ID =
-            new CustomPayload.Id<>(Identifier.of(TESMMod.MODID, PayloadId.RAYCASTING_NBT_REQ.getId()));
+            new CustomPayload.Id<>(Identifier.of(TESMMod.MODID, PayloadId.RAYCASTING_NBT_REQ.getLowercaseName()));
 
     // 파라미터 -> 타입,밸류,타입,밸류, ... ,new 패턴으로 가야 함
     public static final PacketCodec<RegistryByteBuf, RaycastingNbtReq> PACKET_CODEC =

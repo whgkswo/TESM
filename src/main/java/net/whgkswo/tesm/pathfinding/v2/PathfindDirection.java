@@ -3,7 +3,7 @@ package net.whgkswo.tesm.pathfinding.v2;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public enum Direction {
+public enum PathfindDirection {
     EAST(0,1,0),
     SOUTHEAST(1,1,1),
     SOUTH(2,0,1),
@@ -15,11 +15,11 @@ public enum Direction {
     ;
     private int number;
     private int directionX; private int directionZ;
-    public static ArrayList<Direction> getAllDirections(){
-        return new ArrayList<>(Arrays.asList(Direction.EAST, Direction.SOUTHEAST, Direction.SOUTH,
-                Direction.SOUTHWEST, Direction.WEST, Direction.NORTHWEST, Direction.NORTH, Direction.NORTHEAST));
+    public static ArrayList<PathfindDirection> getAllDirections(){
+        return new ArrayList<>(Arrays.asList(PathfindDirection.EAST, PathfindDirection.SOUTHEAST, PathfindDirection.SOUTH,
+                PathfindDirection.SOUTHWEST, PathfindDirection.WEST, PathfindDirection.NORTHWEST, PathfindDirection.NORTH, PathfindDirection.NORTHEAST));
     }
-    public static Direction getDirectionByNumber(int no){
+    public static PathfindDirection getDirectionByNumber(int no){
         return switch (no % 8) {
             case 0 -> EAST;
             case 1 -> SOUTHEAST;
@@ -32,15 +32,15 @@ public enum Direction {
             default -> null;
         };
     }
-    public static Direction getDirectionByComponent(int directionX, int directionZ){
-        for(Direction dir : Direction.values()){
+    public static PathfindDirection getDirectionByComponent(int directionX, int directionZ){
+        for(PathfindDirection dir : PathfindDirection.values()){
             if(directionX == dir.directionX && directionZ == dir.directionZ){
                 return dir;
             }
         }
         return null;
     }
-    Direction(int number, int directionX, int directionZ) {
+    PathfindDirection(int number, int directionX, int directionZ) {
         this.number = number;
         this.directionX = directionX;
         this.directionZ = directionZ;
@@ -51,16 +51,16 @@ public enum Direction {
     public int getZ(){
         return directionZ;
     }
-    public Direction getLeftDirection(){
+    public PathfindDirection getLeftDirection(){
         return getDirectionByNumber(number + 6);
     }
-    public Direction getRightDirection(){
+    public PathfindDirection getRightDirection(){
         return getDirectionByNumber(number + 2);
     }
-    public Direction getLeftDiagDirection(){
+    public PathfindDirection getLeftDiagDirection(){
         return getDirectionByNumber(number + 7);
     }
-    public Direction getRightDiagDirection(){
+    public PathfindDirection getRightDiagDirection(){
         return getDirectionByNumber(number + 1);
     }
     public boolean isDiagonal(){
@@ -69,7 +69,7 @@ public enum Direction {
     public int getNumber(){
         return number;
     }
-    public RelativeDirection getRelativeDirection(Direction targetDirection){
+    public RelativeDirection getRelativeDirection(PathfindDirection targetDirection){
         int refNo = getNumber();
         int targetNo = targetDirection.getNumber();
         int index = (targetNo - refNo) % 8;

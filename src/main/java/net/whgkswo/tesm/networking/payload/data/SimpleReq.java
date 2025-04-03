@@ -12,7 +12,7 @@ import net.whgkswo.tesm.networking.payload.id.PayloadId;
 public record SimpleReq(SimpleTask task) implements CustomPayload {
     // 패킷 식별자
     public static final CustomPayload.Id<SimpleReq> PACKET_ID =
-            new CustomPayload.Id<>(Identifier.of(TESMMod.MODID, PayloadId.GENERAL_REQ.getId()));
+            new CustomPayload.Id<>(Identifier.of(TESMMod.MODID, PayloadId.SIMPLE_REQ.getLowercaseName()));
 
     // 파라미터 -> 타입,밸류,타입,밸류, ... ,new 패턴으로 가야 함
     public static final PacketCodec<RegistryByteBuf, SimpleReq> PACKET_CODEC =

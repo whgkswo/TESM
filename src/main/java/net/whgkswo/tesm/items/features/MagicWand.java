@@ -34,7 +34,7 @@ public class MagicWand extends Item {
                 BlockHitResult blockHitResult = (BlockHitResult) hitResult;
                 BlockState blockState = world.getBlockState(blockHitResult.getBlockPos());
 
-                if(blockState.isIn(BlockTags.DOORS)){
+                if(blockState.isIn(BlockTags.VANILLA_DOORS)){
                     return useOnDoor(world, blockHitResult, player);
                 }else{
                     return useOnBlock(blockHitResult, player);

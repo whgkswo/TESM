@@ -1,28 +1,28 @@
 package net.whgkswo.tesm.pathfinding.v3;
 
-import net.whgkswo.tesm.pathfinding.v2.Direction;
+import net.whgkswo.tesm.pathfinding.v2.PathfindDirection;
 
 import java.util.HashMap;
 
 public class ScanDataOfBlockPos {
-    public ScanDataOfBlockPos(HashMap<Direction, ScanDataOfDirection> data) {
+    public ScanDataOfBlockPos(HashMap<PathfindDirection, ScanDataOfDirection> data) {
         this.data = data;
     }
     public ScanDataOfBlockPos() {
     }
-    public void setData(HashMap<Direction, ScanDataOfDirection> data) {
+    public void setData(HashMap<PathfindDirection, ScanDataOfDirection> data) {
         this.data = data;
     }
-    public void putDirectionData(Direction direction, ScanDataOfDirection data){
+    public void putDirectionData(PathfindDirection direction, ScanDataOfDirection data){
         this.data.put(direction,data);
     }
 
-    public HashMap<Direction, ScanDataOfDirection> getData() {
+    public HashMap<PathfindDirection, ScanDataOfDirection> getData() {
         return data;
     }
 
-    private HashMap<Direction, ScanDataOfDirection> data;
-    public ScanDataOfDirection getDirectionData(Direction direction){
+    private HashMap<PathfindDirection, ScanDataOfDirection> data;
+    public ScanDataOfDirection getDirectionData(PathfindDirection direction){
         return data.get(direction);
     }
 }

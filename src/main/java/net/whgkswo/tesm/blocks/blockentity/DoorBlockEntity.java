@@ -37,8 +37,31 @@ public class DoorBlockEntity extends BlockEntity {
         return createNbt(registries);
     }
 
+    public NbtCompound getNbt(){
+        RegistryWrapper.WrapperLookup registries = world.getRegistryManager();
+        return createNbt(registries);
+    }
+
     public void setNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
         readNbt(nbt, registries);
         markDirty();
+    }
+
+    public void setNbt(NbtCompound nbt){
+        RegistryWrapper.WrapperLookup registries = world.getRegistryManager();
+        readNbt(nbt, registries);
+        markDirty();
+    }
+
+    public String getInsideName(){
+        return insideName;
+    }
+
+    public String getOutsideName(){
+        return outsideName;
+    }
+
+    public boolean getPushToOutside(){
+        return pushToOutside;
     }
 }

@@ -20,11 +20,11 @@ public class TriangleTestResult {
     }
 
     private boolean hypotenuseTestResult;
-    public TriangleTestResult(BlockPos refPos, Direction direction, RelativeDirection relativeDirection){
+    public TriangleTestResult(BlockPos refPos, PathfindDirection direction, RelativeDirection relativeDirection){
         triangleTest(refPos, direction, relativeDirection);
     }
-    private void triangleTest(BlockPos refPos, Direction refDirection, RelativeDirection testDirection){
-        Direction perpendicularDirection;
+    private void triangleTest(BlockPos refPos, PathfindDirection refDirection, RelativeDirection testDirection){
+        PathfindDirection perpendicularDirection;
         if(testDirection == RelativeDirection.LEFT){
             perpendicularDirection = refDirection.getLeftDirection();
         }else{
@@ -37,7 +37,7 @@ public class TriangleTestResult {
             BlockPos sidePos = BlockPosUtil.getNextBlock(refPos, perpendicularDirection);
             oppositeTestResult = BlockPosUtil.isReachable(sidePos, refDirection);
             // 삼각 검사 - 대각선
-            Direction hypotenuseDirection = Direction.getDirectionByComponent(refDirection.getX() + perpendicularDirection.getX(),
+            PathfindDirection hypotenuseDirection = PathfindDirection.getDirectionByComponent(refDirection.getX() + perpendicularDirection.getX(),
                     refDirection.getZ() + perpendicularDirection.getZ());
             hypotenuseTestResult = BlockPosUtil.isReachable(refPos,hypotenuseDirection);
         }
