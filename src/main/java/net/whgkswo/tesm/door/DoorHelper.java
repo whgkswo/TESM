@@ -93,12 +93,13 @@ public class DoorHelper {
             }
             // 일정 시간 뒤에 닫히도록 예약
             if(!isOpen){
-                ExecutionHelper.addToOnServerTick(30, () -> {
+                ExecutionHelper.addToOnServerTick(30, String.format("(%s)에서 문 닫기", refPos.toShortString()), () -> {
                     Set<BlockPos> fullDoorPositions = DoorHelper.getDoorPositions(refPos);
                     for(BlockPos pos : fullDoorPositions){
                         BlockState state = world.getBlockState(pos).with(Properties.OPEN, false);
                         world.setBlockState(pos, state);
                     }
+                    return null;
                 });
             }
             return ActionResult.SUCCESS; // SUCCESS를 반환하면 이 뒤의 내용이 취소됨

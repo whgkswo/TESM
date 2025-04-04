@@ -29,4 +29,5 @@ public class GlobalVariables {
     public static final double LOW_BLOCKHEIGHT_REF = 0.25;
     public static InGameDate currentInGameDate = new InGameDate(427,Month.LAST_SEED,16, InGameDate.DayOfTheWeek.TIRDAS);
     public static InGameTime currentInGameTime = new InGameTime(0,0,0);
+    public static final String GITHUB_ISSUE_URL = "https://github.com/whgkswo/TESM/issues";
 }
