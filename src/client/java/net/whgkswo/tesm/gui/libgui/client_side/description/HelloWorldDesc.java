@@ -1,6 +1,5 @@
 package net.whgkswo.tesm.gui.libgui.client_side.description;
 
-import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.WButton;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;
 import io.github.cottonmc.cotton.gui.widget.WLabel;
@@ -8,8 +7,9 @@ import io.github.cottonmc.cotton.gui.widget.WSprite;
 import io.github.cottonmc.cotton.gui.widget.data.Insets;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.whgkswo.tesm.gui.libgui.client_side.BackgroundLessScreenDesc;
 
-public class HelloWorldDesc extends LightweightGuiDescription {
+public class HelloWorldDesc extends BackgroundLessScreenDesc {
     public HelloWorldDesc(){
         this("", "");
     }

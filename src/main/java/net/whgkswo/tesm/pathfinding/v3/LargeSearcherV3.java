@@ -3,7 +3,7 @@ package net.whgkswo.tesm.pathfinding.v3;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.whgkswo.tesm.data.JsonManager;
+import net.whgkswo.tesm.data.ScanHelper;
 import net.whgkswo.tesm.exceptions.BlockDataNotFoundExeption;
 import net.whgkswo.tesm.exceptions.ChunkDataNotFoundExeption;
 import net.whgkswo.tesm.exceptions.EmptyOpenListExeption;
@@ -88,10 +88,10 @@ public class LargeSearcherV3 {
         if(scanDataMap.containsKey(chunkPos)){
             return scanDataMap.get(chunkPos);
         }else{
-            if(JsonManager.isChunkScanDataExist(chunkPos)){
+            if(ScanHelper.isChunkScanDataExist(chunkPos)){
                 String filePath = "r." + chunkPos.getRegionX() + "." + chunkPos.getRegionZ()
                         + "/" + chunkPos.x + "." + chunkPos.z + ".json";
-                ScanDataOfChunk chunkData = JsonManager.readJson(filePath);
+                ScanDataOfChunk chunkData = ScanHelper.readScanData(filePath);
                 GlobalVariables.scanDataMap.put(chunkPos, chunkData);
                 return chunkData;
             }else{

@@ -1,6 +1,6 @@
 package net.whgkswo.tesm.gui.component;
 
-public enum LineDirection {
+public enum GuiDirection {
     HORIZONTAL,
     VERTICAL
 }

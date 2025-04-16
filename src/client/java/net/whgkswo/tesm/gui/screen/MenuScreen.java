@@ -6,25 +6,26 @@ import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
 import net.whgkswo.tesm.conversation.quest.Quest;
 import net.whgkswo.tesm.conversation.quest.QuestStatus;
-import net.whgkswo.tesm.file.TextReader;
 import net.whgkswo.tesm.general.GeneralUtil;
-import net.whgkswo.tesm.gui.Alignment;
+import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
-import net.whgkswo.tesm.gui.colors.CustomColor;
+import net.whgkswo.tesm.gui.colors.TesmColor;
+import net.whgkswo.tesm.gui.component.GuiDirection;
 import net.whgkswo.tesm.gui.component.bounds.Boundary;
 import net.whgkswo.tesm.gui.component.bounds.RectangularBound;
-import net.whgkswo.tesm.gui.component.elements.BlankedBox;
+import net.whgkswo.tesm.gui.component.elements.EdgedBox;
+import net.whgkswo.tesm.gui.component.elements.FilledBox;
 import net.whgkswo.tesm.gui.component.elements.TextBox;
 import net.whgkswo.tesm.gui.component.elements.TextLabel;
-import net.whgkswo.tesm.gui.screen.templete.CustomScreen;
+import net.whgkswo.tesm.gui.screen.templete.TesmScreen;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MenuScreen extends CustomScreen {
+public class MenuScreen extends TesmScreen {
     public MenuScreen() {
-        super();
+        super(GuiDirection.HORIZONTAL);
     }
     private final Identifier MENU_BACKGROUND = Identifier.of(TESMMod.MODID, "textures/gui/menu_background.png");
 
@@ -37,24 +38,46 @@ public class MenuScreen extends CustomScreen {
                         .collect(Collectors.toList());
 
         GeneralUtil.repeatWithIndex(onGoingQuests.size(), i -> {
-            createComponent("testComponent" + i,
-                    new TextLabel(
-                            new CustomColor(200,160,130),
-                            Text.literal(onGoingQuests.get(i).getName()),
-                            0.7f,
-                            Alignment.LEFT,
+            TextLabel textLabel = new TextLabel(
+                    Text.literal(onGoingQuests.get(i).getName()),
+                    EdgedBox.builder()
+                            .axis(GuiDirection.HORIZONTAL)
+                            .thickness(1)
+                            .edgeColor(TesmColor.TRANSPARENT)
+                            .backgroundColor(TesmColor.NEUTRAL_GOLD)
+                            .bound(new RectangularBound(Boundary.BoundType.FIXED,0.1, 0.25 + 0.05 * i, 0.2, 0.04))
+                            .build(),
+                    /*new FilledBox(
+                            null,
                             new RectangularBound(Boundary.BoundType.FIXED,0.1, 0.25 + 0.05 * i, 0.2, 0.04),
-                            0.05));
+                            TesmColor.NEUTRAL_GOLD
+                    ),*/
+                    0.7f,
+                    HorizontalAlignment.LEFT,
+
+                    0.05);
+            rootComponent.addChild(textLabel);
         });
         if(!onGoingQuests.isEmpty()){
-            createComponent("questDescription",
-                    new TextBox(CustomColor.ColorsPreset.WHITE.getColor(),
+            TextBox textBox = new TextBox(
+                    EdgedBox.builder()
+                            .thickness(1)
+                            .bound(new RectangularBound(Boundary.BoundType.FLEXIBLE, 0.35, 0.25, 0.5, 0.3))
+                            .backgroundColor(TesmColor.WHITE)
+                            .build(),
+                    /*new EdgedBox(
                             new RectangularBound(Boundary.BoundType.FLEXIBLE, 0.35, 0.25, 0.5, 0.3),
-                            textRenderer,
-                            Text.literal(onGoingQuests.get(0).getCurrentStage()),
-                            0.7f,
-                            0,0,Alignment.LEFT
-                    ));
+                            GuiDirection.HORIZONTAL,
+                            TesmColor.WHITE,
+                            null,
+                            1
+                    ),*/
+                    textRenderer,
+                    Text.literal(onGoingQuests.get(0).getCurrentStage()),
+                    0.7f,
+                    0,0, HorizontalAlignment.LEFT
+            );
+            rootComponent.addChild(textBox);
         }
     }
     @Override

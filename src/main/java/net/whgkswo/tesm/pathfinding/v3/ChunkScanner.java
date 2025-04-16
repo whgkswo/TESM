@@ -5,7 +5,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.Heightmap;
-import net.whgkswo.tesm.data.JsonManager;
+import net.whgkswo.tesm.data.ScanHelper;
 import net.whgkswo.tesm.data.SizedStack;
 import net.whgkswo.tesm.data.dto.ChunkPosDto;
 import net.whgkswo.tesm.general.GlobalVariables;
@@ -19,7 +19,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static net.whgkswo.tesm.data.JsonManager.isChunkScanDataExist;
+import static net.whgkswo.tesm.data.ScanHelper.isChunkScanDataExist;
 import static net.whgkswo.tesm.general.GlobalVariables.*;
 
 public class ChunkScanner {
@@ -65,7 +65,7 @@ public class ChunkScanner {
                     .collect(Collectors.toSet());
             // 업데이트 청크 대기열 삭제
             updatedChunkSet.clear();
-            JsonManager.deleteJson("/updatedChunkSet.json");
+            ScanHelper.deleteScanData("/updatedChunkSet.json");
         }else{
             targetChunkList = getTargetChunkPosList(method, refChunkPos, chunkRadius);
         }
@@ -127,7 +127,7 @@ public class ChunkScanner {
         /*ChunkPos chunkPos = world.getChunk(playerPos).getPos();*/
         String chunkName = "/" + chunkPos.x + "." + chunkPos.z + ".json";
         String fileName = "r." + chunkPos.getRegionX() + "." + chunkPos.getRegionZ() + chunkName;
-        JsonManager.createJson(chunkData, fileName);
+        ScanHelper.createScanData(chunkData, fileName);
         if(GlobalVariables.scanDataMap.containsKey(chunkPos)){
             scanDataMap.put(chunkPos,chunkData);
         }

@@ -5,7 +5,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.entity.Entity;
-import net.whgkswo.tesm.conversation.ConversationStart;
+import net.whgkswo.tesm.conversationv2.ConversationHelper;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,7 +25,7 @@ public abstract class InGameHudMixin {
     // 전체 HUD 비활성화 (비네팅 효과까지 제거)
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     private void onRender(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
-        if (ConversationStart.convOn) {
+        if (ConversationHelper.convOn) {
             ci.cancel(); // HUD 렌더링 취소
 
             if(this.client.player != null){

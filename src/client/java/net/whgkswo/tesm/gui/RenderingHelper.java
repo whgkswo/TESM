@@ -1,35 +1,40 @@
 package net.whgkswo.tesm.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.gui.colors.BaseTexture;
-import net.whgkswo.tesm.gui.colors.CustomColor;
+import net.whgkswo.tesm.gui.colors.TesmColor;
+import net.whgkswo.tesm.gui.component.bounds.Boundary;
+import net.whgkswo.tesm.gui.component.bounds.RectangularBound;
 import net.whgkswo.tesm.gui.helpers.GuiHelper;
+import net.whgkswo.tesm.gui.screen.TextSize;
 
 public class RenderingHelper {
     public static final TextRenderer TEXT_RENDERER = MinecraftClient.getInstance().textRenderer;
     public static final double DEFAULT_TEXT_VERTICAL_WIDTH_RATIO = (double) 1 / 50;
-    public static void renderText(Alignment alignment, DrawContext context, float scale, String str,
+    public static void renderText(HorizontalAlignment alignment, DrawContext context, float scale, String str,
                                   int x, int y, int color){
         context.getMatrices().push();
         context.getMatrices().scale(scale,scale,1);
-        if(alignment == Alignment.LEFT){
+        if(alignment == HorizontalAlignment.LEFT){
             context.drawTextWithShadow(TEXT_RENDERER,str, x,y,color);
-        } else if (alignment == Alignment.CENTER) {
+        } else if (alignment == HorizontalAlignment.CENTER) {
             context.drawCenteredTextWithShadow(TEXT_RENDERER,str, x,y,color);
         }
         context.getMatrices().pop();
     }
-    public static void renderText(Alignment alignment, DrawContext context, float scale, String str,
+    public static void renderText(HorizontalAlignment alignment, DrawContext context, float scale, String str,
                                   double xRatio, double yRatio, int color){
         int xPos = getXPos(context, xRatio, scale);
         int yPos = getYPos(context, yRatio, scale);
         context.getMatrices().push();
         context.getMatrices().scale(scale,scale,1);
+
         switch (alignment){
             case LEFT -> {
                 context.drawTextWithShadow(TEXT_RENDERER,str, xPos, yPos,color);
@@ -44,30 +49,31 @@ public class RenderingHelper {
         }
         context.getMatrices().pop();
     }
-    public static void renderText(Alignment alignment, DrawContext context, float scale, Text text,
-                                  double xRatio, double yRatio, int color){
+    public static void renderText(HorizontalAlignment alignment, DrawContext context, float scale, Text text,
+                                  double xRatio, double yRatio){
         int xPos = getXPos(context, xRatio, scale);
         int yPos = getYPos(context, yRatio, scale);
 
         context.getMatrices().push();
         context.getMatrices().scale(scale,scale,1);
+        int textColor = getTextRgb(text);
 
         switch (alignment){
             case LEFT -> {
-                context.drawTextWithShadow(TEXT_RENDERER, text, xPos, yPos, color);
+                context.drawTextWithShadow(TEXT_RENDERER, text, xPos, yPos, textColor);
             }
             case CENTER -> {
-                context.drawCenteredTextWithShadow(TEXT_RENDERER,text, xPos, yPos ,color);
+                context.drawCenteredTextWithShadow(TEXT_RENDERER,text, xPos, yPos ,textColor);
             }
             case RIGHT -> {
                 int textWidth = TEXT_RENDERER.getWidth(text.getString());
-                context.drawTextWithShadow(TEXT_RENDERER, text, xPos - textWidth, yPos, color);
+                context.drawTextWithShadow(TEXT_RENDERER, text, xPos - textWidth, yPos, textColor);
             }
         }
         context.getMatrices().pop();
     }
-    public static void renderTextInBox(Alignment alignment, DrawContext context, float scale, String str,
-                                  double xRatio, double yRatio, double widthRatio, int color){
+    public static void renderTextInBox(HorizontalAlignment alignment, DrawContext context, float scale, String str,
+                                       double xRatio, double yRatio, double widthRatio, int color){
 
         int yPos = getYPos(context, yRatio, scale);
         int offset = (int) (TEXT_RENDERER.getWidth("가") * 0.4);
@@ -101,7 +107,7 @@ public class RenderingHelper {
                 (int)(screenWidth * widthRatio), (int)(screenHeight * heightRatio), (int)(screenWidth * widthRatio), (int)(screenHeight * heightRatio));
     }
     public static void renderTextureWithColorFilter(DrawContext context,Identifier texture, int x, int y,
-                                                    int width, int height, CustomColor color){
+                                                    int width, int height, TesmColor color){
         if(color.getA() != 255){
             RenderSystem.enableBlend();
         }
@@ -110,7 +116,7 @@ public class RenderingHelper {
         // 화면의 모든 요소 위에 그려지는 오버레이를 원한다면 아래 코드는 삭제
         RenderSystem.setShaderColor(1.0f,1.0f,1.0f,1.0f);
     }
-    public static void renderColoredBox(DrawContext context, CustomColor color, double xRatio, double yRatio, double widthRatio, double heightRatio){
+    public static void renderColoredBox(DrawContext context, TesmColor color, double xRatio, double yRatio, double widthRatio, double heightRatio){
         int screenWidth = context.getScaledWindowWidth();
         int screenHeight = context.getScaledWindowHeight();
 
@@ -127,5 +133,51 @@ public class RenderingHelper {
     }
     public static int getYPos(DrawContext context, double positionRatio, float scale){
         return (int)(context.getScaledWindowHeight() * positionRatio / scale);
+    }
+
+    public static int getTextRgb(Text text){
+        if(text.getStyle().getColor() == null){
+            return 0xffffff;
+        }
+        return text.getStyle().getColor().getRgb();
+    }
+
+    public static String getTextHexCode(Text text){
+        if(text.getStyle().getColor() == null){
+            return "ffffff";
+        }
+        return text.getStyle().getColor().getHexCode();
+    }
+
+    public static RectangularBound getAbsoluteBound(RectangularBound parentBound, RectangularBound childBound){
+        double parentXRatio = 0;
+        double parentWidthRatio = 1;
+        double parentYRatio = 0;
+        double parentHeightRatio = 1;
+
+        if(parentBound != null){
+            parentXRatio = parentBound.getxRatio();
+            parentWidthRatio = parentBound.getWidthRatio();
+            parentYRatio = parentBound.getyRatio();
+            parentHeightRatio = parentBound.getHeightRatio();
+        }
+
+        return new RectangularBound(
+                Boundary.BoundType.FIXED,
+                parentXRatio + parentWidthRatio * childBound.getxRatio(),
+                parentYRatio + parentHeightRatio * childBound.getyRatio(),
+                parentWidthRatio * childBound.getWidthRatio(),
+                parentHeightRatio * childBound.getHeightRatio()
+        );
+
+    }
+
+    public static TextSize getTextWidth(String text, float fontScale){
+        MinecraftClient client = MinecraftClient.getInstance();
+        TextRenderer textRenderer = client.textRenderer;
+
+        int width = (int) fontScale * textRenderer.getWidth(text);
+        int height = (int) fontScale * textRenderer.fontHeight;
+        return new TextSize(width, height);
     }
 }

@@ -7,13 +7,13 @@ import net.whgkswo.tesm.message.MessageHelper;
 
 import java.util.concurrent.Callable;
 
-public class Execution<T> {
+public class ScheduledTask<T> {
     private static final StackTraceElement UNKNOWN_LOCATION = new StackTraceElement("Unknown Class", "Unknown Method", "Unknown File", 0);
     private int countdown;
     private Callable<T> callable;
     private String purpose;
 
-    public Execution(int countdown, String purpose, Callable<T> callable){
+    public ScheduledTask(int countdown, String purpose, Callable<T> callable){
         this.countdown = countdown;
         this.purpose = purpose;
         this.callable = callable;
@@ -27,7 +27,7 @@ public class Execution<T> {
         countdown--;
     }
 
-    public void run(){
+    public void execute(){
         try{
             callable.call();
         } catch (Exception e){

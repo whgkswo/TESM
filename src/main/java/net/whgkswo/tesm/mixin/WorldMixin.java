@@ -1,25 +1,19 @@
 package net.whgkswo.tesm.mixin;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.WorldChunk;
-import net.whgkswo.tesm.data.JsonManager;
+import net.whgkswo.tesm.data.ScanHelper;
 import net.whgkswo.tesm.data.dto.ChunkPosDto;
 import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.util.BlockPosUtil;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static net.whgkswo.tesm.general.GlobalVariables.*;
 
@@ -45,7 +39,7 @@ public class WorldMixin {
             GlobalVariables.updatedChunkSet.add(new ChunkPosDto(world.getChunk(pos).getPos()));
 
             // 청크 업데이트 목록 저장
-            JsonManager.createJson(updatedChunkSet, "updatedChunkSet.json");
+            ScanHelper.createScanData(updatedChunkSet, "updatedChunkSet.json");
         }
     }
 }

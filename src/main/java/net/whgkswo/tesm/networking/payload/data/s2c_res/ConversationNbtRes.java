@@ -8,7 +8,9 @@ import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
 import net.whgkswo.tesm.networking.payload.id.PayloadId;
 
-public record ConversationNbtRes(String tempName, String name) implements CustomPayload {
+import java.util.UUID;
+
+public record ConversationNbtRes(String engName, String tempName, String name, int partnerId) implements CustomPayload {
     // 패킷 식별자
     public static final CustomPayload.Id<ConversationNbtRes> PACKET_ID =
             new CustomPayload.Id<>(Identifier.of(TESMMod.MODID, PayloadId.CONVERSATION_NBT_RES.getLowercaseName()));
@@ -16,8 +18,10 @@ public record ConversationNbtRes(String tempName, String name) implements Custom
     // 패킷 코덱
     public static final PacketCodec<RegistryByteBuf, ConversationNbtRes> PACKET_CODEC =
             PacketCodec.tuple(
+                    PacketCodecs.STRING, ConversationNbtRes::engName,
                     PacketCodecs.STRING, ConversationNbtRes::tempName,
                     PacketCodecs.STRING, ConversationNbtRes::name,
+                    PacketCodecs.VAR_INT, ConversationNbtRes::partnerId,
                     ConversationNbtRes::new
             ).cast();
 

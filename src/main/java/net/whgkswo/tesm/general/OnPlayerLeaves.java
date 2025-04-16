@@ -1,9 +1,7 @@
 package net.whgkswo.tesm.general;
 
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
-import net.minecraft.entity.Entity;
-import net.whgkswo.tesm.data.JsonManager;
-import net.whgkswo.tesm.pathfinding.v3.ChunkScanner;
+import net.whgkswo.tesm.data.ScanHelper;
 
 import static net.whgkswo.tesm.general.GlobalVariables.world;
 
@@ -12,7 +10,7 @@ public class OnPlayerLeaves {
         ServerPlayConnectionEvents.DISCONNECT.register((player, server) -> {
             GlobalVariables.pathfindEntityList.forEach(entity -> entity.kill(world));
             GlobalVariables.pathfindEntityList.clear();
-            JsonManager.createJson(GlobalVariables.updatedChunkSet, "/updatedChunkSet.json");
+            ScanHelper.createScanData(GlobalVariables.updatedChunkSet, "/updatedChunkSet.json");
         });
     }
 }

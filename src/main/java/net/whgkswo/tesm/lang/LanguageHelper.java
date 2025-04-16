@@ -113,4 +113,10 @@ public class LanguageHelper {
 
         return word + marker;
     }
+
+    public static String toSnakeCase(String str) {
+        return str.replaceAll("([a-z])([A-Z])", "$1_$2") // 카멜케이스 → 스네이크케이스 변환
+                .replace(' ', '_') // 공백 → 언더스코어
+                .toLowerCase();
+    }
 }

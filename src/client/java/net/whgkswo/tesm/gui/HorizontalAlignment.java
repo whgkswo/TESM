@@ -1,6 +1,6 @@
 package net.whgkswo.tesm.gui;
 
-public enum Alignment{
+public enum HorizontalAlignment {
     LEFT,
     CENTER,
     RIGHT

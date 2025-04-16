@@ -3,27 +3,26 @@ package net.whgkswo.tesm.gui.component.elements;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
-import net.whgkswo.tesm.gui.Alignment;
+import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
-import net.whgkswo.tesm.gui.colors.CustomColor;
 import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.gui.component.bounds.RectangularBound;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TextBox extends GuiComponent<RectangularBound> {
+public class TextBox extends GuiComponent {
     private static final double LINE_GAP_RATIO = 1.2;
     private TextRenderer textRenderer;
     private Text content;
     private float fontScale;
     private double xMarginRatio;
     private double yMarginRatio;
-    private Alignment textAlignment;
+    private HorizontalAlignment textAlignment;
+    private EdgedBox box;
 
-    public TextBox(CustomColor color, RectangularBound bound, TextRenderer textRenderer, Text content, float fontScale,
-                   double xMarginRatio, double yMarginRatio, Alignment textAlignment) {
-        super(color, bound);
+    public TextBox(EdgedBox box, TextRenderer textRenderer, Text content, float fontScale,
+                   double xMarginRatio, double yMarginRatio, HorizontalAlignment textAlignment) {
         this.textRenderer = textRenderer;
         this.content = content;
         this.fontScale = fontScale;
@@ -41,12 +40,12 @@ public class TextBox extends GuiComponent<RectangularBound> {
     }
 
     @Override
-    public void render(DrawContext context) {
+    public void renderSelf(DrawContext context) {
         render(context, textRenderer);
     }
 
     private void render(DrawContext context, TextRenderer textRenderer) {
-        RectangularBound bound = this.getRenderingBound();
+        RectangularBound bound = box.getBound();
         int screenWidth = context.getScaledWindowWidth();
 
         List<String> contentLines = splitContent(textRenderer, content.getString(), (int)(screenWidth * (1 - 2 * xMarginRatio) * bound.getWidthRatio() / fontScale));

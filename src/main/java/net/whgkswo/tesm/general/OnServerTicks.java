@@ -1,7 +1,6 @@
 package net.whgkswo.tesm.general;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.text.Text;
@@ -11,7 +10,7 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.whgkswo.tesm.calendar.InGameTime;
-import net.whgkswo.tesm.data.JsonManager;
+import net.whgkswo.tesm.data.ScanHelper;
 import net.whgkswo.tesm.tags.BiomeTags;
 
 import java.util.Arrays;
@@ -68,7 +67,7 @@ public class OnServerTicks {
                     server.getGameRules().get(GameRules.DO_DAYLIGHT_CYCLE).set(false,server);
                     server.getGameRules().get(GameRules.RANDOM_TICK_SPEED).set(0, server);
 
-                    updatedChunkSet = JsonManager.readJsonToSet("/updatedChunkSet.json");
+                    updatedChunkSet = ScanHelper.readScanDataToSet("/updatedChunkSet.json");
                     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 바이옴 ID 및 지역 정보 초기화 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
                     previousBiomeID = currentBiomeID;

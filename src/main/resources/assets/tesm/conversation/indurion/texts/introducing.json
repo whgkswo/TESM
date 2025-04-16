@@ -1,0 +1,14 @@
+[
+  {
+    "text": "저는 {INDURION}입니다.",
+    "actions": [
+      {
+        "type": "NAME_REVEAL",
+        "target": ""
+      }
+    ]
+  },
+  {
+    "text": "저기 아랫쪽 부둣가에서 일하고 있죠."
+  }
+]

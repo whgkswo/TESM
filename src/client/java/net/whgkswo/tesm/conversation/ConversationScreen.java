@@ -9,11 +9,13 @@ import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
 import net.whgkswo.tesm.conversation.quest.Quest;
 import net.whgkswo.tesm.conversation.quest.QuestStatus;
+import net.whgkswo.tesm.conversationv2.ConversationHelper;
 import net.whgkswo.tesm.general.GlobalVariablesClient;
-import net.whgkswo.tesm.gui.Alignment;
+import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
+import net.whgkswo.tesm.gui.component.GuiDirection;
 import net.whgkswo.tesm.gui.helpers.GuiHelper;
-import net.whgkswo.tesm.gui.screen.templete.CustomScreen;
+import net.whgkswo.tesm.gui.screen.templete.TesmScreen;
 import net.whgkswo.tesm.networking.payload.data.c2s_req.SetNbtReq;
 import org.lwjgl.glfw.GLFW;
 
@@ -22,7 +24,7 @@ import java.util.*;
 import static net.whgkswo.tesm.general.GlobalVariablesClient.*;
 
 @Environment(EnvType.CLIENT)
-public class ConversationScreen extends CustomScreen {
+public class ConversationScreen extends TesmScreen {
     private static final int MAX_DISPLAY_DC = 4;
     private List<Integer> colors = new ArrayList<>();
     private static final float LINE_SCALE = 0.8f;
@@ -42,9 +44,9 @@ public class ConversationScreen extends CustomScreen {
     private static final Identifier ARROW_DOWN = Identifier.of(TESMMod.MODID, "textures/gui/downarrow.png");
     private final Identifier DECISION_BACKGROUND = Identifier.of(TESMMod.MODID, "textures/gui/decision.png");
     public ConversationScreen(Entity partner){
-        super();
+        super(GuiDirection.VERTICAL);
         this.partner = partner;
-        ConversationStart.convOn = true;
+        ConversationHelper.convOn = true;
     }
     @Override
     public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta){
@@ -60,7 +62,7 @@ public class ConversationScreen extends CustomScreen {
     @Override
     public void close(){
         super.close();
-        ConversationStart.convOn = false;
+        ConversationHelper.convOn = false;
     }
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta){
@@ -104,14 +106,14 @@ public class ConversationScreen extends CustomScreen {
     }
     private void renderPartnerName(DrawContext context){
         final float nameScale = 1.5f;
-        RenderingHelper.renderText(Alignment.CENTER,context,nameScale, partnerDisplayName,(int)(width/2/nameScale),(int)(height*0.55/nameScale),0xffffff);
+        RenderingHelper.renderText(HorizontalAlignment.CENTER,context,nameScale, partnerDisplayName,(int)(width/2/nameScale),(int)(height*0.55/nameScale),0xffffff);
     }
     private void renderLine(DrawContext context){
         currentDialogues = partnerDL.getNormalLines().get(stage);
         String content = decisionMakingOn ?
                 lastLine : currentDialogues.getContents().get(currentLineIndex).getLine();
 
-        RenderingHelper.renderText(Alignment.CENTER,context, LINE_SCALE,content,
+        RenderingHelper.renderText(HorizontalAlignment.CENTER,context, LINE_SCALE,content,
                 (int) (width/2/ LINE_SCALE),(int) (height*0.7/ LINE_SCALE),0xffffff);
     }
     private int getEndIndexOfDisplayDecisions(){
@@ -132,7 +134,7 @@ public class ConversationScreen extends CustomScreen {
         }
         // 출력
         for(int i = decisionOffset; i< endIndex; i++){
-            RenderingHelper.renderText(Alignment.LEFT,context, LINE_SCALE,availableDecisions.get(i).getDecision().getLine(),
+            RenderingHelper.renderText(HorizontalAlignment.LEFT,context, LINE_SCALE,availableDecisions.get(i).getDecision().getLine(),
                     (int)(width*0.15/ LINE_SCALE),
                     (int)(height*(0.78+0.04*(i-decisionOffset))/ LINE_SCALE),
                     colors.get(i));

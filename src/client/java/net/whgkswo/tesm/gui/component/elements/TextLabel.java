@@ -2,60 +2,77 @@ package net.whgkswo.tesm.gui.component.elements;
 
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
-import net.whgkswo.tesm.gui.Alignment;
+import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
-import net.whgkswo.tesm.gui.colors.CustomColor;
+import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.GuiComponent;
+import net.whgkswo.tesm.gui.component.ParentComponent;
 import net.whgkswo.tesm.gui.component.bounds.RectangularBound;
 
-public class TextLabel extends GuiComponent<RectangularBound> {
+public class TextLabel extends GuiComponent {
     private Text content;
-    private float textScale;
-    private Alignment contentAlignment;
+    private float fontScale;
+    private HorizontalAlignment contentAlignment;
     private double textMarginRatio;
+    private EdgedBox background;
 
-    public TextLabel(CustomColor color, Text content, float textScale, Alignment contentAlignment,
-                     RectangularBound bound, double textMarginRatio) {
-        super(color, bound);
+    public TextLabel(Text content, EdgedBox background, float fontScale, HorizontalAlignment contentAlignment,
+                     double textMarginRatio){
+        this(null, content, background, fontScale, contentAlignment, textMarginRatio);
+    }
+
+    public TextLabel(ParentComponent parent, Text content, EdgedBox background, float fontScale, HorizontalAlignment contentAlignment,
+                     double textMarginRatio) {
+        super(parent);
         this.content = content;
-        this.textScale = textScale;
+        this.fontScale = fontScale;
         this.contentAlignment = contentAlignment;
         this.textMarginRatio = textMarginRatio;
+        this.background = background;
     }
 
     public Text getContent() {
         return content;
     }
 
-    public float getTextScale() {
-        return textScale;
+    public float getFontScale() {
+        return fontScale;
     }
 
-    public Alignment getContentAlignment() {
+    public HorizontalAlignment getContentAlignment() {
         return contentAlignment;
     }
 
     public double getTextMarginRatio() {
         return textMarginRatio;
     }
+
     @Override
-    public void render(DrawContext context){
-        RectangularBound bound = this.getRenderingBound();
-        RenderingHelper.renderColoredBox(
-                context,
-                new CustomColor(170,166,133),
-                bound.getxRatio(),
-                bound.getyRatio(),
-                bound.getWidthRatio(),
-                bound.getHeightRatio()
-        );
+    public void renderSelf(DrawContext context){
+        ParentComponent parent = getParent();
+        RectangularBound parentBound = null;
+        if(parent != null) parentBound = (RectangularBound) parent.getBound();
+
+        RectangularBound absoluteBound = RenderingHelper.getAbsoluteBound(parentBound, background.getBound());
+
+        TesmColor backgroundColor = background.getBackgroundColor();
+        if(!backgroundColor.equals(TesmColor.TRANSPARENT)){
+            RenderingHelper.renderColoredBox(
+                    context,
+                    backgroundColor,
+                    absoluteBound.getxRatio(),
+                    absoluteBound.getyRatio(),
+                    absoluteBound.getWidthRatio(),
+                    absoluteBound.getHeightRatio()
+            );
+        }
         double strRef = 0;
         switch (contentAlignment){
-            case LEFT -> strRef = bound.getxRatio() + bound.getWidthRatio() * textMarginRatio;
-            case CENTER -> strRef = bound.getxRatio() + bound.getWidthRatio() / 2;
-            case RIGHT -> strRef = bound.getxRatio() + bound.getWidthRatio() - bound.getWidthRatio() * textMarginRatio;
+            case LEFT -> strRef = absoluteBound.getxRatio() + absoluteBound.getWidthRatio() * textMarginRatio;
+            case CENTER -> strRef = absoluteBound.getxRatio() + absoluteBound.getWidthRatio() / 2;
+            case RIGHT -> strRef = absoluteBound.getxRatio() + absoluteBound.getWidthRatio() - absoluteBound.getWidthRatio() * textMarginRatio;
         }
-        double fixedYRatio = bound.getyRatio() + bound.getHeightRatio() / 2 - textScale * RenderingHelper.DEFAULT_TEXT_VERTICAL_WIDTH_RATIO;
-        RenderingHelper.renderText(contentAlignment, context, textScale, content, strRef, fixedYRatio, getColor().getHexDecimalCode());
+        double fixedYRatio = absoluteBound.getyRatio() + absoluteBound.getHeightRatio() / 2 - fontScale * RenderingHelper.DEFAULT_TEXT_VERTICAL_WIDTH_RATIO;
+        RenderingHelper.renderText(contentAlignment, context, fontScale, content, strRef, fixedYRatio);
     }
 }

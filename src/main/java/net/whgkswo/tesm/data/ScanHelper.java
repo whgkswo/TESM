@@ -12,20 +12,16 @@ import net.whgkswo.tesm.pathfinding.v3.ScanDataOfChunk;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static net.whgkswo.tesm.general.GlobalVariables.player;
-import static net.whgkswo.tesm.general.GlobalVariables.world;
 
-public class JsonManager {
-    private static final String BASE_PATH = "config/tesm/scandata/";
-    public static void createJson(ScanDataOfChunk data, String filePath){
+public class ScanHelper {
+    private static final String BASE_PATH_SCANDATA = "config/tesm/scandata/";
+    public static void createScanData(ScanDataOfChunk data, String filePath){
         ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
         try{
-            File file = new File(BASE_PATH + filePath);
+            File file = new File(BASE_PATH_SCANDATA + filePath);
             // 경로가 없으면 생성
             file.getParentFile().mkdirs();
             objectMapper.writeValue(file, data);
@@ -34,10 +30,10 @@ public class JsonManager {
             player.sendMessage(Text.literal(e.getClass().getSimpleName() + " 발생"), true);
         }
     }
-    public static<T> void createJson(T data, String filePath){
+    public static<T> void createScanData(T data, String filePath){
         ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
         try{
-            File file = new File(BASE_PATH + filePath);
+            File file = new File(BASE_PATH_SCANDATA + filePath);
             // 경로가 없으면 생성
             file.getParentFile().mkdirs();
             objectMapper.writeValue(file, data);
@@ -46,12 +42,12 @@ public class JsonManager {
             player.sendMessage(Text.literal(e.getClass().getSimpleName() + " 발생"), true);
         }
     }
-    public static ScanDataOfChunk readJson(String filePath){
+    public static ScanDataOfChunk readScanData(String filePath){
         ObjectMapper objectMapper = new ObjectMapper();
         SimpleModule module = new SimpleModule();
         module.addKeyDeserializer(BlockPos.class, new BlockPosKeyDeserializer());
         objectMapper.registerModule(module);
-        File file = new File(BASE_PATH + filePath);
+        File file = new File(BASE_PATH_SCANDATA + filePath);
 
         try{
             return objectMapper.readValue(file, ScanDataOfChunk.class);
@@ -62,9 +58,9 @@ public class JsonManager {
             return null;
         }
     }
-    public static HashSet<ChunkPosDto> readJsonToSet(String filePath){
+    public static HashSet<ChunkPosDto> readScanDataToSet(String filePath){
         ObjectMapper objectMapper = new ObjectMapper();
-        File file = new File(BASE_PATH + filePath);
+        File file = new File(BASE_PATH_SCANDATA + filePath);
         try{
             HashSet<ChunkPosDto> chunkPosDtos = objectMapper.readValue(file, new TypeReference<>() {
             });
@@ -76,8 +72,8 @@ public class JsonManager {
             return new HashSet<>();
         }
     }
-    public static void deleteJson(String filePath){
-        File file = new File(BASE_PATH + filePath);
+    public static void deleteScanData(String filePath){
+        File file = new File(BASE_PATH_SCANDATA + filePath);
         if(file.exists()){
             file.delete();
         }

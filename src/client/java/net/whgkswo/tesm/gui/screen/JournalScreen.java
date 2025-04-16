@@ -1,15 +1,11 @@
 package net.whgkswo.tesm.gui.screen;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
+import net.whgkswo.tesm.gui.component.GuiDirection;
 import net.whgkswo.tesm.gui.helpers.GuiHelper;
-import net.whgkswo.tesm.gui.screen.templete.CustomScreen;
+import net.whgkswo.tesm.gui.screen.templete.TesmScreen;
 import net.whgkswo.tesm.npcs.quests.Quests;
 import org.lwjgl.glfw.GLFW;
 
@@ -17,9 +13,9 @@ import java.util.Arrays;
 
 import static net.whgkswo.tesm.general.GlobalVariablesClient.arrowState;
 
-public class JournalScreen extends CustomScreen {
+public class JournalScreen extends TesmScreen {
     public JournalScreen() {
-        super();
+        super(GuiDirection.HORIZONTAL);
     }
 
     private final Identifier MENU_BACKGROUND = Identifier.of(TESMMod.MODID, "textures/gui/menu_background.png");

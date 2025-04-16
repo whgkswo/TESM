@@ -5,7 +5,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderTickCounter;
 import net.whgkswo.tesm.calendar.InGameTime;
 import net.whgkswo.tesm.general.GlobalVariables;
-import net.whgkswo.tesm.gui.Alignment;
+import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
 
 public class Watch implements HudRenderCallback {
@@ -18,11 +18,11 @@ public class Watch implements HudRenderCallback {
 
         // 시간 출력
         String time = GlobalVariables.currentInGameTime.toString(InGameTime.TimeFormat.LINGUAL_12H, false);
-        RenderingHelper.renderText(Alignment.RIGHT, drawContext,scale,
+        RenderingHelper.renderText(HorizontalAlignment.RIGHT, drawContext,scale,
                 time, 0.95 ,0.95, 0xffffff);
         // 날짜 출력
         String date = GlobalVariables.currentInGameDate.toString();
-        RenderingHelper.renderText(Alignment.RIGHT, drawContext,scale,
+        RenderingHelper.renderText(HorizontalAlignment.RIGHT, drawContext,scale,
                 date, 0.95,0.91,0xffffff);
     }
 }

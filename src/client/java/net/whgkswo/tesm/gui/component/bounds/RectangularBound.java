@@ -1,6 +1,8 @@
 package net.whgkswo.tesm.gui.component.bounds;
 
 public class RectangularBound extends Boundary {
+    public static final RectangularBound FULL_SCREEN = new RectangularBound(BoundType.FIXED, 0, 0, 1, 1);
+
     private double widthRatio;
     private double heightRatio;
 

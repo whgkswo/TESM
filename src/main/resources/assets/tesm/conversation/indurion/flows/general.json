@@ -1,0 +1,10 @@
+{
+  "type": "SHOW_TEXTS",
+  "texts": "indurion/texts/general",
+  "after": [
+    {
+      "type": "SHOW_DECISIONS",
+      "target": "indurion/decisions/general"
+    }
+  ]
+}

@@ -1,33 +1,39 @@
 package net.whgkswo.tesm.gui.colors;
 
-import java.awt.*;
-import java.util.HexFormat;
-
-public class CustomColor{
+public class TesmColor {
     private int r;
     private int g;
     private int b;
     private double a;
-    public CustomColor(int r, int g, int b) {
+
+    public static final TesmColor WHITE = new TesmColor(255,255,255);
+    public static final TesmColor BLACK = new TesmColor(0,0,0);
+    public static final TesmColor CREAM = new TesmColor(250,240,215);
+    public static final TesmColor MINT_JULEP = new TesmColor(227,215,180);
+    public static final TesmColor NEUTRAL_GOLD = new TesmColor(170,166,133);
+    public static final TesmColor RODEO_DUST = new TesmColor(200,160,130);
+    public static final TesmColor TRANSPARENT = new TesmColor(0, 0, 0, 0);
+
+    public TesmColor(int r, int g, int b) {
         this.r = r;
         this.g = g;
         this.b = b;
         a = 255;
     }
 
-    public CustomColor(int r, int g, int b, int a) {
+    public TesmColor(int r, int g, int b, int a) {
         this.r = r;
         this.g = g;
         this.b = b;
         this.a = a;
     }
-    public CustomColor(String hex){
+    public TesmColor(String hex){
         int[] rgb = hexToRGB(hex);
         r = rgb[0];
         g = rgb[1];
         b = rgb[2];
     }
-    public CustomColor(String hex, int a){
+    public TesmColor(String hex, int a){
         int[] rgb = hexToRGB(hex);
         r = rgb[0];
         g = rgb[1];
@@ -100,25 +106,7 @@ public class CustomColor{
         return (int)Long.parseLong(hex, 16);
     }
 
-    public enum ColorsPreset {
-        WHITE(new CustomColor(255,255,255)),
-        BLACK(new CustomColor(0,0,0)),
-        CREAM(new CustomColor(250,240,215)),
-        MINT_JULEP(new CustomColor(227,215,180)),
-        NEUTRAL_GOLD(new CustomColor(170,166,133)),
-        RODEO_DUST(new CustomColor(200,160,130))
-        ;
-        private CustomColor color;
-
-        ColorsPreset(CustomColor color) {
-            this.color = color;
-        }
-
-        public CustomColor getColor() {
-            return color;
-        }
-        public CustomColor applyAlpha(int a){
-            return new CustomColor(color.r, color.g, color.b, a);
-        }
+    public TesmColor withAlpha(int alpha){
+        return new TesmColor(r, g, b, alpha);
     }
 }

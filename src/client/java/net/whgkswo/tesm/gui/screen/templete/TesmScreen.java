@@ -6,24 +6,34 @@ import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
+import net.whgkswo.tesm.gui.HorizontalAlignment;
+import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.GuiComponent;
+import net.whgkswo.tesm.gui.component.GuiDirection;
+import net.whgkswo.tesm.gui.component.bounds.RectangularBound;
+import net.whgkswo.tesm.gui.component.elements.EdgedBox;
 import net.whgkswo.tesm.networking.payload.data.SimpleReq;
 import net.whgkswo.tesm.networking.payload.id.SimpleTask;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class CustomScreen extends Screen {
+public abstract class TesmScreen extends Screen {
     private boolean shouldFreezeTicks = true;
-    private final Map<String, GuiComponent> guiComponents = new HashMap<>();
+    private boolean shouldRenderBackground = true;
+    public final EdgedBox rootComponent;
 
-    public CustomScreen(){
-        super(Text.literal(""));
+    public TesmScreen(GuiDirection axis){
+        this(false, axis);
     }
 
-    public CustomScreen(boolean shouldFreezeTicks){
+    public TesmScreen(boolean shouldFreezeTicks, GuiDirection axis){
         super(Text.literal(""));
         this.shouldFreezeTicks = shouldFreezeTicks;
+        rootComponent = EdgedBox.builder()
+                .bound(RectangularBound.FULL_SCREEN)
+                .backgroundColor(TesmColor.TRANSPARENT)
+                .edgeColor(TesmColor.TRANSPARENT)
+                .childrenAlignment(HorizontalAlignment.CENTER)
+                .axis(GuiDirection.VERTICAL)
+                .build();
     }
     @Override
     public boolean shouldPause() {
@@ -47,9 +57,7 @@ public class CustomScreen extends Screen {
     public void render(DrawContext context, int mouseX, int mouseY, float delta){
         super.render(context, mouseX, mouseY, delta);
 
-        getGuiComponents().forEach((key, component) -> {
-            component.render(context);
-        });
+        rootComponent.render(context);
     }
     private void registerMouseWheelEvent(){
         ScreenMouseEvents.afterMouseScroll(this).register((screen1, mouseX, mouseY, horizontalAmount, verticalAmount) -> {
@@ -65,10 +73,12 @@ public class CustomScreen extends Screen {
     public boolean shouldFreezeTicks(){
         return shouldFreezeTicks;
     }
-    public Map<String, GuiComponent> getGuiComponents() {
-        return guiComponents;
+
+    public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
+        if(shouldRenderBackground) super.renderBackground(context, mouseX, mouseY, delta);
     }
-    public void createComponent(String name, GuiComponent component){
-        guiComponents.put(name, component);
+
+    public void shouldRenderBackground(boolean flag){
+        shouldRenderBackground = flag;
     }
 }

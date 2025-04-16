@@ -1,54 +1,50 @@
 package net.whgkswo.tesm.gui.component.elements;
 
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import net.whgkswo.tesm.gui.Alignment;
+import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
-import net.whgkswo.tesm.gui.colors.CustomColor;
+import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.FadeSequence;
-import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.gui.component.TransitionStatus;
 import net.whgkswo.tesm.gui.component.bounds.Boundary;
 
-public class TextPopUp extends GuiComponent<Boundary> {
-    private Text content;
-    private float textScale;
+public class TextPopUp extends TextLabel{
     private FadeSequence fadeSequence;
     private int tick;
     private TransitionStatus status;
+    private TesmColor color;
+    private FilledBox background;
 
-    public TextPopUp(Boundary bound, CustomColor color, Text content, float textScale, FadeSequence fadeSequence) {
-        super(new CustomColor(color.getR(), color.getG(), color.getB(), 0), bound);
-        this.content = content;
-        this.textScale = textScale;
+    public TextPopUp(Text content, EdgedBox background, float textScale, HorizontalAlignment contentAlignment,
+                     double textMarginRatio, FadeSequence fadeSequence) {
+        super(content, background, textScale, contentAlignment, textMarginRatio);
         this.fadeSequence = fadeSequence;
         status = fadeSequence.getDelay() == 0 ? TransitionStatus.FADING_IN : TransitionStatus.PENDING;
+        String textColor = RenderingHelper.getTextHexCode(content);
+        color = new TesmColor(textColor, 0);
     }
-
     @Override
-    public void render(DrawContext context) {
-        Boundary bound = getRenderingBound();
+    public void renderSelf(DrawContext context) {
+        Boundary bound = background.getBound();
         update();
-        if(getColor().getA() < 4){
+        if(color.getA() < 4){
             return;
         }
-        int color = getColor().getHexDecimalCode();
 
-        /*RenderingHelper.renderText(Alignment.LEFT, context, textScale, content, bound.getxRatio(), bound.getyRatio(), getColor().getHexDecimalCode());*/
-        RenderingHelper.renderText(Alignment.LEFT, context, textScale,
-                content, bound.getxRatio(), bound.getyRatio(), color);
+        RenderingHelper.renderText(this.getContentAlignment(), context, getFontScale(),
+                getContent(), bound.getxRatio(), bound.getyRatio());
     }
     private void update(){
         switch (status){
             case FADING_IN -> {
                 if(fadeSequence.getFadeIn() > 0){
-                    getColor().addA(255 / fadeSequence.getFadeIn());
+                    color.addA(255 / fadeSequence.getFadeIn());
                 }
             }
             case FADING_OUT -> {
                 if(fadeSequence.getFadeOut() > 0){
-                    getColor().addA(-255 / fadeSequence.getFadeOut());
+                    color.addA(-255 / fadeSequence.getFadeOut());
                 }
             }
         }
@@ -81,5 +77,8 @@ public class TextPopUp extends GuiComponent<Boundary> {
                 }
             }
         }
+    }
+    public TransitionStatus getStatus() {
+        return status;
     }
 }

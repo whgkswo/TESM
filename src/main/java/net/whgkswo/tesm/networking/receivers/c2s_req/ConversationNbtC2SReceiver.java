@@ -18,12 +18,13 @@ public class ConversationNbtC2SReceiver {
         if (entity != null) {
             // NBT 데이터 가져오기
             NbtCompound nbtCompound = ((IEntityDataSaver)entity).getPersistentData().getCompound("EntityData");
-            boolean isInteractable = nbtCompound.getBoolean("interactable");
+            boolean isInteractable = nbtCompound.getBoolean("Interactable");
             String tempName = nbtCompound.getString("TempName");
             String name = nbtCompound.getString("Name");
+            String engName = nbtCompound.getString("EngName");
 
             // 클라이언트로 응답 전송
-            ConversationNbtRes response = new ConversationNbtRes(tempName, name);
+            ConversationNbtRes response = new ConversationNbtRes(engName, tempName, name, id);
             ServerPlayNetworking.send(context.player(), response);
         }
     }
