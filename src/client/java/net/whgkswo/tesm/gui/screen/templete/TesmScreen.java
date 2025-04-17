@@ -8,17 +8,18 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.colors.TesmColor;
-import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.gui.component.GuiDirection;
 import net.whgkswo.tesm.gui.component.bounds.RectangularBound;
-import net.whgkswo.tesm.gui.component.elements.EdgedBox;
+import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
+import net.whgkswo.tesm.gui.component.elements.Box;
 import net.whgkswo.tesm.networking.payload.data.SimpleReq;
 import net.whgkswo.tesm.networking.payload.id.SimpleTask;
 
 public abstract class TesmScreen extends Screen {
     private boolean shouldFreezeTicks = true;
     private boolean shouldRenderBackground = true;
-    public final EdgedBox rootComponent;
+    private boolean initialized;
+    public final Box rootComponent;
 
     public TesmScreen(GuiDirection axis){
         this(false, axis);
@@ -27,23 +28,33 @@ public abstract class TesmScreen extends Screen {
     public TesmScreen(boolean shouldFreezeTicks, GuiDirection axis){
         super(Text.literal(""));
         this.shouldFreezeTicks = shouldFreezeTicks;
-        rootComponent = EdgedBox.builder()
-                .bound(RectangularBound.FULL_SCREEN)
+        rootComponent = Box.builder()
+                .bound(RelativeBound.FULL_SCREEN)
+                .screenRelativeBound(RelativeBound.FULL_SCREEN)
                 .backgroundColor(TesmColor.TRANSPARENT)
                 .edgeColor(TesmColor.TRANSPARENT)
-                .childrenAlignment(HorizontalAlignment.CENTER)
+                .childrenHorizontalAlignment(HorizontalAlignment.CENTER)
                 .axis(GuiDirection.VERTICAL)
+                .id("root")
                 .build();
     }
     @Override
     public boolean shouldPause() {
         return false;
     }
+
+    public abstract void initExtended();
+
     @Override
     public void init(){
-        // 틱 프리즈 (서버에 패킷 전송)
-        if(shouldFreezeTicks()) ClientPlayNetworking.send(new SimpleReq(SimpleTask.TICK_FREEZE));
-        registerMouseWheelEvent();
+        if(!initialized){
+            // 틱 프리즈 (서버에 패킷 전송)
+            if(shouldFreezeTicks()) ClientPlayNetworking.send(new SimpleReq(SimpleTask.TICK_FREEZE));
+            registerMouseWheelEvent();
+
+            initExtended();
+            initialized = true;
+        }
     }
     @Override
     public void close(){

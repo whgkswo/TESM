@@ -1,7 +1,6 @@
 package net.whgkswo.tesm.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -9,10 +8,13 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.gui.colors.BaseTexture;
 import net.whgkswo.tesm.gui.colors.TesmColor;
+import net.whgkswo.tesm.gui.component.ParentComponent;
 import net.whgkswo.tesm.gui.component.bounds.Boundary;
 import net.whgkswo.tesm.gui.component.bounds.RectangularBound;
+import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.helpers.GuiHelper;
 import net.whgkswo.tesm.gui.screen.TextSize;
+import net.whgkswo.tesm.gui.screen.VerticalAlignment;
 
 public class RenderingHelper {
     public static final TextRenderer TEXT_RENDERER = MinecraftClient.getInstance().textRenderer;
@@ -113,7 +115,6 @@ public class RenderingHelper {
         }
         RenderSystem.setShaderColor(color.getFloatR(), color.getFloatG() ,color.getFloatB(), color.getFloatA());
         context.drawTexture(GuiHelper::getGuiTexturedLayer, texture, x, y, 0, 0, width, height, width, height);
-        // 화면의 모든 요소 위에 그려지는 오버레이를 원한다면 아래 코드는 삭제
         RenderSystem.setShaderColor(1.0f,1.0f,1.0f,1.0f);
     }
     public static void renderColoredBox(DrawContext context, TesmColor color, double xRatio, double yRatio, double widthRatio, double heightRatio){
@@ -123,10 +124,7 @@ public class RenderingHelper {
         if(color.getA() != 255){
             RenderSystem.enableBlend();
         }
-        RenderSystem.setShaderColor(color.getFloatR(), color.getFloatG() ,color.getFloatB(), color.getFloatA());
-        context.drawTexture(GuiHelper::getGuiTexturedLayer, BaseTexture.BASE_TEXTURE, (int)(screenWidth * xRatio), (int)(screenHeight * yRatio), 0,0,(int)(screenWidth * widthRatio), (int)(screenHeight * heightRatio), (int)(screenWidth * widthRatio), (int)(screenHeight * heightRatio));
-        // 화면의 모든 요소 위에 그려지는 오버레이를 원한다면 아래 코드는 삭제
-        RenderSystem.setShaderColor(1.0f,1.0f,1.0f,1.0f);
+        context.fill((int)(screenWidth * xRatio), (int)(screenHeight * yRatio), (int)(screenWidth * (xRatio + widthRatio)), (int)(screenHeight * (yRatio + heightRatio)), color.getHexDecimalCode());
     }
     public static int getXPos(DrawContext context, double positionRatio, float scale){
         return (int)(context.getScaledWindowWidth() * positionRatio / scale);
@@ -136,7 +134,7 @@ public class RenderingHelper {
     }
 
     public static int getTextRgb(Text text){
-        if(text.getStyle().getColor() == null){
+        if(text == null || text.getStyle() == null || text.getStyle().getColor() == null){
             return 0xffffff;
         }
         return text.getStyle().getColor().getRgb();
@@ -147,29 +145,6 @@ public class RenderingHelper {
             return "ffffff";
         }
         return text.getStyle().getColor().getHexCode();
-    }
-
-    public static RectangularBound getAbsoluteBound(RectangularBound parentBound, RectangularBound childBound){
-        double parentXRatio = 0;
-        double parentWidthRatio = 1;
-        double parentYRatio = 0;
-        double parentHeightRatio = 1;
-
-        if(parentBound != null){
-            parentXRatio = parentBound.getxRatio();
-            parentWidthRatio = parentBound.getWidthRatio();
-            parentYRatio = parentBound.getyRatio();
-            parentHeightRatio = parentBound.getHeightRatio();
-        }
-
-        return new RectangularBound(
-                Boundary.BoundType.FIXED,
-                parentXRatio + parentWidthRatio * childBound.getxRatio(),
-                parentYRatio + parentHeightRatio * childBound.getyRatio(),
-                parentWidthRatio * childBound.getWidthRatio(),
-                parentHeightRatio * childBound.getHeightRatio()
-        );
-
     }
 
     public static TextSize getTextWidth(String text, float fontScale){

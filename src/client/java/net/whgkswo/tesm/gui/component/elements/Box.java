@@ -2,6 +2,7 @@ package net.whgkswo.tesm.gui.component.elements;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 import net.minecraft.client.gui.DrawContext;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
@@ -10,22 +11,23 @@ import net.whgkswo.tesm.gui.component.GuiDirection;
 import net.whgkswo.tesm.gui.component.ParentComponent;
 import net.whgkswo.tesm.gui.component.bounds.Boundary;
 import net.whgkswo.tesm.gui.component.bounds.LinearBound;
-import net.whgkswo.tesm.gui.component.bounds.RectangularBound;
+import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class EdgedBox extends ParentComponent {
+@SuperBuilder
+public class Box extends ParentComponent {
+    @Builder.Default
     private Map<LineSide, StraightLine> lines = new HashMap<>();
     @Getter
-    private RectangularBound bound;
+    private RelativeBound bound;
     @Getter
     private TesmColor edgeColor;
     @Getter
     private TesmColor backgroundColor;
 
-    @Builder
-    public EdgedBox(ParentComponent parent, RectangularBound bound, GuiDirection axis, HorizontalAlignment childrenAlignment, TesmColor edgeColor, TesmColor backgroundColor, int thickness) {
+    public Box(ParentComponent parent, RelativeBound bound, GuiDirection axis, HorizontalAlignment childrenAlignment, TesmColor edgeColor, TesmColor backgroundColor, int thickness) {
         super(parent, bound, axis, childrenAlignment);
         this.bound = bound;
         this.edgeColor = edgeColor;
@@ -34,8 +36,8 @@ public class EdgedBox extends ParentComponent {
         // 모서리 없으면 등록 x
         if(edgeColor.equals(TesmColor.TRANSPARENT) || thickness == 0) return;
 
-        double xRatio = bound.getxRatio();
-        double yRatio = bound.getyRatio();
+        double xRatio = bound.getXMarginRatio();
+        double yRatio = bound.getYMarginRatio();
         double widthRatio = bound.getWidthRatio();
         double heightRatio = bound.getHeightRatio();
         lines.put(LineSide.UP,
@@ -71,8 +73,8 @@ public class EdgedBox extends ParentComponent {
             RenderingHelper.renderColoredBox(
                     context,
                     backgroundColor,
-                    bound.getxRatio(),
-                    bound.getyRatio(),
+                    bound.getXMarginRatio(),
+                    bound.getYMarginRatio(),
                     bound.getWidthRatio(),
                     bound.getHeightRatio()
             );
@@ -83,6 +85,12 @@ public class EdgedBox extends ParentComponent {
             straightLine.renderSelf(context);
         });
     }
+
+    @Override
+    public RelativeBound getBound(){
+        return bound;
+    }
+
     private enum LineSide{
         UP,
         LEFT,

@@ -53,8 +53,7 @@ public class ConversationScreen extends TesmScreen {
     }
 
     @Override
-    public void init(){
-        super.init();
+    public void initExtended() {
         partnerDisplayName = convPartnerTempName.isEmpty() ? convPartnerName : convPartnerTempName;
         partnerDL = GlobalVariablesClient.NPC_DIALOGUES.get(convPartnerName);
     }

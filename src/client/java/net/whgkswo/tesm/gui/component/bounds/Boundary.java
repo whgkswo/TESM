@@ -2,24 +2,24 @@ package net.whgkswo.tesm.gui.component.bounds;
 
 public class Boundary {
     private BoundType boundType;
-    private double xRatio;
-    private double yRatio;
+    private double xMarginRatio;
+    private double yMarginRatio;
 
-    public Boundary(BoundType boundType, double xRatio, double yRatio) {
+    public Boundary(BoundType boundType, double xMarginRatio, double yMarginRatio) {
         this.boundType = boundType;
-        this.xRatio = xRatio;
-        this.yRatio = yRatio;
+        this.xMarginRatio = xMarginRatio;
+        this.yMarginRatio = yMarginRatio;
     }
 
     public BoundType getBoundType() {
         return boundType;
     }
-    public double getxRatio() {
-        return xRatio;
+    public double getxMarginRatio() {
+        return xMarginRatio;
     }
 
-    public double getyRatio() {
-        return yRatio;
+    public double getyMarginRatio() {
+        return yMarginRatio;
     }
 
     public enum BoundType {

@@ -21,9 +21,9 @@ public class RectangularBound extends Boundary {
     }
 
     public int getRenderingPosX(int screenWidth){
-        return (int)(screenWidth * this.getxRatio());
+        return (int)(screenWidth * this.getxMarginRatio());
     }
     public int getRenderingPosY(int screenHeight){
-        return (int)(screenHeight * this.getyRatio());
+        return (int)(screenHeight * this.getyMarginRatio());
     }
 }

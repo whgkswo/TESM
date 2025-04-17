@@ -8,6 +8,7 @@ import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.FadeSequence;
 import net.whgkswo.tesm.gui.component.TransitionStatus;
 import net.whgkswo.tesm.gui.component.bounds.Boundary;
+import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 
 public class TextPopUp extends TextLabel{
     private FadeSequence fadeSequence;
@@ -16,7 +17,7 @@ public class TextPopUp extends TextLabel{
     private TesmColor color;
     private FilledBox background;
 
-    public TextPopUp(Text content, EdgedBox background, float textScale, HorizontalAlignment contentAlignment,
+    public TextPopUp(Text content, Box background, float textScale, HorizontalAlignment contentAlignment,
                      double textMarginRatio, FadeSequence fadeSequence) {
         super(content, background, textScale, contentAlignment, textMarginRatio);
         this.fadeSequence = fadeSequence;
@@ -26,14 +27,14 @@ public class TextPopUp extends TextLabel{
     }
     @Override
     public void renderSelf(DrawContext context) {
-        Boundary bound = background.getBound();
+        RelativeBound bound = background.getBound();
         update();
         if(color.getA() < 4){
             return;
         }
 
         RenderingHelper.renderText(this.getContentAlignment(), context, getFontScale(),
-                getContent(), bound.getxRatio(), bound.getyRatio());
+                getContent(), bound.getXMarginRatio(), bound.getYMarginRatio());
     }
     private void update(){
         switch (status){

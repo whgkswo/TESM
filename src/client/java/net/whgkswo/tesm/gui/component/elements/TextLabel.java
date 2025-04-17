@@ -1,5 +1,9 @@
 package net.whgkswo.tesm.gui.component.elements;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
@@ -7,21 +11,28 @@ import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.gui.component.ParentComponent;
-import net.whgkswo.tesm.gui.component.bounds.RectangularBound;
+import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 
-public class TextLabel extends GuiComponent {
+@SuperBuilder
+public class TextLabel extends GuiComponent<TextLabel> {
+    @Getter
     private Text content;
-    private float fontScale;
-    private HorizontalAlignment contentAlignment;
-    private double textMarginRatio;
-    private EdgedBox background;
+    @Getter
+    @Builder.Default
+    private float fontScale = 1.0f;
+    @Getter
+    @Builder.Default
+    private HorizontalAlignment contentAlignment = HorizontalAlignment.LEFT;
+    @Builder.Default
+    private double textMarginRatio = 0.0;
+    private Box background;
 
-    public TextLabel(Text content, EdgedBox background, float fontScale, HorizontalAlignment contentAlignment,
+    public TextLabel(Text content, Box background, float fontScale, HorizontalAlignment selfAlignment,
                      double textMarginRatio){
-        this(null, content, background, fontScale, contentAlignment, textMarginRatio);
+        this(null, content, background, fontScale, selfAlignment, textMarginRatio);
     }
 
-    public TextLabel(ParentComponent parent, Text content, EdgedBox background, float fontScale, HorizontalAlignment contentAlignment,
+    public TextLabel(ParentComponent parent, Text content, Box background, float fontScale, HorizontalAlignment contentAlignment,
                      double textMarginRatio) {
         super(parent);
         this.content = content;
@@ -31,48 +42,37 @@ public class TextLabel extends GuiComponent {
         this.background = background;
     }
 
-    public Text getContent() {
-        return content;
-    }
-
-    public float getFontScale() {
-        return fontScale;
-    }
-
-    public HorizontalAlignment getContentAlignment() {
-        return contentAlignment;
-    }
-
     public double getTextMarginRatio() {
         return textMarginRatio;
     }
 
     @Override
     public void renderSelf(DrawContext context){
-        ParentComponent parent = getParent();
-        RectangularBound parentBound = null;
-        if(parent != null) parentBound = (RectangularBound) parent.getBound();
-
-        RectangularBound absoluteBound = RenderingHelper.getAbsoluteBound(parentBound, background.getBound());
+        RelativeBound absoluteBound = getScreenRelativeBoundWithUpdate();
 
         TesmColor backgroundColor = background.getBackgroundColor();
         if(!backgroundColor.equals(TesmColor.TRANSPARENT)){
             RenderingHelper.renderColoredBox(
                     context,
                     backgroundColor,
-                    absoluteBound.getxRatio(),
-                    absoluteBound.getyRatio(),
+                    absoluteBound.getXMarginRatio(),
+                    absoluteBound.getYMarginRatio(),
                     absoluteBound.getWidthRatio(),
                     absoluteBound.getHeightRatio()
             );
         }
         double strRef = 0;
         switch (contentAlignment){
-            case LEFT -> strRef = absoluteBound.getxRatio() + absoluteBound.getWidthRatio() * textMarginRatio;
-            case CENTER -> strRef = absoluteBound.getxRatio() + absoluteBound.getWidthRatio() / 2;
-            case RIGHT -> strRef = absoluteBound.getxRatio() + absoluteBound.getWidthRatio() - absoluteBound.getWidthRatio() * textMarginRatio;
+            case LEFT -> strRef = absoluteBound.getXMarginRatio() + absoluteBound.getWidthRatio() * textMarginRatio;
+            case CENTER -> strRef = absoluteBound.getXMarginRatio() + absoluteBound.getWidthRatio() / 2;
+            case RIGHT -> strRef = absoluteBound.getXMarginRatio() + absoluteBound.getWidthRatio() - absoluteBound.getWidthRatio() * textMarginRatio;
         }
-        double fixedYRatio = absoluteBound.getyRatio() + absoluteBound.getHeightRatio() / 2 - fontScale * RenderingHelper.DEFAULT_TEXT_VERTICAL_WIDTH_RATIO;
+        double fixedYRatio = absoluteBound.getYMarginRatio() + absoluteBound.getHeightRatio() / 2 - fontScale * RenderingHelper.DEFAULT_TEXT_VERTICAL_WIDTH_RATIO;
         RenderingHelper.renderText(contentAlignment, context, fontScale, content, strRef, fixedYRatio);
+    }
+
+    @Override
+    public RelativeBound getBound() {
+        return background.getBound();
     }
 }

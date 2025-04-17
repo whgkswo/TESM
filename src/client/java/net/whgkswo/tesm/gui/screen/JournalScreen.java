@@ -51,8 +51,9 @@ public class JournalScreen extends TesmScreen {
     public boolean shouldPause() {
         return false;
     }
+
     @Override
-    public void init(){
+    public void initExtended() {
         if(!journalMenuOn){ // 스크린 오픈 시에만 초기화
             journalMenuOn = true;
             journalTabState = false;
@@ -65,7 +66,6 @@ public class JournalScreen extends TesmScreen {
         if(questListW % 2 == 1){
             questListW++;
         }
-        super.init();
     }
 
     @Override

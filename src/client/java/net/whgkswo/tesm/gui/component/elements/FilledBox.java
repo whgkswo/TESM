@@ -6,16 +6,17 @@ import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.gui.component.ParentComponent;
 import net.whgkswo.tesm.gui.component.bounds.RectangularBound;
+import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 
-public class FilledBox extends GuiComponent {
-    private RectangularBound bound;
+public class FilledBox extends GuiComponent<FilledBox> {
+    private RelativeBound bound;
     private TesmColor color;
 
-    public FilledBox(ParentComponent parent, RectangularBound bound){
+    public FilledBox(ParentComponent parent, RelativeBound bound){
         this(parent, bound, TesmColor.TRANSPARENT);
     }
 
-    public FilledBox(ParentComponent parent, RectangularBound bound, TesmColor color){
+    public FilledBox(ParentComponent parent, RelativeBound bound, TesmColor color){
         super(parent);
         this.bound = bound;
         this.color = color;
@@ -26,14 +27,14 @@ public class FilledBox extends GuiComponent {
         RenderingHelper.renderColoredBox(
                 context,
                 color,
-                bound.getxRatio(),
-                bound.getyRatio(),
+                bound.getXMarginRatio(),
+                bound.getYMarginRatio(),
                 bound.getWidthRatio(),
                 bound.getHeightRatio()
         );
     }
 
-    public RectangularBound getBound(){
+    public RelativeBound getBound(){
         return bound;
     }
 
