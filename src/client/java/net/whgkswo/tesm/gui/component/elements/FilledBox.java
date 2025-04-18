@@ -5,7 +5,6 @@ import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.gui.component.ParentComponent;
-import net.whgkswo.tesm.gui.component.bounds.RectangularBound;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 
 public class FilledBox extends GuiComponent<FilledBox> {
@@ -24,7 +23,7 @@ public class FilledBox extends GuiComponent<FilledBox> {
 
     @Override
     public void renderSelf(DrawContext context) {
-        RenderingHelper.renderColoredBox(
+        RenderingHelper.fill(
                 context,
                 color,
                 bound.getXMarginRatio(),

@@ -6,15 +6,10 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.whgkswo.tesm.gui.colors.BaseTexture;
 import net.whgkswo.tesm.gui.colors.TesmColor;
-import net.whgkswo.tesm.gui.component.ParentComponent;
-import net.whgkswo.tesm.gui.component.bounds.Boundary;
-import net.whgkswo.tesm.gui.component.bounds.RectangularBound;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.helpers.GuiHelper;
 import net.whgkswo.tesm.gui.screen.TextSize;
-import net.whgkswo.tesm.gui.screen.VerticalAlignment;
 
 public class RenderingHelper {
     public static final TextRenderer TEXT_RENDERER = MinecraftClient.getInstance().textRenderer;
@@ -74,6 +69,21 @@ public class RenderingHelper {
         }
         context.getMatrices().pop();
     }
+
+    public static void renderText(DrawContext context, float scale, Text text,
+                                  double xRatio, double yRatio){
+        int xPos = getXPos(context, xRatio, scale);
+        int yPos = getYPos(context, yRatio, scale);
+
+        context.getMatrices().push();
+        context.getMatrices().scale(scale,scale,1);
+        int textColor = getTextRgb(text);
+
+        context.drawTextWithShadow(TEXT_RENDERER, text, xPos, yPos, textColor);
+
+        context.getMatrices().pop();
+    }
+
     public static void renderTextInBox(HorizontalAlignment alignment, DrawContext context, float scale, String str,
                                        double xRatio, double yRatio, double widthRatio, int color){
 
@@ -117,7 +127,11 @@ public class RenderingHelper {
         context.drawTexture(GuiHelper::getGuiTexturedLayer, texture, x, y, 0, 0, width, height, width, height);
         RenderSystem.setShaderColor(1.0f,1.0f,1.0f,1.0f);
     }
-    public static void renderColoredBox(DrawContext context, TesmColor color, double xRatio, double yRatio, double widthRatio, double heightRatio){
+    public static void fill(DrawContext context, TesmColor color, RelativeBound bound){
+        fill(context, color, bound.getXMarginRatio(), bound.getYMarginRatio(), bound.getWidthRatio(), bound.getHeightRatio());
+    }
+
+    public static void fill(DrawContext context, TesmColor color, double xRatio, double yRatio, double widthRatio, double heightRatio){
         int screenWidth = context.getScaledWindowWidth();
         int screenHeight = context.getScaledWindowHeight();
 

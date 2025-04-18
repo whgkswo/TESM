@@ -151,7 +151,7 @@ public abstract class GuiComponent<T extends GuiComponent<T>> {
                 xRatio += xGap / 2;
             }
             case RIGHT -> {
-                xRatio += parentWidthRatio;
+                xRatio += parentWidthRatio - childBound.getWidthRatio();
             }
         }
 
@@ -166,11 +166,15 @@ public abstract class GuiComponent<T extends GuiComponent<T>> {
         }
 
         return new RelativeBound(
-                parentWidthRatio * childBound.getWidthRatio(),
-                parentHeightRatio * childBound.getHeightRatio(),
+                getScreenRelativeWH(parentWidthRatio, childBound.getWidthRatio()),
+                getScreenRelativeWH(parentHeightRatio, childBound.getHeightRatio()),
                 xRatio,
                 yRatio
                 );
+    }
+
+    protected double getScreenRelativeWH(double parentWH, double childWH){
+        return parentWH * childWH;
     }
 
     private double[] getScreenRelativeWH(){
@@ -190,7 +194,7 @@ public abstract class GuiComponent<T extends GuiComponent<T>> {
         // 단 형제가 없을 경우 자유
         GuiDirection parentAxis = parent.getAxis();
         List<GuiComponent<?>> siblings = parent.getChildren();
-        if(siblings.size() > 2 && parentAxis == GuiDirection.HORIZONTAL) return parent.getChildrenHorizontalAlignment();
+        if(siblings.size() > 1 && parentAxis == GuiDirection.HORIZONTAL) return parent.getChildrenHorizontalAlignment();
 
         HorizontalAlignment horizontalAlignment = parent.getChildrenHorizontalAlignment();
 
@@ -206,7 +210,7 @@ public abstract class GuiComponent<T extends GuiComponent<T>> {
         // 단 형제가 없을 경우 자유
         GuiDirection parentAxis = parent.getAxis();
         List<GuiComponent<?>> siblings = parent.getChildren();
-        if(siblings.size() > 2 && parentAxis == GuiDirection.VERTICAL) return parent.getChildrenVerticalAlignment();
+        if(siblings.size() > 1 && parentAxis == GuiDirection.VERTICAL) return parent.getChildrenVerticalAlignment();
 
         VerticalAlignment verticalAlignment = parent.getChildrenVerticalAlignment();
         if(!selfVerticalAlignment.equals(VerticalAlignment.NONE)){

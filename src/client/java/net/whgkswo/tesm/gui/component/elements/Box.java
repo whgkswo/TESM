@@ -74,7 +74,7 @@ public class Box extends ParentComponent<Box> {
         RelativeBound absoluteBound = getScreenRelativeBoundWithUpdate();
 
         if(!backgroundColor.equals(TesmColor.TRANSPARENT)){
-            RenderingHelper.renderColoredBox(
+            RenderingHelper.fill(
                     context,
                     backgroundColor,
                     absoluteBound.getXMarginRatio(),
