@@ -8,9 +8,11 @@ import lombok.experimental.SuperBuilder;
 import net.minecraft.client.gui.DrawContext;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
+import net.whgkswo.tesm.gui.component.elements.TextLabel;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Optional;
 
 @SuperBuilder
@@ -28,28 +30,28 @@ public abstract class GuiComponent<T extends GuiComponent<T>> {
     private VerticalAlignment selfVerticalAlignment = VerticalAlignment.NONE;
     @Nullable
     @Builder.Default
-    private ParentComponent parent = null;
+    private ParentComponent<?> parent = null;
     @Builder.Default
     @Setter
     private RelativeBound screenRelativeBound = null;
 
-    public GuiComponent(@Nullable ParentComponent parent){
+    public GuiComponent(@Nullable ParentComponent<?> parent){
         this.parent = parent;
     }
 
-    public abstract void renderSelf(DrawContext context);
+    protected abstract void renderSelf(DrawContext context);
 
-    public abstract RelativeBound getBound();
+    protected abstract RelativeBound getBound();
 
     public void render(DrawContext context){
         renderSelf(context);
     };
 
-    public boolean shouldHide(){
+    protected boolean shouldHide(){
         return shouldHide;
     }
 
-    public @Nullable ParentComponent getParent(){
+    public @Nullable ParentComponent<?> getParent(){
         return parent;
     }
 
@@ -57,15 +59,20 @@ public abstract class GuiComponent<T extends GuiComponent<T>> {
         return (T) this;
     }
 
-    public T setParent(ParentComponent parent){
+    public T setParent(ParentComponent<?> parent){
         if(!parent.getChildren().contains(this)){
             this.parent = parent;
             parent.addChild(this);
         }
 
         initializeAlignment();
+        initializeExtended();
         return self();
     }
+
+    protected void initializeExtended(){
+        // 하위 클래스에서 선택적으로 오버라이딩해서 사용
+    };
 
     private void initializeAlignment(){
         if(parent == null) return;
@@ -83,19 +90,25 @@ public abstract class GuiComponent<T extends GuiComponent<T>> {
         return parent.getChildren().indexOf(this);
     }
 
-    public GuiComponent<?> getSibling(int index){
-        if(parent == null) return null;
-        return parent.getChildren().get(index);
+    public GuiComponent<?> getSibling(int index) {
+        if (parent == null) return null;
+        List<GuiComponent<?>> siblings = parent.getChildren();
+        return siblings.get(index);
     }
 
     public Optional<GuiComponent<?>> getOptionalSibling(int index){
         if(parent == null) return Optional.empty();
-        return Optional.ofNullable(parent.getChildren().get(index));
+        List<GuiComponent<?>> siblings = parent.getChildren();
+        return Optional.ofNullable(siblings.get(index));
     }
 
     public RelativeBound getScreenRelativeBoundWithUpdate(){
         screenRelativeBound = getScreenRelativeBound();
         return screenRelativeBound;
+    }
+
+    protected RelativeBound getParentBound(){
+        return parent.getScreenRelativeBoundWithUpdate();
     }
 
     public RelativeBound getScreenRelativeBound(){
@@ -105,7 +118,7 @@ public abstract class GuiComponent<T extends GuiComponent<T>> {
         RelativeBound childBound = getBound();
         if(parent == null) return childBound;
 
-        RelativeBound parentBound = parent.getScreenRelativeBound();
+        RelativeBound parentBound = getParentBound();
 
         HorizontalAlignment horizontalAlignment = getRefHorizontalAlignment();
         VerticalAlignment verticalAlignment = getRefVerticalAlignment();
@@ -138,7 +151,7 @@ public abstract class GuiComponent<T extends GuiComponent<T>> {
                 xRatio += xGap / 2;
             }
             case RIGHT -> {
-                xRatio += parentWidthRatio - childBound.getWidthRatio();
+                xRatio += parentWidthRatio;
             }
         }
 
@@ -173,9 +186,11 @@ public abstract class GuiComponent<T extends GuiComponent<T>> {
     }
 
     private HorizontalAlignment getRefHorizontalAlignment(){
-        // 부모의 Axis와 같은 방향의 축은 모든 자식요소가 동일한 정렬기준을 따라야 함
+        // 부모의 Axis와 같은 방향의 축은 모든 자식요소가 부모의 정렬기준을 따라야 함
+        // 단 형제가 없을 경우 자유
         GuiDirection parentAxis = parent.getAxis();
-        if(parentAxis == GuiDirection.HORIZONTAL) return parent.getChildrenHorizontalAlignment();
+        List<GuiComponent<?>> siblings = parent.getChildren();
+        if(siblings.size() > 2 && parentAxis == GuiDirection.HORIZONTAL) return parent.getChildrenHorizontalAlignment();
 
         HorizontalAlignment horizontalAlignment = parent.getChildrenHorizontalAlignment();
 
@@ -187,9 +202,11 @@ public abstract class GuiComponent<T extends GuiComponent<T>> {
     }
 
     private VerticalAlignment getRefVerticalAlignment(){
-        // 부모의 Axis와 같은 방향의 축은 모든 자식요소가 동일한 정렬기준을 따라야 함
+        // 부모의 Axis와 같은 방향의 축은 모든 자식요소가 부모의 정렬기준을 따라야 함
+        // 단 형제가 없을 경우 자유
         GuiDirection parentAxis = parent.getAxis();
-        if(parentAxis == GuiDirection.VERTICAL) return parent.getChildrenVerticalAlignment();
+        List<GuiComponent<?>> siblings = parent.getChildren();
+        if(siblings.size() > 2 && parentAxis == GuiDirection.VERTICAL) return parent.getChildrenVerticalAlignment();
 
         VerticalAlignment verticalAlignment = parent.getChildrenVerticalAlignment();
         if(!selfVerticalAlignment.equals(VerticalAlignment.NONE)){

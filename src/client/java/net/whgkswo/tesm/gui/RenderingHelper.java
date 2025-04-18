@@ -61,7 +61,7 @@ public class RenderingHelper {
         int textColor = getTextRgb(text);
 
         switch (alignment){
-            case LEFT -> {
+            case LEFT, NONE -> {
                 context.drawTextWithShadow(TEXT_RENDERER, text, xPos, yPos, textColor);
             }
             case CENTER -> {

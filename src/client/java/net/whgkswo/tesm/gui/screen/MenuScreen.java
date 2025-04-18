@@ -40,7 +40,7 @@ public class MenuScreen extends TesmScreen {
 
     @Override
     public void initExtended() {
-        List<Quest> onGoingQuests = Quest.QUESTS.entrySet().stream()
+        /*List<Quest> onGoingQuests = Quest.QUESTS.entrySet().stream()
                 .filter(entry -> entry.getValue().getStatus() == QuestStatus.ONGOING)
                 .map(entry -> entry.getValue())
                 .collect(Collectors.toList());
@@ -54,11 +54,11 @@ public class MenuScreen extends TesmScreen {
                             .backgroundColor(TesmColor.NEUTRAL_GOLD)
                             .bound(new RelativeBound(0.1, 0.25 + 0.05 * i, 0.2, 0.04))
                             .build(),
-                    /*new FilledBox(
+                    *//*new FilledBox(
                             null,
                             new RectangularBound(Boundary.BoundType.FIXED,0.1, 0.25 + 0.05 * i, 0.2, 0.04),
                             TesmColor.NEUTRAL_GOLD
-                    ),*/
+                    ),*//*
                     0.7f,
                     HorizontalAlignment.LEFT,
 
@@ -72,20 +72,20 @@ public class MenuScreen extends TesmScreen {
                             .bound(new RelativeBound(0.35, 0.25, 0.5, 0.3))
                             .backgroundColor(TesmColor.WHITE)
                             .build(),
-                    /*new EdgedBox(
+                    *//*new EdgedBox(
                             new RectangularBound(Boundary.BoundType.FLEXIBLE, 0.35, 0.25, 0.5, 0.3),
                             GuiDirection.HORIZONTAL,
                             TesmColor.WHITE,
                             null,
                             1
-                    ),*/
+                    ),*//*
                     textRenderer,
                     Text.literal(onGoingQuests.get(0).getCurrentStage()),
                     0.7f,
                     0,0, HorizontalAlignment.LEFT
             );
             rootComponent.addChild(textBox);
-        }
+        }*/
     }
 
     @Override

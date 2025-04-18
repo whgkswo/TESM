@@ -1,15 +1,14 @@
 package net.whgkswo.tesm.gui.component.elements;
 
+import lombok.experimental.SuperBuilder;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.text.Text;
-import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.FadeSequence;
 import net.whgkswo.tesm.gui.component.TransitionStatus;
-import net.whgkswo.tesm.gui.component.bounds.Boundary;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 
+@SuperBuilder
 public class TextPopUp extends TextLabel{
     private FadeSequence fadeSequence;
     private int tick;
@@ -17,14 +16,6 @@ public class TextPopUp extends TextLabel{
     private TesmColor color;
     private FilledBox background;
 
-    public TextPopUp(Text content, Box background, float textScale, HorizontalAlignment contentAlignment,
-                     double textMarginRatio, FadeSequence fadeSequence) {
-        super(content, background, textScale, contentAlignment, textMarginRatio);
-        this.fadeSequence = fadeSequence;
-        status = fadeSequence.getDelay() == 0 ? TransitionStatus.FADING_IN : TransitionStatus.PENDING;
-        String textColor = RenderingHelper.getTextHexCode(content);
-        color = new TesmColor(textColor, 0);
-    }
     @Override
     public void renderSelf(DrawContext context) {
         RelativeBound bound = background.getBound();
@@ -33,8 +24,8 @@ public class TextPopUp extends TextLabel{
             return;
         }
 
-        RenderingHelper.renderText(this.getContentAlignment(), context, getFontScale(),
-                getContent(), bound.getXMarginRatio(), bound.getYMarginRatio());
+        RenderingHelper.renderText(this.getSelfHorizontalAlignment(), context, getFontScale(),
+                getText(), bound.getXMarginRatio(), bound.getYMarginRatio());
     }
     private void update(){
         switch (status){

@@ -17,15 +17,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SuperBuilder
-public class Box extends ParentComponent {
+public class Box extends ParentComponent<Box> {
     @Builder.Default
     private Map<LineSide, StraightLine> lines = new HashMap<>();
     @Getter
-    private RelativeBound bound;
+    @Builder.Default
+    private RelativeBound bound = new RelativeBound(1, 1);
     @Getter
-    private TesmColor edgeColor;
+    @Builder.Default
+    private TesmColor edgeColor = TesmColor.TRANSPARENT;
     @Getter
-    private TesmColor backgroundColor;
+    @Builder.Default
+    private TesmColor backgroundColor = TesmColor.WHITE;
 
     public Box(ParentComponent parent, RelativeBound bound, GuiDirection axis, HorizontalAlignment childrenAlignment, TesmColor edgeColor, TesmColor backgroundColor, int thickness) {
         super(parent, bound, axis, childrenAlignment);
@@ -67,16 +70,17 @@ public class Box extends ParentComponent {
     }
 
     @Override
-    public void renderSelf(DrawContext context) {
-        // 배경 출력
+    protected void renderSelf(DrawContext context) {
+        RelativeBound absoluteBound = getScreenRelativeBoundWithUpdate();
+
         if(!backgroundColor.equals(TesmColor.TRANSPARENT)){
             RenderingHelper.renderColoredBox(
                     context,
                     backgroundColor,
-                    bound.getXMarginRatio(),
-                    bound.getYMarginRatio(),
-                    bound.getWidthRatio(),
-                    bound.getHeightRatio()
+                    absoluteBound.getXMarginRatio(),
+                    absoluteBound.getYMarginRatio(),
+                    absoluteBound.getWidthRatio(),
+                    absoluteBound.getHeightRatio()
             );
         }
 
@@ -87,7 +91,7 @@ public class Box extends ParentComponent {
     }
 
     @Override
-    public RelativeBound getBound(){
+    protected RelativeBound getBound(){
         return bound;
     }
 

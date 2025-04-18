@@ -14,7 +14,7 @@ import java.util.List;
 
 @SuperBuilder
 @Getter
-public abstract class ParentComponent extends GuiComponent<ParentComponent>{
+public abstract class ParentComponent<T extends GuiComponent<T>> extends GuiComponent<T>{
     @Builder.Default
     private GuiDirection axis = GuiDirection.VERTICAL;
     @Builder.Default
@@ -24,7 +24,7 @@ public abstract class ParentComponent extends GuiComponent<ParentComponent>{
     private VerticalAlignment childrenVerticalAlignment = VerticalAlignment.NONE;
     private final List<GuiComponent<?>> children = new ArrayList<>();
 
-    public ParentComponent(ParentComponent parent, RelativeBound bound, GuiDirection axis, HorizontalAlignment childrenHorizontalAlignment) {
+    public ParentComponent(ParentComponent<?> parent, RelativeBound bound, GuiDirection axis, HorizontalAlignment childrenHorizontalAlignment) {
         super(parent);
         this.axis = axis;
         this.childrenHorizontalAlignment = childrenHorizontalAlignment;
