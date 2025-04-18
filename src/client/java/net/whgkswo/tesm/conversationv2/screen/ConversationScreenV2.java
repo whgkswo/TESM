@@ -71,6 +71,23 @@ public class ConversationScreenV2 extends TesmScreen {
                 .id("text2")
                 .selfHorizontalAlignment(HorizontalAlignment.RIGHT)
                 .selfVerticalAlignment(VerticalAlignment.LOWER)
+                .fontScale(1.5f)
+                .build()
+                .setParent(box);
+
+        TextLabel partnerNameLabel3 = TextLabel.builder()
+                .text(Text.literal(name).withColor(TesmColor.RODEO_DUST.getHexDecimalCode()))
+                .id("text3")
+                .selfHorizontalAlignment(HorizontalAlignment.LEFT)
+                .selfVerticalAlignment(VerticalAlignment.LOWER)
+                .build()
+                .setParent(box);
+
+        TextLabel partnerNameLabel4 = TextLabel.builder()
+                .text(Text.literal(name).withColor(TesmColor.RODEO_DUST.getHexDecimalCode()))
+                .id("text4")
+                .selfHorizontalAlignment(HorizontalAlignment.CENTER)
+                .selfVerticalAlignment(VerticalAlignment.LOWER)
                 .build()
                 .setParent(box);
     }

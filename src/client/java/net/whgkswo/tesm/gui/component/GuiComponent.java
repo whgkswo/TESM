@@ -186,7 +186,7 @@ public abstract class GuiComponent<T extends GuiComponent<T>> {
         double parentWidthRatio = parentBound.getWidthRatio();
         double parentHeightRatio = parentBound.getHeightRatio();
 
-        return new double[]{parentWidthRatio * childBound.getWidthRatio(), parentHeightRatio * childBound.getHeightRatio()};
+        return new double[]{getScreenRelativeWH(parentWidthRatio, childBound.getWidthRatio()), getScreenRelativeWH(parentHeightRatio, childBound.getHeightRatio())};
     }
 
     private HorizontalAlignment getRefHorizontalAlignment(){
