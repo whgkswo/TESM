@@ -29,8 +29,10 @@ public class ConversationScreenV2 extends TesmScreen {
         super.shouldRenderBackground(false);
     }
 
+    @Override
     public void initExtended(){
         // 루트 컴포넌트 조정
+        rootComponent.setChildrenHorizontalAlignment(HorizontalAlignment.LEFT);
         rootComponent.setChildrenVerticalAlignment(VerticalAlignment.CENTER);
 
         currentFlow = ConversationHelper.getFlow(engName, "general");
@@ -55,7 +57,7 @@ public class ConversationScreenV2 extends TesmScreen {
     private void addPartnerNameComponent(){
         TextLabel partnerNameLabel = TextLabel.builder()
                 .content(Text.literal(name))
-                .selfHorizontalAlignment(HorizontalAlignment.CENTER)
+                .selfHorizontalAlignment(HorizontalAlignment.LEFT)
                 .background(Box.builder()
                         .backgroundColor(TesmColor.WHITE)
                         .edgeColor(TesmColor.TRANSPARENT)
@@ -83,7 +85,7 @@ public class ConversationScreenV2 extends TesmScreen {
                 .setParent(rootComponent);
         TextLabel partnerNameLabel3 = TextLabel.builder()
                 .content(Text.literal(name + "3"))
-                .selfHorizontalAlignment(HorizontalAlignment.CENTER)
+                .selfHorizontalAlignment(HorizontalAlignment.RIGHT)
                 .background(Box.builder()
                         .backgroundColor(TesmColor.NEUTRAL_GOLD)
                         .edgeColor(TesmColor.NEUTRAL_GOLD)

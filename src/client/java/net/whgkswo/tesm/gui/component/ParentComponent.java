@@ -6,8 +6,6 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import net.minecraft.client.gui.DrawContext;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
-import net.whgkswo.tesm.gui.component.bounds.Boundary;
-import net.whgkswo.tesm.gui.component.bounds.RectangularBound;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
 
@@ -47,6 +45,10 @@ public abstract class ParentComponent extends GuiComponent<ParentComponent>{
     }
 
     // Lombok setter가 동작이 안됨;; 상속땜에 그런가
+    public void setChildrenHorizontalAlignment(HorizontalAlignment childrenHorizontalAlignment){
+        this.childrenHorizontalAlignment = childrenHorizontalAlignment;
+    }
+
     public void setChildrenVerticalAlignment(VerticalAlignment childrenVerticalAlignment){
         this.childrenVerticalAlignment = childrenVerticalAlignment;
     }

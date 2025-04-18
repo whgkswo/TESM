@@ -98,7 +98,6 @@ public abstract class GuiComponent<T extends GuiComponent<T>> {
         return screenRelativeBound;
     }
 
-    // TODO: 형제도 고려
     public RelativeBound getScreenRelativeBound(){
         // 캐싱된 값
         if(screenRelativeBound != null) return screenRelativeBound;
@@ -108,15 +107,8 @@ public abstract class GuiComponent<T extends GuiComponent<T>> {
 
         RelativeBound parentBound = parent.getScreenRelativeBound();
 
-        HorizontalAlignment horizontalAlignment = parent.getChildrenHorizontalAlignment();
-        if(!selfHorizontalAlignment.equals(HorizontalAlignment.NONE)){
-            horizontalAlignment = selfHorizontalAlignment;
-        }
-
-        VerticalAlignment verticalAlignment = parent.getChildrenVerticalAlignment();
-        if(!selfVerticalAlignment.equals(VerticalAlignment.NONE)){
-            verticalAlignment = selfVerticalAlignment;
-        }
+        HorizontalAlignment horizontalAlignment = getRefHorizontalAlignment();
+        VerticalAlignment verticalAlignment = getRefVerticalAlignment();
 
         double xRatio = parentBound.getXMarginRatio();
         double parentWidthRatio = parentBound.getWidthRatio();;
@@ -140,25 +132,23 @@ public abstract class GuiComponent<T extends GuiComponent<T>> {
             }
         }
 
-        if(childIndex == 0){
-            switch (horizontalAlignment){
-                case CENTER -> {
-                    double xGap = parentBound.getWidthRatio() - siblingsWidthRatio;
-                    xRatio += xGap / 2;
-                }
-                case RIGHT -> {
-                    xRatio += parentWidthRatio - childBound.getWidthRatio();
-                }
+        switch (horizontalAlignment){
+            case CENTER -> {
+                double xGap = parentBound.getWidthRatio() - siblingsWidthRatio;
+                xRatio += xGap / 2;
             }
+            case RIGHT -> {
+                xRatio += parentWidthRatio - childBound.getWidthRatio();
+            }
+        }
 
-            switch (verticalAlignment){
-                case CENTER -> {
-                    double yGap = parentBound.getHeightRatio() - siblingsHeightRatio;
-                    yRatio += yGap / 2;
-                }
-                case LOWER -> {
-                    yRatio += parentHeightRatio - childBound.getHeightRatio();
-                }
+        switch (verticalAlignment){
+            case CENTER -> {
+                double yGap = parentBound.getHeightRatio() - siblingsHeightRatio;
+                yRatio += yGap / 2;
+            }
+            case LOWER -> {
+                yRatio += parentHeightRatio - childBound.getHeightRatio();
             }
         }
 
@@ -180,5 +170,32 @@ public abstract class GuiComponent<T extends GuiComponent<T>> {
         double parentHeightRatio = parentBound.getHeightRatio();
 
         return new double[]{parentWidthRatio * childBound.getWidthRatio(), parentHeightRatio * childBound.getHeightRatio()};
+    }
+
+    private HorizontalAlignment getRefHorizontalAlignment(){
+        // 부모의 Axis와 같은 방향의 축은 모든 자식요소가 동일한 정렬기준을 따라야 함
+        GuiDirection parentAxis = parent.getAxis();
+        if(parentAxis == GuiDirection.HORIZONTAL) return parent.getChildrenHorizontalAlignment();
+
+        HorizontalAlignment horizontalAlignment = parent.getChildrenHorizontalAlignment();
+
+        if(!selfHorizontalAlignment.equals(HorizontalAlignment.NONE)){
+            horizontalAlignment = selfHorizontalAlignment;
+        }
+
+        return horizontalAlignment;
+    }
+
+    private VerticalAlignment getRefVerticalAlignment(){
+        // 부모의 Axis와 같은 방향의 축은 모든 자식요소가 동일한 정렬기준을 따라야 함
+        GuiDirection parentAxis = parent.getAxis();
+        if(parentAxis == GuiDirection.VERTICAL) return parent.getChildrenVerticalAlignment();
+
+        VerticalAlignment verticalAlignment = parent.getChildrenVerticalAlignment();
+        if(!selfVerticalAlignment.equals(VerticalAlignment.NONE)){
+            verticalAlignment = selfVerticalAlignment;
+        }
+
+        return verticalAlignment;
     }
 }
