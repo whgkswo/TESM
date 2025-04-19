@@ -62,6 +62,7 @@ public class ConversationScreenV2 extends TesmScreen {
         Box box = Box.builder()
                 .id("box")
                 .bound(new RelativeBound(0.2, 0.2))
+                .selfHorizontalAlignment(HorizontalAlignment.CENTER)
                 .backgroundColor(TesmColor.RODEO_DUST.withAlpha(100))
                 .build()
                 .setParent(rootComponent);

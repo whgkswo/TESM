@@ -34,7 +34,7 @@ public class TextLabel extends GuiComponent<TextLabel> {
     }
 
     @Override
-    protected void initializeExtended(){
+    protected void initializeSize(){
         // 텍스트 사이즈에 따른 바운드 자동 설정
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
         double textWidth = textRenderer.getWidth(text) * fontScale;

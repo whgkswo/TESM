@@ -8,12 +8,10 @@ import lombok.experimental.SuperBuilder;
 import net.minecraft.client.gui.DrawContext;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
-import net.whgkswo.tesm.gui.component.elements.TextLabel;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @SuperBuilder
 @NoArgsConstructor
@@ -64,13 +62,16 @@ public abstract class GuiComponent<T extends GuiComponent<T>> {
             this.parent = parent;
             parent.addChild(this);
         }
-
-        initializeAlignment();
-        initializeExtended();
+        initializeBound();
         return self();
     }
 
-    protected void initializeExtended(){
+    public void initializeBound(){
+        initializeAlignment();
+        initializeSize();
+    }
+
+    protected void initializeSize(){
         // 하위 클래스에서 선택적으로 오버라이딩해서 사용
     };
 
@@ -111,66 +112,118 @@ public abstract class GuiComponent<T extends GuiComponent<T>> {
         return parent.getScreenRelativeBoundWithUpdate();
     }
 
-    public RelativeBound getScreenRelativeBound(){
+    public RelativeBound getScreenRelativeBound() {
         // 캐싱된 값
-        if(screenRelativeBound != null) return screenRelativeBound;
+        if (screenRelativeBound != null) return screenRelativeBound;
 
         RelativeBound childBound = getBound();
-        if(parent == null) return childBound;
+        if (parent == null) return childBound;
 
         RelativeBound parentBound = getParentBound();
+        GuiDirection parentAxis = parent.getAxis();
 
-        HorizontalAlignment horizontalAlignment = getRefHorizontalAlignment();
-        VerticalAlignment verticalAlignment = getRefVerticalAlignment();
-
+        // 기본 위치 계산
         double xRatio = parentBound.getXMarginRatio();
-        double parentWidthRatio = parentBound.getWidthRatio();;
         double yRatio = parentBound.getYMarginRatio();
+        double parentWidthRatio = parentBound.getWidthRatio();
         double parentHeightRatio = parentBound.getHeightRatio();
 
-        GuiDirection parentAxis = parent.getAxis();
-        int childIndex = getChildIndex();
-        double siblingsWidthRatio = childBound.getWidthRatio();
-        double siblingsHeightRatio = childBound.getHeightRatio();
-        for(int i = 0; i< parent.getChildren().size(); i++){
-            if(i == childIndex) continue; // 자기 자신 재귀 호출 방지
-            double[] siblingWH = getSibling(i).getScreenRelativeWH();
+        // 형제 요소들의 오프셋, 사이즈 계산
+        double[] siblingBound = calculateSiblingBound(childBound, parentAxis);
+        double siblingsWidthRatio = siblingBound[0];
+        double siblingsHeightRatio = siblingBound[1];
+        xRatio += siblingBound[2];
+        yRatio += siblingBound[3];
 
-            if(parentAxis == GuiDirection.HORIZONTAL){
-                siblingsWidthRatio += siblingWH[0];
-                if(i < childIndex) xRatio += siblingWH[0]; // 수평축으로 형 요소들의 공간 더하기
-            } else { // VERTICAL
-                siblingsHeightRatio += siblingWH[1];
-                if(i < childIndex) yRatio += siblingWH[1]; // 수직축으로 형 요소들의 공간 더하기
-            }
-        }
+        // 수평, 수직 정렬 적용
+        xRatio = applyHorizontalAlignment(getRefHorizontalAlignment(), childBound,
+                parentWidthRatio, siblingsWidthRatio, xRatio);
 
-        switch (horizontalAlignment){
-            case CENTER -> {
-                double xGap = parentBound.getWidthRatio() - siblingsWidthRatio;
-                xRatio += xGap / 2;
-            }
-            case RIGHT -> {
-                xRatio += parentWidthRatio - childBound.getWidthRatio();
-            }
-        }
+        yRatio = applyVerticalAlignment(getRefVerticalAlignment(), childBound,
+                parentHeightRatio, siblingsHeightRatio, yRatio);
 
-        switch (verticalAlignment){
-            case CENTER -> {
-                double yGap = parentBound.getHeightRatio() - siblingsHeightRatio;
-                yRatio += yGap / 2;
-            }
-            case LOWER -> {
-                yRatio += parentHeightRatio - childBound.getHeightRatio();
-            }
-        }
-
-        return new RelativeBound(
+        screenRelativeBound = new RelativeBound(
                 getScreenRelativeWH(parentWidthRatio, childBound.getWidthRatio()),
                 getScreenRelativeWH(parentHeightRatio, childBound.getHeightRatio()),
                 xRatio,
                 yRatio
-                );
+        );
+
+        return screenRelativeBound;
+    }
+
+    /**
+     * 모든 형제 요소들을 하나의 덩어리로 하여 크기 계산
+     * @return double[4] {siblingsWidthRatio, siblingsHeightRatio, xOffset, yOffset}
+     */
+    private double[] calculateSiblingBound(RelativeBound childBound, GuiDirection parentAxis) {
+        int childIndex = getChildIndex();
+        double siblingsWidthRatio = childBound.getWidthRatio();
+        double siblingsHeightRatio = childBound.getHeightRatio();
+        double xOffset = 0;
+        double yOffset = 0;
+
+        for (int i = 0; i < parent.getChildren().size(); i++) {
+            if (i == childIndex) continue; // 자기 자신은 초기값에 반영돼 있음
+
+            double[] siblingWH = getSibling(i).getScreenRelativeWH();
+
+            if (parentAxis == GuiDirection.HORIZONTAL) {
+                siblingsWidthRatio += siblingWH[0];
+                if (i < childIndex) xOffset += siblingWH[0]; // 수평축으로 형 요소들의 공간 더하기
+            } else { // VERTICAL
+                siblingsHeightRatio += siblingWH[1];
+                if (i < childIndex) yOffset += siblingWH[1]; // 수직축으로 형 요소들의 공간 더하기
+            }
+        }
+
+        return new double[] {siblingsWidthRatio, siblingsHeightRatio, xOffset, yOffset};
+    }
+
+    private double applyHorizontalAlignment(HorizontalAlignment alignment,
+                                            RelativeBound childBound,
+                                            double parentWidthRatio,
+                                            double siblingsWidthRatio,
+                                            double xRatio) {
+        switch (alignment) {
+            case LEFT:
+                // 왼쪽 정렬은 기본값이므로 아무것도 하지 않음
+                break;
+            case CENTER: {
+                double xGap = parentWidthRatio - siblingsWidthRatio;
+                xRatio += xGap / 2;
+                break;
+            }
+            case RIGHT: {
+                xRatio += parentWidthRatio - childBound.getWidthRatio();
+                break;
+            }
+        }
+
+        return xRatio;
+    }
+
+    private double applyVerticalAlignment(VerticalAlignment alignment,
+                                          RelativeBound childBound,
+                                          double parentHeightRatio,
+                                          double siblingsHeightRatio,
+                                          double yRatio) {
+        switch (alignment) {
+            case UPPER:
+                // 위쪽 정렬은 기본값이므로 아무것도 하지 않음
+                break;
+            case CENTER: {
+                double yGap = parentHeightRatio - siblingsHeightRatio;
+                yRatio += yGap / 2;
+                break;
+            }
+            case LOWER: {
+                yRatio += parentHeightRatio - childBound.getHeightRatio();
+                break;
+            }
+        }
+
+        return yRatio;
     }
 
     protected double getScreenRelativeWH(double parentWH, double childWH){
@@ -218,5 +271,10 @@ public abstract class GuiComponent<T extends GuiComponent<T>> {
         }
 
         return verticalAlignment;
+    }
+
+    // 오버라이딩용
+    public List<GuiComponent<?>> getChildren(){
+        return new ArrayList<>();
     }
 }

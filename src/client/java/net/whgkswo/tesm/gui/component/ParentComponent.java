@@ -44,6 +44,11 @@ public abstract class ParentComponent<T extends GuiComponent<T>> extends GuiComp
         if(child.getParent() == null || child.getParent() != this) child.setParent(this);
     }
 
+    @Override
+    public List<GuiComponent<?>> getChildren(){
+        return children;
+    }
+
     // Lombok setter가 동작이 안됨;; 상속땜에 그런가
     public void setChildrenHorizontalAlignment(HorizontalAlignment childrenHorizontalAlignment){
         this.childrenHorizontalAlignment = childrenHorizontalAlignment;

@@ -8,12 +8,16 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.colors.TesmColor;
+import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.gui.component.GuiDirection;
 import net.whgkswo.tesm.gui.component.bounds.RectangularBound;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.elements.Box;
 import net.whgkswo.tesm.networking.payload.data.SimpleReq;
 import net.whgkswo.tesm.networking.payload.id.SimpleTask;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class TesmScreen extends Screen {
     private boolean shouldFreezeTicks = true;
@@ -54,8 +58,20 @@ public abstract class TesmScreen extends Screen {
 
             initExtended();
             initialized = true;
+        }{
+            // 구성 요소 리사이즈
+            clearCachedBounds(rootComponent);
         }
     }
+
+    private void clearCachedBounds(GuiComponent<?> component){
+        component.setScreenRelativeBound(null);
+        component.initializeBound();
+        for (GuiComponent<?> child : component.getChildren()){
+            clearCachedBounds(child);
+        }
+    }
+
     @Override
     public void close(){
         // 틱 언프리즈 (서버에 패킷 전송)
