@@ -13,7 +13,7 @@ import net.whgkswo.tesm.conversationv2.ConversationHelper;
 import net.whgkswo.tesm.general.GlobalVariablesClient;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
-import net.whgkswo.tesm.gui.component.GuiDirection;
+import net.whgkswo.tesm.gui.component.GuiAxis;
 import net.whgkswo.tesm.gui.helpers.GuiHelper;
 import net.whgkswo.tesm.gui.screen.templete.TesmScreen;
 import net.whgkswo.tesm.networking.payload.data.c2s_req.SetNbtReq;
@@ -44,7 +44,7 @@ public class ConversationScreen extends TesmScreen {
     private static final Identifier ARROW_DOWN = Identifier.of(TESMMod.MODID, "textures/gui/downarrow.png");
     private final Identifier DECISION_BACKGROUND = Identifier.of(TESMMod.MODID, "textures/gui/decision.png");
     public ConversationScreen(Entity partner){
-        super(GuiDirection.VERTICAL);
+        super();
         this.partner = partner;
         ConversationHelper.convOn = true;
     }

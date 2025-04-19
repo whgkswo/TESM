@@ -8,14 +8,14 @@ import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.gui.component.ParentComponent;
-import net.whgkswo.tesm.gui.component.bounds.RectangularBound;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
+import net.whgkswo.tesm.gui.component.elements.style.BoxStyle;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @SuperBuilder
-public class TextBox extends GuiComponent<TextBox> {
+public class TextBox extends GuiComponent<TextBox, BoxStyle> {
     private static final double LINE_GAP_RATIO = 1.2;
     private TextRenderer textRenderer;
     private Text content;
@@ -52,6 +52,11 @@ public class TextBox extends GuiComponent<TextBox> {
     @Override
     public RelativeBound getBound() {
         return null;
+    }
+
+    @Override
+    protected Class<?> getStyleType() {
+        return BoxStyle.class;
     }
 
     private void render(DrawContext context, TextRenderer textRenderer) {

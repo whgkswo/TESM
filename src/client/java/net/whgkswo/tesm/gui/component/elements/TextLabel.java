@@ -8,20 +8,22 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.util.Window;
 import net.minecraft.text.Text;
-import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
+import net.whgkswo.tesm.gui.component.elements.style.StylePreset;
+import net.whgkswo.tesm.gui.component.elements.style.TextLabelStyle;
 
 @SuperBuilder
-public class TextLabel extends GuiComponent<TextLabel> {
+public class TextLabel extends GuiComponent<TextLabel, TextLabelStyle> {
     @Getter
     private Text text;
     @Getter
     @Builder.Default
     private float fontScale = 1.0f;
     private RelativeBound bound;
+    private TesmColor backgroundColor;
 
     @Override
     protected void renderSelf(DrawContext context){
@@ -54,6 +56,12 @@ public class TextLabel extends GuiComponent<TextLabel> {
     protected RelativeBound getBound() {
         return bound;
     }
+
+    @Override
+    protected Class<?> getStyleType() {
+        return TextLabelStyle.class;
+    }
+
 
     @Override
     protected double getScreenRelativeWH(double parentWH, double childWH){

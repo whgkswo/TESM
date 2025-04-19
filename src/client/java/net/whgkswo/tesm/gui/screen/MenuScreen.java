@@ -1,31 +1,16 @@
 package net.whgkswo.tesm.gui.screen;
 
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
-import net.whgkswo.tesm.conversation.quest.Quest;
-import net.whgkswo.tesm.conversation.quest.QuestStatus;
-import net.whgkswo.tesm.general.GeneralUtil;
-import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
-import net.whgkswo.tesm.gui.colors.TesmColor;
-import net.whgkswo.tesm.gui.component.GuiDirection;
-import net.whgkswo.tesm.gui.component.bounds.Boundary;
-import net.whgkswo.tesm.gui.component.bounds.RectangularBound;
-import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
-import net.whgkswo.tesm.gui.component.elements.Box;
-import net.whgkswo.tesm.gui.component.elements.TextBox;
-import net.whgkswo.tesm.gui.component.elements.TextLabel;
+import net.whgkswo.tesm.gui.component.GuiAxis;
 import net.whgkswo.tesm.gui.screen.templete.TesmScreen;
 import org.lwjgl.glfw.GLFW;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class MenuScreen extends TesmScreen {
     public MenuScreen() {
-        super(GuiDirection.HORIZONTAL);
+        super();
     }
     private final Identifier MENU_BACKGROUND = Identifier.of(TESMMod.MODID, "textures/gui/menu_background.png");
 

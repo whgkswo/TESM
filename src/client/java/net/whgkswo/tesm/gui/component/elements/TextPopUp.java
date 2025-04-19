@@ -14,7 +14,7 @@ public class TextPopUp extends TextLabel{
     private int tick;
     private TransitionStatus status;
     private TesmColor color;
-    private FilledBox background;
+    private Box background;
 
     @Override
     public void renderSelf(DrawContext context) {

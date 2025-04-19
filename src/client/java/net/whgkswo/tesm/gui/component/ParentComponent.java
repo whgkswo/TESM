@@ -7,6 +7,7 @@ import lombok.experimental.SuperBuilder;
 import net.minecraft.client.gui.DrawContext;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
+import net.whgkswo.tesm.gui.component.elements.style.GuiStyle;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
 
 import java.util.ArrayList;
@@ -14,17 +15,18 @@ import java.util.List;
 
 @SuperBuilder
 @Getter
-public abstract class ParentComponent<T extends GuiComponent<T>> extends GuiComponent<T>{
+public abstract class ParentComponent<T extends GuiComponent<T, S>, S extends GuiStyle> extends GuiComponent<T, S>{
     @Builder.Default
-    private GuiDirection axis = GuiDirection.VERTICAL;
+    @Setter
+    private GuiAxis axis = GuiAxis.VERTICAL;
     @Builder.Default
     @Setter
     private HorizontalAlignment childrenHorizontalAlignment = HorizontalAlignment.NONE;
     @Builder.Default
     private VerticalAlignment childrenVerticalAlignment = VerticalAlignment.NONE;
-    private final List<GuiComponent<?>> children = new ArrayList<>();
+    private final List<GuiComponent<?, ?>> children = new ArrayList<>();
 
-    public ParentComponent(ParentComponent<?> parent, RelativeBound bound, GuiDirection axis, HorizontalAlignment childrenHorizontalAlignment) {
+    public ParentComponent(ParentComponent<?, ?> parent, RelativeBound bound, GuiAxis axis, HorizontalAlignment childrenHorizontalAlignment) {
         super(parent);
         this.axis = axis;
         this.childrenHorizontalAlignment = childrenHorizontalAlignment;
@@ -34,18 +36,18 @@ public abstract class ParentComponent<T extends GuiComponent<T>> extends GuiComp
         // 자신 렌더링
         renderSelf(context);
         // 자식 렌더링
-        for (GuiComponent<?> child : children){
+        for (GuiComponent<?, ?> child : children){
             child.render(context);
         }
     }
 
-    public void addChild(GuiComponent<?> child){
+    public void addChild(GuiComponent<?, ?> child){
         if(!children.contains(child)) children.add(child);
         if(child.getParent() == null || child.getParent() != this) child.setParent(this);
     }
 
     @Override
-    public List<GuiComponent<?>> getChildren(){
+    public List<GuiComponent<?, ?>> getChildren(){
         return children;
     }
 

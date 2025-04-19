@@ -5,7 +5,7 @@ import net.whgkswo.tesm.conversationv2.ConversationHelper;
 import net.whgkswo.tesm.conversationv2.Flow;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.colors.TesmColor;
-import net.whgkswo.tesm.gui.component.GuiDirection;
+import net.whgkswo.tesm.gui.component.GuiAxis;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.elements.Box;
 import net.whgkswo.tesm.gui.component.elements.TextLabel;
@@ -20,7 +20,7 @@ public class ConversationScreenV2 extends TesmScreen {
     private Flow currentFlow;
 
     public ConversationScreenV2(ConversationNbtRes partnerInfo){
-        super(GuiDirection.VERTICAL);
+        super();
         this.tempName = partnerInfo.tempName();
         this.name = partnerInfo.name();
         this.engName = partnerInfo.engName();
@@ -91,5 +91,13 @@ public class ConversationScreenV2 extends TesmScreen {
                 .selfVerticalAlignment(VerticalAlignment.LOWER)
                 .build()
                 .setParent(box);
+
+        Box box2 = Box.builder()
+                .id("box2")
+                .bound(new RelativeBound(0.2, 0.2))
+                .selfHorizontalAlignment(HorizontalAlignment.CENTER)
+                //.backgroundColor(TesmColor.RODEO_DUST.withAlpha(100))
+                .build()
+                .setParent(rootComponent);
     }
 }

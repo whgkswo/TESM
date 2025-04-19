@@ -9,15 +9,11 @@ import net.minecraft.text.Text;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.GuiComponent;
-import net.whgkswo.tesm.gui.component.GuiDirection;
-import net.whgkswo.tesm.gui.component.bounds.RectangularBound;
+import net.whgkswo.tesm.gui.component.GuiAxis;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.elements.Box;
 import net.whgkswo.tesm.networking.payload.data.SimpleReq;
 import net.whgkswo.tesm.networking.payload.id.SimpleTask;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class TesmScreen extends Screen {
     private boolean shouldFreezeTicks = true;
@@ -25,11 +21,11 @@ public abstract class TesmScreen extends Screen {
     private boolean initialized;
     public final Box rootComponent;
 
-    public TesmScreen(GuiDirection axis){
-        this(false, axis);
+    public TesmScreen(){
+        this(false);
     }
 
-    public TesmScreen(boolean shouldFreezeTicks, GuiDirection axis){
+    public TesmScreen(boolean shouldFreezeTicks){
         super(Text.literal(""));
         this.shouldFreezeTicks = shouldFreezeTicks;
         rootComponent = Box.builder()
@@ -38,9 +34,11 @@ public abstract class TesmScreen extends Screen {
                 .backgroundColor(TesmColor.TRANSPARENT)
                 .edgeColor(TesmColor.TRANSPARENT)
                 .childrenHorizontalAlignment(HorizontalAlignment.CENTER)
-                .axis(GuiDirection.VERTICAL)
+                .axis(GuiAxis.VERTICAL)
                 .id("root")
-                .build();
+                .build()
+                .setParent(null)
+        ;
     }
     @Override
     public boolean shouldPause() {
@@ -64,10 +62,10 @@ public abstract class TesmScreen extends Screen {
         }
     }
 
-    private void clearCachedBounds(GuiComponent<?> component){
+    private void clearCachedBounds(GuiComponent<?, ?> component){
         component.setScreenRelativeBound(null);
         component.initializeBound();
-        for (GuiComponent<?> child : component.getChildren()){
+        for (GuiComponent<?, ?> child : component.getChildren()){
             clearCachedBounds(child);
         }
     }

@@ -3,7 +3,7 @@ package net.whgkswo.tesm.gui.screen;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
-import net.whgkswo.tesm.gui.component.GuiDirection;
+import net.whgkswo.tesm.gui.component.GuiAxis;
 import net.whgkswo.tesm.gui.helpers.GuiHelper;
 import net.whgkswo.tesm.gui.screen.templete.TesmScreen;
 import net.whgkswo.tesm.npcs.quests.Quests;
@@ -15,7 +15,7 @@ import static net.whgkswo.tesm.general.GlobalVariablesClient.arrowState;
 
 public class JournalScreen extends TesmScreen {
     public JournalScreen() {
-        super(GuiDirection.HORIZONTAL);
+        super();
     }
 
     private final Identifier MENU_BACKGROUND = Identifier.of(TESMMod.MODID, "textures/gui/menu_background.png");

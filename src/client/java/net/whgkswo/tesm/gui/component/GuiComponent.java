@@ -8,32 +8,34 @@ import lombok.experimental.SuperBuilder;
 import net.minecraft.client.gui.DrawContext;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
+import net.whgkswo.tesm.gui.component.elements.style.GuiStyle;
+import net.whgkswo.tesm.gui.component.elements.style.StylePreset;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
+import net.whgkswo.tesm.message.MessageHelper;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 @SuperBuilder
 @NoArgsConstructor
 @Getter
-public abstract class GuiComponent<T extends GuiComponent<T>> {
+public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiStyle> {
     private String id;
     private String className;
     private boolean shouldHide;
-    @Builder.Default
     @Setter
-    private HorizontalAlignment selfHorizontalAlignment = HorizontalAlignment.NONE;
-    @Builder.Default
+    private HorizontalAlignment selfHorizontalAlignment;
     @Setter
-    private VerticalAlignment selfVerticalAlignment = VerticalAlignment.NONE;
+    private VerticalAlignment selfVerticalAlignment;
     @Nullable
-    @Builder.Default
-    private ParentComponent<?> parent = null;
+    private ParentComponent<?, ?> parent;
     @Builder.Default
     @Setter
     private RelativeBound screenRelativeBound = null;
+    private StylePreset<S> stylePreset;
 
-    public GuiComponent(@Nullable ParentComponent<?> parent){
+    public GuiComponent(@Nullable ParentComponent<?, ?> parent){
         this.parent = parent;
     }
 
@@ -49,7 +51,7 @@ public abstract class GuiComponent<T extends GuiComponent<T>> {
         return shouldHide;
     }
 
-    public @Nullable ParentComponent<?> getParent(){
+    public @Nullable ParentComponent<?, ?> getParent(){
         return parent;
     }
 
@@ -57,17 +59,84 @@ public abstract class GuiComponent<T extends GuiComponent<T>> {
         return (T) this;
     }
 
-    public T setParent(ParentComponent<?> parent){
-        if(!parent.getChildren().contains(this)){
+    public T setParent(ParentComponent<?, ?> parent){
+        if(parent != null && !parent.getChildren().contains(this)){
             this.parent = parent;
             parent.addChild(this);
         }
-        initializeBound();
+
+        // 스타일 초기화
+        initializeStyle();
         return self();
     }
 
+    protected abstract Class<?> getStyleType();
+
+    private void initializeStyle(){
+        // 스타일이 없으면 디폴트 스타일 가져오기
+        if(stylePreset == null) {
+            Class<?> styleType = getStyleType();
+            StylePreset<?> defaultStyle = StylePreset.DEFAULT_STYLES.get(styleType);
+
+            if(defaultStyle != null) stylePreset = (StylePreset<S>) defaultStyle;
+        };
+
+        // 스타일 프리셋 선적용
+        applyStylePreset(stylePreset.style());
+        // 바운드 초기화
+        initializeBound();
+    }
+
+    private List<Field> getAllFields(Class<?> clazz) {
+        List<Field> fields = new ArrayList<>();
+
+        // 현재 클래스에서 Object 클래스까지 모든 클래스 탐색
+        while (clazz != null && clazz != Object.class) {
+            fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
+            clazz = clazz.getSuperclass();
+        }
+
+        return fields;
+    }
+
+    protected void applyStylePreset(S style) {
+        if(style == null) return;
+
+        try {
+            // 현재 객체의 모든 필드 가져오기 (상속된 필드 포함)
+            List<Field> thisFields = getAllFields(this.getClass());
+
+            for (Field thisField : thisFields) {
+                try {
+                    // 스타일 객체에서 같은 이름의 필드 찾기
+                    Field styleField = style.getClass().getDeclaredField(thisField.getName());
+
+                    // 필드에 접근 가능하게 설정
+                    thisField.setAccessible(true);
+                    styleField.setAccessible(true);
+
+                    // 객체에서 값 가져오기
+                    Object thisValue = thisField.get(this);
+                    Object styleValue = styleField.get(style);
+
+                    // 본래의 필드가 비어 있고, 스타일 값이 null이 아닌 경우에만 복사
+                    if (thisValue == null && styleValue != null) {
+                        // 필드 타입이 호환되는지 확인
+                        if (thisField.getType().isAssignableFrom(styleField.getType())) {
+                            thisField.set(this, styleValue);
+                        }
+                    }
+                } catch (NoSuchFieldException e) {
+                    // 해당 필드가 스타일 객체에 없으면 무시
+                }
+            }
+        } catch (Exception e) {
+            MessageHelper.sendMessage("스타일 적용 중 오류 발생: " + e.getMessage());
+        }
+    }
+
     public void initializeBound(){
-        initializeAlignment();
+        setAlignmentsSameAsParent();
         initializeSize();
     }
 
@@ -75,7 +144,7 @@ public abstract class GuiComponent<T extends GuiComponent<T>> {
         // 하위 클래스에서 선택적으로 오버라이딩해서 사용
     };
 
-    private void initializeAlignment(){
+    private void setAlignmentsSameAsParent(){
         if(parent == null) return;
 
         if(selfVerticalAlignment.equals(VerticalAlignment.NONE)){
@@ -91,15 +160,15 @@ public abstract class GuiComponent<T extends GuiComponent<T>> {
         return parent.getChildren().indexOf(this);
     }
 
-    public GuiComponent<?> getSibling(int index) {
+    public GuiComponent<?, ?> getSibling(int index) {
         if (parent == null) return null;
-        List<GuiComponent<?>> siblings = parent.getChildren();
+        List<GuiComponent<?, ?>> siblings = parent.getChildren();
         return siblings.get(index);
     }
 
-    public Optional<GuiComponent<?>> getOptionalSibling(int index){
+    public Optional<GuiComponent<?, ?>> getOptionalSibling(int index){
         if(parent == null) return Optional.empty();
-        List<GuiComponent<?>> siblings = parent.getChildren();
+        List<GuiComponent<?, ?>> siblings = parent.getChildren();
         return Optional.ofNullable(siblings.get(index));
     }
 
@@ -120,7 +189,7 @@ public abstract class GuiComponent<T extends GuiComponent<T>> {
         if (parent == null) return childBound;
 
         RelativeBound parentBound = getParentBound();
-        GuiDirection parentAxis = parent.getAxis();
+        GuiAxis parentAxis = parent.getAxis();
 
         // 기본 위치 계산
         double xRatio = parentBound.getXMarginRatio();
@@ -156,7 +225,7 @@ public abstract class GuiComponent<T extends GuiComponent<T>> {
      * 모든 형제 요소들을 하나의 덩어리로 하여 크기 계산
      * @return double[4] {siblingsWidthRatio, siblingsHeightRatio, xOffset, yOffset}
      */
-    private double[] calculateSiblingBound(RelativeBound childBound, GuiDirection parentAxis) {
+    private double[] calculateSiblingBound(RelativeBound childBound, GuiAxis parentAxis) {
         int childIndex = getChildIndex();
         double siblingsWidthRatio = childBound.getWidthRatio();
         double siblingsHeightRatio = childBound.getHeightRatio();
@@ -168,7 +237,7 @@ public abstract class GuiComponent<T extends GuiComponent<T>> {
 
             double[] siblingWH = getSibling(i).getScreenRelativeWH();
 
-            if (parentAxis == GuiDirection.HORIZONTAL) {
+            if (parentAxis == GuiAxis.HORIZONTAL) {
                 siblingsWidthRatio += siblingWH[0];
                 if (i < childIndex) xOffset += siblingWH[0]; // 수평축으로 형 요소들의 공간 더하기
             } else { // VERTICAL
@@ -245,9 +314,9 @@ public abstract class GuiComponent<T extends GuiComponent<T>> {
     private HorizontalAlignment getRefHorizontalAlignment(){
         // 부모의 Axis와 같은 방향의 축은 모든 자식요소가 부모의 정렬기준을 따라야 함
         // 단 형제가 없을 경우 자유
-        GuiDirection parentAxis = parent.getAxis();
-        List<GuiComponent<?>> siblings = parent.getChildren();
-        if(siblings.size() > 1 && parentAxis == GuiDirection.HORIZONTAL) return parent.getChildrenHorizontalAlignment();
+        GuiAxis parentAxis = parent.getAxis();
+        List<GuiComponent<?, ?>> siblings = parent.getChildren();
+        if(siblings.size() > 1 && parentAxis == GuiAxis.HORIZONTAL) return parent.getChildrenHorizontalAlignment();
 
         HorizontalAlignment horizontalAlignment = parent.getChildrenHorizontalAlignment();
 
@@ -261,9 +330,9 @@ public abstract class GuiComponent<T extends GuiComponent<T>> {
     private VerticalAlignment getRefVerticalAlignment(){
         // 부모의 Axis와 같은 방향의 축은 모든 자식요소가 부모의 정렬기준을 따라야 함
         // 단 형제가 없을 경우 자유
-        GuiDirection parentAxis = parent.getAxis();
-        List<GuiComponent<?>> siblings = parent.getChildren();
-        if(siblings.size() > 1 && parentAxis == GuiDirection.VERTICAL) return parent.getChildrenVerticalAlignment();
+        GuiAxis parentAxis = parent.getAxis();
+        List<GuiComponent<?, ?>> siblings = parent.getChildren();
+        if(siblings.size() > 1 && parentAxis == GuiAxis.VERTICAL) return parent.getChildrenVerticalAlignment();
 
         VerticalAlignment verticalAlignment = parent.getChildrenVerticalAlignment();
         if(!selfVerticalAlignment.equals(VerticalAlignment.NONE)){
@@ -274,7 +343,7 @@ public abstract class GuiComponent<T extends GuiComponent<T>> {
     }
 
     // 오버라이딩용
-    public List<GuiComponent<?>> getChildren(){
+    public List<GuiComponent<?, ?>> getChildren(){
         return new ArrayList<>();
     }
 }
