@@ -5,10 +5,10 @@ import net.whgkswo.tesm.conversationv2.ConversationHelper;
 import net.whgkswo.tesm.conversationv2.Flow;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.colors.TesmColor;
-import net.whgkswo.tesm.gui.component.GuiAxis;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.elements.Box;
 import net.whgkswo.tesm.gui.component.elements.TextLabel;
+import net.whgkswo.tesm.gui.component.elements.style.BoxStyle;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
 import net.whgkswo.tesm.gui.screen.templete.TesmScreen;
 import net.whgkswo.tesm.networking.payload.data.s2c_res.ConversationNbtRes;
@@ -57,7 +57,7 @@ public class ConversationScreenV2 extends TesmScreen {
                 .text(Text.literal(name))
                 .id("text1")
                 .build()
-                .setParent(rootComponent);
+                .register(rootComponent);
 
         Box box = Box.builder()
                 .id("box")
@@ -65,7 +65,7 @@ public class ConversationScreenV2 extends TesmScreen {
                 .selfHorizontalAlignment(HorizontalAlignment.CENTER)
                 .backgroundColor(TesmColor.RODEO_DUST.withAlpha(100))
                 .build()
-                .setParent(rootComponent);
+                .register(rootComponent);
 
         TextLabel partnerNameLabel2 = TextLabel.builder()
                 .text(Text.literal(name).withColor(TesmColor.RODEO_DUST.getHexDecimalCode()))
@@ -74,7 +74,7 @@ public class ConversationScreenV2 extends TesmScreen {
                 .selfVerticalAlignment(VerticalAlignment.LOWER)
                 .fontScale(1.5f)
                 .build()
-                .setParent(box);
+                .register(box);
 
         TextLabel partnerNameLabel3 = TextLabel.builder()
                 .text(Text.literal(name).withColor(TesmColor.RODEO_DUST.getHexDecimalCode()))
@@ -82,7 +82,7 @@ public class ConversationScreenV2 extends TesmScreen {
                 .selfHorizontalAlignment(HorizontalAlignment.LEFT)
                 .selfVerticalAlignment(VerticalAlignment.LOWER)
                 .build()
-                .setParent(box);
+                .register(box);
 
         TextLabel partnerNameLabel4 = TextLabel.builder()
                 .text(Text.literal(name).withColor(TesmColor.RODEO_DUST.getHexDecimalCode()))
@@ -90,14 +90,12 @@ public class ConversationScreenV2 extends TesmScreen {
                 .selfHorizontalAlignment(HorizontalAlignment.CENTER)
                 .selfVerticalAlignment(VerticalAlignment.LOWER)
                 .build()
-                .setParent(box);
+                .register(box);
 
         Box box2 = Box.builder()
                 .id("box2")
-                .bound(new RelativeBound(0.2, 0.2))
-                .selfHorizontalAlignment(HorizontalAlignment.CENTER)
-                //.backgroundColor(TesmColor.RODEO_DUST.withAlpha(100))
+                .stylePreset(BoxStyle.TEST)
                 .build()
-                .setParent(rootComponent);
+                .register(rootComponent);
     }
 }

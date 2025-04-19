@@ -45,7 +45,7 @@ public class StraightLine extends GuiComponent<StraightLine, BoxStyle> {
     }
 
     @Override
-    protected Class<?> getStyleType() {
+    protected Class<BoxStyle> getStyleType() {
         return BoxStyle.class;
     }
 }

@@ -58,7 +58,7 @@ public class TextLabel extends GuiComponent<TextLabel, TextLabelStyle> {
     }
 
     @Override
-    protected Class<?> getStyleType() {
+    protected Class<TextLabelStyle> getStyleType() {
         return TextLabelStyle.class;
     }
 

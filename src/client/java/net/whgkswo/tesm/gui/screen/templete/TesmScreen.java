@@ -37,7 +37,7 @@ public abstract class TesmScreen extends Screen {
                 .axis(GuiAxis.VERTICAL)
                 .id("root")
                 .build()
-                .setParent(null)
+                .register(null)
         ;
     }
     @Override

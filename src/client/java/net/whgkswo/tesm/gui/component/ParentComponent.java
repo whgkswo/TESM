@@ -43,7 +43,7 @@ public abstract class ParentComponent<T extends GuiComponent<T, S>, S extends Gu
 
     public void addChild(GuiComponent<?, ?> child){
         if(!children.contains(child)) children.add(child);
-        if(child.getParent() == null || child.getParent() != this) child.setParent(this);
+        if(child.getParent() == null || child.getParent() != this) child.register(this);
     }
 
     @Override

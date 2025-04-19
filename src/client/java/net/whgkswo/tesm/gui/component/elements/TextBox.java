@@ -55,7 +55,7 @@ public class TextBox extends GuiComponent<TextBox, BoxStyle> {
     }
 
     @Override
-    protected Class<?> getStyleType() {
+    protected Class<BoxStyle> getStyleType() {
         return BoxStyle.class;
     }
 

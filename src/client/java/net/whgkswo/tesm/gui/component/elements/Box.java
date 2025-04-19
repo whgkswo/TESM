@@ -94,7 +94,7 @@ public class Box extends ParentComponent<Box, BoxStyle> {
     }
 
     @Override
-    protected Class<?> getStyleType() {
+    protected Class<BoxStyle> getStyleType() {
         return BoxStyle.class;
     }
 

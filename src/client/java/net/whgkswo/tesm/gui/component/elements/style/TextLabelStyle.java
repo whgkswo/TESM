@@ -1,21 +1,25 @@
 package net.whgkswo.tesm.gui.component.elements.style;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
 
 @Builder
-public record TextLabelStyle(
-        // GuiComponent
-        HorizontalAlignment selfHorizontalAlignment,
-        VerticalAlignment selfVerticalAlignment,
-        // TextLabel
-        float fontScale,
-        RelativeBound bound,
-        TesmColor backgroundColor
-) implements GuiStyle{
+@AllArgsConstructor
+@NoArgsConstructor
+public class TextLabelStyle implements GuiStyle, DefaultStyleProvider<TextLabelStyle>{
+    // GuiComponent
+    private HorizontalAlignment selfHorizontalAlignment;
+    private VerticalAlignment selfVerticalAlignment;
+    // TextLabel
+    private float fontScale;
+    private RelativeBound bound;
+    private TesmColor backgroundColor;
+
     public static StylePreset<TextLabelStyle> DEFAULT = new StylePreset<>(
             "default_text",
             TextLabelStyle.builder()
@@ -25,4 +29,9 @@ public record TextLabelStyle(
                     .backgroundColor(TesmColor.TRANSPARENT)
                     .build()
     );
+
+    @Override
+    public StylePreset<TextLabelStyle> getDefaultStyle() {
+        return DEFAULT;
+    }
 }

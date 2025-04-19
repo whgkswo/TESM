@@ -1,6 +1,9 @@
 package net.whgkswo.tesm.gui.component.elements.style;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.GuiAxis;
@@ -8,19 +11,21 @@ import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
 
 @Builder
-public record BoxStyle(
-        // GuiComponent
-        HorizontalAlignment selfHorizontalAlignment,
-        VerticalAlignment selfVerticalAlignment,
-        // ParentComponent
-        GuiAxis axis,
-        HorizontalAlignment childrenHorizontalAlignment,
-        VerticalAlignment childrenVerticalAlignment,
-        // Box
-        RelativeBound bound,
-        TesmColor edgeColor,
-        TesmColor backgroundColor
-) implements GuiStyle{
+@NoArgsConstructor
+@AllArgsConstructor
+public class BoxStyle implements GuiStyle, DefaultStyleProvider<BoxStyle> {
+    // GuiComponent
+    private HorizontalAlignment selfHorizontalAlignment;
+    private VerticalAlignment selfVerticalAlignment;
+    // ParentComponent
+    private GuiAxis axis;
+    private HorizontalAlignment childrenHorizontalAlignment;
+    private VerticalAlignment childrenVerticalAlignment;
+    // Box
+    private RelativeBound bound;
+    private TesmColor edgeColor;
+    private TesmColor backgroundColor;
+
     public static final StylePreset<BoxStyle> DEFAULT = new StylePreset<>(
             "default_box",
             BoxStyle.builder()
@@ -34,4 +39,17 @@ public record BoxStyle(
                     .backgroundColor(TesmColor.WHITE)
                     .build()
     );
+
+    public static final StylePreset<BoxStyle> TEST = new StylePreset<>(
+            "test",
+            BoxStyle.builder()
+                    .backgroundColor(TesmColor.BLACK)
+                    .bound(new RelativeBound(0.3, 0.3))
+                    .build()
+    );
+
+    @Override
+    public StylePreset<BoxStyle> getDefaultStyle() {
+        return DEFAULT;
+    }
 }

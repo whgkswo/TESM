@@ -8,6 +8,7 @@ import lombok.experimental.SuperBuilder;
 import net.minecraft.client.gui.DrawContext;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
+import net.whgkswo.tesm.gui.component.elements.style.DefaultStyleProvider;
 import net.whgkswo.tesm.gui.component.elements.style.GuiStyle;
 import net.whgkswo.tesm.gui.component.elements.style.StylePreset;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
@@ -59,7 +60,7 @@ public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiSt
         return (T) this;
     }
 
-    public T setParent(ParentComponent<?, ?> parent){
+    public T register(ParentComponent<?, ?> parent){
         if(parent != null && !parent.getChildren().contains(this)){
             this.parent = parent;
             parent.addChild(this);
@@ -70,15 +71,15 @@ public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiSt
         return self();
     }
 
-    protected abstract Class<?> getStyleType();
+    protected abstract Class<S> getStyleType();
 
     private void initializeStyle(){
         // 스타일이 없으면 디폴트 스타일 가져오기
         if(stylePreset == null) {
-            Class<?> styleType = getStyleType();
-            StylePreset<?> defaultStyle = StylePreset.DEFAULT_STYLES.get(styleType);
+            Class<S> styleType = getStyleType();
+            StylePreset<S> defaultStyle = DefaultStyleProvider.getDefaultStyle(styleType);
 
-            if(defaultStyle != null) stylePreset = (StylePreset<S>) defaultStyle;
+            if(defaultStyle != null) stylePreset = defaultStyle;
         };
 
         // 스타일 프리셋 선적용
@@ -90,9 +91,15 @@ public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiSt
     private List<Field> getAllFields(Class<?> clazz) {
         List<Field> fields = new ArrayList<>();
 
-        // 현재 클래스에서 Object 클래스까지 모든 클래스 탐색
-        while (clazz != null && clazz != Object.class) {
+        // 현재 클래스에서 GuiComponent 클래스(포함)까지 모든 필드 탐색
+        while (clazz != null) {
             fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
+
+            // GuiComponent에 도달했거나 지나갔으면 종료
+            if (clazz == GuiComponent.class || !GuiComponent.class.isAssignableFrom(clazz)) {
+                break;
+            }
+
             clazz = clazz.getSuperclass();
         }
 
