@@ -12,14 +12,21 @@ import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.gui.component.GuiAxis;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.elements.Box;
+import net.whgkswo.tesm.gui.component.elements.features.Hoverable;
+import net.whgkswo.tesm.message.MessageHelper;
 import net.whgkswo.tesm.networking.payload.data.SimpleReq;
 import net.whgkswo.tesm.networking.payload.id.SimpleTask;
+
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
 public abstract class TesmScreen extends Screen {
     private boolean shouldFreezeTicks = true;
     private boolean shouldRenderBackground = true;
     private boolean initialized;
     public final Box rootComponent;
+    private GuiComponent<?, ?> hoveredComponent;
 
     public TesmScreen(){
         this(false);
@@ -82,8 +89,38 @@ public abstract class TesmScreen extends Screen {
     public void render(DrawContext context, int mouseX, int mouseY, float delta){
         super.render(context, mouseX, mouseY, delta);
 
+        // 컴포넌트 렌더링
         rootComponent.render(context);
+        // 마우스 호버링 처리
+        handleHoverEvents(mouseX, mouseY);
     }
+    private void handleHoverEvents(int mouseX, int mouseY){
+        // 마우스 올려진 컴포넌트 찾기
+        Set<GuiComponent<?, ?>> hoveredComponents = rootComponent.getHoveredComponents(mouseX, mouseY, new HashSet<>(), rootComponent);
+        if(!hoveredComponents.isEmpty()){
+            GuiComponent<?, ?> prevHoveredComponent = hoveredComponent;
+            hoveredComponent = getHoveredComponent(hoveredComponents);
+            // 호버 대상이 바뀌었다면
+            if(prevHoveredComponent != hoveredComponent){
+                // 호버 Exit 처리
+                if(prevHoveredComponent != null) prevHoveredComponent.handleHoverExit();
+                // 호버 이벤트 처리
+                if(hoveredComponent != null) hoveredComponent.handleHover(mouseX, mouseY);
+                //MessageHelper.sendMessage(String.format("마우스(%d, %d), 대상 컴포넌트: %s", mouseX, mouseY, hoveredComponent.getId()));
+            }
+        }
+    }
+
+    private GuiComponent<?, ?> getHoveredComponent(Set<GuiComponent<?, ?>> hoveredComponents){
+        return hoveredComponents.stream()
+                .max(Comparator.<GuiComponent<?, ?>, Integer>comparing(
+                    // 1순위: 세대 번호(깊이)가 큰 순서로 정렬 (내림차순)
+                    GuiComponent::getGenerationIndex)
+                        // 2순위: 형제 인덱스가 큰 순서로 정렬 (내림차순)
+                        .thenComparing(GuiComponent::getChildIndex))
+                .orElse(null);
+    }
+
     private void registerMouseWheelEvent(){
         ScreenMouseEvents.afterMouseScroll(this).register((screen1, mouseX, mouseY, horizontalAmount, verticalAmount) -> {
             if(verticalAmount > 0){

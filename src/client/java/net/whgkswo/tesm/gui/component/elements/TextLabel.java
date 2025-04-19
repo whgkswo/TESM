@@ -12,7 +12,6 @@ import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
-import net.whgkswo.tesm.gui.component.elements.style.StylePreset;
 import net.whgkswo.tesm.gui.component.elements.style.TextLabelStyle;
 
 @SuperBuilder
@@ -31,8 +30,8 @@ public class TextLabel extends GuiComponent<TextLabel, TextLabelStyle> {
 
         RenderingHelper.fill(context, TesmColor.WHITE, absoluteBound);
 
-        double fixedYRatio = absoluteBound.getYMarginRatio();
-        RenderingHelper.renderText(context, fontScale, text, absoluteBound.getXMarginRatio(), fixedYRatio);
+        double fixedYRatio = absoluteBound.getYOffsetRatio();
+        RenderingHelper.renderText(context, fontScale, text, absoluteBound.getXOffsetRatio(), fixedYRatio);
     }
 
     @Override

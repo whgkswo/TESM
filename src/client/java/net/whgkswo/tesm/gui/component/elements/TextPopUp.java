@@ -25,7 +25,7 @@ public class TextPopUp extends TextLabel{
         }
 
         RenderingHelper.renderText(this.getSelfHorizontalAlignment(), context, getFontScale(),
-                getText(), bound.getXMarginRatio(), bound.getYMarginRatio());
+                getText(), bound.getXOffsetRatio(), bound.getYOffsetRatio());
     }
     private void update(){
         switch (status){

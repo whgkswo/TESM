@@ -8,17 +8,20 @@ import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.GuiAxis;
+import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.gui.component.ParentComponent;
 import net.whgkswo.tesm.gui.component.bounds.Boundary;
 import net.whgkswo.tesm.gui.component.bounds.LinearBound;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
+import net.whgkswo.tesm.gui.component.elements.features.Hoverable;
 import net.whgkswo.tesm.gui.component.elements.style.BoxStyle;
+import net.whgkswo.tesm.message.MessageHelper;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @SuperBuilder
-public class Box extends ParentComponent<Box, BoxStyle> {
+public class Box extends ParentComponent<Box, BoxStyle> implements Hoverable {
     @Builder.Default
     private Map<LineSide, StraightLine> lines = new HashMap<>();
     @Getter
@@ -27,6 +30,7 @@ public class Box extends ParentComponent<Box, BoxStyle> {
     private TesmColor edgeColor;
     @Getter
     private TesmColor backgroundColor;
+    private boolean isHovered;
 
     public Box(ParentComponent parent, RelativeBound bound, GuiAxis axis, HorizontalAlignment childrenAlignment, TesmColor edgeColor, TesmColor backgroundColor, int thickness) {
         super(parent, bound, axis, childrenAlignment);
@@ -37,8 +41,8 @@ public class Box extends ParentComponent<Box, BoxStyle> {
         // 모서리 없으면 등록 x
         if(edgeColor.equals(TesmColor.TRANSPARENT) || thickness == 0) return;
 
-        double xRatio = bound.getXMarginRatio();
-        double yRatio = bound.getYMarginRatio();
+        double xRatio = bound.getXOffsetRatio();
+        double yRatio = bound.getYOffsetRatio();
         double widthRatio = bound.getWidthRatio();
         double heightRatio = bound.getHeightRatio();
         lines.put(LineSide.UP,
@@ -75,8 +79,8 @@ public class Box extends ParentComponent<Box, BoxStyle> {
             RenderingHelper.fill(
                     context,
                     backgroundColor,
-                    absoluteBound.getXMarginRatio(),
-                    absoluteBound.getYMarginRatio(),
+                    absoluteBound.getXOffsetRatio(),
+                    absoluteBound.getYOffsetRatio(),
                     absoluteBound.getWidthRatio(),
                     absoluteBound.getHeightRatio()
             );
@@ -96,6 +100,37 @@ public class Box extends ParentComponent<Box, BoxStyle> {
     @Override
     protected Class<BoxStyle> getStyleType() {
         return BoxStyle.class;
+    }
+
+    @Override
+    public void handleHover() {
+        if(backgroundColor.equals(TesmColor.TRANSPARENT)) return;
+        TesmColor backgroundColorBackup = backgroundColor;
+        onHover(backgroundColorBackup);
+        isHovered = true;
+    }
+
+    @Override
+    public void handleHoverExit(){
+        if(backgroundColor.equals(TesmColor.TRANSPARENT)) return;
+        onHoverExit(backgroundColor);
+        isHovered = false;
+    }
+
+    @Override
+    public boolean isHovered(){
+        return isHovered;
+    }
+
+    public void onHover(TesmColor originalColor) {
+        this.backgroundColor = originalColor.withAlpha(100);
+        //MessageHelper.sendMessage("호버: " + getId());
+    }
+
+    public void onHoverExit(TesmColor originalColor) {
+        // 원래 색상으로 복원
+        this.backgroundColor = originalColor.withAlpha(255);
+        //MessageHelper.sendMessage("호버 아웃: " + getId());
     }
 
     private enum LineSide{

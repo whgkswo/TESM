@@ -128,7 +128,7 @@ public class RenderingHelper {
         RenderSystem.setShaderColor(1.0f,1.0f,1.0f,1.0f);
     }
     public static void fill(DrawContext context, TesmColor color, RelativeBound bound){
-        fill(context, color, bound.getXMarginRatio(), bound.getYMarginRatio(), bound.getWidthRatio(), bound.getHeightRatio());
+        fill(context, color, bound.getXOffsetRatio(), bound.getYOffsetRatio(), bound.getWidthRatio(), bound.getHeightRatio());
     }
 
     public static void fill(DrawContext context, TesmColor color, double xRatio, double yRatio, double widthRatio, double heightRatio){

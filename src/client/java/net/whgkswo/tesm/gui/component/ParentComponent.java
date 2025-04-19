@@ -32,6 +32,7 @@ public abstract class ParentComponent<T extends GuiComponent<T, S>, S extends Gu
         this.childrenHorizontalAlignment = childrenHorizontalAlignment;
     }
 
+    @Override
     public void render(DrawContext context){
         // 자신 렌더링
         renderSelf(context);

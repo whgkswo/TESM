@@ -5,9 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.util.Window;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
+import net.whgkswo.tesm.gui.component.bounds.AbsoluteBound;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
+import net.whgkswo.tesm.gui.component.elements.Box;
+import net.whgkswo.tesm.gui.component.elements.features.Hoverable;
 import net.whgkswo.tesm.gui.component.elements.style.DefaultStyleProvider;
 import net.whgkswo.tesm.gui.component.elements.style.GuiStyle;
 import net.whgkswo.tesm.gui.component.elements.style.StylePreset;
@@ -69,6 +74,53 @@ public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiSt
         // 스타일 초기화
         initializeStyle();
         return self();
+    }
+
+    public Set<GuiComponent<?, ?>> getHoveredComponents(int mouseX, int mouseY, Set<GuiComponent<?,?>> result, Box rootComponent){
+        if(isMouseOver(mouseX, mouseY)){
+            result.add(this);
+            for (GuiComponent<?, ?> child : getChildren()){
+                result = child.getHoveredComponents(mouseX, mouseY, result, rootComponent);
+            }
+        }else{ // 마우스가 밖에 있음
+            if(this == rootComponent){
+                return new HashSet<>();
+            }
+        }
+        return result;
+    }
+
+    public void handleHover(int mouseX, int mouseY){
+        if(this instanceof Hoverable hoverable){
+            hoverable.handleHover();
+        }
+    }
+
+    public void handleHoverExit(){
+        if(this instanceof Hoverable hoverable){
+            hoverable.handleHoverExit();
+        }
+    }
+
+    protected boolean isMouseOver(int mouseX, int mouseY){
+        AbsoluteBound absoluteBound = getAbsoluteBound();
+        return absoluteBound.x1() <= mouseX && absoluteBound.x2() >= mouseX
+                && absoluteBound.y1() <= mouseY && absoluteBound.y2() >= mouseY;
+    }
+
+    protected AbsoluteBound getAbsoluteBound(){
+        RelativeBound bound = this.getScreenRelativeBound();
+
+        Window window = MinecraftClient.getInstance().getWindow();
+        int scaledWidth = window.getScaledWidth();
+        int scaledHeight = window.getScaledHeight();
+
+        return new AbsoluteBound(
+                (int) (bound.getXOffsetRatio() * scaledWidth),
+                (int) ((bound.getXOffsetRatio() + bound.getWidthRatio()) * scaledWidth),
+                (int) (bound.getYOffsetRatio() * scaledHeight),
+                (int) ((bound.getYOffsetRatio() + bound.getHeightRatio()) * scaledHeight)
+        );
     }
 
     protected abstract Class<S> getStyleType();
@@ -167,6 +219,18 @@ public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiSt
         return parent.getChildren().indexOf(this);
     }
 
+    public int getGenerationIndex(){
+        return getGenerationIndex(1);
+    }
+
+    protected int getGenerationIndex(int result){
+        if(parent == null){
+            return result;
+        }else {
+            return parent.getGenerationIndex(result + 1);
+        }
+    }
+
     public GuiComponent<?, ?> getSibling(int index) {
         if (parent == null) return null;
         List<GuiComponent<?, ?>> siblings = parent.getChildren();
@@ -199,8 +263,8 @@ public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiSt
         GuiAxis parentAxis = parent.getAxis();
 
         // 기본 위치 계산
-        double xRatio = parentBound.getXMarginRatio();
-        double yRatio = parentBound.getYMarginRatio();
+        double xRatio = parentBound.getXOffsetRatio();
+        double yRatio = parentBound.getYOffsetRatio();
         double parentWidthRatio = parentBound.getWidthRatio();
         double parentHeightRatio = parentBound.getHeightRatio();
 

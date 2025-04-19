@@ -10,8 +10,8 @@ public class RelativeBound {
 
     private double widthRatio;
     private double heightRatio;
-    private double xMarginRatio;
-    private double yMarginRatio;
+    private double xOffsetRatio;
+    private double yOffsetRatio;
 
     public RelativeBound(double widthRatio, double heightRatio){
         this.widthRatio = widthRatio;

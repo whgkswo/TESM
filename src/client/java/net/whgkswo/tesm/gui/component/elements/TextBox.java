@@ -66,12 +66,12 @@ public class TextBox extends GuiComponent<TextBox, BoxStyle> {
         List<String> contentLines = splitContent(textRenderer, content.getString(), (int)(screenWidth * (1 - 2 * xMarginRatio) * bound.getWidthRatio() / fontScale));
         double lineVerticalWidth = (double) textRenderer.fontHeight * fontScale / context.getScaledWindowHeight();
 
-        double yRatio = bound.getYMarginRatio() + yMarginRatio;
+        double yRatio = bound.getYOffsetRatio() + yMarginRatio;
         double lineGap = lineVerticalWidth * LINE_GAP_RATIO;
         int i = 0;
-        while(i < contentLines.size() && yRatio < bound.getYMarginRatio() + bound.getHeightRatio() - yMarginRatio/* - lineGap*/){
+        while(i < contentLines.size() && yRatio < bound.getYOffsetRatio() + bound.getHeightRatio() - yMarginRatio/* - lineGap*/){
             RenderingHelper.renderTextInBox(textAlignment, context, fontScale, contentLines.get(i),
-                    bound.getXMarginRatio() + xMarginRatio * bound.getWidthRatio(), bound.getYMarginRatio() + yMarginRatio + lineGap * i ,
+                    bound.getXOffsetRatio() + xMarginRatio * bound.getWidthRatio(), bound.getYOffsetRatio() + yMarginRatio + lineGap * i ,
                     (1 - 2 * xMarginRatio) * bound.getWidthRatio(), 0xffffff);
             i++;
             yRatio += lineGap;
