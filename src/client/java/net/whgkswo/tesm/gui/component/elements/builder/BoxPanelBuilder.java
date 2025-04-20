@@ -13,6 +13,7 @@ public class BoxPanelBuilder extends ParentComponentBuilder<BoxPanel, BoxPanelBu
     // BoxPanel 필드
     private RelativeBound bound;
     private TesmColor edgeColor;
+    private int edgeThickness = 1;
     private TesmColor backgroundColor;
 
     @Override
@@ -31,6 +32,10 @@ public class BoxPanelBuilder extends ParentComponentBuilder<BoxPanel, BoxPanelBu
         boxPanel.setSelfVerticalAlignment(this.selfVerticalAlignment);
         boxPanel.setParent(this.parent);
         boxPanel.setStylePreset(this.stylePreset);
+        boxPanel.setTopMarginRatio(this.topMarginRatio);
+        boxPanel.setLeftMarginRatio(this.leftMarginRatio);
+        boxPanel.setRightMarginRatio(this.rightMarginRatio);
+        boxPanel.setBottomMarginRatio(this.bottomMarginRatio);
         // ParentComponent 필드
         boxPanel.setAxis(this.axis);
         boxPanel.setChildrenHorizontalAlignment(this.childrenHorizontalAlignment);
@@ -38,6 +43,7 @@ public class BoxPanelBuilder extends ParentComponentBuilder<BoxPanel, BoxPanelBu
         // BoxPanel 필드
         boxPanel.setBound(this.bound);
         boxPanel.setEdgeColor(this.edgeColor);
+        boxPanel.setEdgeThickness(this.edgeThickness);
         boxPanel.setBackgroundColor(this.backgroundColor);
 
         return register(boxPanel);
@@ -50,6 +56,11 @@ public class BoxPanelBuilder extends ParentComponentBuilder<BoxPanel, BoxPanelBu
 
     public BoxPanelBuilder edgeColor(TesmColor edgeColor){
         this.edgeColor = edgeColor;
+        return self();
+    }
+
+    public BoxPanelBuilder edgeThickness(int edgeThickness){
+        this.edgeThickness = edgeThickness;
         return self();
     }
 

@@ -2,7 +2,6 @@ package net.whgkswo.tesm.gui.component.elements.builder;
 
 import net.minecraft.text.Text;
 import net.whgkswo.tesm.gui.colors.TesmColor;
-import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.elements.TextLabel;
 import net.whgkswo.tesm.gui.component.elements.builder.base.GuiComponentBuilder;
 import net.whgkswo.tesm.gui.component.elements.style.TextLabelStyle;
@@ -13,7 +12,6 @@ public class TextLabelBuilder extends GuiComponentBuilder<TextLabel, TextLabelBu
     private Text text;
     private float fontScale = 1.0f;
     private boolean shadowed = false;
-    private RelativeBound bound;
     private TesmColor backgroundColor;
 
     @Override
@@ -32,12 +30,14 @@ public class TextLabelBuilder extends GuiComponentBuilder<TextLabel, TextLabelBu
         textLabel.setSelfVerticalAlignment(this.selfVerticalAlignment);
         textLabel.setParent(this.parent);
         textLabel.setStylePreset(this.stylePreset);
-
+        textLabel.setRightMarginRatio(this.rightMarginRatio);
+        textLabel.setBottomMarginRatio(this.bottomMarginRatio);
+        textLabel.setTopMarginRatio(this.topMarginRatio);
+        textLabel.setLeftMarginRatio(this.leftMarginRatio);
         // TextLabel 필드
         textLabel.setText(this.text);
         textLabel.setFontScale(this.fontScale);
         textLabel.setShadowed(this.shadowed);
-        textLabel.setBound(this.bound);
         textLabel.setBackgroundColor(this.backgroundColor);
 
         return register(textLabel);
@@ -55,11 +55,6 @@ public class TextLabelBuilder extends GuiComponentBuilder<TextLabel, TextLabelBu
 
     public TextLabelBuilder shadowed(boolean shadowed) {
         this.shadowed = shadowed;
-        return this;
-    }
-
-    public TextLabelBuilder bound(RelativeBound bound) {
-        this.bound = bound;
         return this;
     }
 

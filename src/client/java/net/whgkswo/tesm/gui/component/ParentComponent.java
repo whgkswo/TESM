@@ -16,6 +16,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
+// 스타일 요소가 아닌 필드는 여기에 초기값 명시
 public abstract class ParentComponent<T extends GuiComponent<T, S>, S extends GuiStyle> extends GuiComponent<T, S>{
     @Setter
     private GuiAxis axis;

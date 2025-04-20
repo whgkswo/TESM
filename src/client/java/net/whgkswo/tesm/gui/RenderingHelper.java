@@ -7,6 +7,8 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.gui.colors.TesmColor;
+import net.whgkswo.tesm.gui.component.GuiAxis;
+import net.whgkswo.tesm.gui.component.bounds.LinearBound;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.helpers.GuiHelper;
 import net.whgkswo.tesm.gui.screen.TextSize;
@@ -127,6 +129,33 @@ public class RenderingHelper {
         context.drawTexture(GuiHelper::getGuiTexturedLayer, texture, x, y, 0, 0, width, height, width, height);
         RenderSystem.setShaderColor(1.0f,1.0f,1.0f,1.0f);
     }
+
+    public static void drawLine(DrawContext context, TesmColor color, LinearBound bound){
+        drawLine(context, color, bound.getXOffsetRatio(), bound.getYOffsetRatio(), bound.getAxis(), bound.getLengthRatio(), bound.getThickness());
+    }
+
+    public static void drawLine(DrawContext context, TesmColor color, double xOffsetRatio, double yOffsetRatio, GuiAxis axis, double lengthRatio, int thickness){
+        int screenWidth = context.getScaledWindowWidth();
+        int screenHeight = context.getScaledWindowHeight();
+
+        if(color.getA() != 255){
+            RenderSystem.enableBlend();
+        }
+        int x1 = (int) (screenWidth * xOffsetRatio);
+        int y1 = (int) (screenHeight * yOffsetRatio);
+        int x2;
+        int y2;
+
+        if(axis.equals(GuiAxis.HORIZONTAL)){
+            x2 = (int) (screenWidth * (xOffsetRatio + lengthRatio));
+            y2 = thickness;
+        }else { // VERTICAL
+            x2 = thickness;
+            y2 = (int) (screenHeight * (yOffsetRatio + lengthRatio));
+        }
+        context.fill(x1, y1, x2, y2, color.getHexDecimalCode());
+    }
+
     public static void fill(DrawContext context, TesmColor color, RelativeBound bound){
         fill(context, color, bound.getXOffsetRatio(), bound.getYOffsetRatio(), bound.getWidthRatio(), bound.getHeightRatio());
     }

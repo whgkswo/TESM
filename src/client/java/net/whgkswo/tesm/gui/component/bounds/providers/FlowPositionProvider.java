@@ -1,18 +1,27 @@
-package net.whgkswo.tesm.gui.component.bounds;
+package net.whgkswo.tesm.gui.component.bounds.providers;
 
-import lombok.AllArgsConstructor;
+import net.whgkswo.tesm.gui.GuiDirection;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.component.GuiAxis;
 import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.gui.component.ParentComponent;
+import net.whgkswo.tesm.gui.component.bounds.PositionType;
+import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
 
 import java.util.List;
+import java.util.Map;
 
-@AllArgsConstructor
-public class FlowPositionProvider implements PositionProvider {
-    private final GuiComponent<?, ?> component;
-    private final ParentComponent<?, ?> parent;
+public class FlowPositionProvider extends PositionProvider {
+
+    public FlowPositionProvider(GuiComponent<?, ?> component, ParentComponent<?, ?> parent) {
+        super(component, parent);
+    }
+
+    @Override
+    public PositionType getType(){
+        return PositionType.FLOW;
+    }
 
     @Override
     public RelativeBound getAbsoluteBound() {
@@ -26,8 +35,8 @@ public class FlowPositionProvider implements PositionProvider {
         GuiAxis parentAxis = parent.getAxis();
 
         // 기본 위치 계산
-        double xRatio = parentBound.getXOffsetRatio();
-        double yRatio = parentBound.getYOffsetRatio();
+        double xRatio = 0;
+        double yRatio = 0;
         double parentWidthRatio = parentBound.getWidthRatio();
         double parentHeightRatio = parentBound.getHeightRatio();
 
@@ -35,8 +44,12 @@ public class FlowPositionProvider implements PositionProvider {
         double[] siblingBound = calculateSiblingBound(childBound, parentAxis);
         double siblingsWidthRatio = siblingBound[0];
         double siblingsHeightRatio = siblingBound[1];
+        // 손윗 형제들의 너비, 마진 합산
         xRatio += siblingBound[2];
         yRatio += siblingBound[3];
+        // 자신의 마진 합산
+        xRatio += component.getLeftMarginRatio();
+        yRatio += component.getTopMarginRatio();
 
         // 수평, 수직 정렬 적용
         xRatio = applyHorizontalAlignment(getRefHorizontalAlignment(), childBound,
@@ -45,36 +58,49 @@ public class FlowPositionProvider implements PositionProvider {
         yRatio = applyVerticalAlignment(getRefVerticalAlignment(), childBound,
                 parentHeightRatio, siblingsHeightRatio, yRatio);
 
+        // 위까지는 부모에 대한 상대 크기, 여기서 전체 스크린에 대한 상대크기로 변환
         return new RelativeBound(
                 component.getAbsoluteWHRatio(parentWidthRatio, childBound.getWidthRatio()),
                 component.getAbsoluteWHRatio(parentHeightRatio, childBound.getHeightRatio()),
-                xRatio,
-                yRatio
+                parentBound.getXOffsetRatio() + parentWidthRatio * xRatio,
+                parentBound.getYOffsetRatio() + parentHeightRatio * yRatio
         );
     }
 
-    /**
-     * 모든 형제 요소들을 하나의 덩어리로 하여 크기 계산
-     * @return double[4] {siblingsWidthRatio, siblingsHeightRatio, xOffset, yOffset}
-     */
+    // 모든 형제 요소들을 하나의 덩어리로 하여 크기 계산
+    // 손윗 형제들의 너비와 마진을 합산
+    // 비율은 스크린이 아닌 부모 기준
     private double[] calculateSiblingBound(RelativeBound childBound, GuiAxis parentAxis) {
         int childIndex = component.getChildIndex();
-        double siblingsWidthRatio = childBound.getWidthRatio();
-        double siblingsHeightRatio = childBound.getHeightRatio();
+
+        double siblingsWidthRatio = childBound.getWidthRatio() + component.getLeftMarginRatio() + component.getRightMarginRatio();
+        double siblingsHeightRatio = childBound.getHeightRatio() + component.getTopMarginRatio() + component.getBottomMarginRatio();
         double xOffset = 0;
         double yOffset = 0;
 
         for (int i = 0; i < parent.getChildren().size(); i++) {
             if (i == childIndex) continue; // 자기 자신은 초기값에 반영돼 있음
 
-            double[] siblingWH = component.getSibling(i).getAbsoluteWHRatio();
+            GuiComponent<?, ?> sibling = component.getSibling(i);
+            PositionType positionType = sibling.getPositionProvider().getType();
+            // FIXED 타입은 스킵
+            if(positionType.equals(PositionType.FIXED)) continue;
+
+            //Map<GuiDirection, Double> siblingMargins = sibling.getAbsoluteMarginRatio();
+            RelativeBound siblingBound = sibling.getBound();
 
             if (parentAxis == GuiAxis.HORIZONTAL) {
-                siblingsWidthRatio += siblingWH[0];
-                if (i < childIndex) xOffset += siblingWH[0]; // 수평축으로 형 요소들의 공간 더하기
+                siblingsWidthRatio += siblingsWidthRatio + sibling.getLeftMarginRatio() + sibling.getRightMarginRatio();
+                if (i < childIndex) {
+                    xOffset += siblingBound.getWidthRatio(); // 수평축으로 형 요소들의 공간 더하기
+                    xOffset += sibling.getRightMarginRatio(); // 마진도 더하기
+                }
             } else { // VERTICAL
-                siblingsHeightRatio += siblingWH[1];
-                if (i < childIndex) yOffset += siblingWH[1]; // 수직축으로 형 요소들의 공간 더하기
+                siblingsHeightRatio += siblingBound.getHeightRatio() + sibling.getTopMarginRatio() + sibling.getBottomMarginRatio();
+                if (i < childIndex) {
+                    yOffset += siblingBound.getHeightRatio(); // 수직축으로 형 요소들의 공간 더하기
+                    yOffset += sibling.getBottomMarginRatio();
+                }
             }
         }
 
@@ -91,12 +117,12 @@ public class FlowPositionProvider implements PositionProvider {
                 // 왼쪽 정렬은 기본값이므로 아무것도 하지 않음
                 break;
             case CENTER: {
-                double xGap = parentWidthRatio - siblingsWidthRatio;
+                double xGap = 1 - siblingsWidthRatio; // 1은 부모의 전체
                 xRatio += xGap / 2;
                 break;
             }
             case RIGHT: {
-                xRatio += parentWidthRatio - childBound.getWidthRatio();
+                xRatio += 1 - childBound.getWidthRatio(); // 1은 부모의 전체
                 break;
             }
         }
@@ -114,12 +140,12 @@ public class FlowPositionProvider implements PositionProvider {
                 // 위쪽 정렬은 기본값이므로 아무것도 하지 않음
                 break;
             case CENTER: {
-                double yGap = parentHeightRatio - siblingsHeightRatio;
+                double yGap = 1 - siblingsHeightRatio; // 1은 부모의 전체
                 yRatio += yGap / 2;
                 break;
             }
             case LOWER: {
-                yRatio += parentHeightRatio - childBound.getHeightRatio();
+                yRatio += 1 - childBound.getHeightRatio(); // 1은 부모의 전체
                 break;
             }
         }

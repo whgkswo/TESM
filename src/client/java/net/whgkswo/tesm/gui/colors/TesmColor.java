@@ -6,13 +6,18 @@ public class TesmColor {
     private int b;
     private double a;
 
-    public static final TesmColor WHITE = new TesmColor(255,255,255);
     public static final TesmColor BLACK = new TesmColor(0,0,0);
+    public static final TesmColor BLUE = new TesmColor(0, 0, 255);
     public static final TesmColor CREAM = new TesmColor(250,240,215);
+    public static final TesmColor GREEN = new TesmColor(0, 128, 0);
     public static final TesmColor MINT_JULEP = new TesmColor(227,215,180);
     public static final TesmColor NEUTRAL_GOLD = new TesmColor(170,166,133);
+    public static final TesmColor ORANGE = new TesmColor(255, 165, 0);
+    public static final TesmColor RED = new TesmColor(255, 0, 0);
     public static final TesmColor RODEO_DUST = new TesmColor(200,160,130);
     public static final TesmColor TRANSPARENT = new TesmColor(0, 0, 0, 0);
+    public static final TesmColor WHITE = new TesmColor(255,255,255);
+    public static final TesmColor YELLOW = new TesmColor(255, 255, 0);
 
     public TesmColor(int r, int g, int b) {
         this.r = r;

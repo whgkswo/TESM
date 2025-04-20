@@ -3,7 +3,8 @@ package net.whgkswo.tesm.gui.component.elements.builder.base;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.gui.component.ParentComponent;
-import net.whgkswo.tesm.gui.component.bounds.FlowPositionProvider;
+import net.whgkswo.tesm.gui.component.bounds.providers.FixedPositionProvider;
+import net.whgkswo.tesm.gui.component.bounds.providers.FlowPositionProvider;
 import net.whgkswo.tesm.gui.component.bounds.PositionType;
 import net.whgkswo.tesm.gui.component.elements.style.GuiStyle;
 import net.whgkswo.tesm.gui.component.elements.style.StylePreset;
@@ -22,6 +23,10 @@ public abstract class GuiComponentBuilder<C extends GuiComponent<C, S>,
     protected ParentComponent<?, ?> parent;
     protected StylePreset<S> stylePreset;
     protected PositionType positionType = PositionType.FLOW;
+    protected double topMarginRatio;
+    protected double bottomMarginRatio;
+    protected double leftMarginRatio;
+    protected double rightMarginRatio;
 
     public B id(String id) {
         this.id = id;
@@ -58,13 +63,34 @@ public abstract class GuiComponentBuilder<C extends GuiComponent<C, S>,
         return self();
     }
 
+    public B topMarginRatio(double topMarginRatio){
+        this.topMarginRatio = topMarginRatio;
+        return self();
+    }
+
+    public B bottomMarginRatio(double bottomMarginRatio){
+        this.bottomMarginRatio = bottomMarginRatio;
+        return self();
+    }
+
+    public B leftMarginRatio(double leftMarginRatio){
+        this.leftMarginRatio = leftMarginRatio;
+        return self();
+    }
+
+    public B rightMarginRatio(double rightMarginRatio){
+        this.rightMarginRatio = rightMarginRatio;
+        return self();
+    }
+
     protected C register(C component){
         component.setParent(parent);
 
         // 기본 포지션 정책은 플로우
-        if(component.getPositionProvider() == null) {
-            component.setPositionProvider(new FlowPositionProvider(component, parent));
-        };
+        switch (this.positionType){
+            case FIXED -> component.setPositionProvider(new FixedPositionProvider(component, parent));
+            default -> component.setPositionProvider(new FlowPositionProvider(component, parent));
+        }
 
         // 스타일 초기화
         component.initializeStyle();

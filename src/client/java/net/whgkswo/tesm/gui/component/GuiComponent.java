@@ -3,12 +3,13 @@ package net.whgkswo.tesm.gui.component;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.SuperBuilder;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.util.Window;
+import net.whgkswo.tesm.gui.GuiDirection;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.component.bounds.*;
+import net.whgkswo.tesm.gui.component.bounds.providers.PositionProvider;
 import net.whgkswo.tesm.gui.component.elements.BoxPanel;
 import net.whgkswo.tesm.gui.component.elements.features.Hoverable;
 import net.whgkswo.tesm.gui.component.elements.style.DefaultStyleProvider;
@@ -23,6 +24,7 @@ import java.util.*;
 
 @NoArgsConstructor
 @Getter
+// 스타일 요소가 아닌 필드는 여기에 초기값 명시
 public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiStyle> {
     @Setter
     private String id;
@@ -36,6 +38,14 @@ public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiSt
     private ParentComponent<?, ?> parent;
     @Setter
     private RelativeBound cachedAbsoluteBound;
+    @Setter
+    private double rightMarginRatio;
+    @Setter
+    private double bottomMarginRatio;
+    @Setter
+    private double leftMarginRatio;
+    @Setter
+    private double topMarginRatio;
     @Setter
     private StylePreset<S> stylePreset;
     @Setter
@@ -55,19 +65,22 @@ public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiSt
     };
 
     protected void renderSelfWithScissor(DrawContext context){
-        if(parent == null) return;
-        AbsolutePosition absolutePosition = parent.getAbsolutePosition();
-        // 부모의 영역을 넘어가면 자르도록 설정
-        context.enableScissor(
-                absolutePosition.x1(),
-                absolutePosition.y1(),
-                absolutePosition.x2(),
-                absolutePosition.y2()
-        );
+        boolean scissorEnabled = parent != null;
+
+        if(scissorEnabled){
+            AbsolutePosition absolutePosition = parent.getAbsolutePosition();
+            // 부모의 영역을 넘어가면 자르도록 설정
+            context.enableScissor(
+                    absolutePosition.x1(),
+                    absolutePosition.y1(),
+                    absolutePosition.x2(),
+                    absolutePosition.y2()
+            );
+        }
         // 렌더링 실행
         renderSelf(context);
         // 원상태로 복원
-        context.disableScissor();
+        if(scissorEnabled) context.disableScissor();
     }
 
     protected boolean shouldHide(){
@@ -151,6 +164,12 @@ public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiSt
         applyStylePreset(stylePreset.style());
         // 바운드 초기화
         initializeBound();
+        // 추가작업(선택사항)
+        initializeStyleExtended();
+    }
+
+    protected void initializeStyleExtended(){
+        // 오버라이딩용
     }
 
     private List<Field> getAllFields(Class<?> clazz) {
@@ -273,6 +292,29 @@ public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiSt
         double parentHeightRatio = parentBound.getHeightRatio();
 
         return new double[]{getAbsoluteWHRatio(parentWidthRatio, childBound.getWidthRatio()), getAbsoluteWHRatio(parentHeightRatio, childBound.getHeightRatio())};
+    }
+
+    public Map<GuiDirection, Double> getAbsoluteMarginRatio(){
+        if(parent == null) {
+            return Map.of(
+                    GuiDirection.TOP, topMarginRatio,
+                    GuiDirection.BOTTOM, bottomMarginRatio,
+                    GuiDirection.LEFT, leftMarginRatio,
+                    GuiDirection.RIGHT, rightMarginRatio
+                    );
+        };
+
+        RelativeBound parentBound = parent.getAbsoluteBound();
+
+        double parentWidthRatio = parentBound.getWidthRatio();
+        double parentHeightRatio = parentBound.getHeightRatio();
+
+        return Map.of(
+                GuiDirection.TOP, parentHeightRatio * topMarginRatio,
+                GuiDirection.BOTTOM,parentHeightRatio * bottomMarginRatio,
+                GuiDirection.LEFT, parentWidthRatio * leftMarginRatio,
+                GuiDirection.RIGHT, parentHeightRatio * rightMarginRatio
+        );
     }
 
     // 오버라이딩용
