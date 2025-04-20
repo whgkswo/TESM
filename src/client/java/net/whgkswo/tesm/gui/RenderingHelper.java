@@ -71,7 +71,7 @@ public class RenderingHelper {
     }
 
     public static void renderText(DrawContext context, float scale, Text text,
-                                  double xRatio, double yRatio){
+                                  double xRatio, double yRatio, boolean shadowed){
         int xPos = getXPos(context, xRatio, scale);
         int yPos = getYPos(context, yRatio, scale);
 
@@ -79,7 +79,7 @@ public class RenderingHelper {
         context.getMatrices().scale(scale,scale,1);
         int textColor = getTextRgb(text);
 
-        context.drawTextWithShadow(TEXT_RENDERER, text, xPos, yPos, textColor);
+        context.drawText(TEXT_RENDERER, text, xPos, yPos, textColor, shadowed);
 
         context.getMatrices().pop();
     }

@@ -50,8 +50,25 @@ public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiSt
     public abstract RelativeBound getBound();
 
     public void render(DrawContext context){
-        renderSelf(context);
+        // 자신 렌더링
+        renderSelfWithScissor(context);
     };
+
+    protected void renderSelfWithScissor(DrawContext context){
+        if(parent == null) return;
+        AbsolutePosition absolutePosition = parent.getAbsolutePosition();
+        // 부모의 영역을 넘어가면 자르도록 설정
+        context.enableScissor(
+                absolutePosition.x1(),
+                absolutePosition.y1(),
+                absolutePosition.x2(),
+                absolutePosition.y2()
+        );
+        // 렌더링 실행
+        renderSelf(context);
+        // 원상태로 복원
+        context.disableScissor();
+    }
 
     protected boolean shouldHide(){
         return shouldHide;

@@ -25,6 +25,7 @@ public class TextLabel extends GuiComponent<TextLabel, TextLabelStyle> {
     private Text text;
     @Getter
     private float fontScale;
+    private boolean shadowed;
     private RelativeBound bound;
     private TesmColor backgroundColor;
 
@@ -36,10 +37,10 @@ public class TextLabel extends GuiComponent<TextLabel, TextLabelStyle> {
     protected void renderSelf(DrawContext context){
         RelativeBound absoluteBound = getAbsoluteBoundWithUpdate();
 
-        RenderingHelper.fill(context, TesmColor.WHITE, absoluteBound);
+        RenderingHelper.fill(context, backgroundColor, absoluteBound);
 
         double fixedYRatio = absoluteBound.getYOffsetRatio();
-        RenderingHelper.renderText(context, fontScale, text, absoluteBound.getXOffsetRatio(), fixedYRatio);
+        RenderingHelper.renderText(context, fontScale, text, absoluteBound.getXOffsetRatio(), fixedYRatio, shadowed);
     }
 
     @Override

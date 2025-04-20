@@ -33,7 +33,7 @@ public abstract class ParentComponent<T extends GuiComponent<T, S>, S extends Gu
     @Override
     public void render(DrawContext context){
         // 자신 렌더링
-        renderSelf(context);
+        renderSelfWithScissor(context);
         // 자식 렌더링
         for (GuiComponent<?, ?> child : children){
             child.render(context);

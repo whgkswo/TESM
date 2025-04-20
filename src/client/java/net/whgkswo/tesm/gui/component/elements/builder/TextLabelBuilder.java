@@ -12,6 +12,7 @@ public class TextLabelBuilder extends GuiComponentBuilder<TextLabel, TextLabelBu
     // TextLabel 필드
     private Text text;
     private float fontScale = 1.0f;
+    private boolean shadowed = false;
     private RelativeBound bound;
     private TesmColor backgroundColor;
 
@@ -35,6 +36,7 @@ public class TextLabelBuilder extends GuiComponentBuilder<TextLabel, TextLabelBu
         // TextLabel 필드
         textLabel.setText(this.text);
         textLabel.setFontScale(this.fontScale);
+        textLabel.setShadowed(this.shadowed);
         textLabel.setBound(this.bound);
         textLabel.setBackgroundColor(this.backgroundColor);
 
@@ -48,6 +50,11 @@ public class TextLabelBuilder extends GuiComponentBuilder<TextLabel, TextLabelBu
 
     public TextLabelBuilder fontScale(float fontScale) {
         this.fontScale = fontScale;
+        return this;
+    }
+
+    public TextLabelBuilder shadowed(boolean shadowed) {
+        this.shadowed = shadowed;
         return this;
     }
 
