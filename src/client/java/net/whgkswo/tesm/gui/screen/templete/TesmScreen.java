@@ -12,8 +12,6 @@ import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.gui.component.GuiAxis;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.elements.Box;
-import net.whgkswo.tesm.gui.component.elements.features.Hoverable;
-import net.whgkswo.tesm.message.MessageHelper;
 import net.whgkswo.tesm.networking.payload.data.SimpleReq;
 import net.whgkswo.tesm.networking.payload.id.SimpleTask;
 
@@ -27,6 +25,8 @@ public abstract class TesmScreen extends Screen {
     private boolean initialized;
     public final Box rootComponent;
     private GuiComponent<?, ?> hoveredComponent;
+    private int prevMouseX = -1;
+    private int prevMouseY = -1;
 
     public TesmScreen(){
         this(false);
@@ -37,7 +37,6 @@ public abstract class TesmScreen extends Screen {
         this.shouldFreezeTicks = shouldFreezeTicks;
         rootComponent = Box.builder()
                 .bound(RelativeBound.FULL_SCREEN)
-                .screenRelativeBound(RelativeBound.FULL_SCREEN)
                 .backgroundColor(TesmColor.TRANSPARENT)
                 .edgeColor(TesmColor.TRANSPARENT)
                 .childrenHorizontalAlignment(HorizontalAlignment.CENTER)
@@ -70,7 +69,7 @@ public abstract class TesmScreen extends Screen {
     }
 
     private void clearCachedBounds(GuiComponent<?, ?> component){
-        component.setScreenRelativeBound(null);
+        component.setCachedAbsoluteBound(null);
         component.initializeBound();
         for (GuiComponent<?, ?> child : component.getChildren()){
             clearCachedBounds(child);
@@ -95,6 +94,11 @@ public abstract class TesmScreen extends Screen {
         handleHoverEvents(mouseX, mouseY);
     }
     private void handleHoverEvents(int mouseX, int mouseY){
+        if(prevMouseX == mouseX && prevMouseY == mouseY) return;
+
+        prevMouseX = mouseX;
+        prevMouseY = mouseY;
+
         // 마우스 올려진 컴포넌트 찾기
         Set<GuiComponent<?, ?>> hoveredComponents = rootComponent.getHoveredComponents(mouseX, mouseY, new HashSet<>(), rootComponent);
         if(!hoveredComponents.isEmpty()){
@@ -105,7 +109,7 @@ public abstract class TesmScreen extends Screen {
                 // 호버 Exit 처리
                 if(prevHoveredComponent != null) prevHoveredComponent.handleHoverExit();
                 // 호버 이벤트 처리
-                if(hoveredComponent != null) hoveredComponent.handleHover(mouseX, mouseY);
+                if(hoveredComponent != null) hoveredComponent.handleHover();
                 //MessageHelper.sendMessage(String.format("마우스(%d, %d), 대상 컴포넌트: %s", mouseX, mouseY, hoveredComponent.getId()));
             }
         }

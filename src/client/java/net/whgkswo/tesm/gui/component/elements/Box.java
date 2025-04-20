@@ -8,14 +8,12 @@ import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.GuiAxis;
-import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.gui.component.ParentComponent;
 import net.whgkswo.tesm.gui.component.bounds.Boundary;
 import net.whgkswo.tesm.gui.component.bounds.LinearBound;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.elements.features.Hoverable;
 import net.whgkswo.tesm.gui.component.elements.style.BoxStyle;
-import net.whgkswo.tesm.message.MessageHelper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -73,7 +71,7 @@ public class Box extends ParentComponent<Box, BoxStyle> implements Hoverable {
 
     @Override
     protected void renderSelf(DrawContext context) {
-        RelativeBound absoluteBound = getScreenRelativeBoundWithUpdate();
+        RelativeBound absoluteBound = getAbsoluteBoundWithUpdate();
 
         if(!backgroundColor.equals(TesmColor.TRANSPARENT)){
             RenderingHelper.fill(
@@ -93,7 +91,7 @@ public class Box extends ParentComponent<Box, BoxStyle> implements Hoverable {
     }
 
     @Override
-    protected RelativeBound getBound(){
+    public RelativeBound getBound(){
         return bound;
     }
 

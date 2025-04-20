@@ -26,7 +26,7 @@ public class TextLabel extends GuiComponent<TextLabel, TextLabelStyle> {
 
     @Override
     protected void renderSelf(DrawContext context){
-        RelativeBound absoluteBound = getScreenRelativeBoundWithUpdate();
+        RelativeBound absoluteBound = getAbsoluteBoundWithUpdate();
 
         RenderingHelper.fill(context, TesmColor.WHITE, absoluteBound);
 
@@ -52,7 +52,7 @@ public class TextLabel extends GuiComponent<TextLabel, TextLabelStyle> {
     }
 
     @Override
-    protected RelativeBound getBound() {
+    public RelativeBound getBound() {
         return bound;
     }
 
@@ -63,7 +63,7 @@ public class TextLabel extends GuiComponent<TextLabel, TextLabelStyle> {
 
 
     @Override
-    protected double getScreenRelativeWH(double parentWH, double childWH){
+    public double getAbsoluteWHRatio(double parentWH, double childWH){
         // 텍스트는 부모의 사이즈와 관계 없이 화면상의 크기가 일정함
         return childWH;
     }
