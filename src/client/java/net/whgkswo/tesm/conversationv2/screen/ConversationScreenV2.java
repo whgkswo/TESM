@@ -1,5 +1,6 @@
 package net.whgkswo.tesm.conversationv2.screen;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.whgkswo.tesm.conversationv2.ConversationHelper;
 import net.whgkswo.tesm.conversationv2.Flow;
@@ -77,6 +78,8 @@ public class ConversationScreenV2 extends TesmScreen {
                 .id("box2")
                 .bound(new RelativeBound(0.8, 0.25))
                 .backgroundColor(TesmColor.RED)
+                .topMarginRatio(0.05f)
+                .bottomMarginRatio(0.05f)
                 .build();
 
         BoxPanel boxPanel3 = BoxPanel.builder()
@@ -84,6 +87,8 @@ public class ConversationScreenV2 extends TesmScreen {
                 .id("box3")
                 .bound(new RelativeBound(0.8, 0.25))
                 .backgroundColor(TesmColor.ORANGE)
+                .topMarginRatio(0.05f)
+                .bottomMarginRatio(0.05f)
                 .build();
 
         BoxPanel boxPanel4 = BoxPanel.builder()
@@ -91,6 +96,8 @@ public class ConversationScreenV2 extends TesmScreen {
                 .id("box4")
                 .bound(new RelativeBound(0.8, 0.25))
                 .backgroundColor(TesmColor.YELLOW)
+                .topMarginRatio(0.05f)
+                .bottomMarginRatio(0.05f)
                 .build();
 
         BoxPanel boxPanel5 = BoxPanel.builder()
@@ -98,13 +105,17 @@ public class ConversationScreenV2 extends TesmScreen {
                 .id("box5")
                 .bound(new RelativeBound(0.8, 0.25))
                 .backgroundColor(TesmColor.GREEN)
+                .topMarginRatio(0.05f)
+                .bottomMarginRatio(0.05f)
                 .build();
 
         BoxPanel boxPanel6 = BoxPanel.builder()
                 .parent(boxPanel)
-                .id("box5")
+                .id("box6")
                 .bound(new RelativeBound(0.8, 0.25))
                 .backgroundColor(TesmColor.BLUE)
+                .topMarginRatio(0.05f)
+                .bottomMarginRatio(0.05f)
                 .build();
 
         BoxPanel boxPanelB = BoxPanel.builder()

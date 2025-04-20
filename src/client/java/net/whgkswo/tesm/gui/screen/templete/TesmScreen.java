@@ -3,8 +3,10 @@ package net.whgkswo.tesm.gui.screen.templete;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.util.Window;
 import net.minecraft.text.Text;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.colors.TesmColor;
@@ -27,6 +29,8 @@ public abstract class TesmScreen extends Screen {
     private GuiComponent<?, ?> hoveredComponent;
     private int prevMouseX = -1;
     private int prevMouseY = -1;
+    private double windowScaleBackup;
+    private static final double WINDOW_SCALE_FACTOR = 1;
 
     public TesmScreen(){
         this(false);
@@ -54,6 +58,10 @@ public abstract class TesmScreen extends Screen {
 
     @Override
     public void init(){
+        Window window = MinecraftClient.getInstance().getWindow();
+        windowScaleBackup = window.getScaleFactor();
+        window.setScaleFactor(WINDOW_SCALE_FACTOR);
+
         if(!initialized){
             // 틱 프리즈 (서버에 패킷 전송)
             if(shouldFreezeTicks()) ClientPlayNetworking.send(new SimpleReq(SimpleTask.TICK_FREEZE));
@@ -82,6 +90,8 @@ public abstract class TesmScreen extends Screen {
         // 다른 Gui들을 위해 셰이더 색상 초기화
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         super.close();
+        Window window = MinecraftClient.getInstance().getWindow();
+        window.setScaleFactor(windowScaleBackup);
     }
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta){

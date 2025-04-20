@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.util.Window;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.gui.colors.TesmColor;
@@ -78,9 +79,8 @@ public class RenderingHelper {
         int yPos = getYPos(context, yRatio, scale);
 
         context.getMatrices().push();
-        context.getMatrices().scale(scale,scale,1);
+        context.getMatrices().scale(scale ,scale,1);
         int textColor = getTextRgb(text);
-
         context.drawText(TEXT_RENDERER, text, xPos, yPos, textColor, shadowed);
 
         context.getMatrices().pop();

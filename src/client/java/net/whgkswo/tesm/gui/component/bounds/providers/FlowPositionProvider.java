@@ -47,7 +47,7 @@ public class FlowPositionProvider extends PositionProvider {
         // 손윗 형제들의 너비, 마진 합산
         xRatio += siblingBound[2];
         yRatio += siblingBound[3];
-        // 자신의 마진 합산
+        // 자신의 이전 마진 합산
         xRatio += component.getLeftMarginRatio();
         yRatio += component.getTopMarginRatio();
 
@@ -92,14 +92,18 @@ public class FlowPositionProvider extends PositionProvider {
             if (parentAxis == GuiAxis.HORIZONTAL) {
                 siblingsWidthRatio += siblingsWidthRatio + sibling.getLeftMarginRatio() + sibling.getRightMarginRatio();
                 if (i < childIndex) {
-                    xOffset += siblingBound.getWidthRatio(); // 수평축으로 형 요소들의 공간 더하기
-                    xOffset += sibling.getRightMarginRatio(); // 마진도 더하기
+                    // 수평축으로 형 요소들의 공간 더하기
+                    xOffset += siblingBound.getWidthRatio();
+                    // 마진도 더하기
+                    xOffset += sibling.getLeftMarginRatio() + sibling.getRightMarginRatio();
                 }
             } else { // VERTICAL
                 siblingsHeightRatio += siblingBound.getHeightRatio() + sibling.getTopMarginRatio() + sibling.getBottomMarginRatio();
                 if (i < childIndex) {
-                    yOffset += siblingBound.getHeightRatio(); // 수직축으로 형 요소들의 공간 더하기
-                    yOffset += sibling.getBottomMarginRatio();
+                    // 수직축으로 형 요소들의 공간 더하기
+                    yOffset += siblingBound.getHeightRatio();
+                    // 마진도 더하기
+                    yOffset += sibling.getTopMarginRatio() + sibling.getBottomMarginRatio();
                 }
             }
         }

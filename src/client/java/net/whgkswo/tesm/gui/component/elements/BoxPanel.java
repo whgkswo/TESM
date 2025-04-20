@@ -2,7 +2,9 @@ package net.whgkswo.tesm.gui.component.elements;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.util.Window;
 import net.whgkswo.tesm.gui.GuiDirection;
 import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.colors.TesmColor;
