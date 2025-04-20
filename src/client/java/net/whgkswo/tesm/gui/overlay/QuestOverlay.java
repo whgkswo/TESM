@@ -3,15 +3,8 @@ package net.whgkswo.tesm.gui.overlay;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderTickCounter;
-import net.minecraft.text.Text;
 import net.whgkswo.tesm.conversation.quest.objective.QuestObjective;
-import net.whgkswo.tesm.gui.HorizontalAlignment;
-import net.whgkswo.tesm.gui.component.FadeSequence;
 import net.whgkswo.tesm.gui.component.TransitionStatus;
-import net.whgkswo.tesm.gui.component.bounds.Boundary;
-import net.whgkswo.tesm.gui.component.bounds.RectangularBound;
-import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
-import net.whgkswo.tesm.gui.component.elements.Box;
 import net.whgkswo.tesm.gui.component.elements.TextPopUp;
 
 import java.util.HashSet;

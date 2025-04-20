@@ -11,7 +11,7 @@ import net.whgkswo.tesm.gui.component.bounds.LinearBound;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.elements.style.BoxStyle;
 
-@SuperBuilder
+//@SuperBuilder
 public class StraightLine extends GuiComponent<StraightLine, BoxStyle> {
     private GuiAxis direction;
     private int offset;

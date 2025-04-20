@@ -11,7 +11,7 @@ import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.gui.component.GuiAxis;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
-import net.whgkswo.tesm.gui.component.elements.Box;
+import net.whgkswo.tesm.gui.component.elements.BoxPanel;
 import net.whgkswo.tesm.networking.payload.data.SimpleReq;
 import net.whgkswo.tesm.networking.payload.id.SimpleTask;
 
@@ -23,7 +23,7 @@ public abstract class TesmScreen extends Screen {
     private boolean shouldFreezeTicks = true;
     private boolean shouldRenderBackground = true;
     private boolean initialized;
-    public final Box rootComponent;
+    public final BoxPanel rootComponent;
     private GuiComponent<?, ?> hoveredComponent;
     private int prevMouseX = -1;
     private int prevMouseY = -1;
@@ -35,7 +35,7 @@ public abstract class TesmScreen extends Screen {
     public TesmScreen(boolean shouldFreezeTicks){
         super(Text.literal(""));
         this.shouldFreezeTicks = shouldFreezeTicks;
-        rootComponent = Box.builder()
+        rootComponent = BoxPanel.builder()
                 .bound(RelativeBound.FULL_SCREEN)
                 .backgroundColor(TesmColor.TRANSPARENT)
                 .edgeColor(TesmColor.TRANSPARENT)
@@ -43,7 +43,6 @@ public abstract class TesmScreen extends Screen {
                 .axis(GuiAxis.VERTICAL)
                 .id("root")
                 .build()
-                .register(null)
         ;
     }
     @Override

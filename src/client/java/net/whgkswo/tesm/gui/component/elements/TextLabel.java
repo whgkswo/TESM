@@ -2,6 +2,8 @@ package net.whgkswo.tesm.gui.component.elements;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -12,17 +14,23 @@ import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
+import net.whgkswo.tesm.gui.component.elements.builder.TextLabelBuilder;
 import net.whgkswo.tesm.gui.component.elements.style.TextLabelStyle;
 
-@SuperBuilder
+@NoArgsConstructor
+@Setter
+// 스타일 요소가 아닌 필드는 여기에 초기값 명시
 public class TextLabel extends GuiComponent<TextLabel, TextLabelStyle> {
     @Getter
     private Text text;
     @Getter
-    @Builder.Default
-    private float fontScale = 1.0f;
+    private float fontScale;
     private RelativeBound bound;
     private TesmColor backgroundColor;
+
+    public static TextLabelBuilder builder(){
+        return new TextLabelBuilder();
+    }
 
     @Override
     protected void renderSelf(DrawContext context){

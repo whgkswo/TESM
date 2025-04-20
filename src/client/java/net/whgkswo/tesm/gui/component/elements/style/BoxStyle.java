@@ -13,6 +13,7 @@ import net.whgkswo.tesm.gui.screen.VerticalAlignment;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+// 참조타입 초기값은 디폴트 스타일로 처리
 public class BoxStyle implements GuiStyle, DefaultStyleProvider<BoxStyle> {
     // GuiComponent
     private HorizontalAlignment selfHorizontalAlignment;

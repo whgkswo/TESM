@@ -11,6 +11,7 @@ import net.whgkswo.tesm.gui.screen.VerticalAlignment;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+// 참조타입 초기값은 디폴트 스타일로 처리
 public class TextLabelStyle implements GuiStyle, DefaultStyleProvider<TextLabelStyle>{
     // GuiComponent
     private HorizontalAlignment selfHorizontalAlignment;
@@ -25,7 +26,6 @@ public class TextLabelStyle implements GuiStyle, DefaultStyleProvider<TextLabelS
             TextLabelStyle.builder()
                     .selfHorizontalAlignment(HorizontalAlignment.NONE)
                     .selfVerticalAlignment(VerticalAlignment.NONE)
-                    .fontScale(1.0f)
                     .backgroundColor(TesmColor.TRANSPARENT)
                     .build()
     );

@@ -24,12 +24,6 @@ repositories {
 		name = "CottonMC"
 		url = "https://server.bbkr.space/artifactory/libs-release"
 	}
-
-	// Modern UI
-	maven {
-		name 'IzzelAliz Maven'
-		url 'https://maven.izzel.io/releases/'
-	}
 }
 
 loom {

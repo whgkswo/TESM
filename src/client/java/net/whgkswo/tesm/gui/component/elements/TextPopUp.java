@@ -1,6 +1,5 @@
 package net.whgkswo.tesm.gui.component.elements;
 
-import lombok.experimental.SuperBuilder;
 import net.minecraft.client.gui.DrawContext;
 import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.colors.TesmColor;
@@ -8,13 +7,12 @@ import net.whgkswo.tesm.gui.component.FadeSequence;
 import net.whgkswo.tesm.gui.component.TransitionStatus;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 
-@SuperBuilder
 public class TextPopUp extends TextLabel{
     private FadeSequence fadeSequence;
     private int tick;
     private TransitionStatus status;
     private TesmColor color;
-    private Box background;
+    private BoxPanel background;
 
     @Override
     public void renderSelf(DrawContext context) {

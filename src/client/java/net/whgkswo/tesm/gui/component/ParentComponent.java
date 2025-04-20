@@ -2,6 +2,7 @@ package net.whgkswo.tesm.gui.component;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import net.minecraft.client.gui.DrawContext;
@@ -13,17 +14,14 @@ import net.whgkswo.tesm.gui.screen.VerticalAlignment;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuperBuilder
 @Getter
+@NoArgsConstructor
 public abstract class ParentComponent<T extends GuiComponent<T, S>, S extends GuiStyle> extends GuiComponent<T, S>{
-    @Builder.Default
     @Setter
-    private GuiAxis axis = GuiAxis.VERTICAL;
-    @Builder.Default
+    private GuiAxis axis;
     @Setter
-    private HorizontalAlignment childrenHorizontalAlignment = HorizontalAlignment.NONE;
-    @Builder.Default
-    private VerticalAlignment childrenVerticalAlignment = VerticalAlignment.NONE;
+    private HorizontalAlignment childrenHorizontalAlignment;
+    private VerticalAlignment childrenVerticalAlignment;
     private final List<GuiComponent<?, ?>> children = new ArrayList<>();
 
     public ParentComponent(ParentComponent<?, ?> parent, RelativeBound bound, GuiAxis axis, HorizontalAlignment childrenHorizontalAlignment) {
@@ -44,7 +42,7 @@ public abstract class ParentComponent<T extends GuiComponent<T, S>, S extends Gu
 
     public void addChild(GuiComponent<?, ?> child){
         if(!children.contains(child)) children.add(child);
-        if(child.getParent() == null || child.getParent() != this) child.register(this);
+        if(child.getParent() == null || child.getParent() != this) child.setParent(this);
     }
 
     @Override

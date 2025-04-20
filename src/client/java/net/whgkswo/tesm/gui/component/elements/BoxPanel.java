@@ -2,6 +2,8 @@ package net.whgkswo.tesm.gui.component.elements;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import net.minecraft.client.gui.DrawContext;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
@@ -12,25 +14,32 @@ import net.whgkswo.tesm.gui.component.ParentComponent;
 import net.whgkswo.tesm.gui.component.bounds.Boundary;
 import net.whgkswo.tesm.gui.component.bounds.LinearBound;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
+import net.whgkswo.tesm.gui.component.elements.builder.BoxPanelBuilder;
 import net.whgkswo.tesm.gui.component.elements.features.Hoverable;
 import net.whgkswo.tesm.gui.component.elements.style.BoxStyle;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@SuperBuilder
-public class Box extends ParentComponent<Box, BoxStyle> implements Hoverable {
-    @Builder.Default
+// 스타일 요소가 아닌 필드는 여기에 초기값 명시
+public class BoxPanel extends ParentComponent<BoxPanel, BoxStyle> implements Hoverable {
     private Map<LineSide, StraightLine> lines = new HashMap<>();
     @Getter
+    @Setter
     private RelativeBound bound;
+    @Setter
     @Getter
     private TesmColor edgeColor;
+    @Setter
     @Getter
     private TesmColor backgroundColor;
     private boolean isHovered;
 
-    public Box(ParentComponent parent, RelativeBound bound, GuiAxis axis, HorizontalAlignment childrenAlignment, TesmColor edgeColor, TesmColor backgroundColor, int thickness) {
+    public BoxPanel(){
+        super();
+    }
+
+    public BoxPanel(ParentComponent parent, RelativeBound bound, GuiAxis axis, HorizontalAlignment childrenAlignment, TesmColor edgeColor, TesmColor backgroundColor, int thickness) {
         super(parent, bound, axis, childrenAlignment);
         this.bound = bound;
         this.edgeColor = edgeColor;
@@ -67,6 +76,10 @@ public class Box extends ParentComponent<Box, BoxStyle> implements Hoverable {
                         GuiAxis.VERTICAL,
                         new LinearBound(Boundary.BoundType.FIXED, xRatio + widthRatio, yRatio, heightRatio, thickness), -thickness
                 ));
+    }
+
+    public static BoxPanelBuilder builder(){
+        return new BoxPanelBuilder();
     }
 
     @Override

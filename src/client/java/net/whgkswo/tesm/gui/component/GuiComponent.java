@@ -1,6 +1,5 @@
 package net.whgkswo.tesm.gui.component;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,11 +8,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.util.Window;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
-import net.whgkswo.tesm.gui.component.bounds.AbsolutePosition;
-import net.whgkswo.tesm.gui.component.bounds.FlowPositionProvider;
-import net.whgkswo.tesm.gui.component.bounds.PositionProvider;
-import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
-import net.whgkswo.tesm.gui.component.elements.Box;
+import net.whgkswo.tesm.gui.component.bounds.*;
+import net.whgkswo.tesm.gui.component.elements.BoxPanel;
 import net.whgkswo.tesm.gui.component.elements.features.Hoverable;
 import net.whgkswo.tesm.gui.component.elements.style.DefaultStyleProvider;
 import net.whgkswo.tesm.gui.component.elements.style.GuiStyle;
@@ -25,12 +21,12 @@ import org.jetbrains.annotations.Nullable;
 import java.lang.reflect.Field;
 import java.util.*;
 
-@SuperBuilder
 @NoArgsConstructor
 @Getter
 public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiStyle> {
+    @Setter
     private String id;
-    private String className;
+    @Setter
     private boolean shouldHide;
     @Setter
     private HorizontalAlignment selfHorizontalAlignment;
@@ -38,10 +34,11 @@ public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiSt
     private VerticalAlignment selfVerticalAlignment;
     @Nullable
     private ParentComponent<?, ?> parent;
-    @Builder.Default
     @Setter
-    private RelativeBound cachedAbsoluteBound = null;
+    private RelativeBound cachedAbsoluteBound;
+    @Setter
     private StylePreset<S> stylePreset;
+    @Setter
     private PositionProvider positionProvider;
 
     public GuiComponent(@Nullable ParentComponent<?, ?> parent){
@@ -68,20 +65,14 @@ public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiSt
         return (T) this;
     }
 
-    public T register(ParentComponent<?, ?> parent){
+    public void setParent(ParentComponent<?, ?> parent){
         if(parent != null && !parent.getChildren().contains(this)){
             this.parent = parent;
             parent.addChild(this);
         }
-        // 기본 포지션 정책은 플로우
-        if(positionProvider == null) positionProvider = new FlowPositionProvider(this, parent);
-
-        // 스타일 초기화
-        initializeStyle();
-        return self();
     }
 
-    public Set<GuiComponent<?, ?>> getHoveredComponents(int mouseX, int mouseY, Set<GuiComponent<?,?>> result, Box rootComponent){
+    public Set<GuiComponent<?, ?>> getHoveredComponents(int mouseX, int mouseY, Set<GuiComponent<?,?>> result, BoxPanel rootComponent){
         if(isMouseOver(mouseX, mouseY)){
             result.add(this);
             for (GuiComponent<?, ?> child : getChildren()){
@@ -130,7 +121,7 @@ public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiSt
 
     protected abstract Class<S> getStyleType();
 
-    private void initializeStyle(){
+    public void initializeStyle(){
         // 스타일이 없으면 디폴트 스타일 가져오기
         if(stylePreset == null) {
             Class<S> styleType = getStyleType();
@@ -244,10 +235,6 @@ public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiSt
 
     public RelativeBound getAbsoluteBoundWithUpdate(){
         cachedAbsoluteBound = getAbsoluteBound();
-        return cachedAbsoluteBound;
-    }
-
-    public RelativeBound getCachedAbsoluteBound(){
         return cachedAbsoluteBound;
     }
 

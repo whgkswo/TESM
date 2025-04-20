@@ -14,7 +14,7 @@ import net.whgkswo.tesm.gui.component.elements.style.BoxStyle;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuperBuilder
+//@SuperBuilder
 public class TextBox extends GuiComponent<TextBox, BoxStyle> {
     private static final double LINE_GAP_RATIO = 1.2;
     private TextRenderer textRenderer;
@@ -23,9 +23,9 @@ public class TextBox extends GuiComponent<TextBox, BoxStyle> {
     private double xMarginRatio;
     private double yMarginRatio;
     private HorizontalAlignment textAlignment;
-    private Box box;
+    private BoxPanel boxPanel;
 
-    public TextBox(ParentComponent parent, Box box, TextRenderer textRenderer, Text content, float fontScale,
+    public TextBox(ParentComponent parent, BoxPanel boxPanel, TextRenderer textRenderer, Text content, float fontScale,
                    double xMarginRatio, double yMarginRatio, HorizontalAlignment textAlignment) {
         super(parent);
         this.textRenderer = textRenderer;
@@ -60,7 +60,7 @@ public class TextBox extends GuiComponent<TextBox, BoxStyle> {
     }
 
     private void render(DrawContext context, TextRenderer textRenderer) {
-        RelativeBound bound = box.getBound();
+        RelativeBound bound = boxPanel.getBound();
         int screenWidth = context.getScaledWindowWidth();
 
         List<String> contentLines = splitContent(textRenderer, content.getString(), (int)(screenWidth * (1 - 2 * xMarginRatio) * bound.getWidthRatio() / fontScale));
