@@ -19,6 +19,7 @@ import net.whgkswo.tesm.gui.component.components.style.DefaultStyleProvider;
 import net.whgkswo.tesm.gui.component.components.style.GuiStyle;
 import net.whgkswo.tesm.gui.component.components.style.StylePreset;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
+import net.whgkswo.tesm.gui.screen.base.TesmScreen;
 import net.whgkswo.tesm.message.MessageHelper;
 import org.jetbrains.annotations.Nullable;
 
@@ -56,6 +57,7 @@ public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiSt
     private HoverHandler hoverHandler;
     @Setter
     private ClickHandler clickHandler;
+    private TesmScreen motherScreen;
 
     public GuiComponent(@Nullable ParentComponent<?, ?> parent){
         this.parent = parent;
@@ -64,6 +66,10 @@ public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiSt
     protected abstract void renderSelf(DrawContext context);
 
     public abstract RelativeBound getBound();
+
+    public void tryRender(DrawContext context){
+        if(!shouldHide) render(context);
+    }
 
     public void render(DrawContext context){
         // 자신 렌더링
@@ -106,6 +112,7 @@ public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiSt
             this.parent = parent;
             parent.addChild(this);
         }
+        if(parent != null && parent.getMotherScreen() != null) setMotherScreen(parent.getMotherScreen());
     }
 
     public Set<GuiComponent<?, ?>> getHoveredComponents(int mouseX, int mouseY, Set<GuiComponent<?,?>> result, BoxPanel rootComponent){
@@ -333,5 +340,30 @@ public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiSt
         switch (hoverType){
             case BACKGROUND -> this.hoverHandler = new BackgroundHoverHandler(this);
         }
+    }
+
+    public GuiComponent<?, ?> getDescendant(String id){
+        if(this.id.equals(id)) return this;
+
+        if (!this.getChildren().isEmpty()) {
+            for (GuiComponent<?, ?> child : getChildren()) {
+                GuiComponent<?, ?> descendant = child.getDescendant(id);
+                if (descendant != null) return descendant;
+            }
+        }
+        return null;
+    }
+
+    public void setMotherScreen(TesmScreen motherScreen){
+        // motherScreen이 이미 있는데 덮어씌우려고 시도하거나, 루트 컴포넌트가 아닌데 수동으로 넣을 수 없음(id 널체크는 단지 equals npe 때문에 넣은 거)
+        if(this.motherScreen != null || (id == null || !id.equals(TesmScreen.ROOT_ID)) && parent == null){
+            motherScreen.close();
+            MessageHelper.sendMessage("Mother Screen은 임의로 설정할 수 없습니다. 컴포넌트 ID: " + id);
+            return;
+        }
+        this.motherScreen = motherScreen;
+
+        // 루트 컴포넌트에 연결하지 않고 있다가 나중에 연결하는 경우를 대비해 자손들 재귀 호출 필요할 수 있음
+        // 이런 경우가 실제로 있을지는 모르겠음
     }
 }

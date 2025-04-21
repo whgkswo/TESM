@@ -16,6 +16,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
 import net.whgkswo.tesm.conversation.ConversationScreen;
 import net.whgkswo.tesm.conversationv2.screen.ConversationScreenV2;
+import net.whgkswo.tesm.conversationv2.screen.ExampleScreen;
 import net.whgkswo.tesm.data.ClientResourceHelper;
 import net.whgkswo.tesm.data.json.DecisionDeserializer;
 import net.whgkswo.tesm.data.json.DialogueTextDeserializer;
@@ -78,7 +79,7 @@ public class ConversationHelper {
         // 스크린 열기
         //client.setScreen(new ConversationScreen(convPartner));
         client.setScreen(new ConversationScreenV2(partnerInfo));
-        convOn = true;
+        //client.setScreen(new ExampleScreen(partnerInfo));
     }
 
     public static Queue<DialogueText> getTexts(String path){

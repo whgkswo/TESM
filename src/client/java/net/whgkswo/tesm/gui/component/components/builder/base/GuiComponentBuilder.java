@@ -12,7 +12,12 @@ import net.whgkswo.tesm.gui.component.components.features.base.ClickHandler;
 import net.whgkswo.tesm.gui.component.components.style.GuiStyle;
 import net.whgkswo.tesm.gui.component.components.style.StylePreset;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
+import net.whgkswo.tesm.gui.screen.base.TesmScreen;
 import net.whgkswo.tesm.lang.LanguageHelper;
+import net.whgkswo.tesm.message.MessageHelper;
+
+import java.util.List;
+import java.util.Set;
 
 // 원시타입 스타일 초기값은 여기에 명시
 public abstract class GuiComponentBuilder<C extends GuiComponent<C, S>,
@@ -101,7 +106,8 @@ public abstract class GuiComponentBuilder<C extends GuiComponent<C, S>,
     }
 
     protected C buildExtended(C component){
-        component.setParent(parent);
+        //TODO: 이거 왜 있는거임? setParent는 하위 빌더에서 처리 하는데
+        //component.setParent(parent);
 
         // 기본 ID 설정
         if(id == null || id.isBlank()){
@@ -110,12 +116,22 @@ public abstract class GuiComponentBuilder<C extends GuiComponent<C, S>,
             String code = LanguageHelper.generateRandomCode(8);
             component.setId(snakeType + "#" + code);
         }
+        // 식별자 중복 검사
+        if(!component.getId().equals(TesmScreen.ROOT_ID) && component.getMotherScreen() != null) {
+            Set<String> componentIdSet = component.getMotherScreen().getComponentIdSet();
+            if(componentIdSet.contains(component.getId())){
+                component.getMotherScreen().close();
+                MessageHelper.sendMessage("컴포넌트 식별자가 중복되었습니다: " + component.getId());
+            }else{
+                componentIdSet.add(component.getId());
+            }
+        }
 
         // 기본 포지션 정책은 플로우
         switch (this.positionType){
             case FIXED -> component.setPositionProvider(new FixedPositionProvider(component, parent));
             default -> component.setPositionProvider(new FlowPositionProvider(component, parent));
-        }
+        };
 
         // 스타일 초기화
         component.initializeStyle();

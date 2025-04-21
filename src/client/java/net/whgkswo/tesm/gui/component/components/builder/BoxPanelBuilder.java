@@ -6,6 +6,7 @@ import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.components.BoxPanel;
 import net.whgkswo.tesm.gui.component.components.builder.base.ParentComponentBuilder;
 import net.whgkswo.tesm.gui.component.components.style.BoxStyle;
+import net.whgkswo.tesm.gui.screen.base.TesmScreen;
 
 @NoArgsConstructor
 // 원시타입 스타일 초기값은 여기에 명시

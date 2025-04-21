@@ -1,6 +1,7 @@
 package net.whgkswo.tesm.gui.screen.base;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import lombok.Getter;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
 import net.minecraft.client.MinecraftClient;
@@ -15,6 +16,7 @@ import net.whgkswo.tesm.gui.component.GuiAxis;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.components.BoxPanel;
 import net.whgkswo.tesm.gui.component.components.features.base.ClickHandler;
+import net.whgkswo.tesm.message.MessageHelper;
 import net.whgkswo.tesm.networking.payload.data.SimpleReq;
 import net.whgkswo.tesm.networking.payload.id.SimpleTask;
 import org.lwjgl.glfw.GLFW;
@@ -33,6 +35,9 @@ public abstract class TesmScreen extends Screen {
     private int prevMouseY = -1;
     private double windowScaleBackup;
     private static final double WINDOW_SCALE_FACTOR = 1;
+    @Getter
+    private final Set<String> componentIdSet = new HashSet<>();
+    public static final String ROOT_ID = "root";
 
     public TesmScreen(){
         this(false);
@@ -47,9 +52,10 @@ public abstract class TesmScreen extends Screen {
                 .edgeColor(TesmColor.TRANSPARENT)
                 .childrenHorizontalAlignment(HorizontalAlignment.CENTER)
                 .axis(GuiAxis.VERTICAL)
-                .id("root")
+                .id(ROOT_ID)
                 .build()
-        ;
+                ;
+        rootComponent.setMotherScreen(this);
     }
     @Override
     public boolean shouldPause() {
@@ -100,7 +106,7 @@ public abstract class TesmScreen extends Screen {
         super.render(context, mouseX, mouseY, delta);
 
         // 컴포넌트 렌더링
-        rootComponent.render(context);
+        rootComponent.tryRender(context);
         // 마우스 호버링 처리
         handleHoverEvents(mouseX, mouseY);
     }
@@ -145,6 +151,15 @@ public abstract class TesmScreen extends Screen {
                         // 2순위: 형제 인덱스가 큰 순서로 정렬 (내림차순)
                         .thenComparing(GuiComponent::getChildIndex))
                 .orElse(null);
+    }
+
+    protected GuiComponent<?, ?> searchComponent(String id){
+        GuiComponent<?, ?> component = rootComponent.getDescendant(id);
+        if(component == null){
+            close();
+            MessageHelper.sendMessage("컴포넌트 검색에 실패했습니다: " + id);
+        }
+        return component;
     }
 
     private void registerMouseWheelEvent(){
