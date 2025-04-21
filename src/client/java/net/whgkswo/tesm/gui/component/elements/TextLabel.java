@@ -1,10 +1,9 @@
 package net.whgkswo.tesm.gui.component.elements;
 
-import lombok.Builder;
+import com.mojang.blaze3d.systems.RenderSystem;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.SuperBuilder;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -13,6 +12,7 @@ import net.minecraft.text.Text;
 import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.GuiComponent;
+import net.whgkswo.tesm.gui.component.bounds.AbsolutePosition;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.elements.builder.TextLabelBuilder;
 import net.whgkswo.tesm.gui.component.elements.style.TextLabelStyle;
@@ -28,6 +28,7 @@ public class TextLabel extends GuiComponent<TextLabel, TextLabelStyle> {
     private boolean shadowed;
     private RelativeBound bound;
     private TesmColor backgroundColor;
+    private SizeMode sizeMode;
 
     public static TextLabelBuilder builder(){
         return new TextLabelBuilder();
@@ -39,25 +40,72 @@ public class TextLabel extends GuiComponent<TextLabel, TextLabelStyle> {
 
         RenderingHelper.fill(context, backgroundColor, absoluteBound);
 
-        double fixedYRatio = absoluteBound.getYOffsetRatio();
-        RenderingHelper.renderText(context, fontScale, text, absoluteBound.getXOffsetRatio(), fixedYRatio, shadowed);
+        if(sizeMode.equals(SizeMode.RELATIVE_TO_PARENT)){
+            TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+            float baseFontHeight = textRenderer.fontHeight;
+
+            // 화면 높이 구하기 (픽셀 단위)
+            int screenHeight = MinecraftClient.getInstance().getWindow().getScaledHeight();
+
+            // 현재 바운드의 픽셀 높이 계산
+            double boundHeightPixels = absoluteBound.getHeightRatio() * screenHeight;
+
+            // 바운드 높이에 맞게 폰트 스케일 조정
+            float adjustedFontScale = (float)(boundHeightPixels / baseFontHeight);
+
+            // 조정된 폰트 스케일로 텍스트 렌더링
+            double fixedYRatio = absoluteBound.getYOffsetRatio();
+            RenderingHelper.renderText(context, adjustedFontScale, text, absoluteBound.getXOffsetRatio(), fixedYRatio, shadowed);
+        } else {
+            // 기존 폰트 스케일 사용
+            double fixedYRatio = absoluteBound.getYOffsetRatio();
+            RenderingHelper.renderText(context, fontScale, text, absoluteBound.getXOffsetRatio(), fixedYRatio, shadowed);
+        }
     }
 
     @Override
     protected void initializeSize(){
+        if(sizeMode.equals(SizeMode.ABSOLUTE_PIXELS)){
+            initializeSizeForAbsoluteMode();
+        }else { // RELATIVE_TO_PARENT
+            initializeSizeForRelativeMode();
+        }
+    }
+
+
+    protected RelativeBound initializeSizeForAbsoluteMode(){
         // 텍스트 사이즈에 따른 바운드 자동 설정
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+
         double textWidth = textRenderer.getWidth(text) * fontScale;
         double textHeight = textRenderer.fontHeight * fontScale;
 
-        Window window = MinecraftClient.getInstance().getWindow();
-        int screenWidth = window.getScaledWidth();
-        int screenHeight = window.getScaledHeight();
+        AbsolutePosition parentPosition = getParent().getAbsolutePosition();
 
         bound = new RelativeBound(
-                textWidth / screenWidth,
-                textHeight / screenHeight
+                textWidth / parentPosition.getWidth(),
+                textHeight / parentPosition.getHeight()
         );
+        return bound;
+    }
+
+    protected RelativeBound initializeSizeForRelativeMode(){
+        // 텍스트 사이즈에 따른 바운드 자동 설정
+        TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+
+        Window window = MinecraftClient.getInstance().getWindow();
+        double windowScale = (double) window.getScaledHeight() / RenderingHelper.DEFAULT_WINDOW_HEIGHT;
+
+        double textWidth = textRenderer.getWidth(text) * fontScale * windowScale;
+        double textHeight = textRenderer.fontHeight * fontScale * windowScale;
+
+        AbsolutePosition parentPosition = getParent().getAbsolutePosition();
+
+        bound = new RelativeBound(
+                textWidth / parentPosition.getWidth(),
+                textHeight / parentPosition.getHeight()
+        );
+        return bound;
     }
 
     @Override
@@ -70,10 +118,8 @@ public class TextLabel extends GuiComponent<TextLabel, TextLabelStyle> {
         return TextLabelStyle.class;
     }
 
-
-    @Override
-    public double getAbsoluteWHRatio(double parentWH, double childWH){
-        // 텍스트는 부모의 사이즈와 관계 없이 화면상의 크기가 일정함
-        return childWH;
+    public enum SizeMode{
+        ABSOLUTE_PIXELS,
+        RELATIVE_TO_PARENT
     }
 }

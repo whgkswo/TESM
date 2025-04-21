@@ -13,6 +13,7 @@ public class TextLabelBuilder extends GuiComponentBuilder<TextLabel, TextLabelBu
     private float fontScale = 1.0f;
     private boolean shadowed = false;
     private TesmColor backgroundColor;
+    private TextLabel.SizeMode sizeMode;
 
     @Override
     public TextLabelBuilder self() {
@@ -39,6 +40,7 @@ public class TextLabelBuilder extends GuiComponentBuilder<TextLabel, TextLabelBu
         textLabel.setFontScale(this.fontScale);
         textLabel.setShadowed(this.shadowed);
         textLabel.setBackgroundColor(this.backgroundColor);
+        textLabel.setSizeMode(this.sizeMode);
 
         return register(textLabel);
     }
@@ -60,6 +62,11 @@ public class TextLabelBuilder extends GuiComponentBuilder<TextLabel, TextLabelBu
 
     public TextLabelBuilder backgroundColor(TesmColor backgroundColor) {
         this.backgroundColor = backgroundColor;
+        return this;
+    }
+
+    public TextLabelBuilder sizeMode(TextLabel.SizeMode sizeMode){
+        this.sizeMode = sizeMode;
         return this;
     }
 }

@@ -16,7 +16,7 @@ import net.whgkswo.tesm.gui.screen.TextSize;
 
 public class RenderingHelper {
     public static final TextRenderer TEXT_RENDERER = MinecraftClient.getInstance().textRenderer;
-    public static final double DEFAULT_TEXT_VERTICAL_WIDTH_RATIO = (double) 1 / 50;
+    public static final int DEFAULT_WINDOW_HEIGHT = 360;
     public static void renderText(HorizontalAlignment alignment, DrawContext context, float scale, String str,
                                   int x, int y, int color){
         context.getMatrices().push();

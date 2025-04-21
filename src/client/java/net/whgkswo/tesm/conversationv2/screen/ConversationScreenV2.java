@@ -127,11 +127,14 @@ public class ConversationScreenV2 extends TesmScreen {
 
         TextLabel textLabel = TextLabel.builder()
                 .parent(boxPanelB)
-                .fontScale(2f)
+                //.fontScale(0.5f)
                 .text(Text.literal("텍스트1"))
+                .backgroundColor(TesmColor.GREEN)
+                .sizeMode(TextLabel.SizeMode.RELATIVE_TO_PARENT)
+                .selfHorizontalAlignment(HorizontalAlignment.RIGHT)
                 .build();
 
-        TextLabel textLabel2 = TextLabel.builder()
+        /*TextLabel textLabel2 = TextLabel.builder()
                 .parent(boxPanelB)
                 .fontScale(2f)
                 .text(Text.literal("텍스트2"))
@@ -153,6 +156,6 @@ public class ConversationScreenV2 extends TesmScreen {
                 .parent(boxPanelB)
                 .fontScale(2f)
                 .text(Text.literal("텍스트5"))
-                .build();
+                .build();*/
     }
 }

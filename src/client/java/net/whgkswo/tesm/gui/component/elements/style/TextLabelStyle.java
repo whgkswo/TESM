@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
+import net.whgkswo.tesm.gui.component.elements.TextLabel;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
 
 @Builder
@@ -20,6 +21,7 @@ public class TextLabelStyle implements GuiStyle, DefaultStyleProvider<TextLabelS
     private float fontScale;
     private RelativeBound bound;
     private TesmColor backgroundColor;
+    private TextLabel.SizeMode sizeMode;
 
     public static StylePreset<TextLabelStyle> DEFAULT = new StylePreset<>(
             "default_text",
@@ -27,6 +29,7 @@ public class TextLabelStyle implements GuiStyle, DefaultStyleProvider<TextLabelS
                     .selfHorizontalAlignment(HorizontalAlignment.NONE)
                     .selfVerticalAlignment(VerticalAlignment.NONE)
                     .backgroundColor(TesmColor.TRANSPARENT)
+                    .sizeMode(TextLabel.SizeMode.RELATIVE_TO_PARENT)
                     .build()
     );
 

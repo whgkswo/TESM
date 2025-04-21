@@ -134,7 +134,7 @@ public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiSt
                 && absoluteBound.y1() <= mouseY && absoluteBound.y2() >= mouseY;
     }
 
-    protected AbsolutePosition getAbsolutePosition(){
+    public AbsolutePosition getAbsolutePosition(){
         RelativeBound bound = this.getAbsoluteBound();
 
         Window window = MinecraftClient.getInstance().getWindow();
