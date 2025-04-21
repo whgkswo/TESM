@@ -7,6 +7,7 @@ import net.whgkswo.tesm.gui.GuiDirection;
 import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.GuiAxis;
+import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.gui.component.ParentComponent;
 import net.whgkswo.tesm.gui.component.bounds.LinearBound;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
@@ -52,13 +53,27 @@ public class BoxPanel extends ParentComponent<BoxPanel, BoxStyle> implements Bac
                     absoluteBound.getHeightRatio()
             );
         }
+    }
 
+    private void renderEdges(DrawContext context){
         // 모서리 없으면 생성
         generateEdgeLines();
         // 모서리 출력
         edgeLines.forEach((lineSide, straightLine) -> {
             straightLine.renderSelf(context);
         });
+    }
+
+    @Override
+    public void render(DrawContext context){
+        // 자신 렌더링
+        renderSelfWithScissor(context);
+        // 자식 렌더링
+        for (GuiComponent<?, ?> child : getChildren()){
+            child.render(context);
+        }
+        // 자식들 위에 테두리 렌더링
+        renderEdges(context);
     }
 
     public void generateEdgeLines(){

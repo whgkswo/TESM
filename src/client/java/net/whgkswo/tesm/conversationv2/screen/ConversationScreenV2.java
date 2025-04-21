@@ -69,7 +69,7 @@ public class ConversationScreenV2 extends TesmScreen {
                 .childrenHorizontalAlignment(HorizontalAlignment.CENTER)
                 .childrenVerticalAlignment(VerticalAlignment.CENTER)
                 .backgroundColor(TesmColor.RODEO_DUST)
-                .edgeColor(TesmColor.CREAM.withAlpha(100))
+                .edgeColor(TesmColor.CREAM/*.withAlpha(100)*/)
                 .edgeThickness(10)
                 .horizontalGap(0.1)
                 .verticalGap(0.05)
@@ -134,7 +134,7 @@ public class ConversationScreenV2 extends TesmScreen {
                 .childrenHorizontalAlignment(HorizontalAlignment.CENTER)
                 .id("box2")
                 .stylePreset(BoxStyle.TEST)
-                .edgeColor(TesmColor.CREAM.withAlpha(100))
+                .edgeColor(TesmColor.CREAM/*.withAlpha(100)*/)
                 .edgeThickness(10)
                 .build();
 
