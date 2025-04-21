@@ -69,7 +69,7 @@ public class ConversationScreenV2 extends TesmScreen {
                 .childrenHorizontalAlignment(HorizontalAlignment.CENTER)
                 .childrenVerticalAlignment(VerticalAlignment.CENTER)
                 .backgroundColor(TesmColor.RODEO_DUST)
-                .edgeColor(TesmColor.CREAM)
+                .edgeColor(TesmColor.CREAM.withAlpha(100))
                 .edgeThickness(10)
                 .horizontalGap(0.1)
                 .verticalGap(0.05)
@@ -134,6 +134,8 @@ public class ConversationScreenV2 extends TesmScreen {
                 .childrenHorizontalAlignment(HorizontalAlignment.CENTER)
                 .id("box2")
                 .stylePreset(BoxStyle.TEST)
+                .edgeColor(TesmColor.CREAM.withAlpha(100))
+                .edgeThickness(10)
                 .build();
 
         TextLabel textLabel = TextLabel.builder()
@@ -145,9 +147,10 @@ public class ConversationScreenV2 extends TesmScreen {
                 .selfHorizontalAlignment(HorizontalAlignment.RIGHT)
                 .build();
 
-        /*TextLabel textLabel2 = TextLabel.builder()
+        TextLabel textLabel2 = TextLabel.builder()
                 .parent(boxPanelB)
                 .fontScale(2f)
+                .backgroundColor(TesmColor.GREEN)
                 .text(Text.literal("텍스트2"))
                 .build();
 
@@ -167,6 +170,6 @@ public class ConversationScreenV2 extends TesmScreen {
                 .parent(boxPanelB)
                 .fontScale(2f)
                 .text(Text.literal("텍스트5"))
-                .build();*/
+                .build();
     }
 }

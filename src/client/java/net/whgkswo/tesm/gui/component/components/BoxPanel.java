@@ -11,9 +11,7 @@ import net.whgkswo.tesm.gui.component.ParentComponent;
 import net.whgkswo.tesm.gui.component.bounds.LinearBound;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.components.builder.BoxPanelBuilder;
-import net.whgkswo.tesm.gui.component.components.features.BackgroundHoverHandler;
 import net.whgkswo.tesm.gui.component.components.features.base.BackgroundComponent;
-import net.whgkswo.tesm.gui.component.components.features.base.HoverHandler;
 import net.whgkswo.tesm.gui.component.components.style.BoxStyle;
 
 import java.util.HashMap;
@@ -55,39 +53,28 @@ public class BoxPanel extends ParentComponent<BoxPanel, BoxStyle> implements Bac
             );
         }
 
+        // 모서리 없으면 생성
+        generateEdgeLines();
         // 모서리 출력
         edgeLines.forEach((lineSide, straightLine) -> {
             straightLine.renderSelf(context);
         });
     }
 
-    @Override
-    protected void initializeStyleExtended(){
+    public void generateEdgeLines(){
+        if(!edgeLines.isEmpty()) return;
         // 모서리 생성
+        RelativeBound bound = getAbsoluteBound();
         double xRatio = bound.getXOffsetRatio();
         double yRatio = bound.getYOffsetRatio();
         double widthRatio = bound.getWidthRatio();
         double heightRatio = bound.getHeightRatio();
-        edgeLines.put(GuiDirection.TOP,
-                new StraightLine(
-                        edgeColor,
-                        new LinearBound(xRatio, yRatio, GuiAxis.HORIZONTAL, widthRatio, edgeThickness)
-                ));
-        edgeLines.put(GuiDirection.BOTTOM,
-                new StraightLine(
-                        edgeColor,
-                        new LinearBound(xRatio,yRatio, GuiAxis.HORIZONTAL, widthRatio, edgeThickness)
-                ));
-        edgeLines.put(GuiDirection.LEFT,
-                new StraightLine(
-                        edgeColor,
-                        new LinearBound(xRatio, yRatio, GuiAxis.VERTICAL, heightRatio, edgeThickness)
-                ));
-        edgeLines.put(GuiDirection.RIGHT,
-                new StraightLine(
-                        edgeColor,
-                        new LinearBound(xRatio, yRatio, GuiAxis.VERTICAL, heightRatio, edgeThickness)
-                ));
+
+        edgeLines.clear();
+        addEdgeLine(GuiDirection.TOP, new LinearBound(xRatio, yRatio, GuiAxis.HORIZONTAL, widthRatio, edgeThickness));
+        addEdgeLine(GuiDirection.BOTTOM, new LinearBound(xRatio, yRatio + heightRatio, GuiAxis.HORIZONTAL, widthRatio, edgeThickness, 0, -1 * edgeThickness));
+        addEdgeLine(GuiDirection.LEFT, new LinearBound(xRatio, yRatio, GuiAxis.VERTICAL, heightRatio, edgeThickness));
+        addEdgeLine(GuiDirection.RIGHT, new LinearBound(xRatio + widthRatio, yRatio, GuiAxis.VERTICAL, heightRatio, edgeThickness, -1 * edgeThickness, 0));
     }
 
     @Override
@@ -98,5 +85,9 @@ public class BoxPanel extends ParentComponent<BoxPanel, BoxStyle> implements Bac
     @Override
     protected Class<BoxStyle> getStyleType() {
         return BoxStyle.class;
+    }
+
+    private void addEdgeLine(GuiDirection direction, LinearBound bound){
+        edgeLines.put(direction, new StraightLine(this, edgeColor, bound));
     }
 }

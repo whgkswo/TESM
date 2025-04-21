@@ -130,28 +130,45 @@ public class RenderingHelper {
         RenderSystem.setShaderColor(1.0f,1.0f,1.0f,1.0f);
     }
 
-    public static void drawLine(DrawContext context, TesmColor color, LinearBound bound){
-        drawLine(context, color, bound.getXOffsetRatio(), bound.getYOffsetRatio(), bound.getAxis(), bound.getLengthRatio(), bound.getThickness());
+    public static void drawLine(DrawContext context, TesmColor color, int xOffset, int yOffset, GuiAxis axis, int length, int thickness){
+        if(color.getA() != 255){
+            RenderSystem.enableBlend();
+        }
+        int x2;
+        int y2;
+
+        if(axis.equals(GuiAxis.HORIZONTAL)){
+            x2 = xOffset + length;
+            y2 = yOffset + thickness;
+        }else { // VERTICAL
+            x2 = xOffset + thickness;
+            y2 = yOffset + length;
+        }
+        context.fill(xOffset, yOffset, x2, y2, color.getHexDecimalCode());
     }
 
-    public static void drawLine(DrawContext context, TesmColor color, double xOffsetRatio, double yOffsetRatio, GuiAxis axis, double lengthRatio, int thickness){
+    public static void drawLine(DrawContext context, TesmColor color, LinearBound bound){
+        drawLine(context, color, bound.getXOffsetRatio(), bound.getYOffsetRatio(), bound.getAxis(), bound.getLengthRatio(), bound.getThickness(), bound.getXOffset(), bound.getYOffset());
+    }
+
+    public static void drawLine(DrawContext context, TesmColor color, double xOffsetRatio, double yOffsetRatio, GuiAxis axis, double lengthRatio, int thickness, int xOffset, int yOffset){
         int screenWidth = context.getScaledWindowWidth();
         int screenHeight = context.getScaledWindowHeight();
 
         if(color.getA() != 255){
             RenderSystem.enableBlend();
         }
-        int x1 = (int) (screenWidth * xOffsetRatio);
-        int y1 = (int) (screenHeight * yOffsetRatio);
-        int x2;
-        int y2;
+        int x1 = (int) (screenWidth * xOffsetRatio) + xOffset;
+        int y1 = (int) (screenHeight * yOffsetRatio) + yOffset;
+        int x2 = xOffset;
+        int y2 = yOffset;
 
         if(axis.equals(GuiAxis.HORIZONTAL)){
-            x2 = (int) (screenWidth * (xOffsetRatio + lengthRatio));
-            y2 = thickness;
+            x2 += (int) (screenWidth * (xOffsetRatio + lengthRatio));
+            y2 += (int) (screenHeight * yOffsetRatio) + thickness;
         }else { // VERTICAL
-            x2 = thickness;
-            y2 = (int) (screenHeight * (yOffsetRatio + lengthRatio));
+            x2 += (int) (screenWidth * xOffsetRatio) + thickness;
+            y2 += (int) (screenHeight * (yOffsetRatio + lengthRatio));
         }
         context.fill(x1, y1, x2, y2, color.getHexDecimalCode());
     }

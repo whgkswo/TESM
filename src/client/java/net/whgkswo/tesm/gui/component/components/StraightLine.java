@@ -1,8 +1,10 @@
 package net.whgkswo.tesm.gui.component.components;
 
 import net.minecraft.client.gui.DrawContext;
+import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.GuiComponent;
+import net.whgkswo.tesm.gui.component.bounds.AbsolutePosition;
 import net.whgkswo.tesm.gui.component.bounds.LinearBound;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.components.style.BoxStyle;
@@ -12,11 +14,12 @@ public class StraightLine extends GuiComponent<StraightLine, BoxStyle> {
     private int offset;
     private TesmColor color;
     private LinearBound bound;
+    private GuiComponent<?, ?> master;
 
-    public StraightLine(TesmColor color, LinearBound bound) {
-        this(color, bound, 0);
+    public StraightLine(GuiComponent<?, ?> master, TesmColor color, LinearBound bound) {
+        this(master, color, bound, 0);
     }
-    public StraightLine(TesmColor color, LinearBound bound, int offset) {
+    public StraightLine(GuiComponent<?, ?> master, TesmColor color, LinearBound bound, int offset) {
         this.color = color;
         this.bound = bound;
         this.offset = offset;
@@ -24,8 +27,7 @@ public class StraightLine extends GuiComponent<StraightLine, BoxStyle> {
 
     @Override
     public void renderSelf(DrawContext context) {
-        /*RelativeBound parentBound = getParent().getAbsoluteBound();
-        RenderingHelper.drawLine(context, color, absoluteBound);*/
+        RenderingHelper.drawLine(context, color, bound);
     }
 
     @Override
