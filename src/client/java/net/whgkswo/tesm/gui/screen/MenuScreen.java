@@ -4,8 +4,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
 import net.whgkswo.tesm.gui.RenderingHelper;
-import net.whgkswo.tesm.gui.component.GuiAxis;
-import net.whgkswo.tesm.gui.screen.templete.TesmScreen;
+import net.whgkswo.tesm.gui.screen.base.TesmScreen;
 import org.lwjgl.glfw.GLFW;
 
 public class MenuScreen extends TesmScreen {

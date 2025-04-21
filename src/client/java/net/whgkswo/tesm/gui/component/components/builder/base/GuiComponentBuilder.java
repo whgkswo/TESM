@@ -8,6 +8,7 @@ import net.whgkswo.tesm.gui.component.bounds.providers.FlowPositionProvider;
 import net.whgkswo.tesm.gui.component.bounds.PositionType;
 import net.whgkswo.tesm.gui.component.components.features.HoverType;
 import net.whgkswo.tesm.gui.component.components.features.base.BackgroundComponent;
+import net.whgkswo.tesm.gui.component.components.features.base.ClickHandler;
 import net.whgkswo.tesm.gui.component.components.style.GuiStyle;
 import net.whgkswo.tesm.gui.component.components.style.StylePreset;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
@@ -32,6 +33,7 @@ public abstract class GuiComponentBuilder<C extends GuiComponent<C, S>,
     protected double leftMarginRatio;
     protected double rightMarginRatio;
     protected HoverType hoverType;
+    protected ClickHandler clickHandler;
 
     public B id(String id) {
         this.id = id;
@@ -90,6 +92,11 @@ public abstract class GuiComponentBuilder<C extends GuiComponent<C, S>,
 
     public B onHover(HoverType hoverType){
         this.hoverType = hoverType;
+        return self();
+    }
+
+    public B onClick(ClickHandler clickHandler){
+        this.clickHandler = clickHandler;
         return self();
     }
 

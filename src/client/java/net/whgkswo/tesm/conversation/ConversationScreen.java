@@ -13,9 +13,8 @@ import net.whgkswo.tesm.conversationv2.ConversationHelper;
 import net.whgkswo.tesm.general.GlobalVariablesClient;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.RenderingHelper;
-import net.whgkswo.tesm.gui.component.GuiAxis;
 import net.whgkswo.tesm.gui.helpers.GuiHelper;
-import net.whgkswo.tesm.gui.screen.templete.TesmScreen;
+import net.whgkswo.tesm.gui.screen.base.TesmScreen;
 import net.whgkswo.tesm.networking.payload.data.c2s_req.SetNbtReq;
 import org.lwjgl.glfw.GLFW;
 

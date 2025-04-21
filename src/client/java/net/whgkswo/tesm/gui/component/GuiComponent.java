@@ -13,6 +13,7 @@ import net.whgkswo.tesm.gui.component.bounds.providers.PositionProvider;
 import net.whgkswo.tesm.gui.component.components.BoxPanel;
 import net.whgkswo.tesm.gui.component.components.features.BackgroundHoverHandler;
 import net.whgkswo.tesm.gui.component.components.features.HoverType;
+import net.whgkswo.tesm.gui.component.components.features.base.ClickHandler;
 import net.whgkswo.tesm.gui.component.components.features.base.HoverHandler;
 import net.whgkswo.tesm.gui.component.components.style.DefaultStyleProvider;
 import net.whgkswo.tesm.gui.component.components.style.GuiStyle;
@@ -53,6 +54,8 @@ public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiSt
     @Setter
     private PositionProvider positionProvider;
     private HoverHandler hoverHandler;
+    @Setter
+    private ClickHandler clickHandler;
 
     public GuiComponent(@Nullable ParentComponent<?, ?> parent){
         this.parent = parent;

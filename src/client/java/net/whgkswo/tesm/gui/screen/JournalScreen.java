@@ -3,9 +3,8 @@ package net.whgkswo.tesm.gui.screen;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 import net.whgkswo.tesm.TESMMod;
-import net.whgkswo.tesm.gui.component.GuiAxis;
 import net.whgkswo.tesm.gui.helpers.GuiHelper;
-import net.whgkswo.tesm.gui.screen.templete.TesmScreen;
+import net.whgkswo.tesm.gui.screen.base.TesmScreen;
 import net.whgkswo.tesm.npcs.quests.Quests;
 import org.lwjgl.glfw.GLFW;
 

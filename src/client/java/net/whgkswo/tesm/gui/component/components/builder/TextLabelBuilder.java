@@ -35,6 +35,7 @@ public class TextLabelBuilder extends GuiComponentBuilder<TextLabel, TextLabelBu
         textLabel.setBottomMarginRatio(this.bottomMarginRatio);
         textLabel.setTopMarginRatio(this.topMarginRatio);
         textLabel.setLeftMarginRatio(this.leftMarginRatio);
+        textLabel.setClickHandler(this.clickHandler);
         // TextLabel 필드
         textLabel.setText(this.text);
         textLabel.setFontScale(this.fontScale);

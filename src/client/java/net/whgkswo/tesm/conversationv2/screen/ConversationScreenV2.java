@@ -10,9 +10,10 @@ import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.components.BoxPanel;
 import net.whgkswo.tesm.gui.component.components.TextLabel;
 import net.whgkswo.tesm.gui.component.components.features.HoverType;
+import net.whgkswo.tesm.gui.component.components.features.base.ClickHandler;
 import net.whgkswo.tesm.gui.component.components.style.BoxStyle;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
-import net.whgkswo.tesm.gui.screen.templete.TesmScreen;
+import net.whgkswo.tesm.gui.screen.base.TesmScreen;
 import net.whgkswo.tesm.networking.payload.data.s2c_res.ConversationNbtRes;
 
 public class ConversationScreenV2 extends TesmScreen {
@@ -70,10 +71,11 @@ public class ConversationScreenV2 extends TesmScreen {
                 .childrenVerticalAlignment(VerticalAlignment.CENTER)
                 .backgroundColor(TesmColor.RODEO_DUST)
                 .edgeColor(TesmColor.CREAM/*.withAlpha(100)*/)
-                .edgeThickness(10)
+                .edgeThickness(1)
                 .horizontalGap(0.1)
                 .verticalGap(0.05)
                 .onHover(HoverType.BACKGROUND)
+                .onClick(ClickHandler.of(this::close))
                 .build();
 
         BoxPanel boxPanel2 = BoxPanel.builder()

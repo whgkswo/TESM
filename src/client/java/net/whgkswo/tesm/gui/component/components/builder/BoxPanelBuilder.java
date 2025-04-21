@@ -36,6 +36,7 @@ public class BoxPanelBuilder extends ParentComponentBuilder<BoxPanel, BoxPanelBu
         boxPanel.setLeftMarginRatio(this.leftMarginRatio);
         boxPanel.setRightMarginRatio(this.rightMarginRatio);
         boxPanel.setBottomMarginRatio(this.bottomMarginRatio);
+        boxPanel.setClickHandler(this.clickHandler);
         // ParentComponent 필드
         boxPanel.setAxis(this.axis);
         boxPanel.setChildrenHorizontalAlignment(this.childrenHorizontalAlignment);

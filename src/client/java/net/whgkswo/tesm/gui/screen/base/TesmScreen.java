@@ -1,4 +1,4 @@
-package net.whgkswo.tesm.gui.screen.templete;
+package net.whgkswo.tesm.gui.screen.base;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -14,8 +14,10 @@ import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.gui.component.GuiAxis;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.components.BoxPanel;
+import net.whgkswo.tesm.gui.component.components.features.base.ClickHandler;
 import net.whgkswo.tesm.networking.payload.data.SimpleReq;
 import net.whgkswo.tesm.networking.payload.id.SimpleTask;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -102,6 +104,17 @@ public abstract class TesmScreen extends Screen {
         // 마우스 호버링 처리
         handleHoverEvents(mouseX, mouseY);
     }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button){
+        if(button == GLFW.GLFW_MOUSE_BUTTON_LEFT){
+            ClickHandler clickHandler = hoveredComponent.getClickHandler();
+            if(clickHandler == null) return false;
+            clickHandler.run();
+        }
+        return super.mouseClicked(mouseX,mouseY,button);
+    }
+
     private void handleHoverEvents(int mouseX, int mouseY){
         if(prevMouseX == mouseX && prevMouseY == mouseY) return;
 
