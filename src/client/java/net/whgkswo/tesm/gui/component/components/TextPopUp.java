@@ -1,4 +1,4 @@
-package net.whgkswo.tesm.gui.component.elements;
+package net.whgkswo.tesm.gui.component.components;
 
 import net.minecraft.client.gui.DrawContext;
 import net.whgkswo.tesm.gui.RenderingHelper;

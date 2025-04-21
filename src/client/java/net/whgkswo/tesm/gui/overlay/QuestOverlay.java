@@ -5,7 +5,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderTickCounter;
 import net.whgkswo.tesm.conversation.quest.objective.QuestObjective;
 import net.whgkswo.tesm.gui.component.TransitionStatus;
-import net.whgkswo.tesm.gui.component.elements.TextPopUp;
+import net.whgkswo.tesm.gui.component.components.TextPopUp;
 
 import java.util.HashSet;
 import java.util.Map;

@@ -1,5 +1,7 @@
 package net.whgkswo.tesm.lang;
 
+import java.util.Random;
+
 public class LanguageHelper {
     /**
      * 한글 단어에 적절한 조사를 반환합니다.
@@ -118,5 +120,18 @@ public class LanguageHelper {
         return str.replaceAll("([a-z])([A-Z])", "$1_$2") // 카멜케이스 → 스네이크케이스 변환
                 .replace(' ', '_') // 공백 → 언더스코어
                 .toLowerCase();
+    }
+
+    public static String generateRandomCode(int length) {
+        String chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(chars.length());
+            sb.append(chars.charAt(index));
+        }
+
+        return sb.toString();
     }
 }

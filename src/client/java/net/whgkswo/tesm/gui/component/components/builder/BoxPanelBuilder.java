@@ -1,11 +1,11 @@
-package net.whgkswo.tesm.gui.component.elements.builder;
+package net.whgkswo.tesm.gui.component.components.builder;
 
 import lombok.NoArgsConstructor;
 import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
-import net.whgkswo.tesm.gui.component.elements.BoxPanel;
-import net.whgkswo.tesm.gui.component.elements.builder.base.ParentComponentBuilder;
-import net.whgkswo.tesm.gui.component.elements.style.BoxStyle;
+import net.whgkswo.tesm.gui.component.components.BoxPanel;
+import net.whgkswo.tesm.gui.component.components.builder.base.ParentComponentBuilder;
+import net.whgkswo.tesm.gui.component.components.style.BoxStyle;
 
 @NoArgsConstructor
 // 원시타입 스타일 초기값은 여기에 명시

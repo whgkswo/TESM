@@ -1,4 +1,4 @@
-package net.whgkswo.tesm.gui.component.elements.style;
+package net.whgkswo.tesm.gui.component.components.style;
 
 import net.whgkswo.tesm.message.MessageHelper;
 

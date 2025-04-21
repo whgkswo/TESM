@@ -1,4 +1,4 @@
-package net.whgkswo.tesm.gui.component.elements.style;
+package net.whgkswo.tesm.gui.component.components.style;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
-import net.whgkswo.tesm.gui.component.elements.TextLabel;
+import net.whgkswo.tesm.gui.component.components.TextLabel;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
 
 @Builder

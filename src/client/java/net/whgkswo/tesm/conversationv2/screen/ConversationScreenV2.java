@@ -1,16 +1,14 @@
 package net.whgkswo.tesm.conversationv2.screen;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.whgkswo.tesm.conversationv2.ConversationHelper;
 import net.whgkswo.tesm.conversationv2.Flow;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.colors.TesmColor;
-import net.whgkswo.tesm.gui.component.bounds.PositionType;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
-import net.whgkswo.tesm.gui.component.elements.BoxPanel;
-import net.whgkswo.tesm.gui.component.elements.TextLabel;
-import net.whgkswo.tesm.gui.component.elements.style.BoxStyle;
+import net.whgkswo.tesm.gui.component.components.BoxPanel;
+import net.whgkswo.tesm.gui.component.components.TextLabel;
+import net.whgkswo.tesm.gui.component.components.style.BoxStyle;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
 import net.whgkswo.tesm.gui.screen.templete.TesmScreen;
 import net.whgkswo.tesm.networking.payload.data.s2c_res.ConversationNbtRes;

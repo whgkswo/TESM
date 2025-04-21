@@ -1,6 +1,5 @@
-package net.whgkswo.tesm.gui.component.elements.style;
+package net.whgkswo.tesm.gui.component.components.style;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;

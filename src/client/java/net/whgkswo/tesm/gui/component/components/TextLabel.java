@@ -1,6 +1,5 @@
-package net.whgkswo.tesm.gui.component.elements;
+package net.whgkswo.tesm.gui.component.components;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,8 +13,8 @@ import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.gui.component.bounds.AbsolutePosition;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
-import net.whgkswo.tesm.gui.component.elements.builder.TextLabelBuilder;
-import net.whgkswo.tesm.gui.component.elements.style.TextLabelStyle;
+import net.whgkswo.tesm.gui.component.components.builder.TextLabelBuilder;
+import net.whgkswo.tesm.gui.component.components.style.TextLabelStyle;
 
 @NoArgsConstructor
 @Setter

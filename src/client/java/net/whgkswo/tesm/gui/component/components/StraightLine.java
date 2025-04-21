@@ -1,14 +1,11 @@
-package net.whgkswo.tesm.gui.component.elements;
+package net.whgkswo.tesm.gui.component.components;
 
 import net.minecraft.client.gui.DrawContext;
-import net.whgkswo.tesm.gui.RenderingHelper;
-import net.whgkswo.tesm.gui.colors.BaseTexture;
 import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.GuiComponent;
-import net.whgkswo.tesm.gui.component.GuiAxis;
 import net.whgkswo.tesm.gui.component.bounds.LinearBound;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
-import net.whgkswo.tesm.gui.component.elements.style.BoxStyle;
+import net.whgkswo.tesm.gui.component.components.style.BoxStyle;
 
 //@SuperBuilder
 public class StraightLine extends GuiComponent<StraightLine, BoxStyle> {

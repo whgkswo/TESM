@@ -1,10 +1,8 @@
-package net.whgkswo.tesm.gui.component.elements;
+package net.whgkswo.tesm.gui.component.components;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.util.Window;
 import net.whgkswo.tesm.gui.GuiDirection;
 import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.colors.TesmColor;
@@ -12,9 +10,9 @@ import net.whgkswo.tesm.gui.component.GuiAxis;
 import net.whgkswo.tesm.gui.component.ParentComponent;
 import net.whgkswo.tesm.gui.component.bounds.LinearBound;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
-import net.whgkswo.tesm.gui.component.elements.builder.BoxPanelBuilder;
-import net.whgkswo.tesm.gui.component.elements.features.Hoverable;
-import net.whgkswo.tesm.gui.component.elements.style.BoxStyle;
+import net.whgkswo.tesm.gui.component.components.builder.BoxPanelBuilder;
+import net.whgkswo.tesm.gui.component.components.features.Hoverable;
+import net.whgkswo.tesm.gui.component.components.style.BoxStyle;
 
 import java.util.HashMap;
 import java.util.Map;

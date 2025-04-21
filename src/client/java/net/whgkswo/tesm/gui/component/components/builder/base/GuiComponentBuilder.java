@@ -1,4 +1,4 @@
-package net.whgkswo.tesm.gui.component.elements.builder.base;
+package net.whgkswo.tesm.gui.component.components.builder.base;
 
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.component.GuiComponent;
@@ -6,9 +6,10 @@ import net.whgkswo.tesm.gui.component.ParentComponent;
 import net.whgkswo.tesm.gui.component.bounds.providers.FixedPositionProvider;
 import net.whgkswo.tesm.gui.component.bounds.providers.FlowPositionProvider;
 import net.whgkswo.tesm.gui.component.bounds.PositionType;
-import net.whgkswo.tesm.gui.component.elements.style.GuiStyle;
-import net.whgkswo.tesm.gui.component.elements.style.StylePreset;
+import net.whgkswo.tesm.gui.component.components.style.GuiStyle;
+import net.whgkswo.tesm.gui.component.components.style.StylePreset;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
+import net.whgkswo.tesm.lang.LanguageHelper;
 
 public abstract class GuiComponentBuilder<C extends GuiComponent<C, S>,
         B extends GuiComponentBuilder<C, B, S>,
@@ -85,6 +86,14 @@ public abstract class GuiComponentBuilder<C extends GuiComponent<C, S>,
 
     protected C register(C component){
         component.setParent(parent);
+
+        // 기본 ID 설정
+        if(id == null || id.isBlank()){
+            String type = component.getClass().getSimpleName();
+            String snakeType = LanguageHelper.toSnakeCase(type);
+            String code = LanguageHelper.generateRandomCode(8);
+            component.setId(snakeType + "#" + code);
+        }
 
         // 기본 포지션 정책은 플로우
         switch (this.positionType){

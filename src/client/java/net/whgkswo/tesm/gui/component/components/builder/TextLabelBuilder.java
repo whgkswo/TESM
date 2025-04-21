@@ -1,10 +1,10 @@
-package net.whgkswo.tesm.gui.component.elements.builder;
+package net.whgkswo.tesm.gui.component.components.builder;
 
 import net.minecraft.text.Text;
 import net.whgkswo.tesm.gui.colors.TesmColor;
-import net.whgkswo.tesm.gui.component.elements.TextLabel;
-import net.whgkswo.tesm.gui.component.elements.builder.base.GuiComponentBuilder;
-import net.whgkswo.tesm.gui.component.elements.style.TextLabelStyle;
+import net.whgkswo.tesm.gui.component.components.TextLabel;
+import net.whgkswo.tesm.gui.component.components.builder.base.GuiComponentBuilder;
+import net.whgkswo.tesm.gui.component.components.style.TextLabelStyle;
 
 // 원시타입 스타일 초기값은 여기에 명시
 public class TextLabelBuilder extends GuiComponentBuilder<TextLabel, TextLabelBuilder, TextLabelStyle> {
