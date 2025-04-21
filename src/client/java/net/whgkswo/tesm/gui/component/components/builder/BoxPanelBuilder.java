@@ -40,6 +40,8 @@ public class BoxPanelBuilder extends ParentComponentBuilder<BoxPanel, BoxPanelBu
         boxPanel.setAxis(this.axis);
         boxPanel.setChildrenHorizontalAlignment(this.childrenHorizontalAlignment);
         boxPanel.setChildrenVerticalAlignment(this.childrenVerticalAlignment);
+        boxPanel.setHorizontalGap(this.horizontalGap);
+        boxPanel.setVerticalGap(this.verticalGap);
         // BoxPanel 필드
         boxPanel.setBound(this.bound);
         boxPanel.setEdgeColor(this.edgeColor);

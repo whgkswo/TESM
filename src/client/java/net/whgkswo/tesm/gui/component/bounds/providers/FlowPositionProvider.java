@@ -91,19 +91,27 @@ public class FlowPositionProvider extends PositionProvider {
 
             if (parentAxis == GuiAxis.HORIZONTAL) {
                 siblingsWidthRatio += siblingsWidthRatio + sibling.getLeftMarginRatio() + sibling.getRightMarginRatio();
+                // 부모의 갭 더하기 (반복문은 자기자신 제외니까 형제수 -1 됨)
+                siblingsWidthRatio += parent.getHorizontalGap();
                 if (i < childIndex) {
                     // 수평축으로 형 요소들의 공간 더하기
                     xOffset += siblingBound.getWidthRatio();
                     // 마진도 더하기
                     xOffset += sibling.getLeftMarginRatio() + sibling.getRightMarginRatio();
+                    // 부모 갭 더하기(손윗 형제마다 하나씩)
+                    xOffset += parent.getHorizontalGap();
                 }
             } else { // VERTICAL
                 siblingsHeightRatio += siblingBound.getHeightRatio() + sibling.getTopMarginRatio() + sibling.getBottomMarginRatio();
+                // 부모의 갭 더하기 (반복문은 자기자신 제외니까 형제수 -1 됨)
+                siblingsHeightRatio += parent.getVerticalGap();
                 if (i < childIndex) {
                     // 수직축으로 형 요소들의 공간 더하기
                     yOffset += siblingBound.getHeightRatio();
                     // 마진도 더하기
                     yOffset += sibling.getTopMarginRatio() + sibling.getBottomMarginRatio();
+                    // 부모 갭 더하기(손윗 형제마다 하나씩)
+                    yOffset += parent.getVerticalGap();
                 }
             }
         }

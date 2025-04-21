@@ -11,6 +11,7 @@ import net.whgkswo.tesm.gui.component.components.style.StylePreset;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
 import net.whgkswo.tesm.lang.LanguageHelper;
 
+// 원시타입 스타일 초기값은 여기에 명시
 public abstract class GuiComponentBuilder<C extends GuiComponent<C, S>,
         B extends GuiComponentBuilder<C, B, S>,
         S extends GuiStyle>

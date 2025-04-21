@@ -21,6 +21,8 @@ public abstract class ParentComponent<T extends GuiComponent<T, S>, S extends Gu
     @Setter
     private HorizontalAlignment childrenHorizontalAlignment;
     private VerticalAlignment childrenVerticalAlignment;
+    private double horizontalGap;
+    private double verticalGap;
     private final List<GuiComponent<?, ?>> children = new ArrayList<>();
 
     public ParentComponent(ParentComponent<?, ?> parent, RelativeBound bound, GuiAxis axis, HorizontalAlignment childrenHorizontalAlignment) {
@@ -56,5 +58,13 @@ public abstract class ParentComponent<T extends GuiComponent<T, S>, S extends Gu
 
     public void setChildrenVerticalAlignment(VerticalAlignment childrenVerticalAlignment){
         this.childrenVerticalAlignment = childrenVerticalAlignment;
+    }
+
+    public void setHorizontalGap(double horizontalGap){
+        this.horizontalGap = horizontalGap;
+    }
+
+    public void setVerticalGap(double verticalGap){
+        this.verticalGap = verticalGap;
     }
 }
