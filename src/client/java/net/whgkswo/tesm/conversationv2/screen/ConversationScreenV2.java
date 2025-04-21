@@ -5,9 +5,11 @@ import net.whgkswo.tesm.conversationv2.ConversationHelper;
 import net.whgkswo.tesm.conversationv2.Flow;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.colors.TesmColor;
+import net.whgkswo.tesm.gui.component.bounds.PositionType;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.components.BoxPanel;
 import net.whgkswo.tesm.gui.component.components.TextLabel;
+import net.whgkswo.tesm.gui.component.components.features.HoverType;
 import net.whgkswo.tesm.gui.component.components.style.BoxStyle;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
 import net.whgkswo.tesm.gui.screen.templete.TesmScreen;
@@ -66,17 +68,18 @@ public class ConversationScreenV2 extends TesmScreen {
                 .selfHorizontalAlignment(HorizontalAlignment.CENTER)
                 .childrenHorizontalAlignment(HorizontalAlignment.CENTER)
                 .childrenVerticalAlignment(VerticalAlignment.CENTER)
-                .backgroundColor(TesmColor.RODEO_DUST.withAlpha(100))
+                .backgroundColor(TesmColor.RODEO_DUST)
                 .edgeColor(TesmColor.CREAM)
                 .edgeThickness(10)
                 .horizontalGap(0.1)
                 .verticalGap(0.05)
+                .onHover(HoverType.BACKGROUND)
                 .build();
 
         BoxPanel boxPanel2 = BoxPanel.builder()
                 .parent(boxPanel)
                 .id("box2")
-                .bound(new RelativeBound(0.8, 0.25))
+                .bound(new RelativeBound(0.8, 0.2))
                 .backgroundColor(TesmColor.RED)
                 /*.topMarginRatio(0.05f)
                 .bottomMarginRatio(0.05f)*/
@@ -85,7 +88,7 @@ public class ConversationScreenV2 extends TesmScreen {
         BoxPanel boxPanel3 = BoxPanel.builder()
                 .parent(boxPanel)
                 .id("box3")
-                .bound(new RelativeBound(0.8, 0.25))
+                .bound(new RelativeBound(0.8, 0.2))
                 .backgroundColor(TesmColor.ORANGE)
                 /*.topMarginRatio(0.05f)
                 .bottomMarginRatio(0.05f)*/
@@ -94,16 +97,24 @@ public class ConversationScreenV2 extends TesmScreen {
         BoxPanel boxPanel4 = BoxPanel.builder()
                 .parent(boxPanel)
                 .id("box4")
-                .bound(new RelativeBound(0.8, 0.25))
+                .bound(new RelativeBound(0.8, 0.2))
                 .backgroundColor(TesmColor.YELLOW)
-                /*.topMarginRatio(0.05f)
-                .bottomMarginRatio(0.05f)*/
+                .topMarginRatio(0.05f)
+                .bottomMarginRatio(0.05f)
+                .build();
+
+        BoxPanel boxPanelA = BoxPanel.builder()
+                .parent(boxPanel)
+                .id("boxA")
+                .bound(new RelativeBound(0.8, 0.2))
+                .backgroundColor(TesmColor.YELLOW)
+                .positionType(PositionType.FIXED)
                 .build();
 
         BoxPanel boxPanel5 = BoxPanel.builder()
                 .parent(boxPanel)
                 .id("box5")
-                .bound(new RelativeBound(0.8, 0.25))
+                .bound(new RelativeBound(0.8, 0.2))
                 .backgroundColor(TesmColor.GREEN)
                 /*.topMarginRatio(0.05f)
                 .bottomMarginRatio(0.05f)*/
@@ -112,7 +123,7 @@ public class ConversationScreenV2 extends TesmScreen {
         BoxPanel boxPanel6 = BoxPanel.builder()
                 .parent(boxPanel)
                 .id("box6")
-                .bound(new RelativeBound(0.8, 0.25))
+                .bound(new RelativeBound(0.8, 0.2))
                 .backgroundColor(TesmColor.BLUE)
                 /*.topMarginRatio(0.05f)
                 .bottomMarginRatio(0.05f)*/

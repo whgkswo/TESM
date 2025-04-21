@@ -86,7 +86,6 @@ public class FlowPositionProvider extends PositionProvider {
             // FIXED 타입은 스킵
             if(positionType.equals(PositionType.FIXED)) continue;
 
-            //Map<GuiDirection, Double> siblingMargins = sibling.getAbsoluteMarginRatio();
             RelativeBound siblingBound = sibling.getBound();
 
             if (parentAxis == GuiAxis.HORIZONTAL) {

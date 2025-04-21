@@ -42,7 +42,10 @@ public class TextLabelBuilder extends GuiComponentBuilder<TextLabel, TextLabelBu
         textLabel.setBackgroundColor(this.backgroundColor);
         textLabel.setSizeMode(this.sizeMode);
 
-        return register(textLabel);
+        // 순서 맨 뒤여야 하는 것들
+        textLabel.setHoverHandler(this.hoverType);
+
+        return buildExtended(textLabel);
     }
 
     public TextLabelBuilder text(Text text) {

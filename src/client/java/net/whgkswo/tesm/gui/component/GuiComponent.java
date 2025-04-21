@@ -11,7 +11,9 @@ import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.component.bounds.*;
 import net.whgkswo.tesm.gui.component.bounds.providers.PositionProvider;
 import net.whgkswo.tesm.gui.component.components.BoxPanel;
-import net.whgkswo.tesm.gui.component.components.features.Hoverable;
+import net.whgkswo.tesm.gui.component.components.features.BackgroundHoverHandler;
+import net.whgkswo.tesm.gui.component.components.features.HoverType;
+import net.whgkswo.tesm.gui.component.components.features.base.HoverHandler;
 import net.whgkswo.tesm.gui.component.components.style.DefaultStyleProvider;
 import net.whgkswo.tesm.gui.component.components.style.GuiStyle;
 import net.whgkswo.tesm.gui.component.components.style.StylePreset;
@@ -50,6 +52,7 @@ public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiSt
     private StylePreset<S> stylePreset;
     @Setter
     private PositionProvider positionProvider;
+    private HoverHandler hoverHandler;
 
     public GuiComponent(@Nullable ParentComponent<?, ?> parent){
         this.parent = parent;
@@ -117,15 +120,11 @@ public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiSt
     }
 
     public void handleHover(){
-        if(this instanceof Hoverable hoverable){
-            hoverable.handleHover();
-        }
+        if(hoverHandler != null) hoverHandler.handleHover();
     }
 
     public void handleHoverExit(){
-        if(this instanceof Hoverable hoverable){
-            hoverable.handleHoverExit();
-        }
+        if(hoverHandler != null) hoverHandler.handleHoverExit();
     }
 
     protected boolean isMouseOver(int mouseX, int mouseY){
@@ -320,5 +319,16 @@ public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiSt
     // 오버라이딩용
     public List<GuiComponent<?, ?>> getChildren(){
         return new ArrayList<>();
+    }
+
+    public void setHoverHandler(HoverType hoverType){
+        if(hoverType == null){
+            hoverHandler = null;
+            return;
+        }
+
+        switch (hoverType){
+            case BACKGROUND -> this.hoverHandler = new BackgroundHoverHandler(this);
+        }
     }
 }

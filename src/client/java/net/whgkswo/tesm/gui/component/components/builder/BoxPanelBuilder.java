@@ -48,7 +48,10 @@ public class BoxPanelBuilder extends ParentComponentBuilder<BoxPanel, BoxPanelBu
         boxPanel.setEdgeThickness(this.edgeThickness);
         boxPanel.setBackgroundColor(this.backgroundColor);
 
-        return register(boxPanel);
+        // 순서 맨 뒤여야 하는 것들
+        boxPanel.setHoverHandler(this.hoverType);
+
+        return buildExtended(boxPanel);
     }
 
     public BoxPanelBuilder bound(RelativeBound bound){
