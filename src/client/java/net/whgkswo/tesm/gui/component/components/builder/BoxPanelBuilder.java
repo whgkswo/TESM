@@ -2,13 +2,13 @@ package net.whgkswo.tesm.gui.component.components.builder;
 
 import lombok.NoArgsConstructor;
 import net.whgkswo.tesm.gui.colors.TesmColor;
+import net.whgkswo.tesm.gui.component.ParentComponent;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.components.BoxPanel;
 import net.whgkswo.tesm.gui.component.components.builder.base.ParentComponentBuilder;
 import net.whgkswo.tesm.gui.component.components.style.BoxStyle;
 import net.whgkswo.tesm.gui.screen.base.TesmScreen;
 
-@NoArgsConstructor
 // 원시타입 스타일 초기값은 여기에 명시
 public class BoxPanelBuilder extends ParentComponentBuilder<BoxPanel, BoxPanelBuilder, BoxStyle> {
     // BoxPanel 필드
@@ -16,6 +16,10 @@ public class BoxPanelBuilder extends ParentComponentBuilder<BoxPanel, BoxPanelBu
     private TesmColor edgeColor;
     private int edgeThickness = 1;
     private TesmColor backgroundColor;
+
+    public BoxPanelBuilder(ParentComponent<?, ?> parent){
+        this.parent = parent;
+    }
 
     @Override
     public BoxPanelBuilder self() {
@@ -37,7 +41,7 @@ public class BoxPanelBuilder extends ParentComponentBuilder<BoxPanel, BoxPanelBu
         boxPanel.setLeftMarginRatio(this.leftMarginRatio);
         boxPanel.setRightMarginRatio(this.rightMarginRatio);
         boxPanel.setBottomMarginRatio(this.bottomMarginRatio);
-        boxPanel.setClickHandler(this.clickHandler);
+        boxPanel.onClick(this.clickHandler);
         // ParentComponent 필드
         boxPanel.setAxis(this.axis);
         boxPanel.setChildrenHorizontalAlignment(this.childrenHorizontalAlignment);

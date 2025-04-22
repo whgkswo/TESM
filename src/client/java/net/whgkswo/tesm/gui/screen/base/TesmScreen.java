@@ -16,6 +16,7 @@ import net.whgkswo.tesm.gui.component.GuiAxis;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.components.BoxPanel;
 import net.whgkswo.tesm.gui.component.components.features.base.ClickHandler;
+import net.whgkswo.tesm.gui.exceptions.GuiException;
 import net.whgkswo.tesm.message.MessageHelper;
 import net.whgkswo.tesm.networking.payload.data.SimpleReq;
 import net.whgkswo.tesm.networking.payload.id.SimpleTask;
@@ -46,7 +47,7 @@ public abstract class TesmScreen extends Screen {
     public TesmScreen(boolean shouldFreezeTicks){
         super(Text.literal(""));
         this.shouldFreezeTicks = shouldFreezeTicks;
-        rootComponent = BoxPanel.builder()
+        rootComponent = BoxPanel.builder(null)
                 .bound(RelativeBound.FULL_SCREEN)
                 .backgroundColor(TesmColor.TRANSPARENT)
                 .edgeColor(TesmColor.TRANSPARENT)
@@ -79,16 +80,12 @@ public abstract class TesmScreen extends Screen {
             initialized = true;
         }{
             // 구성 요소 리사이즈
-            clearCachedBounds(rootComponent);
+            rootComponent.clearCachedBounds();
         }
     }
 
-    private void clearCachedBounds(GuiComponent<?, ?> component){
-        component.setCachedAbsoluteBound(null);
-        component.initializeBound();
-        for (GuiComponent<?, ?> child : component.getChildren()){
-            clearCachedBounds(child);
-        }
+    public void clearAllCachedBounds(){
+        rootComponent.clearCachedBounds();
     }
 
     @Override
@@ -156,8 +153,7 @@ public abstract class TesmScreen extends Screen {
     protected GuiComponent<?, ?> searchComponent(String id){
         GuiComponent<?, ?> component = rootComponent.getDescendant(id);
         if(component == null){
-            close();
-            MessageHelper.sendMessage("컴포넌트 검색에 실패했습니다: " + id);
+            new GuiException(this, "컴포넌트 검색에 실패했습니다: " + id).handle();
         }
         return component;
     }

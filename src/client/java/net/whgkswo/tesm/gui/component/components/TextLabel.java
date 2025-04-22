@@ -11,6 +11,7 @@ import net.minecraft.text.Text;
 import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.GuiComponent;
+import net.whgkswo.tesm.gui.component.ParentComponent;
 import net.whgkswo.tesm.gui.component.bounds.AbsolutePosition;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.components.builder.TextLabelBuilder;
@@ -29,8 +30,8 @@ public class TextLabel extends GuiComponent<TextLabel, TextLabelStyle> {
     private TesmColor backgroundColor;
     private SizeMode sizeMode;
 
-    public static TextLabelBuilder builder(){
-        return new TextLabelBuilder();
+    public static TextLabelBuilder builder(ParentComponent<?, ?> parent){
+        return new TextLabelBuilder(parent);
     }
 
     @Override
@@ -120,5 +121,10 @@ public class TextLabel extends GuiComponent<TextLabel, TextLabelStyle> {
     public enum SizeMode{
         ABSOLUTE_PIXELS,
         RELATIVE_TO_PARENT
+    }
+
+    public void changeText(Text text){
+        this.text = text;
+        getMotherScreen().clearAllCachedBounds();
     }
 }

@@ -18,6 +18,7 @@ import net.whgkswo.tesm.gui.component.components.features.base.HoverHandler;
 import net.whgkswo.tesm.gui.component.components.style.DefaultStyleProvider;
 import net.whgkswo.tesm.gui.component.components.style.GuiStyle;
 import net.whgkswo.tesm.gui.component.components.style.StylePreset;
+import net.whgkswo.tesm.gui.exceptions.GuiException;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
 import net.whgkswo.tesm.gui.screen.base.TesmScreen;
 import net.whgkswo.tesm.message.MessageHelper;
@@ -55,7 +56,6 @@ public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiSt
     @Setter
     private PositionProvider positionProvider;
     private HoverHandler hoverHandler;
-    @Setter
     private ClickHandler clickHandler;
     private TesmScreen motherScreen;
 
@@ -357,13 +357,32 @@ public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiSt
     public void setMotherScreen(TesmScreen motherScreen){
         // motherScreen이 이미 있는데 덮어씌우려고 시도하거나, 루트 컴포넌트가 아닌데 수동으로 넣을 수 없음(id 널체크는 단지 equals npe 때문에 넣은 거)
         if(this.motherScreen != null || (id == null || !id.equals(TesmScreen.ROOT_ID)) && parent == null){
-            motherScreen.close();
-            MessageHelper.sendMessage("Mother Screen은 임의로 설정할 수 없습니다. 컴포넌트 ID: " + id);
+            new GuiException(this.motherScreen, "Mother Screen은 임의로 설정할 수 없습니다. 컴포넌트 ID: " + id).handle();
             return;
         }
         this.motherScreen = motherScreen;
+    }
+    public void clearCachedBounds(){
+        this.setCachedAbsoluteBound(null);
+        this.initializeBound();
+        for (GuiComponent<?, ?> child : this.getChildren()){
+            child.clearCachedBounds();
+        }
+    }
+    public void changeShouldHide(boolean shouldHide){
+        this.shouldHide = shouldHide;
+        motherScreen.clearAllCachedBounds();
+    }
 
-        // 루트 컴포넌트에 연결하지 않고 있다가 나중에 연결하는 경우를 대비해 자손들 재귀 호출 필요할 수 있음
-        // 이런 경우가 실제로 있을지는 모르겠음
+    public void onHover(HoverHandler hoverHandler){
+        this.hoverHandler = hoverHandler;
+    }
+
+    public void onClick (ClickHandler clickHandler){
+        this.clickHandler = clickHandler;
+    }
+
+    public void onClick (Runnable onClick){
+        this.clickHandler = ClickHandler.of(onClick);
     }
 }

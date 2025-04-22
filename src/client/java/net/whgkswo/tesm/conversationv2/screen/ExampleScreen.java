@@ -62,8 +62,7 @@ public class ExampleScreen extends TesmScreen {
                 .id("text1")
                 .build();*/
 
-        BoxPanel boxPanel = BoxPanel.builder()
-                .parent(rootComponent)
+        BoxPanel boxPanel = BoxPanel.builder(rootComponent)
                 .id("box")
                 .bound(new RelativeBound(0.2, 0.2))
                 .selfHorizontalAlignment(HorizontalAlignment.CENTER)
@@ -78,8 +77,7 @@ public class ExampleScreen extends TesmScreen {
                 .onClick(ClickHandler.of(this::close))
                 .build();
 
-        BoxPanel boxPanel2 = BoxPanel.builder()
-                .parent(boxPanel)
+        BoxPanel boxPanel2 = BoxPanel.builder(boxPanel)
                 .id("box2")
                 .bound(new RelativeBound(0.8, 0.2))
                 .backgroundColor(TesmColor.RED)
@@ -87,8 +85,7 @@ public class ExampleScreen extends TesmScreen {
                 .bottomMarginRatio(0.05f)*/
                 .build();
 
-        BoxPanel boxPanel3 = BoxPanel.builder()
-                .parent(boxPanel)
+        BoxPanel boxPanel3 = BoxPanel.builder(boxPanel)
                 .id("box3")
                 .bound(new RelativeBound(0.8, 0.2))
                 .backgroundColor(TesmColor.ORANGE)
@@ -96,8 +93,7 @@ public class ExampleScreen extends TesmScreen {
                 .bottomMarginRatio(0.05f)*/
                 .build();
 
-        BoxPanel boxPanel4 = BoxPanel.builder()
-                .parent(boxPanel)
+        BoxPanel boxPanel4 = BoxPanel.builder(boxPanel)
                 .id("box4")
                 .bound(new RelativeBound(0.8, 0.2))
                 .backgroundColor(TesmColor.YELLOW)
@@ -105,16 +101,14 @@ public class ExampleScreen extends TesmScreen {
                 .bottomMarginRatio(0.05f)
                 .build();
 
-        BoxPanel boxPanelA = BoxPanel.builder()
-                .parent(boxPanel)
+        BoxPanel boxPanelA = BoxPanel.builder(boxPanel)
                 .id("boxA")
                 .bound(new RelativeBound(0.8, 0.2))
                 .backgroundColor(TesmColor.YELLOW)
                 .positionType(PositionType.FIXED)
                 .build();
 
-        BoxPanel boxPanel5 = BoxPanel.builder()
-                .parent(boxPanel)
+        BoxPanel boxPanel5 = BoxPanel.builder(boxPanel)
                 .id("box5")
                 .bound(new RelativeBound(0.8, 0.2))
                 .backgroundColor(TesmColor.GREEN)
@@ -122,8 +116,7 @@ public class ExampleScreen extends TesmScreen {
                 .bottomMarginRatio(0.05f)*/
                 .build();
 
-        BoxPanel boxPanel6 = BoxPanel.builder()
-                .parent(boxPanel)
+        BoxPanel boxPanel6 = BoxPanel.builder(boxPanel)
                 .id("box6")
                 .bound(new RelativeBound(0.8, 0.2))
                 .backgroundColor(TesmColor.BLUE)
@@ -131,8 +124,7 @@ public class ExampleScreen extends TesmScreen {
                 .bottomMarginRatio(0.05f)*/
                 .build();
 
-        BoxPanel boxPanelB = BoxPanel.builder()
-                .parent(rootComponent)
+        BoxPanel boxPanelB = BoxPanel.builder(rootComponent)
                 .childrenHorizontalAlignment(HorizontalAlignment.CENTER)
                 .id("box2")
                 .stylePreset(BoxStyle.TEST)
@@ -140,8 +132,7 @@ public class ExampleScreen extends TesmScreen {
                 .edgeThickness(10)
                 .build();
 
-        TextLabel textLabel = TextLabel.builder()
-                .parent(boxPanelB)
+        TextLabel textLabel = TextLabel.builder(boxPanelB)
                 //.fontScale(0.5f)
                 .text(Text.literal("텍스트1"))
                 .backgroundColor(TesmColor.GREEN)
@@ -149,27 +140,23 @@ public class ExampleScreen extends TesmScreen {
                 .selfHorizontalAlignment(HorizontalAlignment.RIGHT)
                 .build();
 
-        TextLabel textLabel2 = TextLabel.builder()
-                .parent(boxPanelB)
+        TextLabel textLabel2 = TextLabel.builder(boxPanel)
                 .fontScale(2f)
                 .backgroundColor(TesmColor.GREEN)
                 .text(Text.literal("텍스트2"))
                 .build();
 
-        TextLabel textLabel3 = TextLabel.builder()
-                .parent(boxPanelB)
+        TextLabel textLabel3 = TextLabel.builder(boxPanel)
                 .fontScale(2f)
                 .text(Text.literal("텍스트3"))
                 .build();
 
-        TextLabel textLabel4 = TextLabel.builder()
-                .parent(boxPanelB)
+        TextLabel textLabel4 = TextLabel.builder(boxPanel)
                 .fontScale(2f)
                 .text(Text.literal("텍스트4"))
                 .build();
 
-        TextLabel textLabel5 = TextLabel.builder()
-                .parent(boxPanelB)
+        TextLabel textLabel5 = TextLabel.builder(boxPanel)
                 .fontScale(2f)
                 .text(Text.literal("텍스트5"))
                 .build();

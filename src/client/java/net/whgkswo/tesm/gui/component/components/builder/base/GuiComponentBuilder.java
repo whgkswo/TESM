@@ -7,16 +7,14 @@ import net.whgkswo.tesm.gui.component.bounds.providers.FixedPositionProvider;
 import net.whgkswo.tesm.gui.component.bounds.providers.FlowPositionProvider;
 import net.whgkswo.tesm.gui.component.bounds.PositionType;
 import net.whgkswo.tesm.gui.component.components.features.HoverType;
-import net.whgkswo.tesm.gui.component.components.features.base.BackgroundComponent;
 import net.whgkswo.tesm.gui.component.components.features.base.ClickHandler;
 import net.whgkswo.tesm.gui.component.components.style.GuiStyle;
 import net.whgkswo.tesm.gui.component.components.style.StylePreset;
+import net.whgkswo.tesm.gui.exceptions.GuiException;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
 import net.whgkswo.tesm.gui.screen.base.TesmScreen;
 import net.whgkswo.tesm.lang.LanguageHelper;
-import net.whgkswo.tesm.message.MessageHelper;
 
-import java.util.List;
 import java.util.Set;
 
 // 원시타입 스타일 초기값은 여기에 명시
@@ -60,11 +58,6 @@ public abstract class GuiComponentBuilder<C extends GuiComponent<C, S>,
         return self();
     }
 
-    public B parent(ParentComponent<?, ?> parent) {
-        this.parent = parent;
-        return self();
-    }
-
     public B stylePreset(StylePreset<S> stylePreset) {
         this.stylePreset = stylePreset;
         return self();
@@ -105,8 +98,13 @@ public abstract class GuiComponentBuilder<C extends GuiComponent<C, S>,
         return self();
     }
 
+    public B onClick(Runnable onClick){
+        this.clickHandler = ClickHandler.of(onClick);
+        return self();
+    }
+
     protected C buildExtended(C component){
-        //TODO: 이거 왜 있는거임? setParent는 하위 빌더에서 처리 하는데
+        //TODO: 이거 왜 있는거임? setParent는 하위 빌더에서 처리 하는데, 크로스인가
         //component.setParent(parent);
 
         // 기본 ID 설정
@@ -120,8 +118,7 @@ public abstract class GuiComponentBuilder<C extends GuiComponent<C, S>,
         if(!component.getId().equals(TesmScreen.ROOT_ID) && component.getMotherScreen() != null) {
             Set<String> componentIdSet = component.getMotherScreen().getComponentIdSet();
             if(componentIdSet.contains(component.getId())){
-                component.getMotherScreen().close();
-                MessageHelper.sendMessage("컴포넌트 식별자가 중복되었습니다: " + component.getId());
+                new GuiException(component.getMotherScreen(), "컴포넌트 식별자가 중복되었습니다: " + component.getId()).handle();
             }else{
                 componentIdSet.add(component.getId());
             }

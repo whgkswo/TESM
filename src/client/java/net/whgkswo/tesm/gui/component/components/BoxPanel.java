@@ -14,6 +14,9 @@ import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.components.builder.BoxPanelBuilder;
 import net.whgkswo.tesm.gui.component.components.features.base.BackgroundComponent;
 import net.whgkswo.tesm.gui.component.components.style.BoxStyle;
+import net.whgkswo.tesm.gui.exceptions.GuiException;
+import net.whgkswo.tesm.gui.screen.base.TesmScreen;
+import net.whgkswo.tesm.message.MessageHelper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +25,6 @@ import java.util.Map;
 @Getter
 public class BoxPanel extends ParentComponent<BoxPanel, BoxStyle> implements BackgroundComponent {
     private final Map<GuiDirection, StraightLine> edgeLines = new HashMap<>();
-    @Setter
     private RelativeBound bound;
     @Setter
     private TesmColor edgeColor;
@@ -35,8 +37,8 @@ public class BoxPanel extends ParentComponent<BoxPanel, BoxStyle> implements Bac
         super();
     }
 
-    public static BoxPanelBuilder builder(){
-        return new BoxPanelBuilder();
+    public static BoxPanelBuilder builder(ParentComponent<?, ?> parent){
+        return new BoxPanelBuilder(parent);
     }
 
     @Override
@@ -70,7 +72,7 @@ public class BoxPanel extends ParentComponent<BoxPanel, BoxStyle> implements Bac
         renderSelfWithScissor(context);
         // 자식 렌더링
         for (GuiComponent<?, ?> child : getChildren()){
-            child.render(context);
+            child.tryRender(context);
         }
         // 자식들 위에 테두리 렌더링
         renderEdges(context);
@@ -104,5 +106,12 @@ public class BoxPanel extends ParentComponent<BoxPanel, BoxStyle> implements Bac
 
     private void addEdgeLine(GuiDirection direction, LinearBound bound){
         edgeLines.put(direction, new StraightLine(this, edgeColor, bound));
+    }
+
+    public void setBound(RelativeBound bound){
+        if(getId() == null || (getId().equals(TesmScreen.ROOT_ID) && this.bound != null)){
+            new GuiException(getMotherScreen(), "루트 컴포넌트는 크기를 조정할 수 없습니다.").handle();
+        }
+        this.bound = bound;
     }
 }

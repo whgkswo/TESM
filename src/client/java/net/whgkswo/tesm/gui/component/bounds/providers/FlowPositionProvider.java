@@ -82,8 +82,10 @@ public class FlowPositionProvider extends PositionProvider {
             if (i == childIndex) continue; // 자기 자신은 초기값에 반영돼 있음
 
             GuiComponent<?, ?> sibling = component.getSibling(i);
-            PositionType positionType = sibling.getPositionProvider().getType();
+            // 숨겨진 요소는 스킵
+            if (sibling.isShouldHide()) continue;
             // FIXED 타입은 스킵
+            PositionType positionType = sibling.getPositionProvider().getType();
             if(positionType.equals(PositionType.FIXED)) continue;
 
             RelativeBound siblingBound = sibling.getBound();

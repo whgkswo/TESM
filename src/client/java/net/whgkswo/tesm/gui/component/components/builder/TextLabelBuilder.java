@@ -2,6 +2,8 @@ package net.whgkswo.tesm.gui.component.components.builder;
 
 import net.minecraft.text.Text;
 import net.whgkswo.tesm.gui.colors.TesmColor;
+import net.whgkswo.tesm.gui.component.GuiComponent;
+import net.whgkswo.tesm.gui.component.ParentComponent;
 import net.whgkswo.tesm.gui.component.components.TextLabel;
 import net.whgkswo.tesm.gui.component.components.builder.base.GuiComponentBuilder;
 import net.whgkswo.tesm.gui.component.components.style.TextLabelStyle;
@@ -15,6 +17,10 @@ public class TextLabelBuilder extends GuiComponentBuilder<TextLabel, TextLabelBu
     private boolean shadowed = false;
     private TesmColor backgroundColor;
     private TextLabel.SizeMode sizeMode;
+
+    public TextLabelBuilder(ParentComponent<?, ?> parent){
+        this.parent = parent;
+    }
 
     @Override
     public TextLabelBuilder self() {
@@ -36,7 +42,7 @@ public class TextLabelBuilder extends GuiComponentBuilder<TextLabel, TextLabelBu
         textLabel.setBottomMarginRatio(this.bottomMarginRatio);
         textLabel.setTopMarginRatio(this.topMarginRatio);
         textLabel.setLeftMarginRatio(this.leftMarginRatio);
-        textLabel.setClickHandler(this.clickHandler);
+        textLabel.onClick(this.clickHandler);
         // TextLabel 필드
         textLabel.setText(this.text);
         textLabel.setFontScale(this.fontScale);
