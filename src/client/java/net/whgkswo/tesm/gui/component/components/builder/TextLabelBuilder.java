@@ -51,8 +51,11 @@ public class TextLabelBuilder extends GuiComponentBuilder<TextLabel, TextLabelBu
         textLabel.setSizeMode(this.sizeMode);
 
         // 순서 맨 뒤여야 하는 것들
-        textLabel.setHoverHandler(this.hoverType);
-
+        if(this.hoverHandler == null){
+            textLabel.setHoverHandler(this.hoverType);
+        }else{
+            textLabel.setHoverHandler(this.hoverHandler);
+        }
         return buildExtended(textLabel);
     }
 

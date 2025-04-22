@@ -5,10 +5,14 @@ import lombok.Setter;
 import net.minecraft.text.Text;
 import net.whgkswo.tesm.conversationv2.*;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
-import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
+import net.whgkswo.tesm.gui.colors.TesmColor;
+import net.whgkswo.tesm.gui.component.ParentComponent;
+import net.whgkswo.tesm.gui.component.components.BoxPanel;
 import net.whgkswo.tesm.gui.component.components.TextLabel;
+import net.whgkswo.tesm.gui.component.components.features.HoverType;
+import net.whgkswo.tesm.gui.exceptions.GuiException;
+import net.whgkswo.tesm.gui.screen.VerticalAlignment;
 import net.whgkswo.tesm.gui.screen.base.TesmScreen;
-import net.whgkswo.tesm.message.MessageHelper;
 import net.whgkswo.tesm.networking.payload.data.s2c_res.ConversationNbtRes;
 
 import java.util.ArrayList;
@@ -36,42 +40,37 @@ public class ConversationScreenV2 extends TesmScreen {
         rootComponent.setChildrenHorizontalAlignment(HorizontalAlignment.CENTER);
         rootComponent.onClick(this::next);
 
+        // 컨테이너 등록
+        BoxPanel container = BoxPanel.builder(rootComponent)
+                .bound(0.6, 1)
+                .id("container")
+                .backgroundColor(TesmColor.TRANSPARENT)
+                .childrenHorizontalAlignment(HorizontalAlignment.CENTER)
+                .build();
+
         currentFlow = ConversationHelper.getFlow(engName, "general");
         // NPC 이름 등록
-        addPartnerNameComponent();
+        TextLabel partnerNameLabel = TextLabel.builder(container)
+                .text(Text.literal(name))
+                .id("partnerNameLabel")
+                .topMarginRatio(0.6f)
+                .fontScale(2f)
+                .build();
         // 대사 등록
-        addDialogueText();
+        TextLabel currentText = TextLabel.builder(container)
+                .text(currentFlow.texts().poll().getText())
+                .topMarginRatio(0.1f)
+                .fontScale(1.1f)
+                .id("currentText")
+                .build();
         // 선택지 등록
-        addDecisions();
+        decisionContainer = new DecisionContainer(container);
     }
 
     @Override
     public void close(){
         super.close();
         ConversationHelper.convOn = false;
-    }
-
-    private void addPartnerNameComponent(){
-        TextLabel partnerNameLabel = TextLabel.builder(rootComponent)
-                .text(Text.literal(name))
-                .id("partnerNameLabel")
-                .topMarginRatio(0.6f)
-                .fontScale(2f)
-                .onClick(this::next)
-                .build();
-    }
-
-    private void addDialogueText(){
-        TextLabel currentText = TextLabel.builder(rootComponent)
-                .text(currentFlow.texts().poll().getText())
-                .topMarginRatio(0.1f)
-                .id("currentText")
-                .onClick(this::next)
-                .build();
-    }
-
-    private void addDecisions(){
-        decisionContainer = new DecisionContainer();
     }
 
     private void next(){
@@ -102,8 +101,7 @@ public class ConversationScreenV2 extends TesmScreen {
 
             decisionContainer.revealDecision(decisions);
         } catch (RuntimeException e) {
-            this.close();
-            MessageHelper.sendMessage("선택지 로드 실패");
+            new GuiException(this, "선택지 로드 실패");
         }
     }
 
@@ -116,13 +114,22 @@ public class ConversationScreenV2 extends TesmScreen {
         private int offset;
         private boolean shouldDecisionRevealed;
 
-        public DecisionContainer(){
+        public DecisionContainer(ParentComponent<?,?> parent){
             for (int i = 0; i< MAX_VISIBLE_DECISIONS; i++){
-                TextLabel slot = TextLabel.builder(rootComponent)
+                double topMargin = i == 0 ? 0.05 : 0;
+                BoxPanel slotArea = BoxPanel.builder(parent)
+                        .bound(1, 0.05)
+                        .backgroundColor(TesmColor.TRANSPARENT)
+                        .childrenVerticalAlignment(VerticalAlignment.CENTER)
+                        .topMarginRatio(topMargin)
+                        .onHover(HoverType.BACKGROUND_BLUR_EFFECTER)
+                        .shouldHide(true)
+                        .build();
+                TextLabel slot = TextLabel.builder(slotArea)
                         .text(Text.of(""))
                         .id("decision_slot#" + (i + 1))
                         .selfHorizontalAlignment(HorizontalAlignment.LEFT)
-                        .shouldHide(true)
+                        .leftMarginRatio(0.02)
                         .build();
                 decisionSlots.add(slot);
             }
@@ -133,7 +140,8 @@ public class ConversationScreenV2 extends TesmScreen {
             for(int i = offset; i< Math.min(offset + MAX_VISIBLE_DECISIONS, decisions.size()); i++){
                 TextLabel slot = decisionSlots.get(i - offset);
                 slot.setText(decisions.get(i).getText());
-                slot.setShouldHide(false);
+                BoxPanel slotArea = (BoxPanel) slot.getParent();
+                slotArea.setShouldHide(false);
             }
             shouldDecisionRevealed = true;
             clearAllCachedBounds();

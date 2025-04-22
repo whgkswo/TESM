@@ -73,7 +73,7 @@ public class ExampleScreen extends TesmScreen {
                 .edgeThickness(1)
                 .horizontalGap(0.1)
                 .verticalGap(0.05)
-                .onHover(HoverType.BACKGROUND)
+                .onHover(HoverType.BACKGROUND_BLUR_EFFECTER)
                 .onClick(ClickHandler.of(this::close))
                 .build();
 

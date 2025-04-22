@@ -109,7 +109,7 @@ public class BoxPanel extends ParentComponent<BoxPanel, BoxStyle> implements Bac
     }
 
     public void setBound(RelativeBound bound){
-        if(getId() == null || (getId().equals(TesmScreen.ROOT_ID) && this.bound != null)){
+        if(TesmScreen.ROOT_ID.equals(getId()) && this.bound != null){
             new GuiException(getMotherScreen(), "루트 컴포넌트는 크기를 조정할 수 없습니다.").handle();
         }
         this.bound = bound;

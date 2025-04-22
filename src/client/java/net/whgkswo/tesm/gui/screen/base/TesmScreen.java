@@ -101,7 +101,6 @@ public abstract class TesmScreen extends Screen {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta){
         super.render(context, mouseX, mouseY, delta);
-
         // 컴포넌트 렌더링
         rootComponent.tryRender(context);
         // 마우스 호버링 처리

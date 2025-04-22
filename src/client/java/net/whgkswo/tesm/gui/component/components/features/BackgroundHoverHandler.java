@@ -5,6 +5,7 @@ import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.gui.component.components.features.base.BackgroundComponent;
 import net.whgkswo.tesm.gui.component.components.features.base.HoverHandler;
+import net.whgkswo.tesm.gui.exceptions.GuiException;
 
 public class BackgroundHoverHandler extends HoverHandler {
     private final GuiComponent<?, ?> master;
@@ -12,7 +13,7 @@ public class BackgroundHoverHandler extends HoverHandler {
 
     public BackgroundHoverHandler(GuiComponent<?, ?> master){
         if (!(master instanceof BackgroundComponent)) {
-            throw new IllegalArgumentException(master.getClass().getSimpleName() + "은 BackgroundComponent의 구현체가 아닙니다.");
+            new GuiException(master.getMotherScreen(), master.getClass().getSimpleName() + "은 BackgroundComponent의 구현체가 아닙니다.").handle();
         }
         this.master = master;
         this.backgroundColorBackup = ((BackgroundComponent) master).getBackgroundColor();
@@ -20,14 +21,12 @@ public class BackgroundHoverHandler extends HoverHandler {
 
     @Override
     public void handleHover() {
-        if(backgroundColorBackup.equals(TesmColor.TRANSPARENT)) return;
         onHover(backgroundColorBackup);
         isHovered = true;
     }
 
     @Override
     public void handleHoverExit(){
-        if(backgroundColorBackup.equals(TesmColor.TRANSPARENT)) return;
         onHoverExit();
         isHovered = false;
     }

@@ -117,7 +117,8 @@ public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiSt
 
     public Set<GuiComponent<?, ?>> getHoveredComponents(int mouseX, int mouseY, Set<GuiComponent<?,?>> result, BoxPanel rootComponent){
         if(isMouseOver(mouseX, mouseY)){
-            result.add(this);
+            // 상호작용 가능한 경우에만 대상으로 추가
+            if(isInteractable()) result.add(this);
             for (GuiComponent<?, ?> child : getChildren()){
                 result = child.getHoveredComponents(mouseX, mouseY, result, rootComponent);
             }
@@ -127,6 +128,10 @@ public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiSt
             }
         }
         return result;
+    }
+
+    private boolean isInteractable(){
+        return hoverHandler != null || clickHandler != null;
     }
 
     public void handleHover(){
@@ -338,8 +343,12 @@ public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiSt
         }
 
         switch (hoverType){
-            case BACKGROUND -> this.hoverHandler = new BackgroundHoverHandler(this);
+            case BACKGROUND_BLUR_EFFECTER -> this.hoverHandler = new BackgroundHoverHandler(this);
         }
+    }
+
+    public void setHoverHandler(HoverHandler hoverHandler){
+        this.hoverHandler = hoverHandler;
     }
 
     public GuiComponent<?, ?> getDescendant(String id){
