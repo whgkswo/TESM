@@ -110,35 +110,35 @@ public abstract class GuiComponentBuilder<C extends GuiComponent<C, S>,
         return self();
     }
 
-    protected C buildExtended(C component){
+    protected C buildExtended(C c){
         //TODO: 이거 왜 있는거임? setParent는 하위 빌더에서 처리 하는데, 크로스인가
         //component.setParent(parent);
 
         // 기본 ID 설정
         if(id == null || id.isBlank()){
-            String type = component.getClass().getSimpleName();
+            String type = c.getClass().getSimpleName();
             String snakeType = LanguageHelper.toSnakeCase(type);
             String code = LanguageHelper.generateRandomCode(8);
-            component.setId(snakeType + "#" + code);
+            c.setId(snakeType + "#" + code);
         }
         // 식별자 중복 검사
-        if(!component.getId().equals(TesmScreen.ROOT_ID) && component.getMotherScreen() != null) {
-            Set<String> componentIdSet = component.getMotherScreen().getComponentIdSet();
-            if(componentIdSet.contains(component.getId())){
-                new GuiException(component.getMotherScreen(), "컴포넌트 식별자가 중복되었습니다: " + component.getId()).handle();
+        if(!c.getId().equals(TesmScreen.ROOT_ID) && c.getMotherScreen() != null) {
+            Set<String> componentIdSet = c.getMotherScreen().getComponentIdSet();
+            if(componentIdSet.contains(c.getId())){
+                new GuiException(c.getMotherScreen(), "컴포넌트 식별자가 중복되었습니다: " + c.getId()).handle();
             }else{
-                componentIdSet.add(component.getId());
+                componentIdSet.add(c.getId());
             }
         }
 
         // 기본 포지션 정책은 플로우
         switch (this.positionType){
-            case FIXED -> component.setPositionProvider(new FixedPositionProvider(component, parent));
-            default -> component.setPositionProvider(new FlowPositionProvider(component, parent));
+            case FIXED -> c.setPositionProvider(new FixedPositionProvider(c, parent));
+            default -> c.setPositionProvider(new FlowPositionProvider(c, parent));
         };
 
         // 스타일 초기화
-        component.initializeStyle();
-        return component;
+        c.initializeStyle();
+        return c;
     }
 }

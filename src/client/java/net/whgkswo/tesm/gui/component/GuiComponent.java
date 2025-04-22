@@ -30,7 +30,7 @@ import java.util.*;
 @NoArgsConstructor
 @Getter
 // 스타일 요소가 아닌 필드는 여기에 초기값 명시
-public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiStyle> {
+public abstract class GuiComponent<C extends GuiComponent<C, S>, S extends GuiStyle> {
     @Setter
     private String id;
     @Setter
@@ -103,8 +103,8 @@ public abstract class GuiComponent<T extends GuiComponent<T, S>, S extends GuiSt
         return parent;
     }
 
-    protected T self(){
-        return (T) this;
+    protected C self(){
+        return (C) this;
     }
 
     public void setParent(ParentComponent<?, ?> parent){
