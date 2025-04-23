@@ -1,16 +1,15 @@
-package net.whgkswo.tesm.gui.component.bounds.providers;
+package net.whgkswo.tesm.gui.component.bounds.positions;
 
-import net.whgkswo.tesm.gui.GuiDirection;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.component.GuiAxis;
 import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.gui.component.ParentComponent;
 import net.whgkswo.tesm.gui.component.bounds.PositionType;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
+import net.whgkswo.tesm.gui.component.components.features.base.Scrollable;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
 
 import java.util.List;
-import java.util.Map;
 
 public class FlowPositionProvider extends PositionProvider {
 
@@ -51,12 +50,19 @@ public class FlowPositionProvider extends PositionProvider {
         xRatio += component.getLeftMarginRatio();
         yRatio += component.getTopMarginRatio();
 
-        // 수평, 수직 정렬 적용
+        // 부모에 스크롤 핸들러가 있다면 오프셋 적용
+        if(parent instanceof Scrollable && ((Scrollable)parent).getScrollHandler() != null) {
+            // 양의 오프셋을 가졌다 -> 위에 공간이 생겼다 -> 스크롤 업 -> 고로 합산이 아닌 차감
+            yRatio -= ((Scrollable) parent).getScrollHandler().getOffset();
+        }else {
+            // 수직 정렬은 스크롤이 없을 때만
+            yRatio = applyVerticalAlignment(getRefVerticalAlignment(), childBound,
+                    parentHeightRatio, siblingsHeightRatio, yRatio);
+        }
+
+        // 수평 정렬 적용
         xRatio = applyHorizontalAlignment(getRefHorizontalAlignment(), childBound,
                 parentWidthRatio, siblingsWidthRatio, xRatio);
-
-        yRatio = applyVerticalAlignment(getRefVerticalAlignment(), childBound,
-                parentHeightRatio, siblingsHeightRatio, yRatio);
 
         // 위까지는 부모에 대한 상대 크기, 여기서 전체 스크린에 대한 상대크기로 변환
         return new RelativeBound(

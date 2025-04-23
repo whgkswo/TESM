@@ -15,9 +15,11 @@ import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.gui.component.GuiAxis;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.components.BoxPanel;
+import net.whgkswo.tesm.gui.component.components.features.GuiFeatureType;
 import net.whgkswo.tesm.gui.component.components.features.base.ClickHandler;
+import net.whgkswo.tesm.gui.component.components.features.base.ScrollHandler;
+import net.whgkswo.tesm.gui.component.components.features.base.Scrollable;
 import net.whgkswo.tesm.gui.exceptions.GuiException;
-import net.whgkswo.tesm.message.MessageHelper;
 import net.whgkswo.tesm.networking.payload.data.SimpleReq;
 import net.whgkswo.tesm.networking.payload.id.SimpleTask;
 import org.lwjgl.glfw.GLFW;
@@ -31,7 +33,9 @@ public abstract class TesmScreen extends Screen {
     private boolean shouldRenderBackground = true;
     private boolean initialized;
     public final BoxPanel rootComponent;
-    private GuiComponent<?, ?> hoveredComponent;
+    private GuiComponent<?, ?> hoverTarget;
+    private GuiComponent<?, ?> clickTarget;
+    private Scrollable scrollTarget;
     private int prevMouseX = -1;
     private int prevMouseY = -1;
     private double windowScaleBackup;
@@ -74,14 +78,14 @@ public abstract class TesmScreen extends Screen {
         if(!initialized){
             // 틱 프리즈 (서버에 패킷 전송)
             if(shouldFreezeTicks()) ClientPlayNetworking.send(new SimpleReq(SimpleTask.TICK_FREEZE));
-            registerMouseWheelEvent();
-
             initExtended();
             initialized = true;
         }{
             // 구성 요소 리사이즈
             rootComponent.clearCachedBounds();
         }
+        // 이벤트는 매번 다시 등록해줘야됨
+        registerMouseWheelEvent();
     }
 
     public void clearAllCachedBounds(){
@@ -103,6 +107,9 @@ public abstract class TesmScreen extends Screen {
         super.render(context, mouseX, mouseY, delta);
         // 컴포넌트 렌더링
         rootComponent.tryRender(context);
+        // 인터렉션 타겟 컴포넌트 탐색
+        clickTarget = findClickTarget(mouseX, mouseY);
+        scrollTarget = findScrollTarget(mouseX, mouseY);
         // 마우스 호버링 처리
         handleHoverEvents(mouseX, mouseY);
     }
@@ -110,11 +117,20 @@ public abstract class TesmScreen extends Screen {
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button){
         if(button == GLFW.GLFW_MOUSE_BUTTON_LEFT){
-            ClickHandler clickHandler = hoveredComponent.getClickHandler();
+            if(clickTarget == null) return false;
+            ClickHandler clickHandler = clickTarget.getClickHandler();
             if(clickHandler == null) return false;
             clickHandler.run();
         }
         return super.mouseClicked(mouseX,mouseY,button);
+    }
+    
+    private GuiComponent<?,?> findClickTarget(int mouseX, int mouseY){
+        return findInteractionTarget(GuiFeatureType.CLICK, mouseX, mouseY);
+    }
+
+    private Scrollable findScrollTarget(int mouseX, int mouseY){
+        return (Scrollable) findInteractionTarget(GuiFeatureType.SCROLL, mouseX, mouseY);
     }
 
     private void handleHoverEvents(int mouseX, int mouseY){
@@ -123,24 +139,34 @@ public abstract class TesmScreen extends Screen {
         prevMouseX = mouseX;
         prevMouseY = mouseY;
 
-        // 마우스 올려진 컴포넌트 찾기
-        Set<GuiComponent<?, ?>> hoveredComponents = rootComponent.getHoveredComponents(mouseX, mouseY, new HashSet<>(), rootComponent);
-        if(!hoveredComponents.isEmpty()){
-            GuiComponent<?, ?> prevHoveredComponent = hoveredComponent;
-            hoveredComponent = getHoveredComponent(hoveredComponents);
-            // 호버 대상이 바뀌었다면
-            if(prevHoveredComponent != hoveredComponent){
-                // 호버 Exit 처리
-                if(prevHoveredComponent != null) prevHoveredComponent.handleHoverExit();
-                // 호버 이벤트 처리
-                if(hoveredComponent != null) hoveredComponent.handleHover();
-                //MessageHelper.sendMessage(String.format("마우스(%d, %d), 대상 컴포넌트: %s", mouseX, mouseY, hoveredComponent.getId()));
-            }
+        // 타겟 찾기
+        GuiComponent<?,?> newTarget = findInteractionTarget(GuiFeatureType.HOVER, mouseX, mouseY);
+        // 이벤트 실행
+        executeHoverEvent(hoverTarget, newTarget);
+        // 타겟 업데이트
+        hoverTarget = newTarget;
+    }
+
+    private GuiComponent<?, ?> findInteractionTarget(GuiFeatureType type, int mouseX, int mouseY){
+        // 마우스 올려진 컴포넌트들 중 입력된 타입 처리 가능한 것들 찾기
+        Set<GuiComponent<?, ?>> hoveredComponents = rootComponent.getTargetedComponents(type, mouseX, mouseY, new HashSet<>(), rootComponent);
+
+        if(hoveredComponents.isEmpty()) return null;
+        return getTopTarget(hoveredComponents); // 최우선순위 반환
+    }
+
+    private void executeHoverEvent(GuiComponent<?, ?> previousTarget, GuiComponent<?, ?> currentTarget){
+        // 타겟이 변경되었을 때만 처리
+        if (previousTarget != currentTarget) {
+            // 이전 타겟 호버 종료
+            if (previousTarget != null) previousTarget.handleHoverExit();
+            // 현재 타겟 호버 시작
+            if (currentTarget != null) currentTarget.handleHover();
         }
     }
 
-    private GuiComponent<?, ?> getHoveredComponent(Set<GuiComponent<?, ?>> hoveredComponents){
-        return hoveredComponents.stream()
+    private GuiComponent<?, ?> getTopTarget(Set<GuiComponent<?, ?>> targetComponents){
+        return targetComponents.stream()
                 .max(Comparator.<GuiComponent<?, ?>, Integer>comparing(
                     // 1순위: 세대 번호(깊이)가 큰 순서로 정렬 (내림차순)
                     GuiComponent::getGenerationIndex)
@@ -166,8 +192,20 @@ public abstract class TesmScreen extends Screen {
             }
         });
     }
-    public void onScrollUp(){}
-    public void onScrollDown(){}
+    public void onScrollUp(){
+        if(scrollTarget == null) return;
+        if(scrollTarget instanceof Scrollable){
+            ScrollHandler handler = scrollTarget.getScrollHandler();
+            if(handler != null) handler.onScrollUp();
+        }
+    }
+    public void onScrollDown(){
+        if(scrollTarget == null) return;
+        if(scrollTarget instanceof Scrollable){
+            ScrollHandler handler = scrollTarget.getScrollHandler();
+            if(handler != null) handler.onScrollDown();
+        }
+    }
     public boolean shouldFreezeTicks(){
         return shouldFreezeTicks;
     }

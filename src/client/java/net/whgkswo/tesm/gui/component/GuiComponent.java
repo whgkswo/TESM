@@ -9,12 +9,14 @@ import net.minecraft.client.util.Window;
 import net.whgkswo.tesm.gui.GuiDirection;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.component.bounds.*;
-import net.whgkswo.tesm.gui.component.bounds.providers.PositionProvider;
+import net.whgkswo.tesm.gui.component.bounds.positions.PositionProvider;
 import net.whgkswo.tesm.gui.component.components.BoxPanel;
 import net.whgkswo.tesm.gui.component.components.features.BackgroundHoverHandler;
+import net.whgkswo.tesm.gui.component.components.features.GuiFeatureType;
 import net.whgkswo.tesm.gui.component.components.features.HoverType;
 import net.whgkswo.tesm.gui.component.components.features.base.ClickHandler;
 import net.whgkswo.tesm.gui.component.components.features.base.HoverHandler;
+import net.whgkswo.tesm.gui.component.components.features.base.Scrollable;
 import net.whgkswo.tesm.gui.component.components.style.DefaultStyleProvider;
 import net.whgkswo.tesm.gui.component.components.style.GuiStyle;
 import net.whgkswo.tesm.gui.component.components.style.StylePreset;
@@ -115,12 +117,22 @@ public abstract class GuiComponent<C extends GuiComponent<C, S>, S extends GuiSt
         if(parent != null && parent.getMotherScreen() != null) setMotherScreen(parent.getMotherScreen());
     }
 
-    public Set<GuiComponent<?, ?>> getHoveredComponents(int mouseX, int mouseY, Set<GuiComponent<?,?>> result, BoxPanel rootComponent){
+    public Set<GuiComponent<?, ?>> getTargetedComponents(GuiFeatureType type, int mouseX, int mouseY, Set<GuiComponent<?,?>> result, BoxPanel rootComponent){
         if(isMouseOver(mouseX, mouseY)){
             // 상호작용 가능한 경우에만 대상으로 추가
-            if(isInteractable()) result.add(this);
+            switch (type){
+                case CLICK -> {
+                    if (isClickable()) result.add(this);
+                }
+                case HOVER -> {
+                    if (isHoverable()) result.add(this);
+                }
+                case SCROLL -> {
+                    if (isScrollable()) result.add(this);
+                }
+            }
             for (GuiComponent<?, ?> child : getChildren()){
-                result = child.getHoveredComponents(mouseX, mouseY, result, rootComponent);
+                result = child.getTargetedComponents(type, mouseX, mouseY, result, rootComponent);
             }
         }else{ // 마우스가 밖에 있음
             if(this == rootComponent){
@@ -130,8 +142,16 @@ public abstract class GuiComponent<C extends GuiComponent<C, S>, S extends GuiSt
         return result;
     }
 
-    private boolean isInteractable(){
-        return hoverHandler != null || clickHandler != null;
+    private boolean isClickable(){
+        return this.clickHandler != null;
+    }
+
+    private boolean isHoverable(){
+        return this.hoverHandler != null;
+    }
+
+    private boolean isScrollable(){
+        return this instanceof Scrollable && ((Scrollable)this).getScrollHandler() != null;
     }
 
     public void handleHover(){

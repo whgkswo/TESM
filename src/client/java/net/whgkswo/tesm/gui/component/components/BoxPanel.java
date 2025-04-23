@@ -12,18 +12,19 @@ import net.whgkswo.tesm.gui.component.ParentComponent;
 import net.whgkswo.tesm.gui.component.bounds.LinearBound;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.components.builder.BoxPanelBuilder;
-import net.whgkswo.tesm.gui.component.components.features.base.BackgroundComponent;
+import net.whgkswo.tesm.gui.component.components.features.base.HasBackground;
+import net.whgkswo.tesm.gui.component.components.features.base.ScrollHandler;
+import net.whgkswo.tesm.gui.component.components.features.base.Scrollable;
 import net.whgkswo.tesm.gui.component.components.style.BoxStyle;
 import net.whgkswo.tesm.gui.exceptions.GuiException;
 import net.whgkswo.tesm.gui.screen.base.TesmScreen;
-import net.whgkswo.tesm.message.MessageHelper;
 
 import java.util.HashMap;
 import java.util.Map;
 
 // 스타일 요소가 아닌 필드는 여기에 초기값 명시
 @Getter
-public class BoxPanel extends ParentComponent<BoxPanel, BoxStyle> implements BackgroundComponent {
+public class BoxPanel extends ParentComponent<BoxPanel, BoxStyle> implements HasBackground, Scrollable {
     private final Map<GuiDirection, StraightLine> edgeLines = new HashMap<>();
     private RelativeBound bound;
     @Setter
@@ -32,6 +33,8 @@ public class BoxPanel extends ParentComponent<BoxPanel, BoxStyle> implements Bac
     private int edgeThickness;
     @Setter
     private TesmColor backgroundColor;
+    @Setter
+    private ScrollHandler scrollHandler;
 
     public BoxPanel(){
         super();

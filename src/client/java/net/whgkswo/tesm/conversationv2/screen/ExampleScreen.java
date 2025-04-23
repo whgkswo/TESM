@@ -14,6 +14,7 @@ import net.whgkswo.tesm.gui.component.components.features.base.ClickHandler;
 import net.whgkswo.tesm.gui.component.components.style.BoxStyle;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
 import net.whgkswo.tesm.gui.screen.base.TesmScreen;
+import net.whgkswo.tesm.message.MessageHelper;
 import net.whgkswo.tesm.networking.payload.data.s2c_res.ConversationNbtRes;
 
 public class ExampleScreen extends TesmScreen {
@@ -75,6 +76,7 @@ public class ExampleScreen extends TesmScreen {
                 .verticalGap(0.05)
                 .onHover(HoverType.BACKGROUND_BLUR_EFFECTER)
                 .onClick(ClickHandler.of(this::close))
+                .isScrollable(true)
                 .build();
 
         BoxPanel boxPanel2 = BoxPanel.builder(boxPanel)
@@ -101,13 +103,6 @@ public class ExampleScreen extends TesmScreen {
                 .bottomMarginRatio(0.05f)
                 .build();
 
-        BoxPanel boxPanelA = BoxPanel.builder(boxPanel)
-                .id("boxA")
-                .bound(new RelativeBound(0.8, 0.2))
-                .backgroundColor(TesmColor.YELLOW)
-                .positionType(PositionType.FIXED)
-                .build();
-
         BoxPanel boxPanel5 = BoxPanel.builder(boxPanel)
                 .id("box5")
                 .bound(new RelativeBound(0.8, 0.2))
@@ -126,7 +121,7 @@ public class ExampleScreen extends TesmScreen {
 
         BoxPanel boxPanelB = BoxPanel.builder(rootComponent)
                 .childrenHorizontalAlignment(HorizontalAlignment.CENTER)
-                .id("box2")
+                .id("box2b")
                 .stylePreset(BoxStyle.TEST)
                 .edgeColor(TesmColor.CREAM/*.withAlpha(100)*/)
                 .edgeThickness(10)
@@ -144,6 +139,7 @@ public class ExampleScreen extends TesmScreen {
                 .fontScale(2f)
                 .backgroundColor(TesmColor.GREEN)
                 .text(Text.literal("텍스트2"))
+                .onClick(() -> MessageHelper.sendMessage("클릭!"))
                 .build();
 
         TextLabel textLabel3 = TextLabel.builder(boxPanel)
@@ -159,6 +155,13 @@ public class ExampleScreen extends TesmScreen {
         TextLabel textLabel5 = TextLabel.builder(boxPanel)
                 .fontScale(2f)
                 .text(Text.literal("텍스트5"))
+                .build();
+
+        BoxPanel boxPanelA = BoxPanel.builder(boxPanel)
+                .id("boxA")
+                .bound(new RelativeBound(0.8, 0.2))
+                .backgroundColor(TesmColor.YELLOW)
+                .positionType(PositionType.FIXED)
                 .build();
     }
 }

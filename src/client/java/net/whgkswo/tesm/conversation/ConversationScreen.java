@@ -90,18 +90,7 @@ public class ConversationScreen extends TesmScreen {
         }
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
-    @Override
-    public void onScrollUp(){
-        if(decisionOffset > 0){
-            decisionOffset--;
-        }
-    }
-    @Override
-    public void onScrollDown(){
-        if (decisionOffset < availableDecisions.size()-MAX_DISPLAY_DC){
-            decisionOffset++;
-        }
-    }
+
     private void renderPartnerName(DrawContext context){
         final float nameScale = 1.5f;
         RenderingHelper.renderText(HorizontalAlignment.CENTER,context,nameScale, partnerDisplayName,(int)(width/2/nameScale),(int)(height*0.55/nameScale),0xffffff);

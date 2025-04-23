@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.minecraft.client.gui.DrawContext;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
+import net.whgkswo.tesm.gui.component.bounds.PositionType;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.components.style.GuiStyle;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
@@ -49,6 +50,20 @@ public abstract class ParentComponent<T extends GuiComponent<T, S>, S extends Gu
     @Override
     public List<GuiComponent<?, ?>> getChildren(){
         return children;
+    }
+
+    public double getSumOfChildrenRelativeHeight(){
+        double result = 0;
+        int childrenCount = 0;
+        for(GuiComponent<?, ?> child : children){
+            // 포지션 타입이 FLOW인 경우에만 계산에 포함
+            if(child.getPositionProvider().getType().equals(PositionType.FLOW)){
+                result += child.getBound().getHeightRatio() + child.getTopMarginRatio() + child.getBottomMarginRatio();
+                childrenCount++;
+            }
+        }
+        if(children.size() > 1) result += this.verticalGap * (childrenCount - 1);
+        return result;
     }
 
     // Lombok setter가 동작이 안됨;; 상속땜에 그런가

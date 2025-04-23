@@ -1,4 +1,4 @@
-package net.whgkswo.tesm.gui.component.bounds.providers;
+package net.whgkswo.tesm.gui.component.bounds.positions;
 
 import net.whgkswo.tesm.gui.component.GuiComponent;
 import net.whgkswo.tesm.gui.component.ParentComponent;

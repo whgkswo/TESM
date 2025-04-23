@@ -78,8 +78,8 @@ public class ConversationHelper {
         player.setPitch(getYawAndPitch(convPartner.getPos(),player.getPos())[1]);
         // 스크린 열기
         //client.setScreen(new ConversationScreen(convPartner));
-        client.setScreen(new ConversationScreenV2(partnerInfo));
-        //client.setScreen(new ExampleScreen(partnerInfo));
+        //client.setScreen(new ConversationScreenV2(partnerInfo));
+        client.setScreen(new ExampleScreen(partnerInfo));
     }
 
     public static Queue<DialogueText> getTexts(String path){

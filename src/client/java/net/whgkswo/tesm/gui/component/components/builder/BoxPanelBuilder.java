@@ -5,6 +5,7 @@ import net.whgkswo.tesm.gui.component.ParentComponent;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.components.BoxPanel;
 import net.whgkswo.tesm.gui.component.components.builder.base.ParentComponentBuilder;
+import net.whgkswo.tesm.gui.component.components.features.base.ScrollHandler;
 import net.whgkswo.tesm.gui.component.components.style.BoxStyle;
 
 // 원시타입 스타일 초기값은 여기에 명시
@@ -14,6 +15,7 @@ public class BoxPanelBuilder extends ParentComponentBuilder<BoxPanel, BoxPanelBu
     private TesmColor edgeColor;
     private int edgeThickness = 1;
     private TesmColor backgroundColor;
+    private boolean isScrollable;
 
     public BoxPanelBuilder(ParentComponent<?, ?> parent){
         this.parent = parent;
@@ -59,6 +61,8 @@ public class BoxPanelBuilder extends ParentComponentBuilder<BoxPanel, BoxPanelBu
             boxPanel.setHoverHandler(this.hoverHandler);
         }
 
+        if(isScrollable) boxPanel.setScrollHandler(new ScrollHandler(boxPanel));
+
         return buildExtended(boxPanel);
     }
 
@@ -84,6 +88,11 @@ public class BoxPanelBuilder extends ParentComponentBuilder<BoxPanel, BoxPanelBu
 
     public BoxPanelBuilder backgroundColor(TesmColor backgroundColor){
         this.backgroundColor = backgroundColor;
+        return self();
+    }
+
+    public BoxPanelBuilder isScrollable(boolean isScrollable){
+        this.isScrollable = isScrollable;
         return self();
     }
 }
