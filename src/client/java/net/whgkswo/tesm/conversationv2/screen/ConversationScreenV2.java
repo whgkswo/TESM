@@ -9,6 +9,7 @@ import net.whgkswo.tesm.conversationv2.event.DecisionRevealEvent;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.ParentComponent;
+import net.whgkswo.tesm.gui.component.bounds.PositionType;
 import net.whgkswo.tesm.gui.component.components.BoxPanel;
 import net.whgkswo.tesm.gui.component.components.TextLabel;
 import net.whgkswo.tesm.gui.component.components.features.HoverType;
@@ -27,7 +28,8 @@ public class ConversationScreenV2 extends TesmScreen {
     private String name;
     private String engName;
     private Flow currentFlow;
-    private DecisionContainer decisionContainer;
+    private BoxPanel decisionContainer;
+    private TextLabel currentText;
 
     public ConversationScreenV2(ConversationNbtRes partnerInfo){
         super();
@@ -57,18 +59,27 @@ public class ConversationScreenV2 extends TesmScreen {
         TextLabel partnerNameLabel = TextLabel.builder(container)
                 .text(Text.literal(name))
                 .id("partnerNameLabel")
-                .topMarginRatio(0.6f)
+                .topMarginRatio(0.55)
                 .fontScale(2f)
                 .build();
         // 대사 등록
-        TextLabel currentText = TextLabel.builder(container)
+        currentText = TextLabel.builder(container)
                 .text(currentFlow.texts().poll().getText())
-                .topMarginRatio(0.1f)
+                .topMarginRatio(0.08)
+                .bottomMarginRatio(0.02)
                 .fontScale(1.1f)
                 .id("currentText")
                 .build();
-        // 선택지 등록
-        decisionContainer = new DecisionContainer(container);
+        // 선택지 컨테이너 등록
+        decisionContainer = BoxPanel.builder(container)
+                .backgroundColor(TesmColor.TRANSPARENT)
+                .edgeColor(TesmColor.CREAM)
+                .verticalGap(0.035)
+                .isScrollable(true)
+                .id("decision_container")
+                .bound(1, 0.25)
+                .shouldHide(true)
+                .build();
     }
 
     @Override
@@ -78,13 +89,15 @@ public class ConversationScreenV2 extends TesmScreen {
     }
 
     private void advanceText(){
-        TextLabel currentText = (TextLabel) searchComponent("currentText");
+        if(!decisionContainer.isShouldHide()) return;
 
+        TextLabel currentText = (TextLabel) searchComponent("currentText");
+        // 대사 끝
         if(currentFlow.texts().isEmpty()){
             for (Action action : currentFlow.actions()){
                 handleAction(action);
             }
-        }else{
+        }else{ // 아직 남음
             DialogueText nextText = currentFlow.texts().poll();
             currentText.changeText(nextText.getText());
         }
@@ -97,107 +110,37 @@ public class ConversationScreenV2 extends TesmScreen {
     }
 
     private void revealDecisions(Action action){
-        if(decisionContainer.isShouldDecisionRevealed()) return;
-        try{
-            TextLabel currentText = (TextLabel) searchComponent("currentText");
-            currentText.changeShouldHide(true);
-            List<DecisionV2> decisions = ConversationHelper.getDecisions(action.target());
+        decisionContainer.removeChildren();
 
-            decisionContainer.revealDecision(decisions);
-        } catch (RuntimeException e) {
-            new GuiException(this, "선택지 로드 실패");
+        List<DecisionV2> decisions = ConversationHelper.getDecisions(action.target());
+
+        for(int i = 0; i< decisions.size(); i++){
+            // 뒷배경(호버 영역 확보용)
+            BoxPanel background = BoxPanel.builder(decisionContainer)
+                    .bound(1, 0.15)
+                    .backgroundColor(TesmColor.TRANSPARENT)
+                    .childrenVerticalAlignment(VerticalAlignment.CENTER)
+                    .onHover(HoverType.BACKGROUND_BLUR_EFFECTER)
+                    .build();
+            // 텍스트
+            DecisionV2 decision = decisions.get(i);
+            TextLabel textLabel = TextLabel.builder(background)
+                    .text(Text.literal(decision.text()))
+                    .id("decision_slot#" + (i + 1))
+                    .selfHorizontalAlignment(HorizontalAlignment.LEFT)
+                    .leftMarginRatio(0.02)
+                    .build();
         }
+        decisionContainer.changeShouldHide(false);
+    }
+
+    private void hideDecision(){
+        decisionContainer.changeShouldHide(true);
     }
 
     // 다음 플로우 로드
     private void advanceFlow(String flowId){
         currentFlow = ConversationHelper.getFlow(flowId);
-        decisionContainer.hideDecision();
-    }
-
-    @Getter
-    public class DecisionContainer {
-        public static final int MAX_VISIBLE_DECISIONS = 4;
-        private List<DecisionV2> decisions = new ArrayList<>();
-        private final List<TextLabel> textLabels = new ArrayList<>();
-        private final Map<TextLabel, DecisionV2> decisionMap = new HashMap<>();
-        @Setter
-        private int offset;
-        private boolean shouldDecisionRevealed;
-        private ConversationScreenV2 motherScreen;
-
-        public DecisionContainer(ParentComponent<?,?> parent){
-            for (int i = 0; i< MAX_VISIBLE_DECISIONS; i++){
-                double topMargin = i == 0 ? 0.05 : 0;
-                // 뒷배경(호버 영역 확보용)
-                BoxPanel background = BoxPanel.builder(parent)
-                        .bound(1, 0.05)
-                        .backgroundColor(TesmColor.TRANSPARENT)
-                        .childrenVerticalAlignment(VerticalAlignment.CENTER)
-                        .topMarginRatio(topMargin)
-                        .onHover(HoverType.BACKGROUND_BLUR_EFFECTER)
-                        .shouldHide(true)
-                        .build();
-                // 텍스트
-                TextLabel textLabel = TextLabel.builder(background)
-                        .text(Text.of(""))
-                        .id("decision_slot#" + (i + 1))
-                        .selfHorizontalAlignment(HorizontalAlignment.LEFT)
-                        .leftMarginRatio(0.02)
-                        .build();
-                textLabels.add(textLabel);
-                // 스크린 연결
-                motherScreen = (ConversationScreenV2) parent.getMotherScreen();
-                // 선택지 클릭 이벤트 등록
-                background.onClick(() -> onClickDecision(textLabel));
-            }
-        }
-
-        // 선택지 클릭 처리
-        private void onClickDecision(TextLabel textLabel){
-            DecisionV2 decision = getDecisionFromSlot(textLabel);
-            String nextFlowId = decision.flowId();
-
-            if(nextFlowId == null || nextFlowId.isBlank()){
-                // 대화 종료
-                textLabel.getMotherScreen().close();
-            }else{ // 다음 플로우 진행
-                ((ConversationScreenV2)(textLabel.getMotherScreen())).advanceFlow(nextFlowId);
-            }
-        }
-
-        private DecisionV2 getDecisionFromSlot(TextLabel textLabel){
-            return decisionMap.get(textLabel);
-        }
-
-        // 선택지 밝히기
-        private void revealDecision(List<DecisionV2> decisions){
-            this.decisions = decisions;
-            for(int i = offset; i< Math.min(offset + MAX_VISIBLE_DECISIONS, decisions.size()); i++){
-                TextLabel textLabel = textLabels.get(i - offset);
-                decisionMap.put(textLabel, decisions.get(i));
-                applyDecisionToSlot(textLabel);
-
-                BoxPanel slotArea = (BoxPanel) textLabel.getParent();
-                slotArea.setShouldHide(false);
-            }
-            clearAllCachedBounds();
-        }
-
-        // 선택지 감추기
-        private void hideDecision(){
-            for (TextLabel textLabel : textLabels){
-                textLabel.getParent().changeShouldHide(true);
-            }
-            TextLabel currentText = (TextLabel) searchComponent("currentText");
-            currentText.setShouldHide(false);
-            advanceText();
-            clearAllCachedBounds();
-        }
-
-        private void applyDecisionToSlot(TextLabel textLabel){
-            DecisionV2 decision = decisionMap.get(textLabel);
-            textLabel.setText(decision.getText());
-        }
+        hideDecision();
     }
 }

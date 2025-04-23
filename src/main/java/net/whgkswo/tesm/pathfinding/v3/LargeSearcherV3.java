@@ -9,7 +9,7 @@ import net.whgkswo.tesm.exceptions.ChunkDataNotFoundExeption;
 import net.whgkswo.tesm.exceptions.EmptyOpenListExeption;
 import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.pathfinding.v2.*;
-import net.whgkswo.tesm.util.BlockPosUtil;
+import net.whgkswo.tesm.helpers.BlockPosUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;

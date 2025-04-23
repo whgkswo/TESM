@@ -4,13 +4,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.util.math.MathHelper;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.component.bounds.PositionType;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.components.style.GuiStyle;
+import net.whgkswo.tesm.gui.exceptions.GuiException;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -49,21 +52,39 @@ public abstract class ParentComponent<T extends GuiComponent<T, S>, S extends Gu
 
     @Override
     public List<GuiComponent<?, ?>> getChildren(){
-        return children;
+        // 자식 요소 임의 추가, 제거 불가(메서드 사용 강제)
+        return Collections.unmodifiableList(children);
     }
 
     public double getSumOfChildrenRelativeHeight(){
         double result = 0;
         int childrenCount = 0;
         for(GuiComponent<?, ?> child : children){
-            // 포지션 타입이 FLOW인 경우에만 계산에 포함
-            if(child.getPositionProvider().getType().equals(PositionType.FLOW)){
+            if(child.doOccupySpace()){
                 result += child.getBound().getHeightRatio() + child.getTopMarginRatio() + child.getBottomMarginRatio();
                 childrenCount++;
             }
         }
         if(children.size() > 1) result += this.verticalGap * (childrenCount - 1);
         return result;
+    }
+
+    public void removeChild(int index){
+        if(index < 0 || index >= children.size()){
+            new GuiException(getMotherScreen(), String.format("자식 요소 제거 중 오류: %s 컴포넌트에 %d번째 자식이 없습니다.", getId(), index)).handle();
+            return;
+        }
+        GuiComponent<?, ?> child = children.get(index);
+        getMotherScreen().getComponentIdSet().remove(child.getId());
+        children.remove(child);
+    }
+
+    public void removeChildren(){
+        for (GuiComponent<?,?> child : children){
+            getMotherScreen().getComponentIdSet().remove(child.getId());
+            if(child.hasChildren()) ((ParentComponent<?, ?>) child).removeChildren();
+        }
+        children.clear();
     }
 
     // Lombok setter가 동작이 안됨;; 상속땜에 그런가

@@ -6,6 +6,4 @@ public record Action(Type type, String target) {
         SHOW_DECISIONS
         ;
     }
-
-
 }

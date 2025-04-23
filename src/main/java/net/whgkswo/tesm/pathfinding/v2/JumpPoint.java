@@ -1,7 +1,7 @@
 package net.whgkswo.tesm.pathfinding.v2;
 
 import net.minecraft.util.math.BlockPos;
-import net.whgkswo.tesm.util.BlockPosUtil;
+import net.whgkswo.tesm.helpers.BlockPosUtil;
 
 public class JumpPoint {
     private BlockPos largeRefPos;

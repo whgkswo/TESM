@@ -3,9 +3,7 @@ package net.whgkswo.tesm.gui.component;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.util.Window;
 import net.whgkswo.tesm.gui.GuiDirection;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.component.bounds.*;
@@ -46,6 +44,8 @@ public abstract class GuiComponent<C extends GuiComponent<C, S>, S extends GuiSt
     @Setter
     private RelativeBound cachedAbsoluteBound;
     @Setter
+    private AbsolutePosition cachedScissor;
+    @Setter
     private double rightMarginRatio;
     @Setter
     private double bottomMarginRatio;
@@ -82,19 +82,43 @@ public abstract class GuiComponent<C extends GuiComponent<C, S>, S extends GuiSt
         boolean scissorEnabled = parent != null;
 
         if(scissorEnabled){
-            AbsolutePosition absolutePosition = parent.getAbsolutePosition();
+            if(cachedScissor == null) cachedScissor = getScissor();
             // 부모의 영역을 넘어가면 자르도록 설정
             context.enableScissor(
-                    absolutePosition.x1(),
-                    absolutePosition.y1(),
-                    absolutePosition.x2(),
-                    absolutePosition.y2()
+                    cachedScissor.x1(),
+                    cachedScissor.y1(),
+                    cachedScissor.x2(),
+                    cachedScissor.y2()
             );
         }
         // 렌더링 실행
         renderSelf(context);
         // 원상태로 복원
         if(scissorEnabled) context.disableScissor();
+    }
+
+    protected Stack<GuiComponent<?,?>> getAncestors(Stack<GuiComponent<?,?>> stack){
+        if(parent == null) return stack;
+        stack.add(parent);
+        return parent.getAncestors(stack);
+    }
+
+    // 모든 선조들의 범위와 교집합 구하기
+    private AbsolutePosition getScissor(){
+        if(parent == null) return RelativeBound.FULL_SCREEN.toAbsolutePosition();
+        Stack<GuiComponent<?,?>> ancestors = getAncestors(new Stack<>());
+
+        AbsolutePosition scissor = ancestors.pop().getAbsolutePosition();
+        for (GuiComponent<?, ?> ancestor : ancestors){
+            AbsolutePosition ancestorPosition = ancestor.getAbsolutePosition();
+            scissor = new AbsolutePosition(
+                    Math.max(scissor.x1(), ancestorPosition.x1()),
+                    Math.max(scissor.y1(), ancestorPosition.y1()),
+                    Math.min(scissor.x2(), ancestorPosition.x2()),
+                    Math.min(scissor.y2(), ancestorPosition.y2())
+            );
+        }
+        return scissor;
     }
 
     protected boolean shouldHide(){
@@ -170,17 +194,7 @@ public abstract class GuiComponent<C extends GuiComponent<C, S>, S extends GuiSt
 
     public AbsolutePosition getAbsolutePosition(){
         RelativeBound bound = this.getAbsoluteBound();
-
-        Window window = MinecraftClient.getInstance().getWindow();
-        int scaledWidth = window.getScaledWidth();
-        int scaledHeight = window.getScaledHeight();
-
-        return new AbsolutePosition(
-                (int) (bound.getXOffsetRatio() * scaledWidth),
-                (int) ((bound.getXOffsetRatio() + bound.getWidthRatio()) * scaledWidth),
-                (int) (bound.getYOffsetRatio() * scaledHeight),
-                (int) ((bound.getYOffsetRatio() + bound.getHeightRatio()) * scaledHeight)
-        );
+        return bound.toAbsolutePosition();
     }
 
     protected abstract Class<S> getStyleType();
@@ -391,16 +405,17 @@ public abstract class GuiComponent<C extends GuiComponent<C, S>, S extends GuiSt
         }
         this.motherScreen = motherScreen;
     }
-    public void clearCachedBounds(){
+    public void clearCaches(){
         this.setCachedAbsoluteBound(null);
+        this.setCachedScissor(null);
         this.initializeBound();
         for (GuiComponent<?, ?> child : this.getChildren()){
-            child.clearCachedBounds();
+            child.clearCaches();
         }
     }
     public void changeShouldHide(boolean shouldHide){
         this.shouldHide = shouldHide;
-        motherScreen.clearAllCachedBounds();
+        motherScreen.clearAllCaches();
     }
 
     public void onHover(HoverHandler hoverHandler){
@@ -413,5 +428,20 @@ public abstract class GuiComponent<C extends GuiComponent<C, S>, S extends GuiSt
 
     public void onClick (Runnable onClick){
         this.clickHandler = ClickHandler.of(onClick);
+    }
+
+    public boolean hasChildren(){
+        if(!(this instanceof ParentComponent<C,S>)) return false;
+        List<GuiComponent<?, ?>> children = this.getChildren();
+        return children != null && !children.isEmpty();
+    }
+
+    public boolean doOccupySpace(){
+        // 숨겨진 요소는 스킵
+        if (this.isShouldHide()) return false;
+        // FIXED 타입은 스킵
+        PositionType positionType = this.getPositionProvider().getType();
+        if(positionType.equals(PositionType.FIXED)) return false;
+        return true;
     }
 }

@@ -82,14 +82,14 @@ public abstract class TesmScreen extends Screen {
             initialized = true;
         }{
             // 구성 요소 리사이즈
-            rootComponent.clearCachedBounds();
+            rootComponent.clearCaches();
         }
         // 이벤트는 매번 다시 등록해줘야됨
         registerMouseWheelEvent();
     }
 
-    public void clearAllCachedBounds(){
-        rootComponent.clearCachedBounds();
+    public void clearAllCaches(){
+        rootComponent.clearCaches();
     }
 
     @Override

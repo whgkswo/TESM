@@ -125,6 +125,6 @@ public class TextLabel extends GuiComponent<TextLabel, TextLabelStyle> {
 
     public void changeText(Text text){
         this.text = text;
-        getMotherScreen().clearAllCachedBounds();
+        getMotherScreen().clearAllCaches();
     }
 }

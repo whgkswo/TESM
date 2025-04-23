@@ -1,4 +1,4 @@
-package net.whgkswo.tesm.util;
+package net.whgkswo.tesm.helpers;
 
 import net.whgkswo.tesm.pathfinding.v2.JumpPoint;
 

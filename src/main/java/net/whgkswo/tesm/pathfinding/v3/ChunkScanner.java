@@ -12,7 +12,7 @@ import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.pathfinding.v2.PathfindDirection;
 import net.whgkswo.tesm.pathfinding.v2.JumpPointTestResult;
 import net.whgkswo.tesm.pathfinding.v2.LinearSearcher;
-import net.whgkswo.tesm.util.BlockPosUtil;
+import net.whgkswo.tesm.helpers.BlockPosUtil;
 
 import java.util.HashMap;
 import java.util.HashSet;

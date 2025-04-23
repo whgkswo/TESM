@@ -1,6 +1,6 @@
 package net.whgkswo.tesm.gui.component.bounds;
 
-public record AbsolutePosition(int x1, int x2, int y1, int y2) {
+public record AbsolutePosition(int x1, int y1, int x2, int y2) {
     public int getWidth(){
         return x2 - x1;
     }

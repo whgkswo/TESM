@@ -2,13 +2,13 @@ package net.whgkswo.tesm.pathfinding.v3;
 
 import net.minecraft.util.math.BlockPos;
 import net.whgkswo.tesm.pathfinding.v2.*;
-import net.whgkswo.tesm.util.BlockPosUtil;
+import net.whgkswo.tesm.helpers.BlockPosUtil;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.PriorityQueue;
 
-import static net.whgkswo.tesm.util.BlockPosUtil.getNextBlock;
+import static net.whgkswo.tesm.helpers.BlockPosUtil.getNextBlock;
 
 public class LinearSearcherV3 {
     private int cursorX;    private int cursorY;    private int cursorZ;

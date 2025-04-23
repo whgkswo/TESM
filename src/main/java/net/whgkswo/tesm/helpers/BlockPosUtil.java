@@ -1,4 +1,4 @@
-package net.whgkswo.tesm.util;
+package net.whgkswo.tesm.helpers;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;

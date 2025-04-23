@@ -9,7 +9,7 @@ import net.minecraft.world.chunk.WorldChunk;
 import net.whgkswo.tesm.data.ScanHelper;
 import net.whgkswo.tesm.data.dto.ChunkPosDto;
 import net.whgkswo.tesm.general.GlobalVariables;
-import net.whgkswo.tesm.util.BlockPosUtil;
+import net.whgkswo.tesm.helpers.BlockPosUtil;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

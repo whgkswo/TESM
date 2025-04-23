@@ -39,7 +39,7 @@ public class FlowPositionProvider extends PositionProvider {
         double parentWidthRatio = parentBound.getWidthRatio();
         double parentHeightRatio = parentBound.getHeightRatio();
 
-        // 형제 요소들의 오프셋, 사이즈 계산
+        // 형제 요소들 덩어리의 오프셋, 사이즈 계산
         double[] siblingBound = calculateSiblingBound(childBound, parentAxis);
         double siblingsWidthRatio = siblingBound[0];
         double siblingsHeightRatio = siblingBound[1];
@@ -88,11 +88,8 @@ public class FlowPositionProvider extends PositionProvider {
             if (i == childIndex) continue; // 자기 자신은 초기값에 반영돼 있음
 
             GuiComponent<?, ?> sibling = component.getSibling(i);
-            // 숨겨진 요소는 스킵
-            if (sibling.isShouldHide()) continue;
-            // FIXED 타입은 스킵
-            PositionType positionType = sibling.getPositionProvider().getType();
-            if(positionType.equals(PositionType.FIXED)) continue;
+            // 계산에서 빠질 컴포넌트는 스킵
+            if(!sibling.doOccupySpace()) continue;
 
             RelativeBound siblingBound = sibling.getBound();
 
