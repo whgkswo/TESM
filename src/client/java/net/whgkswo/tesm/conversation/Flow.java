@@ -1,4 +1,4 @@
-package net.whgkswo.tesm.conversationv2;
+package net.whgkswo.tesm.conversation;
 
 import java.util.Queue;
 

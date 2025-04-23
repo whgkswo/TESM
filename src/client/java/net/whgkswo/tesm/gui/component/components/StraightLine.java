@@ -3,8 +3,6 @@ package net.whgkswo.tesm.gui.component.components;
 import net.minecraft.client.gui.DrawContext;
 import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.colors.TesmColor;
-import net.whgkswo.tesm.gui.component.GuiComponent;
-import net.whgkswo.tesm.gui.component.bounds.AbsolutePosition;
 import net.whgkswo.tesm.gui.component.bounds.LinearBound;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.components.style.BoxStyle;

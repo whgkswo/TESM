@@ -1,4 +1,4 @@
-package net.whgkswo.tesm.conversationv2;
+package net.whgkswo.tesm.conversation;
 
 import net.minecraft.text.Text;
 

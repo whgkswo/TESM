@@ -1,39 +1,35 @@
-package net.whgkswo.tesm.conversationv2.screen;
+package net.whgkswo.tesm.conversation.screen;
 
-import lombok.Getter;
-import lombok.Setter;
 import net.minecraft.text.Text;
-import net.whgkswo.tesm.conversationv2.*;
-import net.whgkswo.tesm.conversationv2.event.DecisionHideEvent;
-import net.whgkswo.tesm.conversationv2.event.DecisionRevealEvent;
+import net.whgkswo.tesm.conversation.*;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.colors.TesmColor;
-import net.whgkswo.tesm.gui.component.ParentComponent;
-import net.whgkswo.tesm.gui.component.bounds.PositionType;
 import net.whgkswo.tesm.gui.component.components.BoxPanel;
 import net.whgkswo.tesm.gui.component.components.TextLabel;
 import net.whgkswo.tesm.gui.component.components.features.HoverType;
 import net.whgkswo.tesm.gui.component.components.style.EdgeVisibility;
-import net.whgkswo.tesm.gui.exceptions.GuiException;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
 import net.whgkswo.tesm.gui.screen.base.TesmScreen;
 import net.whgkswo.tesm.networking.payload.data.s2c_res.ConversationNbtRes;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ConversationScreenV2 extends TesmScreen {
+public class ConversationScreen extends TesmScreen {
     private String tempName;
     private String name;
     private String engName;
     private Flow currentFlow;
     private BoxPanel decisionContainer;
-    private Map<TextLabel, DecisionV2> decisionMap = new HashMap<>();
+    private Map<TextLabel, Decision> decisionMap = new HashMap<>();
     private TextLabel currentText;
+    private List<ConvLog> convLogs = new ArrayList<>();
+    private NameType partnerNameType = NameType.KOR;
 
-    public ConversationScreenV2(ConversationNbtRes partnerInfo){
+    public ConversationScreen(ConversationNbtRes partnerInfo){
         super();
         this.tempName = partnerInfo.tempName();
         this.name = partnerInfo.name();
@@ -59,14 +55,14 @@ public class ConversationScreenV2 extends TesmScreen {
         currentFlow = ConversationHelper.getFlow(engName, "general");
         // NPC 이름 등록
         TextLabel partnerNameLabel = TextLabel.builder(container)
-                .text(Text.literal(name))
+                .text(Text.literal(getPartnerDisplayName()))
                 .id("partnerNameLabel")
                 .topMarginRatio(0.6)
                 .fontScale(2f)
                 .build();
         // 대사 등록
         currentText = TextLabel.builder(container)
-                .text(currentFlow.texts().poll().getText())
+                .text(Text.literal(""))
                 .topMarginRatio(0.1)
                 .fontScale(1.1f)
                 .id("currentText")
@@ -82,8 +78,12 @@ public class ConversationScreenV2 extends TesmScreen {
                 .isScrollable(true)
                 .id("decision_container")
                 .bound(1, 0.2)
-                .shouldHide(true)
+                .visibility(false)
                 .build();
+        // 로그 컨테이너
+        //rootModal.
+        // 첫 대사 로드
+        advanceText();
     }
 
     @Override
@@ -92,8 +92,17 @@ public class ConversationScreenV2 extends TesmScreen {
         ConversationHelper.convOn = false;
     }
 
+    private String getPartnerDisplayName(){
+        if(partnerNameType.equals(NameType.TEMP)){
+            return tempName;
+        } else if (partnerNameType.equals(NameType.KOR)) {
+            return name;
+        }
+        return "(이름 타입 없음)";
+    }
+
     private void advanceText(){
-        if(!decisionContainer.isShouldHide()) return;
+        if(!currentText.isVisible()) return;
 
         // 대사 끝
         if(currentFlow.texts().isEmpty()){
@@ -103,6 +112,8 @@ public class ConversationScreenV2 extends TesmScreen {
         }else{ // 아직 남음
             DialogueText nextText = currentFlow.texts().poll();
             currentText.changeText(nextText.getText());
+            // 로그 기록
+            convLogs.add(new ConvLog(getPartnerDisplayName(), nextText.getText()));
         }
     }
 
@@ -113,11 +124,11 @@ public class ConversationScreenV2 extends TesmScreen {
     }
 
     private void revealDecisions(Action action){
-        currentText.changeShouldHide(true);
+        currentText.changeVisibility(false);
         decisionContainer.removeChildren();
         decisionMap.clear();
 
-        List<DecisionV2> decisions = ConversationHelper.getDecisions(action.target());
+        List<Decision> decisions = ConversationHelper.getDecisions(action.target());
 
         for(int i = 0; i< decisions.size(); i++){
             // 뒷배경(호버 영역 확보용)
@@ -128,7 +139,7 @@ public class ConversationScreenV2 extends TesmScreen {
                     .onHover(HoverType.BACKGROUND_BLUR_EFFECTER)
                     .build();
             // 텍스트
-            DecisionV2 decision = decisions.get(i);
+            Decision decision = decisions.get(i);
             TextLabel textLabel = TextLabel.builder(background)
                     .text(Text.literal(decision.text()))
                     .id("decision_slot#" + (i + 1))
@@ -140,12 +151,12 @@ public class ConversationScreenV2 extends TesmScreen {
             // 맵에 등록
             decisionMap.put(textLabel, decision);
         }
-        decisionContainer.changeShouldHide(false);
+        decisionContainer.changeVisibility(true);
     }
 
     private void hideDecision(){
-        decisionContainer.changeShouldHide(true);
-        currentText.changeShouldHide(false);
+        decisionContainer.changeVisibility(false);
+        currentText.changeVisibility(true);
     }
 
     // 다음 플로우 로드
@@ -157,14 +168,30 @@ public class ConversationScreenV2 extends TesmScreen {
 
     // 선택지 클릭 처리
     private void onClickDecision(TextLabel textLabel){
-        DecisionV2 decision = decisionMap.get(textLabel);
+        Decision decision = decisionMap.get(textLabel);
         String nextFlowId = decision.flowId();
 
         if(nextFlowId == null || nextFlowId.isBlank()){
             // 대화 종료
             textLabel.getMotherScreen().close();
         }else{ // 다음 플로우 진행
-            ((ConversationScreenV2)(textLabel.getMotherScreen())).advanceFlow(nextFlowId);
+            ((ConversationScreen)(textLabel.getMotherScreen())).advanceFlow(nextFlowId);
         }
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers){
+        switch (keyCode){
+            case GLFW.GLFW_KEY_X -> {
+                rootModal.setVisibility(!rootModal.isVisible());
+                rootModal.clearCaches();
+                return true;
+            }
+        }
+        return super.keyPressed(keyCode, scanCode, modifiers);
+    }
+
+    private record ConvLog(String speakerName, Text text) {
+
     }
 }

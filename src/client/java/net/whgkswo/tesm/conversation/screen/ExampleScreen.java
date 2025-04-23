@@ -1,8 +1,8 @@
-package net.whgkswo.tesm.conversationv2.screen;
+package net.whgkswo.tesm.conversation.screen;
 
 import net.minecraft.text.Text;
-import net.whgkswo.tesm.conversationv2.ConversationHelper;
-import net.whgkswo.tesm.conversationv2.Flow;
+import net.whgkswo.tesm.conversation.ConversationHelper;
+import net.whgkswo.tesm.conversation.Flow;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.bounds.PositionType;

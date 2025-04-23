@@ -7,8 +7,6 @@ import net.whgkswo.tesm.gui.GuiDirection;
 import net.whgkswo.tesm.gui.RenderingHelper;
 import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.GuiAxis;
-import net.whgkswo.tesm.gui.component.GuiComponent;
-import net.whgkswo.tesm.gui.component.ParentComponent;
 import net.whgkswo.tesm.gui.component.bounds.LinearBound;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.components.builder.BoxPanelBuilder;
@@ -118,7 +116,7 @@ public class BoxPanel extends ParentComponent<BoxPanel, BoxStyle> implements Has
     }
 
     public void setBound(RelativeBound bound){
-        if(TesmScreen.ROOT_ID.equals(getId()) && this.bound != null){
+        if(TesmScreen.ROOT_ID.equals(getId()) && isBuildFinished()){
             new GuiException(getMotherScreen(), "루트 컴포넌트는 크기를 조정할 수 없습니다.").handle();
         }
         this.bound = bound;

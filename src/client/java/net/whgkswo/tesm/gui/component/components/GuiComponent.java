@@ -1,4 +1,4 @@
-package net.whgkswo.tesm.gui.component;
+package net.whgkswo.tesm.gui.component.components;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,7 +8,6 @@ import net.whgkswo.tesm.gui.GuiDirection;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.component.bounds.*;
 import net.whgkswo.tesm.gui.component.bounds.positions.PositionProvider;
-import net.whgkswo.tesm.gui.component.components.BoxPanel;
 import net.whgkswo.tesm.gui.component.components.features.BackgroundHoverHandler;
 import net.whgkswo.tesm.gui.component.components.features.GuiFeatureType;
 import net.whgkswo.tesm.gui.component.components.features.HoverType;
@@ -33,8 +32,7 @@ import java.util.*;
 public abstract class GuiComponent<C extends GuiComponent<C, S>, S extends GuiStyle> {
     @Setter
     private String id;
-    @Setter
-    private boolean shouldHide;
+    private boolean isVisible;
     @Setter
     private HorizontalAlignment selfHorizontalAlignment;
     @Setter
@@ -60,6 +58,8 @@ public abstract class GuiComponent<C extends GuiComponent<C, S>, S extends GuiSt
     private HoverHandler hoverHandler;
     private ClickHandler clickHandler;
     private TesmScreen motherScreen;
+    @Setter
+    private boolean isBuildFinished;
 
     public GuiComponent(@Nullable ParentComponent<?, ?> parent){
         this.parent = parent;
@@ -70,7 +70,7 @@ public abstract class GuiComponent<C extends GuiComponent<C, S>, S extends GuiSt
     public abstract RelativeBound getBound();
 
     public void tryRender(DrawContext context){
-        if(!shouldHide) render(context);
+        if(isVisible) render(context);
     }
 
     public void render(DrawContext context){
@@ -121,8 +121,8 @@ public abstract class GuiComponent<C extends GuiComponent<C, S>, S extends GuiSt
         return scissor;
     }
 
-    protected boolean shouldHide(){
-        return shouldHide;
+    public boolean isVisible(){
+        return isVisible;
     }
 
     public @Nullable ParentComponent<?, ?> getParent(){
@@ -141,7 +141,7 @@ public abstract class GuiComponent<C extends GuiComponent<C, S>, S extends GuiSt
         if(parent != null && parent.getMotherScreen() != null) setMotherScreen(parent.getMotherScreen());
     }
 
-    public Set<GuiComponent<?, ?>> getTargetedComponents(GuiFeatureType type, int mouseX, int mouseY, Set<GuiComponent<?,?>> result, BoxPanel rootComponent){
+    public Set<GuiComponent<?, ?>> getTargetedComponents(GuiFeatureType type, int mouseX, int mouseY, Set<GuiComponent<?,?>> result, BoxPanel refComponent){
         if(isMouseOver(mouseX, mouseY)){
             // 상호작용 가능한 경우에만 대상으로 추가
             switch (type){
@@ -156,10 +156,10 @@ public abstract class GuiComponent<C extends GuiComponent<C, S>, S extends GuiSt
                 }
             }
             for (GuiComponent<?, ?> child : getChildren()){
-                result = child.getTargetedComponents(type, mouseX, mouseY, result, rootComponent);
+                result = child.getTargetedComponents(type, mouseX, mouseY, result, refComponent);
             }
         }else{ // 마우스가 밖에 있음
-            if(this == rootComponent){
+            if(this == refComponent){
                 return new HashSet<>();
             }
         }
@@ -208,7 +208,7 @@ public abstract class GuiComponent<C extends GuiComponent<C, S>, S extends GuiSt
             if(defaultStyle != null) stylePreset = defaultStyle;
         };
 
-        // 스타일 프리셋 선적용
+        // 스타일 프리셋 적용
         applyStylePreset(stylePreset.style());
         // 바운드 초기화
         initializeBound();
@@ -413,8 +413,8 @@ public abstract class GuiComponent<C extends GuiComponent<C, S>, S extends GuiSt
             child.clearCaches();
         }
     }
-    public void changeShouldHide(boolean shouldHide){
-        this.shouldHide = shouldHide;
+    public void changeVisibility(boolean isVisible){
+        this.isVisible = isVisible;
         motherScreen.clearAllCaches();
     }
 
@@ -438,10 +438,14 @@ public abstract class GuiComponent<C extends GuiComponent<C, S>, S extends GuiSt
 
     public boolean doOccupySpace(){
         // 숨겨진 요소는 스킵
-        if (this.isShouldHide()) return false;
+        if (!this.isVisible()) return false;
         // FIXED 타입은 스킵
         PositionType positionType = this.getPositionProvider().getType();
         if(positionType.equals(PositionType.FIXED)) return false;
         return true;
+    }
+
+    public void setVisibility(boolean isVisible){
+        this.isVisible = isVisible;
     }
 }

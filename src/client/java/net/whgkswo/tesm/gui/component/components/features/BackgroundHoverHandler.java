@@ -1,11 +1,10 @@
 package net.whgkswo.tesm.gui.component.components.features;
 
 import net.whgkswo.tesm.gui.colors.TesmColor;
-import net.whgkswo.tesm.gui.component.GuiComponent;
+import net.whgkswo.tesm.gui.component.components.GuiComponent;
 import net.whgkswo.tesm.gui.component.components.features.base.HasBackground;
 import net.whgkswo.tesm.gui.component.components.features.base.HoverHandler;
 import net.whgkswo.tesm.gui.exceptions.GuiException;
-import net.whgkswo.tesm.message.MessageHelper;
 
 public class BackgroundHoverHandler extends HoverHandler {
     private final GuiComponent<?, ?> master;

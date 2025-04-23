@@ -3,7 +3,6 @@ package net.whgkswo.tesm.gui.overlay;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderTickCounter;
-import net.whgkswo.tesm.conversation.quest.objective.QuestObjective;
 import net.whgkswo.tesm.gui.component.TransitionStatus;
 import net.whgkswo.tesm.gui.component.components.TextPopUp;
 
@@ -34,8 +33,8 @@ public class QuestOverlay implements HudRenderCallback {
             objective.renderSelf(drawContext);
         }
     }
-    public static void displayStartPopUp(String type, String questName, Map<String, QuestObjective> objectives){
-        /*eventType = new TextPopUp(
+    /*public static void displayStartPopUp(String type, String questName, Map<String, QuestObjective> objectives){
+        eventType = new TextPopUp(
                 Text.literal(type),
                 Box.builder()
                         .bound(new RelativeBound(0.05, 0.45, 0.1, 0.05))
@@ -69,10 +68,10 @@ public class QuestOverlay implements HudRenderCallback {
                     0, new FadeSequence(20,252, 20)
                     ));
             i++;
-        }*/
+        }
     }
     public static void displayAdvancePopUp(String object, Map<String, QuestObjective> nextObjectives){
-        /*int i = 0;
+        int i = 0;
         eventType = new TextPopUp(
                 Text.literal(object).styled(style -> style.withStrikethrough(true)),
                 Box.builder().build(),
@@ -90,10 +89,10 @@ public class QuestOverlay implements HudRenderCallback {
                     0, new FadeSequence(200, 20, 252,20)
                     ));
             i++;
-        }*/
+        }
     }
     public static void displayCompletePopUp(String type, String questName){
-        /*eventType = new TextPopUp(
+        eventType = new TextPopUp(
                 Text.literal(type),
                 Box.builder().build(),
                 //new FilledBox(null, new RectangularBound(Boundary.BoundType.FIXED, 0.05, 0.45, 0.1, 0.05)),
@@ -105,6 +104,6 @@ public class QuestOverlay implements HudRenderCallback {
                 //new FilledBox(null, new RectangularBound(Boundary.BoundType.FIXED, 0.05, 0.5, 0.1, 0.05)),
                 1f, HorizontalAlignment.LEFT,
                 0, new FadeSequence(50, 205, 40)
-                );*/
-    }
+                );
+    }*/
 }

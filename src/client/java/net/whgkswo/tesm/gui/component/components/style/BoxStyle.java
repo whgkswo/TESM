@@ -7,6 +7,7 @@ import net.whgkswo.tesm.gui.GuiDirection;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.GuiAxis;
+import net.whgkswo.tesm.gui.component.bounds.PositionType;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
 
@@ -51,6 +52,16 @@ public class BoxStyle implements GuiStyle, DefaultStyleProvider<BoxStyle> {
             BoxStyle.builder()
                     .backgroundColor(TesmColor.BLACK)
                     .bound(new RelativeBound(0.3, 0.3))
+                    .build()
+    );
+
+    public static final StylePreset<BoxStyle> ROOT_MODAL = new StylePreset<>(
+            "root_modal",
+            BoxStyle.builder()
+                    .backgroundColor(TesmColor.BLACK.withAlpha(100))
+                    .bound(new RelativeBound(0.45, 0.8))
+                    .selfHorizontalAlignment(HorizontalAlignment.CENTER)
+                    .selfVerticalAlignment(VerticalAlignment.CENTER)
                     .build()
     );
 

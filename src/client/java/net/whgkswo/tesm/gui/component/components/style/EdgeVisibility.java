@@ -4,6 +4,7 @@ import net.whgkswo.tesm.gui.GuiDirection;
 
 public record EdgeVisibility(boolean top, boolean left, boolean right, boolean bottom) {
     public static final EdgeVisibility FULL_EDGES = new EdgeVisibility(true, true, true, true);
+    public static final EdgeVisibility NO_EDGES = new EdgeVisibility(false, false, false, false);
     public static final EdgeVisibility TOP_ONLY = new EdgeVisibility(true, false, false, false);
     public static final EdgeVisibility LEFT_ONLY = new EdgeVisibility(false, true, false, false);
     public static final EdgeVisibility RIGHT_ONLY = new EdgeVisibility(false, false, true, false);

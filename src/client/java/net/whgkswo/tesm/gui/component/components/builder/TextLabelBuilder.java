@@ -2,12 +2,10 @@ package net.whgkswo.tesm.gui.component.components.builder;
 
 import net.minecraft.text.Text;
 import net.whgkswo.tesm.gui.colors.TesmColor;
-import net.whgkswo.tesm.gui.component.GuiComponent;
-import net.whgkswo.tesm.gui.component.ParentComponent;
+import net.whgkswo.tesm.gui.component.components.ParentComponent;
 import net.whgkswo.tesm.gui.component.components.TextLabel;
 import net.whgkswo.tesm.gui.component.components.builder.base.GuiComponentBuilder;
 import net.whgkswo.tesm.gui.component.components.style.TextLabelStyle;
-import net.whgkswo.tesm.gui.screen.base.TesmScreen;
 
 // 원시타입 스타일 초기값은 여기에 명시
 public class TextLabelBuilder extends GuiComponentBuilder<TextLabel, TextLabelBuilder, TextLabelStyle> {
@@ -33,7 +31,7 @@ public class TextLabelBuilder extends GuiComponentBuilder<TextLabel, TextLabelBu
 
         // GuiComponent 필드
         textLabel.setId(this.id);
-        textLabel.setShouldHide(this.shouldHide);
+        textLabel.setVisibility(this.isVisible);
         textLabel.setSelfHorizontalAlignment(this.selfHorizontalAlignment);
         textLabel.setSelfVerticalAlignment(this.selfVerticalAlignment);
         textLabel.setParent(this.parent);

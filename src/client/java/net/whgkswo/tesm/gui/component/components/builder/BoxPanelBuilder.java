@@ -1,16 +1,13 @@
 package net.whgkswo.tesm.gui.component.components.builder;
 
-import net.whgkswo.tesm.gui.GuiDirection;
 import net.whgkswo.tesm.gui.colors.TesmColor;
-import net.whgkswo.tesm.gui.component.ParentComponent;
+import net.whgkswo.tesm.gui.component.components.ParentComponent;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.components.BoxPanel;
 import net.whgkswo.tesm.gui.component.components.builder.base.ParentComponentBuilder;
 import net.whgkswo.tesm.gui.component.components.features.base.ScrollHandler;
 import net.whgkswo.tesm.gui.component.components.style.BoxStyle;
 import net.whgkswo.tesm.gui.component.components.style.EdgeVisibility;
-
-import java.util.Map;
 
 // 원시타입 스타일 초기값은 여기에 명시
 public class BoxPanelBuilder extends ParentComponentBuilder<BoxPanel, BoxPanelBuilder, BoxStyle> {
@@ -34,14 +31,15 @@ public class BoxPanelBuilder extends ParentComponentBuilder<BoxPanel, BoxPanelBu
     @Override
     public BoxPanel build() {
         BoxPanel boxPanel = new BoxPanel();
-
+        // 스타일 프리셋 선적용
+        boxPanel.setStylePreset(this.stylePreset);
+        boxPanel.initializeStyle();
         // GuiComponent 필드
         boxPanel.setId(this.id);
-        boxPanel.setShouldHide(this.shouldHide);
+        boxPanel.setVisibility(this.isVisible);
         boxPanel.setSelfHorizontalAlignment(this.selfHorizontalAlignment);
         boxPanel.setSelfVerticalAlignment(this.selfVerticalAlignment);
         boxPanel.setParent(this.parent);
-        boxPanel.setStylePreset(this.stylePreset);
         boxPanel.setTopMarginRatio(this.topMarginRatio);
         boxPanel.setLeftMarginRatio(this.leftMarginRatio);
         boxPanel.setRightMarginRatio(this.rightMarginRatio);

@@ -1,12 +1,11 @@
-package net.whgkswo.tesm.gui.component;
+package net.whgkswo.tesm.gui.component.components;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.util.math.MathHelper;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
-import net.whgkswo.tesm.gui.component.bounds.PositionType;
+import net.whgkswo.tesm.gui.component.GuiAxis;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.components.style.GuiStyle;
 import net.whgkswo.tesm.gui.exceptions.GuiException;

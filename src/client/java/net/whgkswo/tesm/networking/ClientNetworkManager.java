@@ -2,7 +2,7 @@ package net.whgkswo.tesm.networking;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.whgkswo.tesm.conversationv2.network.ConversationNbtS2CReceiver;
+import net.whgkswo.tesm.conversation.network.ConversationNbtS2CReceiver;
 import net.whgkswo.tesm.networking.payload.data.SimpleReq;
 import net.whgkswo.tesm.networking.payload.data.s2c_req.DoorNaming;
 import net.whgkswo.tesm.networking.payload.data.s2c_res.ConversationNbtRes;

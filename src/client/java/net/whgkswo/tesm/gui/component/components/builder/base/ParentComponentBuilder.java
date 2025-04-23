@@ -2,7 +2,7 @@ package net.whgkswo.tesm.gui.component.components.builder.base;
 
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.component.GuiAxis;
-import net.whgkswo.tesm.gui.component.ParentComponent;
+import net.whgkswo.tesm.gui.component.components.ParentComponent;
 import net.whgkswo.tesm.gui.component.components.style.GuiStyle;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
 

@@ -1,7 +1,7 @@
 package net.whgkswo.tesm.data.json;
 
 import com.google.gson.*;
-import net.whgkswo.tesm.conversationv2.Action;
+import net.whgkswo.tesm.conversation.Action;
 
 import java.lang.reflect.Type;
 

@@ -1,8 +1,8 @@
-package net.whgkswo.tesm.conversationv2.network;
+package net.whgkswo.tesm.conversation.network;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
-import net.whgkswo.tesm.conversationv2.ConversationHelper;
+import net.whgkswo.tesm.conversation.ConversationHelper;
 import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.general.GlobalVariablesClient;
 import net.whgkswo.tesm.networking.payload.data.s2c_res.ConversationNbtRes;

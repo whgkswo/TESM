@@ -1,4 +1,4 @@
-package net.whgkswo.tesm.conversationv2;
+package net.whgkswo.tesm.conversation;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -14,9 +14,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
-import net.whgkswo.tesm.conversation.ConversationScreen;
-import net.whgkswo.tesm.conversationv2.screen.ConversationScreenV2;
-import net.whgkswo.tesm.conversationv2.screen.ExampleScreen;
 import net.whgkswo.tesm.data.ClientResourceHelper;
 import net.whgkswo.tesm.data.json.DecisionDeserializer;
 import net.whgkswo.tesm.data.json.DialogueTextDeserializer;
@@ -78,7 +75,7 @@ public class ConversationHelper {
         player.setPitch(getYawAndPitch(convPartner.getPos(),player.getPos())[1]);
         // 스크린 열기
         //client.setScreen(new ConversationScreen(convPartner));
-        client.setScreen(new ConversationScreenV2(partnerInfo));
+        client.setScreen(new net.whgkswo.tesm.conversation.screen.ConversationScreen(partnerInfo));
         //client.setScreen(new ExampleScreen(partnerInfo));
     }
 
@@ -97,15 +94,15 @@ public class ConversationHelper {
         return new LinkedList<>(dialogueTextList);
     }
 
-    public static List<DecisionV2> getDecisions(String path){
+    public static List<Decision> getDecisions(String path){
         JsonArray json = ClientResourceHelper.getInstance().getJsonArray("conversation/" + path);
 
         GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(DecisionV2.class, new DecisionDeserializer());
+        gsonBuilder.registerTypeAdapter(Decision.class, new DecisionDeserializer());
         Gson gson = gsonBuilder.create();
 
         // TypeToken을 사용하여 List<Decision> 타입으로 변환
-        Type listType = new TypeToken<List<DecisionV2>>(){}.getType();
+        Type listType = new TypeToken<List<Decision>>(){}.getType();
         return gson.fromJson(json, listType);
     }
 

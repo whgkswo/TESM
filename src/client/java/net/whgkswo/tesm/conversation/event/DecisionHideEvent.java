@@ -1,8 +1,8 @@
-package net.whgkswo.tesm.conversationv2.event;
+package net.whgkswo.tesm.conversation.event;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.whgkswo.tesm.conversationv2.screen.ConversationScreenV2;
+import net.whgkswo.tesm.conversation.screen.ConversationScreen;
 
 public interface DecisionHideEvent {
     Event<DecisionHideEvent> EVENT = EventFactory.createArrayBacked(DecisionHideEvent.class,
@@ -12,5 +12,5 @@ public interface DecisionHideEvent {
                 }
             });
 
-    void onDecisionHide(ConversationScreenV2 screen);
+    void onDecisionHide(ConversationScreen screen);
 }

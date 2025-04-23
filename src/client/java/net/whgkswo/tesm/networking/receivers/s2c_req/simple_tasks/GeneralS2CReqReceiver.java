@@ -5,7 +5,6 @@ import net.minecraft.text.Text;
 import net.whgkswo.tesm.general.GlobalVariables;
 import net.whgkswo.tesm.networking.payload.data.SimpleReq;
 import net.whgkswo.tesm.networking.payload.id.SimpleTask;
-import net.whgkswo.tesm.networking.receivers.s2c_req.simple_tasks.handlers.ResetQuestsHandler;
 
 public class GeneralS2CReqReceiver {
     public static void handle(SimpleReq payload, ClientPlayNetworking.Context context){
@@ -18,7 +17,7 @@ public class GeneralS2CReqReceiver {
         }
         // 들어온 요청에 따라 핸들러 맵핑
         switch (task){
-            case RESET_QUESTS -> ResetQuestsHandler.handle();
+            //case RESET_QUESTS -> ResetQuestsHandler.handle();
         }
     }
 }

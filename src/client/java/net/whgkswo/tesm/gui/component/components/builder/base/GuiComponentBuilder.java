@@ -1,8 +1,8 @@
 package net.whgkswo.tesm.gui.component.components.builder.base;
 
 import net.whgkswo.tesm.gui.HorizontalAlignment;
-import net.whgkswo.tesm.gui.component.GuiComponent;
-import net.whgkswo.tesm.gui.component.ParentComponent;
+import net.whgkswo.tesm.gui.component.components.GuiComponent;
+import net.whgkswo.tesm.gui.component.components.ParentComponent;
 import net.whgkswo.tesm.gui.component.bounds.positions.FixedPositionProvider;
 import net.whgkswo.tesm.gui.component.bounds.positions.FlowPositionProvider;
 import net.whgkswo.tesm.gui.component.bounds.PositionType;
@@ -26,7 +26,7 @@ public abstract class GuiComponentBuilder<C extends GuiComponent<C, S>,
 
     // GuiComponent 필드
     protected String id;
-    protected boolean shouldHide;
+    protected boolean isVisible = true;
     protected HorizontalAlignment selfHorizontalAlignment;
     protected VerticalAlignment selfVerticalAlignment;
     protected ParentComponent<?, ?> parent;
@@ -45,8 +45,8 @@ public abstract class GuiComponentBuilder<C extends GuiComponent<C, S>,
         return self();
     }
 
-    public B shouldHide(boolean shouldHide) {
-        this.shouldHide = shouldHide;
+    public B visibility(boolean isVisible) {
+        this.isVisible = isVisible;
         return self();
     }
 
@@ -133,12 +133,15 @@ public abstract class GuiComponentBuilder<C extends GuiComponent<C, S>,
 
         // 기본 포지션 정책은 플로우
         switch (this.positionType){
-            case FIXED -> c.setPositionProvider(new FixedPositionProvider(c, parent));
+            case FIXED -> {
+                c.setPositionProvider(new FixedPositionProvider(c, parent));
+            }
             default -> c.setPositionProvider(new FlowPositionProvider(c, parent));
         };
 
         // 스타일 초기화
         c.initializeStyle();
+        c.setBuildFinished(true);
         return c;
     }
 }

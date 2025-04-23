@@ -1,8 +1,8 @@
-package net.whgkswo.tesm.conversationv2.event;
+package net.whgkswo.tesm.conversation.event;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.whgkswo.tesm.conversationv2.screen.ConversationScreenV2;
+import net.whgkswo.tesm.conversation.screen.ConversationScreen;
 
 public interface DecisionRevealEvent {
     Event<DecisionRevealEvent> EVENT = EventFactory.createArrayBacked(DecisionRevealEvent.class,
@@ -12,5 +12,5 @@ public interface DecisionRevealEvent {
                 }
             });
 
-    void onDecisionReveal(ConversationScreenV2 screen);
+    void onDecisionReveal(ConversationScreen screen);
 }

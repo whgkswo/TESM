@@ -2,8 +2,8 @@ package net.whgkswo.tesm.data.json;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
-import net.whgkswo.tesm.conversationv2.Action;
-import net.whgkswo.tesm.conversationv2.DialogueText;
+import net.whgkswo.tesm.conversation.Action;
+import net.whgkswo.tesm.conversation.DialogueText;
 
 import java.lang.reflect.Type;
 import java.util.LinkedList;

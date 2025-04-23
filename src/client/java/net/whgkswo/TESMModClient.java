@@ -3,17 +3,13 @@ package net.whgkswo;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.color.world.BiomeColors;
-import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.util.math.BlockPos;
-import net.whgkswo.tesm.TESMMod;
 import net.whgkswo.tesm.TestClassClient;
-import net.whgkswo.tesm.conversationv2.ConversationHelper;
-import net.whgkswo.tesm.conversation.quest.QuestRegisterer;
+import net.whgkswo.tesm.conversation.ConversationHelper;
 import net.whgkswo.tesm.events.UseBlockEvent;
 import net.whgkswo.tesm.general.ClientEvents;
 import net.whgkswo.tesm.gui.overlay.*;
 import net.whgkswo.tesm.keybinds.KeyInputHandler;
-import net.whgkswo.tesm.libgui.ExampleGuiDesc;
 import net.whgkswo.tesm.networking.ClientNetworkManager;
 import net.whgkswo.tesm.gui.overlay.raycast.HUDRaycastHelper;
 
@@ -80,9 +76,6 @@ public class TESMModClient implements ClientModInitializer {
 
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 키바인딩 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 		KeyInputHandler.register();
-
-		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ↓ 퀘스트 등록 ↓ ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-		QuestRegisterer.register();
 
 		TestClassClient.testClassClient(); // 테스트용!
 	}
