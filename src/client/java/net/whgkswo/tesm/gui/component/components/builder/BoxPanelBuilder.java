@@ -1,5 +1,6 @@
 package net.whgkswo.tesm.gui.component.components.builder;
 
+import net.whgkswo.tesm.gui.GuiDirection;
 import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.ParentComponent;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
@@ -7,6 +8,9 @@ import net.whgkswo.tesm.gui.component.components.BoxPanel;
 import net.whgkswo.tesm.gui.component.components.builder.base.ParentComponentBuilder;
 import net.whgkswo.tesm.gui.component.components.features.base.ScrollHandler;
 import net.whgkswo.tesm.gui.component.components.style.BoxStyle;
+import net.whgkswo.tesm.gui.component.components.style.EdgeVisibility;
+
+import java.util.Map;
 
 // 원시타입 스타일 초기값은 여기에 명시
 public class BoxPanelBuilder extends ParentComponentBuilder<BoxPanel, BoxPanelBuilder, BoxStyle> {
@@ -16,6 +20,7 @@ public class BoxPanelBuilder extends ParentComponentBuilder<BoxPanel, BoxPanelBu
     private int edgeThickness = 1;
     private TesmColor backgroundColor;
     private boolean isScrollable;
+    private EdgeVisibility edgeVisibilities;
 
     public BoxPanelBuilder(ParentComponent<?, ?> parent){
         this.parent = parent;
@@ -53,6 +58,7 @@ public class BoxPanelBuilder extends ParentComponentBuilder<BoxPanel, BoxPanelBu
         boxPanel.setEdgeColor(this.edgeColor);
         boxPanel.setEdgeThickness(this.edgeThickness);
         boxPanel.setBackgroundColor(this.backgroundColor);
+        boxPanel.setEdgeVisibilities(this.edgeVisibilities);
 
         // 순서 맨 뒤여야 하는 것들
         if(this.hoverHandler == null){
@@ -93,6 +99,11 @@ public class BoxPanelBuilder extends ParentComponentBuilder<BoxPanel, BoxPanelBu
 
     public BoxPanelBuilder isScrollable(boolean isScrollable){
         this.isScrollable = isScrollable;
+        return self();
+    }
+
+    public BoxPanelBuilder edgeVisibility(EdgeVisibility edgeVisibilities){
+        this.edgeVisibilities = edgeVisibilities;
         return self();
     }
 }

@@ -16,6 +16,7 @@ import net.whgkswo.tesm.gui.component.components.features.base.HasBackground;
 import net.whgkswo.tesm.gui.component.components.features.base.ScrollHandler;
 import net.whgkswo.tesm.gui.component.components.features.base.Scrollable;
 import net.whgkswo.tesm.gui.component.components.style.BoxStyle;
+import net.whgkswo.tesm.gui.component.components.style.EdgeVisibility;
 import net.whgkswo.tesm.gui.exceptions.GuiException;
 import net.whgkswo.tesm.gui.screen.base.TesmScreen;
 
@@ -29,6 +30,8 @@ public class BoxPanel extends ParentComponent<BoxPanel, BoxStyle> implements Has
     private RelativeBound bound;
     @Setter
     private TesmColor edgeColor;
+    @Setter
+    private EdgeVisibility edgeVisibilities;
     @Setter
     private int edgeThickness;
     @Setter
@@ -64,8 +67,11 @@ public class BoxPanel extends ParentComponent<BoxPanel, BoxStyle> implements Has
         // 모서리 없으면 생성
         generateEdgeLines();
         // 모서리 출력
+        if(edgeColor.equals(TesmColor.TRANSPARENT)) return;
         edgeLines.forEach((lineSide, straightLine) -> {
-            straightLine.renderSelf(context);
+            if(edgeVisibilities.isVisible(lineSide)){
+                straightLine.renderSelf(context);
+            }
         });
     }
 

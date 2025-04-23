@@ -13,6 +13,7 @@ import net.whgkswo.tesm.gui.component.bounds.PositionType;
 import net.whgkswo.tesm.gui.component.components.BoxPanel;
 import net.whgkswo.tesm.gui.component.components.TextLabel;
 import net.whgkswo.tesm.gui.component.components.features.HoverType;
+import net.whgkswo.tesm.gui.component.components.style.EdgeVisibility;
 import net.whgkswo.tesm.gui.exceptions.GuiException;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
 import net.whgkswo.tesm.gui.screen.base.TesmScreen;
@@ -73,7 +74,9 @@ public class ConversationScreenV2 extends TesmScreen {
         // 선택지 컨테이너 등록
         decisionContainer = BoxPanel.builder(container)
                 .backgroundColor(TesmColor.TRANSPARENT)
-                //.edgeColor(TesmColor.CREAM)
+                .edgeColor(TesmColor.CREAM)
+                .edgeThickness(3)
+                .edgeVisibility(EdgeVisibility.LEFT_ONLY)
                 .topMarginRatio(0.05)
                 .verticalGap(0.035)
                 .isScrollable(true)
@@ -92,7 +95,6 @@ public class ConversationScreenV2 extends TesmScreen {
     private void advanceText(){
         if(!decisionContainer.isShouldHide()) return;
 
-        TextLabel currentText = (TextLabel) searchComponent("currentText");
         // 대사 끝
         if(currentFlow.texts().isEmpty()){
             for (Action action : currentFlow.actions()){
@@ -131,7 +133,7 @@ public class ConversationScreenV2 extends TesmScreen {
                     .text(Text.literal(decision.text()))
                     .id("decision_slot#" + (i + 1))
                     .selfHorizontalAlignment(HorizontalAlignment.LEFT)
-                    .leftMarginRatio(0.02)
+                    .leftMarginRatio(0.025)
                     .build();
             // 선택지 클릭 이벤트 설정
             background.onClick(() -> onClickDecision(textLabel));

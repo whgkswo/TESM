@@ -3,11 +3,15 @@ package net.whgkswo.tesm.gui.component.components.style;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import net.whgkswo.tesm.gui.GuiDirection;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.colors.TesmColor;
 import net.whgkswo.tesm.gui.component.GuiAxis;
 import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Builder
 @NoArgsConstructor
@@ -25,6 +29,7 @@ public class BoxStyle implements GuiStyle, DefaultStyleProvider<BoxStyle> {
     private RelativeBound bound;
     private TesmColor edgeColor;
     private TesmColor backgroundColor;
+    private EdgeVisibility edgeVisibilities;
 
     public static final StylePreset<BoxStyle> DEFAULT = new StylePreset<>(
             "default_box",
@@ -37,6 +42,7 @@ public class BoxStyle implements GuiStyle, DefaultStyleProvider<BoxStyle> {
                     .bound(RelativeBound.FULL_SCREEN)
                     .edgeColor(TesmColor.TRANSPARENT)
                     .backgroundColor(TesmColor.WHITE)
+                    .edgeVisibilities(EdgeVisibility.FULL_EDGES)
                     .build()
     );
 
