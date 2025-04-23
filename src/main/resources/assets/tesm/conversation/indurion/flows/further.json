@@ -1,0 +1,10 @@
+{
+  "type": "SHOW_TEXTS",
+  "texts": "indurion/texts/further",
+  "after": [
+    {
+      "type": "SHOW_DECISIONS",
+      "target": "indurion/decisions/further"
+    }
+  ]
+}

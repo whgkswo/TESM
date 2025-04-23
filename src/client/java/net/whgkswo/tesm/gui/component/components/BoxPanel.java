@@ -60,7 +60,7 @@ public class BoxPanel extends ParentComponent<BoxPanel, BoxStyle> implements Has
         }
     }
 
-    private void renderEdges(DrawContext context){
+    protected void renderEdges(DrawContext context){
         // 모서리 없으면 생성
         generateEdgeLines();
         // 모서리 출력

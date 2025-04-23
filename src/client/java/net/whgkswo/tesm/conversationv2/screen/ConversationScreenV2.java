@@ -29,6 +29,7 @@ public class ConversationScreenV2 extends TesmScreen {
     private String engName;
     private Flow currentFlow;
     private BoxPanel decisionContainer;
+    private Map<TextLabel, DecisionV2> decisionMap = new HashMap<>();
     private TextLabel currentText;
 
     public ConversationScreenV2(ConversationNbtRes partnerInfo){
@@ -59,25 +60,25 @@ public class ConversationScreenV2 extends TesmScreen {
         TextLabel partnerNameLabel = TextLabel.builder(container)
                 .text(Text.literal(name))
                 .id("partnerNameLabel")
-                .topMarginRatio(0.55)
+                .topMarginRatio(0.6)
                 .fontScale(2f)
                 .build();
         // 대사 등록
         currentText = TextLabel.builder(container)
                 .text(currentFlow.texts().poll().getText())
-                .topMarginRatio(0.08)
-                .bottomMarginRatio(0.02)
+                .topMarginRatio(0.1)
                 .fontScale(1.1f)
                 .id("currentText")
                 .build();
         // 선택지 컨테이너 등록
         decisionContainer = BoxPanel.builder(container)
                 .backgroundColor(TesmColor.TRANSPARENT)
-                .edgeColor(TesmColor.CREAM)
+                //.edgeColor(TesmColor.CREAM)
+                .topMarginRatio(0.05)
                 .verticalGap(0.035)
                 .isScrollable(true)
                 .id("decision_container")
-                .bound(1, 0.25)
+                .bound(1, 0.2)
                 .shouldHide(true)
                 .build();
     }
@@ -110,14 +111,16 @@ public class ConversationScreenV2 extends TesmScreen {
     }
 
     private void revealDecisions(Action action){
+        currentText.changeShouldHide(true);
         decisionContainer.removeChildren();
+        decisionMap.clear();
 
         List<DecisionV2> decisions = ConversationHelper.getDecisions(action.target());
 
         for(int i = 0; i< decisions.size(); i++){
             // 뒷배경(호버 영역 확보용)
             BoxPanel background = BoxPanel.builder(decisionContainer)
-                    .bound(1, 0.15)
+                    .bound(1, 0.2)
                     .backgroundColor(TesmColor.TRANSPARENT)
                     .childrenVerticalAlignment(VerticalAlignment.CENTER)
                     .onHover(HoverType.BACKGROUND_BLUR_EFFECTER)
@@ -130,17 +133,36 @@ public class ConversationScreenV2 extends TesmScreen {
                     .selfHorizontalAlignment(HorizontalAlignment.LEFT)
                     .leftMarginRatio(0.02)
                     .build();
+            // 선택지 클릭 이벤트 설정
+            background.onClick(() -> onClickDecision(textLabel));
+            // 맵에 등록
+            decisionMap.put(textLabel, decision);
         }
         decisionContainer.changeShouldHide(false);
     }
 
     private void hideDecision(){
         decisionContainer.changeShouldHide(true);
+        currentText.changeShouldHide(false);
     }
 
     // 다음 플로우 로드
     private void advanceFlow(String flowId){
         currentFlow = ConversationHelper.getFlow(flowId);
         hideDecision();
+        advanceText();
+    }
+
+    // 선택지 클릭 처리
+    private void onClickDecision(TextLabel textLabel){
+        DecisionV2 decision = decisionMap.get(textLabel);
+        String nextFlowId = decision.flowId();
+
+        if(nextFlowId == null || nextFlowId.isBlank()){
+            // 대화 종료
+            textLabel.getMotherScreen().close();
+        }else{ // 다음 플로우 진행
+            ((ConversationScreenV2)(textLabel.getMotherScreen())).advanceFlow(nextFlowId);
+        }
     }
 }
