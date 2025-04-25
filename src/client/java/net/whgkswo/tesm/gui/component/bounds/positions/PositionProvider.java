@@ -49,7 +49,7 @@ public abstract class PositionProvider {
                                           double siblingsHeightRatio,
                                           double yRatio) {
         switch (alignment) {
-            case UPPER:
+            case TOP:
                 // 위쪽 정렬은 기본값이므로 아무것도 하지 않음
                 break;
             case CENTER: {
@@ -57,7 +57,7 @@ public abstract class PositionProvider {
                 yRatio += yGap / 2;
                 break;
             }
-            case LOWER: {
+            case BOTTOM: {
                 yRatio += 1 - childBound.getHeightRatio(); // 1은 부모의 전체
                 break;
             }
@@ -67,6 +67,8 @@ public abstract class PositionProvider {
     }
 
     protected HorizontalAlignment getRefHorizontalAlignment(){
+        // 자식의 정렬기준이 NONE일 경우 부모의 정렬기준을 따름
+        if(component.getSelfHorizontalAlignment().equals(HorizontalAlignment.NONE)) return parent.getChildrenHorizontalAlignment();
         // 부모의 Axis와 같은 방향의 축은 모든 자식요소가 부모의 정렬기준을 따라야 함
         // 단 형제가 없거나 고정 타입일 경우 자유
         GuiAxis parentAxis = parent.getAxis();
@@ -83,12 +85,13 @@ public abstract class PositionProvider {
     }
 
     protected VerticalAlignment getRefVerticalAlignment(){
+        // 자식의 정렬기준이 NONE일 경우 부모의 정렬기준을 따름
+        if(component.getSelfVerticalAlignment().equals(VerticalAlignment.NONE)) return parent.getChildrenVerticalAlignment();
         // 부모의 Axis와 같은 방향의 축은 모든 자식요소가 부모의 정렬기준을 따라야 함
-        // 단 형제가 없거나 고정 타입일 경우 자유
         GuiAxis parentAxis = parent.getAxis();
         List<GuiComponent<?, ?>> siblings = parent.getChildren();
         if(siblings.size() > 1 && parentAxis == GuiAxis.VERTICAL && getType().equals(PositionType.FLOW)) return parent.getChildrenVerticalAlignment();
-
+        // 단 형제가 없거나 고정 타입일 경우 자유
         VerticalAlignment verticalAlignment = parent.getChildrenVerticalAlignment();
         if(!component.getSelfVerticalAlignment().equals(VerticalAlignment.NONE)){
             verticalAlignment = component.getSelfVerticalAlignment();

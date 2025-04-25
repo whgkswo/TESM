@@ -32,7 +32,7 @@ import java.util.*;
 public abstract class GuiComponent<C extends GuiComponent<C, S>, S extends GuiStyle> {
     @Setter
     private String id;
-    private boolean isVisible;
+    private Boolean isVisible;
     @Setter
     private HorizontalAlignment selfHorizontalAlignment;
     @Setter
@@ -44,13 +44,13 @@ public abstract class GuiComponent<C extends GuiComponent<C, S>, S extends GuiSt
     @Setter
     private AbsolutePosition cachedScissor;
     @Setter
-    private double rightMarginRatio;
+    private Double rightMarginRatio;
     @Setter
-    private double bottomMarginRatio;
+    private Double bottomMarginRatio;
     @Setter
-    private double leftMarginRatio;
+    private Double leftMarginRatio;
     @Setter
-    private double topMarginRatio;
+    private Double topMarginRatio;
     @Setter
     private StylePreset<S> stylePreset;
     @Setter
@@ -59,7 +59,7 @@ public abstract class GuiComponent<C extends GuiComponent<C, S>, S extends GuiSt
     private ClickHandler clickHandler;
     private TesmScreen motherScreen;
     @Setter
-    private boolean isBuildFinished;
+    private Boolean isBuildFinished = false;
 
     public GuiComponent(@Nullable ParentComponent<?, ?> parent){
         this.parent = parent;
@@ -133,9 +133,9 @@ public abstract class GuiComponent<C extends GuiComponent<C, S>, S extends GuiSt
         return (C) this;
     }
 
-    public void setParent(ParentComponent<?, ?> parent){
+    public void setParentAndMotherScreen(ParentComponent<?, ?> parent){
+        this.parent = parent;
         if(parent != null && !parent.getChildren().contains(this)){
-            this.parent = parent;
             parent.addChild(this);
         }
         if(parent != null && parent.getMotherScreen() != null) setMotherScreen(parent.getMotherScreen());
@@ -203,7 +203,7 @@ public abstract class GuiComponent<C extends GuiComponent<C, S>, S extends GuiSt
         // 스타일이 없으면 디폴트 스타일 가져오기
         if(stylePreset == null) {
             Class<S> styleType = getStyleType();
-            StylePreset<S> defaultStyle = DefaultStyleProvider.getDefaultStyle(styleType);
+            StylePreset<S> defaultStyle = DefaultStyleProvider.getDefaultStyle(styleType, motherScreen);
 
             if(defaultStyle != null) stylePreset = defaultStyle;
         };
@@ -295,7 +295,7 @@ public abstract class GuiComponent<C extends GuiComponent<C, S>, S extends GuiSt
     }
 
     public int getChildIndex(){
-        if(parent == null) return -1;
+        if(parent == null) new GuiException(motherScreen, "부모가 없는 컴포넌트의 자식번호를 가져올 수 없습니다: " + id).handle();
         return parent.getChildren().indexOf(this);
     }
 

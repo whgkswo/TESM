@@ -6,7 +6,6 @@ import net.whgkswo.tesm.gui.component.components.ParentComponent;
 import net.whgkswo.tesm.gui.component.components.style.GuiStyle;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
 
-// 원시타입 스타일 초기값은 여기에 명시
 public abstract class ParentComponentBuilder<C extends ParentComponent<C, S>,
                                             B extends ParentComponentBuilder<C, B, S>,
                                             S extends GuiStyle>
@@ -14,10 +13,10 @@ public abstract class ParentComponentBuilder<C extends ParentComponent<C, S>,
 
     // ParentComponent 필드
     protected GuiAxis axis = GuiAxis.VERTICAL;
-    protected HorizontalAlignment childrenHorizontalAlignment = HorizontalAlignment.NONE;
-    protected VerticalAlignment childrenVerticalAlignment = VerticalAlignment.NONE;
-    protected double horizontalGap = 0.0;
-    protected double verticalGap = 0.0;
+    protected HorizontalAlignment childrenHorizontalAlignment;
+    protected VerticalAlignment childrenVerticalAlignment;
+    protected Double horizontalGap = 0.0;
+    protected Double verticalGap = 0.0;
 
     public B axis(GuiAxis axis) {
         this.axis = axis;

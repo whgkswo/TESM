@@ -85,6 +85,7 @@ public abstract class TesmScreen extends Screen {
                 .positionType(PositionType.FIXED)
                 .visibility(false)
                 .build();
+        rootModal.setMotherScreen(this);
     }
     @Override
     public boolean shouldPause() {

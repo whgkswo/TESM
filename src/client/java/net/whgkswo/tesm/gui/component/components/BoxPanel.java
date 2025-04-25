@@ -24,14 +24,14 @@ import java.util.Map;
 // 스타일 요소가 아닌 필드는 여기에 초기값 명시
 @Getter
 public class BoxPanel extends ParentComponent<BoxPanel, BoxStyle> implements HasBackground, Scrollable {
-    private final Map<GuiDirection, StraightLine> edgeLines = new HashMap<>();
+    private final Map<GuiDirection, SLine> edgeLines = new HashMap<>();
     private RelativeBound bound;
     @Setter
     private TesmColor edgeColor;
     @Setter
     private EdgeVisibility edgeVisibilities;
     @Setter
-    private int edgeThickness;
+    private Integer edgeThickness;
     @Setter
     private TesmColor backgroundColor;
     @Setter
@@ -66,9 +66,9 @@ public class BoxPanel extends ParentComponent<BoxPanel, BoxStyle> implements Has
         generateEdgeLines();
         // 모서리 출력
         if(edgeColor.equals(TesmColor.TRANSPARENT)) return;
-        edgeLines.forEach((lineSide, straightLine) -> {
+        edgeLines.forEach((lineSide, sLine) -> {
             if(edgeVisibilities.isVisible(lineSide)){
-                straightLine.renderSelf(context);
+                sLine.renderSelf(context);
             }
         });
     }
@@ -77,12 +77,14 @@ public class BoxPanel extends ParentComponent<BoxPanel, BoxStyle> implements Has
     public void render(DrawContext context){
         // 자신 렌더링
         renderSelfWithScissor(context);
+        // 모서리 없으면 생성
+        generateEdgeLines();
         // 자식 렌더링
         for (GuiComponent<?, ?> child : getChildren()){
             child.tryRender(context);
         }
         // 자식들 위에 테두리 렌더링
-        renderEdges(context);
+        //renderEdges(context);
     }
 
     public void generateEdgeLines(){
@@ -112,13 +114,32 @@ public class BoxPanel extends ParentComponent<BoxPanel, BoxStyle> implements Has
     }
 
     private void addEdgeLine(GuiDirection direction, LinearBound bound){
-        edgeLines.put(direction, new StraightLine(this, edgeColor, bound));
+        boolean isVisible = edgeVisibilities.isVisible(direction);
+        SLine edge = SLine.builder(this)
+                .id(this.getId() + "_edge#" + direction)
+                .color(edgeColor)
+                .bound(bound)
+                .visibility(isVisible)
+                .build();
+        edgeLines.put(direction, edge);
+        addChild(edge);
     }
 
     public void setBound(RelativeBound bound){
-        if(TesmScreen.ROOT_ID.equals(getId()) && isBuildFinished()){
+        if(TesmScreen.ROOT_ID.equals(getId()) && getIsBuildFinished()){
             new GuiException(getMotherScreen(), "루트 컴포넌트는 크기를 조정할 수 없습니다.").handle();
         }
         this.bound = bound;
+    }
+
+    @Override
+    public void clearCaches(){
+        super.clearCaches();
+        // 테두리 명시적으로 초기화
+        edgeLines.values().forEach(edge -> {
+            int index = edge.getChildIndex();
+            this.removeChild(index);
+        });
+        edgeLines.clear();
     }
 }

@@ -1,9 +1,9 @@
 package net.whgkswo.tesm.gui.screen;
 
 public enum VerticalAlignment {
-    UPPER,
+    TOP,
     CENTER,
-    LOWER,
+    BOTTOM,
     NONE
     ;
 }

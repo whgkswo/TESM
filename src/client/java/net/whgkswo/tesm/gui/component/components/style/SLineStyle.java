@@ -5,15 +5,14 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.colors.TesmColor;
-import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
-import net.whgkswo.tesm.gui.component.components.TextLabel;
+import net.whgkswo.tesm.gui.component.GuiAxis;
+import net.whgkswo.tesm.gui.component.bounds.LinearBound;
 import net.whgkswo.tesm.gui.screen.VerticalAlignment;
 
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-// 참조타입 초기값은 디폴트 스타일로 처리
-public class TextLabelStyle implements GuiStyle, DefaultStyleProvider<TextLabelStyle>{
+public class SLineStyle implements GuiStyle, DefaultStyleProvider<SLineStyle> {
     // GuiComponent
     private Boolean isVisible;
     private HorizontalAlignment selfHorizontalAlignment;
@@ -22,24 +21,23 @@ public class TextLabelStyle implements GuiStyle, DefaultStyleProvider<TextLabelS
     private Double leftMarginRatio;
     private Double rightMarginRatio;
     private Double bottomMarginRatio;
-    // TextLabel
-    private Float fontScale;
-    private RelativeBound bound;
-    private TesmColor backgroundColor;
-    private TextLabel.SizeMode sizeMode;
+    // SLine
+    private TesmColor color;
+    private LinearBound bound;
 
-    public static StylePreset<TextLabelStyle> DEFAULT = new StylePreset<>(
-            "default_text",
-            TextLabelStyle.builder()
+    public static final StylePreset<SLineStyle> DEFAULT = new StylePreset<>(
+            "default_line",
+            SLineStyle.builder()
+                    .color(TesmColor.WHITE)
+                    .bound(new LinearBound(0, 0, GuiAxis.HORIZONTAL, 1, 1))
+                    .isVisible(true)
                     .selfHorizontalAlignment(HorizontalAlignment.NONE)
                     .selfVerticalAlignment(VerticalAlignment.NONE)
-                    .backgroundColor(TesmColor.TRANSPARENT)
-                    .sizeMode(TextLabel.SizeMode.RELATIVE_TO_PARENT)
                     .build()
-    );
+            );
 
     @Override
-    public StylePreset<TextLabelStyle> getDefaultStyle() {
+    public StylePreset<SLineStyle> getDefaultStyle() {
         return DEFAULT;
     }
 }

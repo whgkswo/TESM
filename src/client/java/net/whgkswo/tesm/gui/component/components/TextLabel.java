@@ -22,8 +22,8 @@ public class TextLabel extends GuiComponent<TextLabel, TextLabelStyle> {
     @Getter
     private Text text;
     @Getter
-    private float fontScale;
-    private boolean shadowed;
+    private Float fontScale;
+    private Boolean shadowed;
     private RelativeBound bound;
     private TesmColor backgroundColor;
     private SizeMode sizeMode;

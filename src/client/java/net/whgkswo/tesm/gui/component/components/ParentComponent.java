@@ -24,8 +24,8 @@ public abstract class ParentComponent<T extends GuiComponent<T, S>, S extends Gu
     @Setter
     private HorizontalAlignment childrenHorizontalAlignment;
     private VerticalAlignment childrenVerticalAlignment;
-    private double horizontalGap;
-    private double verticalGap;
+    private Double horizontalGap;
+    private Double verticalGap;
     private final List<GuiComponent<?, ?>> children = new ArrayList<>();
 
     public ParentComponent(ParentComponent<?, ?> parent, RelativeBound bound, GuiAxis axis, HorizontalAlignment childrenHorizontalAlignment) {
@@ -46,7 +46,7 @@ public abstract class ParentComponent<T extends GuiComponent<T, S>, S extends Gu
 
     public void addChild(GuiComponent<?, ?> child){
         if(!children.contains(child)) children.add(child);
-        if(child.getParent() == null || child.getParent() != this) child.setParent(this);
+        if(child.getParent() == null || child.getParent() != this) child.setParentAndMotherScreen(this);
     }
 
     @Override
@@ -68,7 +68,7 @@ public abstract class ParentComponent<T extends GuiComponent<T, S>, S extends Gu
         return result;
     }
 
-    public void removeChild(int index){
+    public void removeChild(Integer index){
         if(index < 0 || index >= children.size()){
             new GuiException(getMotherScreen(), String.format("자식 요소 제거 중 오류: %s 컴포넌트에 %d번째 자식이 없습니다.", getId(), index)).handle();
             return;

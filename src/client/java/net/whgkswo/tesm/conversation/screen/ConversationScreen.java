@@ -4,6 +4,8 @@ import net.minecraft.text.Text;
 import net.whgkswo.tesm.conversation.*;
 import net.whgkswo.tesm.gui.HorizontalAlignment;
 import net.whgkswo.tesm.gui.colors.TesmColor;
+import net.whgkswo.tesm.gui.component.bounds.PositionType;
+import net.whgkswo.tesm.gui.component.bounds.RelativeBound;
 import net.whgkswo.tesm.gui.component.components.BoxPanel;
 import net.whgkswo.tesm.gui.component.components.TextLabel;
 import net.whgkswo.tesm.gui.component.components.features.HoverType;
@@ -13,7 +15,6 @@ import net.whgkswo.tesm.gui.screen.base.TesmScreen;
 import net.whgkswo.tesm.networking.payload.data.s2c_res.ConversationNbtRes;
 import org.lwjgl.glfw.GLFW;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +27,8 @@ public class ConversationScreen extends TesmScreen {
     private BoxPanel decisionContainer;
     private Map<TextLabel, Decision> decisionMap = new HashMap<>();
     private TextLabel currentText;
-    private List<ConvLog> convLogs = new ArrayList<>();
     private NameType partnerNameType = NameType.KOR;
+    private BoxPanel logContainer;
 
     public ConversationScreen(ConversationNbtRes partnerInfo){
         super();
@@ -80,8 +81,22 @@ public class ConversationScreen extends TesmScreen {
                 .bound(1, 0.2)
                 .visibility(false)
                 .build();
-        // 로그 컨테이너
-        //rootModal.
+        rootModal.setBound(new RelativeBound(0.7, 0.8));
+        // 로그 모달 내부 컨테이너
+        logContainer = BoxPanel.builder(rootModal)
+                .id("log_container")
+                .bound(0.9, 0.9)
+                .backgroundColor(TesmColor.TRANSPARENT)
+                .isScrollable(true)
+                .verticalGap(0.02)
+                .build();
+        // 단축키 표시
+        TextLabel logKeyLabel = TextLabel.builder(rootComponent)
+                .text("[X] 로그")
+                .selfHorizontalAlignment(HorizontalAlignment.RIGHT)
+                .selfVerticalAlignment(VerticalAlignment.BOTTOM)
+                .onClick(this::toggleLogModal)
+                .build();
         // 첫 대사 로드
         advanceText();
     }
@@ -113,8 +128,52 @@ public class ConversationScreen extends TesmScreen {
             DialogueText nextText = currentFlow.texts().poll();
             currentText.changeText(nextText.getText());
             // 로그 기록
-            convLogs.add(new ConvLog(getPartnerDisplayName(), nextText.getText()));
+            addPartnerLog(getPartnerDisplayName(), nextText.getText());
         }
+    }
+
+    private void addPartnerLog(String partnerDisplayName, Text text){
+        int number = logContainer.getChildren().size() + 1;
+        BoxPanel logBubble = BoxPanel.builder(logContainer)
+                .id("log_bubble#" + number)
+                .bound(1, 0.08)
+                .backgroundColor(TesmColor.TRANSPARENT)
+                .edgeVisibility(EdgeVisibility.LEFT_ONLY)
+                .edgeThickness(3)
+                .childrenVerticalAlignment(VerticalAlignment.CENTER)
+                .build();
+
+        TextLabel speakerLabel = TextLabel.builder(logBubble)
+                .id("log_speacker#" + number)
+                .text(Text.literal(partnerDisplayName).withColor(0xFF8C00))
+                .leftMarginRatio(0.02)
+                .build();
+        TextLabel logTextLabel = TextLabel.builder(logBubble)
+                .text(text)
+                .id("log_text#" + number)
+                .leftMarginRatio(0.02)
+                .build();
+    }
+
+    private void addPlayerLog(Text text){
+        int number = logContainer.getChildren().size() + 1;
+
+        BoxPanel logBubble = BoxPanel.builder(logContainer)
+                .id("log_bubble#" + number)
+                .bound(1, 0.1)
+                .backgroundColor(TesmColor.TRANSPARENT)
+                .edgeVisibility(EdgeVisibility.RIGHT_ONLY)
+                .edgeThickness(3)
+                .childrenVerticalAlignment(VerticalAlignment.CENTER)
+                .build();
+
+        TextLabel logTextLabel = TextLabel.builder(logBubble)
+                .text(text.copy().withColor(0x6395EE))
+                .id("log_player_text#" + number)
+                .selfHorizontalAlignment(HorizontalAlignment.RIGHT)
+                .selfVerticalAlignment(VerticalAlignment.CENTER)
+                .rightMarginRatio(0.02)
+                .build();
     }
 
     private void handleAction(Action action){
@@ -170,6 +229,8 @@ public class ConversationScreen extends TesmScreen {
     private void onClickDecision(TextLabel textLabel){
         Decision decision = decisionMap.get(textLabel);
         String nextFlowId = decision.flowId();
+        // 로그 기록
+        addPlayerLog(decision.getText());
 
         if(nextFlowId == null || nextFlowId.isBlank()){
             // 대화 종료
@@ -183,15 +244,15 @@ public class ConversationScreen extends TesmScreen {
     public boolean keyPressed(int keyCode, int scanCode, int modifiers){
         switch (keyCode){
             case GLFW.GLFW_KEY_X -> {
-                rootModal.setVisibility(!rootModal.isVisible());
-                rootModal.clearCaches();
+                toggleLogModal();
                 return true;
             }
         }
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
-    private record ConvLog(String speakerName, Text text) {
-
+    private void toggleLogModal(){
+        rootModal.setVisibility(!rootModal.isVisible());
+        rootModal.clearCaches();
     }
 }

@@ -14,9 +14,9 @@ public class BoxPanelBuilder extends ParentComponentBuilder<BoxPanel, BoxPanelBu
     // BoxPanel 필드
     private RelativeBound bound;
     private TesmColor edgeColor;
-    private int edgeThickness = 1;
+    private Integer edgeThickness = 1;
     private TesmColor backgroundColor;
-    private boolean isScrollable;
+    private Boolean isScrollable = false;
     private EdgeVisibility edgeVisibilities;
 
     public BoxPanelBuilder(ParentComponent<?, ?> parent){
@@ -31,15 +31,14 @@ public class BoxPanelBuilder extends ParentComponentBuilder<BoxPanel, BoxPanelBu
     @Override
     public BoxPanel build() {
         BoxPanel boxPanel = new BoxPanel();
-        // 스타일 프리셋 선적용
-        boxPanel.setStylePreset(this.stylePreset);
-        boxPanel.initializeStyle();
+
         // GuiComponent 필드
         boxPanel.setId(this.id);
         boxPanel.setVisibility(this.isVisible);
         boxPanel.setSelfHorizontalAlignment(this.selfHorizontalAlignment);
         boxPanel.setSelfVerticalAlignment(this.selfVerticalAlignment);
-        boxPanel.setParent(this.parent);
+        boxPanel.setParentAndMotherScreen(this.parent);
+        boxPanel.setStylePreset(this.stylePreset);
         boxPanel.setTopMarginRatio(this.topMarginRatio);
         boxPanel.setLeftMarginRatio(this.leftMarginRatio);
         boxPanel.setRightMarginRatio(this.rightMarginRatio);

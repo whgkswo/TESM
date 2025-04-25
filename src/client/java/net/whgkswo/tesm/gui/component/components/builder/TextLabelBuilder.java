@@ -11,8 +11,8 @@ import net.whgkswo.tesm.gui.component.components.style.TextLabelStyle;
 public class TextLabelBuilder extends GuiComponentBuilder<TextLabel, TextLabelBuilder, TextLabelStyle> {
     // TextLabel 필드
     private Text text;
-    private float fontScale = 1.0f;
-    private boolean shadowed = false;
+    private Float fontScale = 1.0f;
+    private Boolean shadowed = false;
     private TesmColor backgroundColor;
     private TextLabel.SizeMode sizeMode;
 
@@ -34,7 +34,7 @@ public class TextLabelBuilder extends GuiComponentBuilder<TextLabel, TextLabelBu
         textLabel.setVisibility(this.isVisible);
         textLabel.setSelfHorizontalAlignment(this.selfHorizontalAlignment);
         textLabel.setSelfVerticalAlignment(this.selfVerticalAlignment);
-        textLabel.setParent(this.parent);
+        textLabel.setParentAndMotherScreen(this.parent);
         textLabel.setStylePreset(this.stylePreset);
         textLabel.setRightMarginRatio(this.rightMarginRatio);
         textLabel.setBottomMarginRatio(this.bottomMarginRatio);
@@ -59,6 +59,11 @@ public class TextLabelBuilder extends GuiComponentBuilder<TextLabel, TextLabelBu
 
     public TextLabelBuilder text(Text text) {
         this.text = text;
+        return this;
+    }
+
+    public TextLabelBuilder text(String string) {
+        this.text = Text.literal(string);
         return this;
     }
 

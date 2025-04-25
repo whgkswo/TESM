@@ -46,13 +46,13 @@ public class FlowPositionProvider extends PositionProvider {
         // 손윗 형제들의 너비, 마진 합산
         xRatio += siblingBound[2];
         yRatio += siblingBound[3];
-        // 자신의 이전 마진 합산
-        xRatio += component.getLeftMarginRatio();
-        yRatio += component.getTopMarginRatio();
+        // 자신의 마진 합산
+        xRatio += component.getLeftMarginRatio() - component.getRightMarginRatio();
+        yRatio += component.getTopMarginRatio() - component.getBottomMarginRatio();
 
         // 부모에 스크롤 핸들러가 있다면 오프셋 적용
         if(parent instanceof Scrollable && ((Scrollable)parent).getScrollHandler() != null) {
-            // 양의 오프셋을 가졌다 -> 위에 공간이 생겼다 -> 스크롤 업 -> 고로 합산이 아닌 차감
+            // y좌표 마이너스 -> 위로 올라감. 고로 오프셋(위쪽 공간) 차감
             yRatio -= ((Scrollable) parent).getScrollHandler().getOffset();
         }else {
             // 수직 정렬은 스크롤이 없을 때만

@@ -18,7 +18,6 @@ import net.whgkswo.tesm.lang.LanguageHelper;
 
 import java.util.Set;
 
-// 원시타입 스타일 초기값은 여기에 명시
 public abstract class GuiComponentBuilder<C extends GuiComponent<C, S>,
         B extends GuiComponentBuilder<C, B, S>,
         S extends GuiStyle>
@@ -26,16 +25,16 @@ public abstract class GuiComponentBuilder<C extends GuiComponent<C, S>,
 
     // GuiComponent 필드
     protected String id;
-    protected boolean isVisible = true;
+    protected Boolean isVisible = true;
     protected HorizontalAlignment selfHorizontalAlignment;
     protected VerticalAlignment selfVerticalAlignment;
     protected ParentComponent<?, ?> parent;
     protected StylePreset<S> stylePreset;
     protected PositionType positionType = PositionType.FLOW;
-    protected double topMarginRatio;
-    protected double bottomMarginRatio;
-    protected double leftMarginRatio;
-    protected double rightMarginRatio;
+    protected Double topMarginRatio = 0.0;
+    protected Double bottomMarginRatio = 0.0;
+    protected Double leftMarginRatio = 0.0;
+    protected Double rightMarginRatio = 0.0;
     protected HoverType hoverType;
     protected HoverHandler hoverHandler;
     protected ClickHandler clickHandler;
@@ -116,13 +115,11 @@ public abstract class GuiComponentBuilder<C extends GuiComponent<C, S>,
 
         // 기본 ID 설정
         if(id == null || id.isBlank()){
-            String type = c.getClass().getSimpleName();
-            String snakeType = LanguageHelper.toSnakeCase(type);
-            String code = LanguageHelper.generateRandomCode(8);
-            c.setId(snakeType + "#" + code);
+            String generatedId = generateId(c);
+            c.setId(generatedId);
         }
         // 식별자 중복 검사
-        if(!c.getId().equals(TesmScreen.ROOT_ID) && c.getMotherScreen() != null) {
+        if(!TesmScreen.ROOT_ID.equals(c.getId()) && c.getMotherScreen() != null) {
             Set<String> componentIdSet = c.getMotherScreen().getComponentIdSet();
             if(componentIdSet.contains(c.getId())){
                 new GuiException(c.getMotherScreen(), "컴포넌트 식별자가 중복되었습니다: " + c.getId()).handle();
@@ -141,7 +138,20 @@ public abstract class GuiComponentBuilder<C extends GuiComponent<C, S>,
 
         // 스타일 초기화
         c.initializeStyle();
-        c.setBuildFinished(true);
+        c.setIsBuildFinished(true);
         return c;
+    }
+
+    private String generateId(GuiComponent<?,?> c){
+        String type = c.getClass().getSimpleName();
+        String snakeType = LanguageHelper.toSnakeCase(type);
+
+        Set<String> idSet = c.getMotherScreen().getComponentIdSet();
+        String generatedId;
+        do {
+            String code = LanguageHelper.generateRandomCode(8);
+            generatedId = snakeType + "#" + code;
+        } while (idSet.contains(generatedId));
+        return generatedId;
     }
 }
